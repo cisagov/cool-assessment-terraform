@@ -1,24 +1,24 @@
-# The instance ID
 output "id" {
-  value = "${aws_instance.example.id}"
+  value       = "${aws_instance.example.id}"
+  description = "The EC2 instance ID"
 }
 
-# The instance ARN
 output "arn" {
-  value = "${aws_instance.example.arn}"
+  value       = "${aws_instance.example.arn}"
+  description = "The EC2 instance ARN"
 }
 
-# The Availability Zone where the instance is deployed
 output "availability_zone" {
-  value = "${aws_instance.example.availability_zone}"
+  value       = "${aws_instance.example.availability_zone}"
+  description = "The AZ where the EC2 instance is deployed"
 }
 
-# The private IP of the instance
 output "private_ip" {
-  value = "${aws_instance.example.private_ip}"
+  value       = "${aws_instance.example.private_ip}"
+  description = "The private IP of the EC2 instance"
 }
 
-# The ID of the subnet where the instance is deployed
 output "subnet_id" {
-  value = "${aws_instance.example.subnet_id}"
+  value       = "${aws_instance.example.subnet_id}"
+  description = "The ID of the subnet where the EC2 instance is deployed"
 }
