@@ -24,7 +24,7 @@ module "example" {
   aws_availability_zone = "b"
   subnet_id             = "subnet-0123456789abcdef0"
 
-  tags_as_map = {
+  tags = {
     Key1 = "Value1"
     Key2 = "Value2"
   }
