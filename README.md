@@ -39,10 +39,10 @@ module "example" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-------:|:--------:|
-| aws_region | The AWS region to deploy into (e.g. us-east-1). | string | | yes |
-| aws_availability_zone | The AWS availability zone to deploy into (e.g. a, b, c, etc.). | string | | yes |
-| subnet_id | The ID of the AWS subnet to deploy into (e.g. subnet-0123456789abcdef0). | string | | yes |
-| aws_region | Tags to apply to all AWS resources created. | map(string) | `{}` | no |
+| aws_region | The AWS region to deploy into (e.g. us-east-1) | string | | yes |
+| aws_availability_zone | The AWS availability zone to deploy into (e.g. a, b, c, etc.) | string | | yes |
+| subnet_id | The ID of the AWS subnet to deploy into (e.g. subnet-0123456789abcdef0) | string | | yes |
+| aws_region | Tags to apply to all AWS resources created | map(string) | `{}` | no |
 
 ## Outputs ##
 
