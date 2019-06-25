@@ -5,6 +5,17 @@ python: 3.7
 # pre-commit hooks can use Docker, so we should go ahead and enable it
 services: docker
 
+# Install terraform and terraform-doc
+before_install:
+  - >
+    wget
+    https://releases.hashicorp.com/terraform/0.12.3/terraform_0.12.3_linux_amd64.zip
+    -O terraform.zip
+  - sudo unzip terraform.zip -d /opt/terraform
+  - sudo ln -s /opt/terraform/terraform /usr/bin/terraform
+  - rm -f terraform.zip
+  - go get github.com/segmentio/terraform-docs
+
 # Cache pip packages and pre-commit plugins to speed up builds
 cache:
   pip: true
