@@ -15,8 +15,8 @@ all of which should be in this repository.
 
 If you want to report a bug or request a new feature, the most direct
 method is to [create an
-issue](https://github.com/cisagov/skeleton-terraform-module/issues) in
-this repository.  We recommend that you first search through existing
+issue](https://github.com/cisagov/skeleton-tf-module/issues) in this
+repository.  We recommend that you first search through existing
 issues (both open and closed) to check if your particular issue has
 already been reported.  If it has then you might want to add a comment
 to the existing issue.  If it hasn't then feel free to create a new
@@ -25,12 +25,12 @@ one.
 ## Pull requests ##
 
 If you choose to [submit a pull
-request](https://github.com/cisagov/skeleton-terraform-module/pulls),
-you will notice that our continuous integration (CI) system runs a
-fairly extensive set of linters and syntax checkers.  Your pull
-request may fail these checks, and that's OK.  If you want you can
-stop there and wait for us to make the necessary corrections to ensure
-your code passes the CI checks.
+request](https://github.com/cisagov/skeleton-tf-module/pulls), you
+will notice that our continuous integration (CI) system runs a fairly
+extensive set of linters and syntax checkers.  Your pull request may
+fail these checks, and that's OK.  If you want you can stop there and
+wait for us to make the necessary corrections to ensure your code
+passes the CI checks.
 
 If you want to make the changes yourself, or if you want to become a
 regular contributor, then you will want to set up
@@ -78,9 +78,9 @@ can create and configure the Python virtual environment with these
 commands:
 
 ```console
-cd skeleton-terraform-module
-pyenv virtualenv <python_version_to_use> skeleton-terraform-module
-pyenv local skeleton-terraform-module
+cd skeleton-tf-module
+pyenv virtualenv <python_version_to_use> skeleton-tf-module
+pyenv local skeleton-tf-module
 pip install -r requirements-dev.txt
 ```
 
