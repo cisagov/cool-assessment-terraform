@@ -8,7 +8,7 @@ services: docker
 env:
   global:
     - CURL_CACHE_DIR="$HOME/.cache/curl"
-    - TERRAFORM_VERSION="0.12.6"
+    - TERRAFORM_VERSION="0.12.8"
     - TERRAFORM_ZIP="terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
 
 # Cache pip packages, pre-commit plugins, and some curl downloads to
