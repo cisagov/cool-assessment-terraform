@@ -8,6 +8,7 @@ env:
   CURL_CACHE_DIR: ~/.cache/curl
   PIP_CACHE_DIR: ~/.cache/pip
   PRE_COMMIT_CACHE_DIR: ~/.cache/pre-commit
+  RUN_TMATE: ${{ secrets.RUN_TMATE }}
 
 jobs:
   lint:
@@ -70,6 +71,4 @@ jobs:
         run: pre-commit run --all-files
       - name: Setup tmate debug session
         uses: mxschmitt/action-tmate@v1
-        env:
-          should_launch: ${{ secrets.ACTIONS_RUNNER_TMATE }}
-        if: env.should_launch == 'true'
+        if: env.RUN_TMATE == 'true'
