@@ -67,3 +67,4 @@ jobs:
         run: pre-commit run --all-files
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v1
+        if: secrets.ACTIONS_RUNNER_TMATE == 'true'
