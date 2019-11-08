@@ -6,7 +6,6 @@ on:
 
 env:
   CURL_CACHE_DIR: ~/.cache/curl
-  GO_CACHE_DIR: ~/.cache/go-cache
   PIP_CACHE_DIR: ~/.cache/pip
   PRE_COMMIT_CACHE_DIR: ~/.cache/pre-commit
 
@@ -40,10 +39,14 @@ jobs:
           path: ${{ env.CURL_CACHE_DIR }}
           key: "${{ runner.os }}-curl-\
             terraform-${{ env.TERRAFORM_VERSION }}"
+      - name: Lookup go cache directory
+        id: go-cache
+        run: |
+          echo "::set-output name=dir::$(go env GOCACHE)"
       - name: Cache go
         uses: actions/cache@v1
         with:
-          path: ${{ env.GO_CACHE_DIR }}
+          path: ${{ steps.go-cache.outputs.dir }}
           key: "${{ runner.os }}-go"
       - name: Install Terraform
         run: |
