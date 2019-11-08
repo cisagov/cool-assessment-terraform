@@ -72,4 +72,4 @@ jobs:
         uses: mxschmitt/action-tmate@v1
         env:
           should_launch: ${{ secrets.ACTIONS_RUNNER_TMATE }}
-        if: should_launch == 'true'
+        if: env.should_launch == 'true'
