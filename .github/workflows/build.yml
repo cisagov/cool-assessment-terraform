@@ -71,4 +71,4 @@ jobs:
         run: pre-commit run --all-files
       - name: Setup tmate debug session
         uses: mxschmitt/action-tmate@v1
-        if: env.RUN_TMATE == 'run-tmate'
+        if: env.RUN_TMATE
