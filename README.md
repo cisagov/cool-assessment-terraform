@@ -1,15 +1,15 @@
 # skeleton-tf-module #
 
-[![Build Status](https://travis-ci.com/cisagov/skeleton-tf-module.svg?branch=develop)](https://travis-ci.com/cisagov/skeleton-tf-module)
+[![GitHub Build Status](https://github.com/cisagov/skeleton-tf-module/workflows/build/badge.svg)](https://github.com/cisagov/skeleton-tf-module/actions)
 
 This is a generic skeleton project that can be used to quickly get a
 new [cisagov](https://github.com/cisagov) [Terraform
 module](https://www.terraform.io/docs/modules/index.html) GitHub
 repository started.  This skeleton project contains [licensing
 information](LICENSE), as well as [pre-commit
-hooks](https://pre-commit.com) and a [Travis
-CI](https://travis-ci.com) configuration appropriate for the major
-languages that we use.
+hooks](https://pre-commit.com) and
+[GitHub Actions](https://github.com/features/actions) configurations
+appropriate for the major languages that we use.
 
 See [here](https://www.terraform.io/docs/modules/index.html) for more
 details on Terraform modules and the standard module structure.
