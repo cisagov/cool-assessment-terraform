@@ -20,6 +20,9 @@ locals {
   # as assume role session names.
   caller_user_name = split("/", data.aws_caller_identity.current.arn)[1]
 
+  # The ID of the Transit Gateway in the Shared Services account
+  transit_gateway_id = data.terraform_remote_state.sharedservices_networking.outputs.transit_gateway.id
+
   # Find the new Users account by name and email.
   users_account_id = [
     for x in data.aws_organizations_organization.cool.accounts :
