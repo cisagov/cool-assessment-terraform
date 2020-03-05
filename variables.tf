@@ -41,6 +41,12 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
+# TODO: Make this an output available from cool-sharedservices-networking
+variable "cool_cidr_block" {
+  description = "The overall CIDR block associated with the COOL."
+  default     = "10.128.0.0/9"
+}
+
 variable "provisionaccount_role_name" {
   description = "The name of the IAM role that allows sufficient permissions to provision all AWS resources in the assessment account."
   default     = "ProvisionAccount"
