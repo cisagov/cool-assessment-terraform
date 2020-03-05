@@ -4,7 +4,7 @@
 # ------------------------------------------------------------------------------
 
 resource "aws_iam_role_policy_attachment" "provisionassessment_policy_attachment" {
-  provider = "aws.provisionassessment"
+  provider = aws.provisionassessment
 
   policy_arn = aws_iam_policy.provisionassessment_policy.arn
   role       = var.provisionaccount_role_name

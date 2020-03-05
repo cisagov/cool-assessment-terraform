@@ -58,7 +58,7 @@ data "aws_iam_policy_document" "provisionassessment_policy_doc" {
 }
 
 resource "aws_iam_policy" "provisionassessment_policy" {
-  provider = "aws.provisionassessment"
+  provider = aws.provisionassessment
 
   description = var.provisionassessment_policy_description
   name        = var.provisionassessment_policy_name

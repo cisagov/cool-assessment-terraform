@@ -4,7 +4,7 @@
 
 # Public subnet of the VPC
 resource "aws_subnet" "public" {
-  provider = "aws.provisionassessment"
+  provider = aws.provisionassessment
 
   vpc_id            = aws_vpc.assessment.id
   cidr_block        = var.public_subnet_cidr_block
@@ -22,7 +22,7 @@ resource "aws_subnet" "public" {
 
 # Private subnets of the VPC
 resource "aws_subnet" "private" {
-  provider = "aws.provisionassessment"
+  provider = aws.provisionassessment
 
   for_each = toset(var.private_subnet_cidr_blocks)
 
@@ -40,7 +40,7 @@ resource "aws_subnet" "private" {
 
 # The internet gateway for the VPC
 resource "aws_internet_gateway" "assessment" {
-  provider = "aws.provisionassessment"
+  provider = aws.provisionassessment
 
   vpc_id = aws_vpc.assessment.id
   tags   = var.tags
@@ -50,7 +50,7 @@ resource "aws_internet_gateway" "assessment" {
 # Create NAT gateways for the private subnets.
 # -------------------------------------------------------------------------------
 resource "aws_eip" "nat_gw_eips" {
-  provider = "aws.provisionassessment"
+  provider = aws.provisionassessment
 
   for_each = toset(var.private_subnet_cidr_blocks)
 
@@ -59,7 +59,7 @@ resource "aws_eip" "nat_gw_eips" {
 }
 
 resource "aws_nat_gateway" "nat_gws" {
-  provider = "aws.provisionassessment"
+  provider = aws.provisionassessment
 
   for_each = toset(var.private_subnet_cidr_blocks)
 

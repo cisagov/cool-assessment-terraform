@@ -5,7 +5,7 @@
 
 # ACL for the public subnet of the VPC
 resource "aws_network_acl" "public" {
-  provider = "aws.provisionassessment"
+  provider = aws.provisionassessment
 
   vpc_id = aws_vpc.assessment.id
   subnet_ids = [
@@ -22,7 +22,7 @@ resource "aws_network_acl" "public" {
 
 # ACLs for the private subnet of the VPC
 resource "aws_network_acl" "private" {
-  provider = "aws.provisionassessment"
+  provider = aws.provisionassessment
 
   for_each = toset(var.private_subnet_cidr_blocks)
 
