@@ -14,13 +14,15 @@ resource "aws_default_route_table" "public" {
   tags                   = var.tags
 }
 
-# # Route all non-local COOL (outside this VPC but inside the COOL)
-# # traffic through the transit gateway
-# resource "aws_route" "cool_route" {
-#   route_table_id         = aws_default_route_table.public.id
-#   destination_cidr_block = var.cool_cidr_block
-#   transit_gateway_id     = local.transit_gateway_id
-# }
+# Route all non-local COOL (outside this VPC but inside the COOL)
+# traffic through the transit gateway
+resource "aws_route" "cool_route" {
+  provider = aws.provisionassessment
+
+  route_table_id         = aws_default_route_table.public.id
+  destination_cidr_block = var.cool_cidr_block
+  transit_gateway_id     = local.transit_gateway_id
+}
 
 # Route all external (outside this VPC and outside the COOL) traffic
 # through the internet gateway

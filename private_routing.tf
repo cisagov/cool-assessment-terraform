@@ -23,15 +23,17 @@ resource "aws_route_table" "private_route_tables" {
   vpc_id = aws_vpc.assessment.id
 }
 
-# # Route all non-local COOL (outside this VPC but inside the COOL)
-# # traffic through the transit gateway.
-# resource "aws_route" "cool_routes" {
-#   for_each = toset(var.private_subnet_cidr_blocks)
-#
-#   route_table_id         = aws_route_table.private_route_tables[each.value].id
-#   destination_cidr_block = var.cool_cidr_block
-#   transit_gateway_id     = local.transit_gateway_id
-# }
+# Route all non-local COOL (outside this VPC but inside the COOL)
+# traffic through the transit gateway.
+resource "aws_route" "cool_routes" {
+  provider = aws.provisionassessment
+
+  for_each = toset(var.private_subnet_cidr_blocks)
+
+  route_table_id         = aws_route_table.private_route_tables[each.value].id
+  destination_cidr_block = var.cool_cidr_block
+  transit_gateway_id     = local.transit_gateway_id
+}
 
 # Route all external (outside this VPC and outside the COOL) traffic
 # through the NAT gateways
