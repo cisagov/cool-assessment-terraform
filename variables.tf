@@ -47,6 +47,12 @@ variable "cool_cidr_block" {
   default     = "10.128.0.0/9"
 }
 
+variable "operations_subnet_inbound_tcp_ports_allowed" {
+  description = "The list of TCP ports allowed inbound (from anywhere) to the operations subnet (e.g. [\"80\", \"443\"])."
+  default     = ["80", "443"]
+  type        = list(string)
+}
+
 variable "provisionaccount_role_name" {
   description = "The name of the IAM role that allows sufficient permissions to provision all AWS resources in the assessment account."
   default     = "ProvisionAccount"
