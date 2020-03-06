@@ -6,6 +6,16 @@ provider "aws" {
   region = var.aws_region
 }
 
+# The provider used to create roles that can read certificates from an S3 bucket
+provider "aws" {
+  alias  = "provisioncertreadrole"
+  region = var.aws_region
+  assume_role {
+    role_arn     = data.terraform_remote_state.dns_certboto.outputs.provisioncertificatereadroles_role.arn
+    session_name = local.caller_user_name
+  }
+}
+
 # The provider used to create resources inside the AWS account used
 # for this assessment
 provider "aws" {
