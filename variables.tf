@@ -41,6 +41,17 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
+variable "cert_bucket_name" {
+  description = "The name of the AWS S3 bucket where certificates are stored."
+  default     = "cool-certificates"
+}
+
+# TODO: This should be able to be pulled from a remote state
+variable "cool_domain" {
+  description = "The domain where the COOL resources reside (e.g. \"cool.cyber.dhs.gov\")."
+  default     = "cool.cyber.dhs.gov"
+}
+
 variable "operations_subnet_inbound_tcp_ports_allowed" {
   description = "The list of TCP ports allowed inbound (from anywhere) to the operations subnet (e.g. [\"80\", \"443\"])."
   default     = ["80", "443"]
