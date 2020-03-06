@@ -2,7 +2,7 @@
 # Create the security groups for the assessment VPC.
 #-------------------------------------------------------------------------------
 
-# Security group for the operations instances in the public subnet
+# Security group for the operations instances in the operations subnet
 resource "aws_security_group" "operations" {
   provider = aws.provisionassessment
 

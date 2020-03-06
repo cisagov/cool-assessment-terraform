@@ -11,7 +11,7 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "assessment" {
 
   # All subnets of the VPC are currently in the same availability zone, so it
   # doesn't matter which subnet ID we use for the Transit Gateway attachment
-  subnet_ids         = [aws_subnet.public.id]
+  subnet_ids         = [aws_subnet.operations.id]
   tags               = var.tags
   transit_gateway_id = local.transit_gateway_id
   vpc_id             = aws_vpc.assessment.id

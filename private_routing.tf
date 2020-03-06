@@ -8,8 +8,8 @@
 #-------------------------------------------------------------------------------
 # Set up routing for the private subnets.
 #
-# The public subnets will use the default routing table in the VPC, as
-# defined in public_routing.tf.
+# The operations subnets will use the default routing table in the VPC, as
+# defined in operations_routing.tf.
 # -------------------------------------------------------------------------------
 
 # Each private subnet gets its own routing table, since each subnet

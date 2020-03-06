@@ -17,8 +17,8 @@ variable "private_subnet_cidr_blocks" {
   type        = list(string)
 }
 
-variable "public_subnet_cidr_block" {
-  description = "The public subnet CIDR block for this assessment (e.g. \"10.10.0.0/24\")."
+variable "operations_subnet_cidr_block" {
+  description = "The operations subnet CIDR block for this assessment (e.g. \"10.10.0.0/24\")."
 }
 
 variable "vpc_cidr_block" {

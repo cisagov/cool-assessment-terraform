@@ -1,21 +1,21 @@
 #-------------------------------------------------------------------------------
-# Create the network ACLs for the public and private subnets
+# Create the network ACLs for the operations and private subnets
 # in the assessment VPC.
 #-------------------------------------------------------------------------------
 
-# ACL for the public subnet of the VPC
-resource "aws_network_acl" "public" {
+# ACL for the operations subnet of the VPC
+resource "aws_network_acl" "operations" {
   provider = aws.provisionassessment
 
   vpc_id = aws_vpc.assessment.id
   subnet_ids = [
-    aws_subnet.public.id,
+    aws_subnet.operations.id,
   ]
 
   tags = merge(
     var.tags,
     {
-      "Name" = "Assessment Public"
+      "Name" = "Assessment Operations"
     },
   )
 }
