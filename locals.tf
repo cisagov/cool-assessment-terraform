@@ -20,6 +20,8 @@ locals {
   # as assume role session names.
   caller_user_name = split("/", data.aws_caller_identity.current.arn)[1]
 
+  cool_shared_services_cidr_block = data.terraform_remote_state.sharedservices_networking.outputs.vpc.cidr_block
+
   # Helpful lists for defining ACL and security group rules
   ingress_and_egress = [
     "ingress",

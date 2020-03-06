@@ -41,12 +41,6 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
-# TODO: Make this an output available from cool-sharedservices-networking
-variable "cool_cidr_block" {
-  description = "The overall CIDR block associated with the COOL."
-  default     = "10.128.0.0/9"
-}
-
 variable "operations_subnet_inbound_tcp_ports_allowed" {
   description = "The list of TCP ports allowed inbound (from anywhere) to the operations subnet (e.g. [\"80\", \"443\"])."
   default     = ["80", "443"]

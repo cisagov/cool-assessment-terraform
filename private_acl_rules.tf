@@ -1,4 +1,4 @@
-# Allow ingress from COOL via ssh
+# Allow ingress from COOL Shared Services via ssh
 # For: DevOps ssh access to private subnet
 resource "aws_network_acl_rule" "private_ingress_from_cool_via_ssh" {
   provider = aws.provisionassessment
@@ -9,7 +9,7 @@ resource "aws_network_acl_rule" "private_ingress_from_cool_via_ssh" {
   protocol       = "tcp"
   rule_number    = 100 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
-  cidr_block     = var.cool_cidr_block
+  cidr_block     = local.cool_shared_services_cidr_block
   from_port      = 22
   to_port        = 22
 }
@@ -30,7 +30,7 @@ resource "aws_network_acl_rule" "private_egress_to_anywhere_via_https" {
   to_port        = 443
 }
 
-# Allow egress to COOL via ephemeral ports
+# Allow egress to COOL Shared Services via ephemeral ports
 # For: DevOps ssh access to private subnet
 resource "aws_network_acl_rule" "private_egress_to_cool_via_ephemeral_ports" {
   provider = aws.provisionassessment
@@ -41,7 +41,7 @@ resource "aws_network_acl_rule" "private_egress_to_cool_via_ephemeral_ports" {
   protocol       = "tcp"
   rule_number    = 104 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
-  cidr_block     = var.cool_cidr_block
+  cidr_block     = local.cool_shared_services_cidr_block
   from_port      = 1024
   to_port        = 65535
 }
