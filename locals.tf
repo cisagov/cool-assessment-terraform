@@ -20,6 +20,16 @@ locals {
   # as assume role session names.
   caller_user_name = split("/", data.aws_caller_identity.current.arn)[1]
 
+  # Helpful lists for defining ACL and security group rules
+  ingress_and_egress = [
+    "ingress",
+    "egress",
+  ]
+  tcp_and_udp = [
+    "tcp",
+    "udp",
+  ]
+
   # The ID of the Transit Gateway in the Shared Services account
   transit_gateway_id = data.terraform_remote_state.sharedservices_networking.outputs.transit_gateway.id
 
