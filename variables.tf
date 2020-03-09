@@ -52,6 +52,22 @@ variable "cool_domain" {
   default     = "cool.cyber.dhs.gov"
 }
 
+# TODO: Generalize a way to automatically setup multiple Guac connections
+variable "guac_connection_name" {
+  description = "The desired name of the Guacamole connection to the TBD instance"
+  default     = "TBD"
+}
+
+variable "guac_connection_setup_filename" {
+  description = "The name of the file to create on the Guacamole instance containing SQL instructions to populate any desired Guacamole connections.  NOTE: Postgres processes these files alphabetically, so it's important to name this file so it runs after the file that defines the Guacamole tables and users (\"00_initdb.sql\")."
+  default     = "01_setup_guac_connections.sql"
+}
+
+variable "guac_connection_setup_path" {
+  description = "The full path to the dbinit directory where <guac_connection_setup_filename> must be stored in order to work properly. (e.g. \"/var/guacamole/dbinit\")"
+  default     = "/var/guacamole/dbinit"
+}
+
 variable "operations_subnet_inbound_tcp_ports_allowed" {
   description = "The list of TCP ports allowed inbound (from anywhere) to the operations subnet (e.g. [\"80\", \"443\"])."
   default     = ["80", "443"]
