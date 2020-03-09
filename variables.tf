@@ -73,6 +73,21 @@ variable "provisionassessment_policy_name" {
   default     = "ProvisionAssessment"
 }
 
+variable "ssm_key_vnc_password" {
+  description = "The AWS SSM Parameter Store parameter that contains the password needed to connect to the TBD instance via VNC (e.g. \"/vnc/password\")"
+  default     = "/vnc/password"
+}
+
+variable "ssm_key_vnc_username" {
+  description = "The AWS SSM Parameter Store parameter that contains the username of the VNC user on the TBD instance (e.g. \"/vnc/username\")"
+  default     = "/vnc/username"
+}
+
+variable "ssm_key_vnc_user_private_ssh_key" {
+  description = "The AWS SSM Parameter Store parameter that contains the private SSH key of the VNC user on the TBD instance (e.g. \"/vnc/ssh_private_key\")"
+  default     = "/vnc/ssh_private_key"
+}
+
 variable "tags" {
   type        = map(string)
   description = "Tags to apply to all AWS resources created"
