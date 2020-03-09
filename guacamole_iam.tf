@@ -52,13 +52,15 @@ data "aws_iam_policy_document" "guacamole_assume_role_policy_doc" {
   }
 }
 
-# TODO: When adding assessment instances (e.g. Kali), add ARN allowed to
-# read VNC creds from SSM Parameter Store to "resources" below
+# Allow the Guacamole instance to assume the necessary roles:
+#  - To read the Guacamole certificates from an S3 bucket
+#  - To read the VNC-related data from the SSM Parameter Store
 data "aws_iam_policy_document" "guacamole_assume_delegated_role_policy_doc" {
   statement {
     actions = ["sts:AssumeRole"]
     resources = [
-      "${module.guacamole_certreadrole.role.arn}"
+      module.guacamole_certreadrole.role.arn,
+      aws_iam_role.vnc_parameterstorereadonly_role.arn
     ]
     effect = "Allow"
   }
