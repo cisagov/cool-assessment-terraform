@@ -35,6 +35,12 @@ locals {
 
   guacamole_fqdn = format("guac.%s.%s", var.assessment_account_name, var.cool_domain)
 
+  # Find the Images account by name.
+  images_account_id = [
+    for x in data.aws_organizations_organization.cool.accounts :
+    x.id if x.name == "Images"
+  ][0]
+
   # Helpful lists for defining ACL and security group rules
   ingress_and_egress = [
     "ingress",
@@ -53,4 +59,11 @@ locals {
     for x in data.aws_organizations_organization.cool.accounts :
     x.id if x.name == "Users" && length(regexall("2020", x.email)) > 0
   ][0]
+
+  # The name and description of the role and policy that allows read-only
+  # access to the VNC-related SSM Parameter Store parameters in the
+  # Images account.
+  vnc_parameterstorereadonly_role_description = format("Allows read-only access to VNC-related SSM Parameter Store parameters required for the %s assessment.", var.assessment_account_name)
+
+  vnc_parameterstorereadonly_role_name = format("ParameterStoreReadOnly-%s-VNC", var.assessment_account_name)
 }
