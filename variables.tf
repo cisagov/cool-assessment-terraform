@@ -100,8 +100,8 @@ variable "ssm_key_vnc_username" {
 }
 
 variable "ssm_key_vnc_user_private_ssh_key" {
-  description = "The AWS SSM Parameter Store parameter that contains the private SSH key of the VNC user on the TBD instance (e.g. \"/vnc/ssh_private_key\")"
-  default     = "/vnc/ssh_private_key"
+  description = "The AWS SSM Parameter Store parameter that contains the private SSH key of the VNC user on the TBD instance (e.g. \"/vnc/ssh/rsa_private_key\")"
+  default     = "/vnc/ssh/rsa_private_key"
 }
 
 variable "tags" {
