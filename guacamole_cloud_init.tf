@@ -4,7 +4,13 @@ data "template_cloudinit_config" "guacamole_cloud_init_tasks" {
   gzip          = true
   base64_encode = true
 
+  # Note: The filename parameters in each part below are only used to name the
+  # mime-parts of the user-data.  It does not affect the final name for the
+  # templates. For the x-shellscript parts, it will also be used as a filename
+  # in the scripts directory.
+
   part {
+    filename     = "install-certificates.py"
     content_type = "text/x-shellscript"
     content = templatefile(
       "${path.module}/cloud-init/install-certificates.py", {
@@ -28,6 +34,7 @@ data "template_cloudinit_config" "guacamole_cloud_init_tasks" {
 
   # TODO: Make this more generalized and able to support a variety of connections
   part {
+    filename     = "render-guac-connection-sql-template.py"
     content_type = "text/x-shellscript"
     content = templatefile(
       "${path.module}/cloud-init/render-guac-connection-sql-template.py", {
