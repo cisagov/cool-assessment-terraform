@@ -33,6 +33,21 @@ data "terraform_remote_state" "dynamic_assessment" {
   workspace = var.assessment_account_name
 }
 
+data "terraform_remote_state" "images" {
+  backend = "s3"
+
+  config = {
+    encrypt        = true
+    bucket         = "cisa-cool-terraform-state"
+    dynamodb_table = "terraform-state-lock"
+    profile        = "cool-terraform-backend"
+    region         = "us-east-1"
+    key            = "cool-accounts/images.tfstate"
+  }
+
+  workspace = "production"
+}
+
 data "terraform_remote_state" "images_parameterstore" {
   backend = "s3"
 
