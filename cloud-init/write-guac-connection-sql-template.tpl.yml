@@ -1,0 +1,73 @@
+---
+# Write template file that will be processed later by python (pystache)
+# Variables starting with <dollar-sign><left-curly-brace> will be replaced
+#  by terraform before cloud-init writes this file to the Guacamole instance
+# Variables starting with <left-curly-brace><left-curly-brace> will be
+#  replaced by pystache when cloud-init runs
+#  render-guac-connection-template-sql.py
+write_files:
+  - path: "${sql_template_fullpath}"
+    permissions: "0644"
+    owner: root:root
+    content: |
+      --
+      -- Create connection for instance
+      --
+
+      INSERT INTO guacamole_connection (
+        connection_name, protocol, max_connections, max_connections_per_user,
+        proxy_port, proxy_hostname, proxy_encryption_method)
+      VALUES (
+        '${guac_connection_name}', 'vnc', 10, 10, 4822,
+        'guacd', 'NONE');
+
+      --
+      -- Set up connection details
+      --
+
+      INSERT INTO guacamole_connection_parameter (
+        connection_id, parameter_name, parameter_value)
+      SELECT connection_id, 'cursor', 'local'
+      FROM guacamole_connection
+      WHERE connection_name = '${guac_connection_name}'
+        UNION ALL
+      SELECT
+        connection_id, 'sftp-directory', '/home/{{ vnc_username }}/Documents'
+      FROM guacamole_connection
+      WHERE connection_name = '${guac_connection_name}'
+        UNION ALL
+      SELECT connection_id, 'sftp-username', '{{ vnc_username }}'
+      FROM guacamole_connection
+      WHERE connection_name = '${guac_connection_name}'
+        UNION ALL
+      SELECT connection_id, 'sftp-private-key', '{{ vnc_user_private_ssh_key }}'
+      FROM guacamole_connection
+      WHERE connection_name = '${guac_connection_name}'
+        UNION ALL
+      SELECT connection_id, 'sftp-server-alive-interval', '60'
+      FROM guacamole_connection
+      WHERE connection_name = '${guac_connection_name}'
+        UNION ALL
+      SELECT connection_id, 'sftp-root-directory', '/home/{{ vnc_username }}/'
+      FROM guacamole_connection
+      WHERE connection_name = '${guac_connection_name}'
+        UNION ALL
+      SELECT connection_id, 'enable-sftp', 'true'
+      FROM guacamole_connection
+      WHERE connection_name = '${guac_connection_name}'
+        UNION ALL
+      SELECT connection_id, 'color-depth', '24'
+      FROM guacamole_connection
+      WHERE connection_name = '${guac_connection_name}'
+        UNION ALL
+      SELECT connection_id, 'hostname', 'TBD.${private_domain}'
+      FROM guacamole_connection
+      WHERE connection_name = '${guac_connection_name}'
+        UNION ALL
+      SELECT connection_id, 'password', '{{ vnc_password }}'
+      FROM guacamole_connection
+      WHERE connection_name = '${guac_connection_name}'
+        UNION ALL
+      SELECT connection_id, 'port', '5901'
+      FROM guacamole_connection
+      WHERE connection_name = '${guac_connection_name}';
