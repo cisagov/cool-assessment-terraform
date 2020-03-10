@@ -58,7 +58,7 @@ resource "aws_security_group_rule" "desktop_gw_ingress_from_trusted_via_port_844
 resource "aws_security_group_rule" "desktop_gw_egress_to_ops_via_vnc" {
   provider = aws.provisionassessment
 
-  security_group_id = aws_security_group.pca_desktop_gateway.id
+  security_group_id = aws_security_group.desktop_gateway.id
   type              = "egress"
   protocol          = "tcp"
   cidr_blocks       = [aws_subnet.operations.cidr_block]
