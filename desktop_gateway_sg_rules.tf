@@ -12,18 +12,18 @@ resource "aws_security_group_rule" "desktop_gw_ingress_from_cool_via_ssh" {
   to_port   = 22
 }
 
-# # Allow egress via ssh to the assessment operating instance(s)
-# # For: DevOps ssh access to assessment operating instance(s)
-# resource "aws_security_group_rule" "desktop_gw_egress_to_ops_via_ssh" {
-#   provider = aws.provisionassessment
-#
-#   security_group_id = aws_security_group.desktop_gateway.id
-#   type              = "egress"
-#   protocol          = "tcp"
-#   cidr_blocks       = ["${aws_instance.TBD.private_ip}/32"]
-#   from_port         = 22
-#   to_port           = 22
-# }
+# Allow egress via ssh to the Operations subnet
+# For: DevOps ssh access to assessment operating instances
+resource "aws_security_group_rule" "desktop_gw_egress_to_ops_via_ssh" {
+  provider = aws.provisionassessment
+
+  security_group_id = aws_security_group.desktop_gateway.id
+  type              = "egress"
+  protocol          = "tcp"
+  cidr_blocks       = [aws_subnet.operations.cidr_block]
+  from_port         = 22
+  to_port           = 22
+}
 
 # Allow egress via https to anywhere
 # For: Guacamole fetches its SSL certificate via boto3 (which uses HTTPS)
@@ -52,18 +52,19 @@ resource "aws_security_group_rule" "desktop_gw_ingress_from_trusted_via_port_844
   to_port   = 8443
 }
 
-# # Allow egress via VNC to the assessment operating instance(s)
-# # For: Assessment team VNC access to assessment operating instance(s)
-# resource "aws_security_group_rule" "desktop_gw_egress_to_ops_via_vnc" {
-#   provider = aws.provisionassessment
-#
-#   security_group_id = aws_security_group.pca_desktop_gateway.id
-#   type              = "egress"
-#   protocol          = "tcp"
-#   cidr_blocks       = ["${aws_instance.TBD.private_ip}/32"]
-#   from_port         = 5901
-#   to_port           = 5901
-# }
+# Allow egress via VNC to the Operations subnet
+# For: Assessment team VNC (via Guacamole) access to
+# assessment operating instances
+resource "aws_security_group_rule" "desktop_gw_egress_to_ops_via_vnc" {
+  provider = aws.provisionassessment
+
+  security_group_id = aws_security_group.pca_desktop_gateway.id
+  type              = "egress"
+  protocol          = "tcp"
+  cidr_blocks       = [aws_subnet.operations.cidr_block]
+  from_port         = 5901
+  to_port           = 5901
+}
 
 # Allow ingress from anywhere via ephemeral ports below 8443 (1024-8442)
 # We do not want to allow everyone to hit Guacamole on port 8443
