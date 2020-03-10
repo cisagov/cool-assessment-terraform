@@ -20,7 +20,7 @@ resource "aws_network_acl" "operations" {
   )
 }
 
-# ACLs for the private subnet of the VPC
+# ACLs for the private subnets of the VPC
 resource "aws_network_acl" "private" {
   provider = aws.provisionassessment
 
