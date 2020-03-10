@@ -8,6 +8,10 @@ variable "assessment_account_name" {
   description = "The name of the AWS account for this assessment (e.g. \"env0\")."
 }
 
+variable "operations_subnet_cidr_block" {
+  description = "The operations subnet CIDR block for this assessment (e.g. \"10.10.0.0/24\")."
+}
+
 variable "private_domain" {
   description = "The local domain to use for this assessment (e.g. \"env0\")."
 }
@@ -15,10 +19,6 @@ variable "private_domain" {
 variable "private_subnet_cidr_blocks" {
   description = "The list of private subnet CIDR blocks for this assessment (e.g. [\"10.10.1.0/24\", \"10.10.2.0/24\"])."
   type        = list(string)
-}
-
-variable "operations_subnet_cidr_block" {
-  description = "The operations subnet CIDR block for this assessment (e.g. \"10.10.0.0/24\")."
 }
 
 variable "vpc_cidr_block" {
