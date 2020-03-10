@@ -66,4 +66,28 @@ locals {
   vnc_parameterstorereadonly_role_description = format("Allows read-only access to VNC-related SSM Parameter Store parameters required for the %s assessment.", var.assessment_account_name)
 
   vnc_parameterstorereadonly_role_name = format("ParameterStoreReadOnly-%s-VNC", var.assessment_account_name)
+
+  # Calculate the VPN server CIDR block using the
+  # sharedservices_networking remote state
+  #
+  # Swiped from:
+  # https://github.com/cisagov/cool-sharedservices-openvpn/blob/improvement/update-for-cool-multiaccount/openvpn.tf#L12-L27
+  #
+  # OpenVPN currently only uses a single public subnet, so grab the
+  # CIDR of the one with the smallest third octet.
+  #
+  # It's tempting to just use keys()[0] here, but the keys are sorted
+  # lexicographically.  That means that "10.1.10.0/24" would come
+  # before "10.1.9.0/24".
+  cool_public_subnet_cidrs = keys(data.terraform_remote_state.sharedservices_networking.outputs.public_subnets)
+
+  cool_public_subnet_first_octet  = split(".", local.cool_public_subnet_cidrs[0])[0]
+  cool_public_subnet_second_octet = split(".", local.cool_public_subnet_cidrs[0])[1]
+  cool_public_subnet_third_octets = [for cidr in local.cool_public_subnet_cidrs : split(".", cidr)[2]]
+
+  # This flatten([]) shouldn't be necessary, but it is.  I think this
+  # is related to hashicorp/terraform#22404.
+  lowest_third_octet = min(flatten([local.cool_public_subnet_third_octets])...)
+
+  vpn_server_cidr_block = format("%d.%d.%d.0/24", local.cool_public_subnet_first_octet, local.cool_public_subnet_second_octet, local.lowest_third_octet)
 }

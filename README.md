@@ -17,7 +17,6 @@ Coming soon!
 | aws_availability_zone | The AWS availability zone to deploy into (e.g. a, b, c, etc.) | string | `a` | no |
 | aws_region | The AWS region to deploy into (e.g. us-east-1). | string | `us-east-1` | no |
 | cert_bucket_name | The name of the AWS S3 bucket where certificates are stored. | string | `cisa-cool-certificates` | no |
-| client_vpn_cidr_block | The CIDR block where VPN clients will originate from (e.g. "10.128.248.0/21"). | string | | yes |
 | cool_domain | The domain where the COOL resources reside (e.g. "cool.cyber.dhs.gov"). | string | `cool.cyber.dhs.gov` | no |
 | guac_connection_name | The desired name of the Guacamole connection to the TBD instance. | string | `TBD` | no |
 | guac_connection_setup_filename | The name of the file to create on the Guacamole instance containing SQL instructions to populate any desired Guacamole connections.  NOTE: Postgres processes these files alphabetically, so it's important to name this file so it runs after the file that defines the Guacamole tables and users ("00_initdb.sql"). | string | `01_setup_guac_connections.sql` | no |

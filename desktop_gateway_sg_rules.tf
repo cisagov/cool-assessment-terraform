@@ -1,4 +1,4 @@
-# Allow ingress from COOL Shared Services VPN client CIDR block via ssh
+# Allow ingress from COOL Shared Services VPN server CIDR block via ssh
 # For: DevOps ssh access to Guacamole instance
 resource "aws_security_group_rule" "desktop_gw_ingress_from_cool_via_ssh" {
   provider = aws.provisionassessment
@@ -6,7 +6,7 @@ resource "aws_security_group_rule" "desktop_gw_ingress_from_cool_via_ssh" {
   security_group_id = aws_security_group.desktop_gateway.id
   type              = "ingress"
   protocol          = "tcp"
-  cidr_blocks       = [var.client_vpn_cidr_block]
+  cidr_blocks       = [local.vpn_server_cidr_block]
   # ipv6_cidr_blocks  = TBD
   from_port = 22
   to_port   = 22
@@ -38,7 +38,7 @@ resource "aws_security_group_rule" "desktop_gw_egress_to_anywhere_via_https" {
   to_port           = 443
 }
 
-# Allow ingress from COOL Shared Services VPN client CIDR block
+# Allow ingress from COOL Shared Services VPN server CIDR block
 # via port 8443 (nginx/guacamole web)
 # For: Assessment team access to Guacamole web client
 resource "aws_security_group_rule" "desktop_gw_ingress_from_trusted_via_port_8443" {
@@ -47,7 +47,7 @@ resource "aws_security_group_rule" "desktop_gw_ingress_from_trusted_via_port_844
   security_group_id = aws_security_group.desktop_gateway.id
   type              = "ingress"
   protocol          = "tcp"
-  cidr_blocks       = [var.client_vpn_cidr_block]
+  cidr_blocks       = [local.vpn_server_cidr_block]
   # ipv6_cidr_blocks  = TBD
   from_port = 8443
   to_port   = 8443
