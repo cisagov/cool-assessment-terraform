@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------------------
-# Create an IAM policy document that allows the EC2 instances in the
-# assessment account to assume a role.
+# Create an IAM policy document that allows EC2 instances
+# to assume the role this policy is attached to.
 # ------------------------------------------------------------------------------
 
 data "aws_iam_policy_document" "vnc_assume_role_doc" {
@@ -13,19 +13,6 @@ data "aws_iam_policy_document" "vnc_assume_role_doc" {
       type = "Service"
       identifiers = [
         "ec2.amazonaws.com",
-      ]
-    }
-  }
-
-  statement {
-    actions = [
-      "sts:AssumeRole",
-    ]
-
-    principals {
-      type = "AWS"
-      identifiers = [
-        "arn:aws:iam::${local.assessment_account_id}:root",
       ]
     }
   }
