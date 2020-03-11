@@ -60,6 +60,12 @@ variable "cool_domain" {
   default     = "cool.cyber.dhs.gov"
 }
 
+variable "dns_ttl" {
+  type        = number
+  description = "The TTL value to use for Route53 DNS records (e.g. 86400).  A smaller value may be useful when the DNS records are changing often, for example when testing."
+  default     = 60
+}
+
 # TODO: Generalize a way to automatically setup multiple Guac connections
 variable "guac_connection_name" {
   type        = string
