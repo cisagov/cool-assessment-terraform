@@ -78,6 +78,21 @@ data "terraform_remote_state" "master" {
   workspace = "production"
 }
 
+data "terraform_remote_state" "sharedservices" {
+  backend = "s3"
+
+  config = {
+    encrypt        = true
+    bucket         = "cisa-cool-terraform-state"
+    dynamodb_table = "terraform-state-lock"
+    profile        = "cool-terraform-backend"
+    region         = "us-east-1"
+    key            = "cool-accounts/shared_services.tfstate"
+  }
+
+  workspace = "production"
+}
+
 data "terraform_remote_state" "sharedservices_networking" {
   backend = "s3"
 
