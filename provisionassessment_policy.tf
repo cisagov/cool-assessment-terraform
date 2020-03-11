@@ -76,6 +76,17 @@ data "aws_iam_policy_document" "provisionassessment_policy_doc" {
       data.terraform_remote_state.images.outputs.ami_kms_key.arn
     ]
   }
+
+  statement {
+    actions = [
+      "route53:AssociateVPCWithHostedZone",
+      "route53:DisassociateVPCFromHostedZone",
+    ]
+
+    resources = [
+      "arn:aws:route53:::hostedzone/${local.cool_dns_private_zone.zone_id}"
+    ]
+  }
 }
 
 resource "aws_iam_policy" "provisionassessment_policy" {

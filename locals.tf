@@ -31,6 +31,8 @@ locals {
   # as assume role session names.
   caller_user_name = split("/", data.aws_caller_identity.current.arn)[1]
 
+  cool_dns_private_zone = data.terraform_remote_state.sharedservices_networking.outputs.private_zone
+
   cool_shared_services_cidr_block = data.terraform_remote_state.sharedservices_networking.outputs.vpc.cidr_block
 
   guacamole_fqdn = format("guac.%s.%s", var.assessment_account_name, var.cool_domain)
