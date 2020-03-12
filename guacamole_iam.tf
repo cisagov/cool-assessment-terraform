@@ -38,7 +38,7 @@ resource "aws_iam_role_policy" "guacamole_assume_delegated_role_policy" {
 }
 
 # Attach the CloudWatch Agent policy to this role as well
-resource "aws_iam_role_policy_attachment" "cloudwatch_agent_policy_attachment" {
+resource "aws_iam_role_policy_attachment" "cloudwatch_agent_policy_attachment_guacamole" {
   provider = aws.provisionassessment
 
   role       = aws_iam_role.guacamole_instance_role.id
