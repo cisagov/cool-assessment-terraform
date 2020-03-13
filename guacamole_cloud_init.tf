@@ -39,7 +39,7 @@ data "template_cloudinit_config" "guacamole_cloud_init_tasks" {
   # important to name guac_connection_setup_filename so it runs after the
   # file that defines the Guacamole tables and users ("00_initdb.sql").
   part {
-    filename     = "render-guac-connection-sql-template.py"
+    filename     = "render-kali-guac-connection-sql-template.py"
     content_type = "text/x-shellscript"
     content = templatefile(
       "${path.module}/cloud-init/render-guac-connection-sql-template.py", {
