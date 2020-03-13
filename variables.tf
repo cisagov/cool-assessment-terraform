@@ -68,7 +68,7 @@ variable "dns_ttl" {
 
 variable "guac_connection_setup_path" {
   type        = string
-  description = "The full path to the dbinit directory where <guac_connection_setup_filename> must be stored in order to work properly. (e.g. \"/var/guacamole/dbinit\")"
+  description = "The full path to the dbinit directory where initialization files must be stored in order to work properly. (e.g. \"/var/guacamole/dbinit\")"
   default     = "/var/guacamole/dbinit"
 }
 
