@@ -18,8 +18,6 @@ Coming soon!
 | aws_region | The AWS region to deploy into (e.g. us-east-1). | string | `us-east-1` | no |
 | cert_bucket_name | The name of the AWS S3 bucket where certificates are stored. | string | `cisa-cool-certificates` | no |
 | cool_domain | The domain where the COOL resources reside (e.g. "cool.cyber.dhs.gov"). | string | `cool.cyber.dhs.gov` | no |
-| guac_connection_name | The desired name of the Guacamole connection to the TBD instance. | string | `TBD` | no |
-| guac_connection_setup_filename | The name of the file to create on the Guacamole instance containing SQL instructions to populate any desired Guacamole connections.  NOTE: Postgres processes these files alphabetically, so it's important to name this file so it runs after the file that defines the Guacamole tables and users ("00_initdb.sql"). | string | `01_setup_guac_connections.sql` | no |
 | guac_connection_setup_path | The full path to the dbinit directory where <guac_connection_setup_filename> must be stored in order to work properly (e.g. "/var/guacamole/dbinit"). | string | `/var/guacamole/dbinit` | no |
 | operations_subnet_cidr_block | The operations subnet CIDR block for this assessment (e.g. "10.10.0.0/24"). | string | | yes |
 | operations_subnet_inbound_tcp_ports_allowed | The list of TCP ports allowed inbound (from anywhere) to the operations subnet (e.g. ["80", "443"]). | list(string) | `["80", "443"]` | no |

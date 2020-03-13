@@ -66,19 +66,6 @@ variable "dns_ttl" {
   default     = 60
 }
 
-# TODO: Generalize a way to automatically setup multiple Guac connections
-variable "guac_connection_name" {
-  type        = string
-  description = "The desired name of the Guacamole connection to the TBD instance"
-  default     = "TBD"
-}
-
-variable "guac_connection_setup_filename" {
-  type        = string
-  description = "The name of the file to create on the Guacamole instance containing SQL instructions to populate any desired Guacamole connections.  NOTE: Postgres processes these files alphabetically, so it's important to name this file so it runs after the file that defines the Guacamole tables and users (\"00_initdb.sql\")."
-  default     = "01_setup_guac_connections.sql"
-}
-
 variable "guac_connection_setup_path" {
   type        = string
   description = "The full path to the dbinit directory where <guac_connection_setup_filename> must be stored in order to work properly. (e.g. \"/var/guacamole/dbinit\")"
