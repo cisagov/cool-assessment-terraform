@@ -14,6 +14,9 @@ import boto3
 import pystache
 
 SQL_TEMPLATE = "${sql_template_fullpath}"
+# NOTE: Postgres processes initialization files alphabetically, so it's
+# important to name this file so it runs after the file that defines the
+# Guacamole tables and users ("00_initdb.sql").
 SQL_OUTPUT_FILE = "${guac_connection_setup_path}/${guac_connection_setup_filename}"
 
 # Inputs from terraform
