@@ -28,3 +28,10 @@ resource "aws_ec2_transit_gateway_route_table_association" "association" {
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.assessment.id
   transit_gateway_route_table_id = local.transit_gateway_route_table_id
 }
+
+# Add a route to the assessment VPC.
+resource "aws_ec2_transit_gateway_route" "assessment_route" {
+  destination_cidr_block         = aws_vpc.assessment.cidr_block
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.assessment.id
+  transit_gateway_route_table_id = local.transit_gateway_route_table_id
+}
