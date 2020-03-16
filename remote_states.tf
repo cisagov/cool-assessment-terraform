@@ -27,7 +27,7 @@ data "terraform_remote_state" "dynamic_assessment" {
     dynamodb_table = "terraform-state-lock"
     profile        = "cool-terraform-backend"
     region         = "us-east-1"
-    key            = "cool-accounts/${var.assessment_account_name}.tfstate"
+    key            = "cool-accounts/dynamic.tfstate"
   }
 
   workspace = var.assessment_account_name
