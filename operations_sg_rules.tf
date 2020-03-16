@@ -72,7 +72,7 @@ resource "aws_security_group_rule" "operations_ingress_from_anywhere_via_ports_3
 # Allow ingress from anywhere via ephemeral TCP/UDP ports above 5901 (5902-65535)
 # For: Assessment team operational use, but don't want to allow
 #      public access to VNC on port 5901
-resource "aws_security_group_rule" "operations_ingress_from_anywhere_via_ports_5901_thru_65535" {
+resource "aws_security_group_rule" "operations_ingress_from_anywhere_via_ports_5902_thru_65535" {
   provider = aws.provisionassessment
   for_each = toset(local.tcp_and_udp)
 
@@ -80,7 +80,7 @@ resource "aws_security_group_rule" "operations_ingress_from_anywhere_via_ports_5
   type              = "ingress"
   protocol          = each.value
   cidr_blocks       = ["0.0.0.0/0"]
-  from_port         = 5901
+  from_port         = 5902
   to_port           = 65535
 }
 
