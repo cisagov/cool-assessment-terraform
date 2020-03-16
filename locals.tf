@@ -55,6 +55,9 @@ locals {
 
   # The ID of the Transit Gateway in the Shared Services account
   transit_gateway_id = data.terraform_remote_state.sharedservices_networking.outputs.transit_gateway.id
+  # The ID of the route table to be associated with the Transit
+  # Gateway attachment for this account.
+  transit_gateway_route_table_id = data.terraform_remote_state.sharedservices_networking.outputs.transit_gateway_attachment_route_tables[local.assessment_account_id]
 
   # Find the new Users account by name and email.
   users_account_id = [
