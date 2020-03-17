@@ -37,7 +37,7 @@ Coming soon!
 
 | Name | Description |
 |------|-------------|
-| TBD | TBD |
+| remote_desktop_url | The URL of the remote desktop gateway (Guacamole) for this assessment. |
 
 ## Contributing ##
 
