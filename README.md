@@ -5,9 +5,62 @@
 This project is used to create an operational assessment environment in
 the COOL environment.
 
+## Pre-requisites ##
+
+- [Terraform](https://www.terraform.io/) installed on your system.
+- An accessible AWS S3 bucket to store Terraform state
+  (specified [here](backend.tf)).
+- An accessible AWS DynamoDB database to store the Terraform state lock
+  (specified [here](backend.tf)).
+- Access to all of the Terraform remote states specified in
+  [the remote states file](remote_states.tf).
+- Accept the terms for any AWS Marketplace subscriptions to be used by the
+  operations instances in your assessment environment (must be done in
+  the AWS account hosting the assessment environment):
+  - [Kali Linux](https://console.aws.amazon.com/marketplace/home?#/subscriptions/U1VCU0NSSVBUSU9OQEBAOGI3ZmRmZTMtOGNkNS00M2NjLThlNWUtNGUwZTdmNDEzOWQ1)
+- Access to AWS AMIs for [Guacamole](https://github.com/cisagov/guacamole-packer)
+  and any other operations instance types used in your assessment.
+- OpenSSL server certificate and private key for the Guacamole instance
+  in your assessment environment, stored in an accessible AWS S3 bucket;
+  this can be easily created via
+  [certboto-docker](https://github.com/cisagov/certboto-docker)
+  or a similar tool.
+- A Terraform [variables](variables.tf) file customized for your
+  assessment environment, for example:
+
+  ```console
+  assessment_account_name = "env0"
+  private_domain          = "env0"
+
+  vpc_cidr_block               = "10.224.0.0/21"
+  operations_subnet_cidr_block = "10.224.0.0/24"
+  private_subnet_cidr_blocks   = ["10.224.1.0/24", "10.224.2.0/24"]
+
+  tags = {
+    Team        = "VM Fusion - Development"
+    Application = "COOL - env0 Account"
+    Workspace   = "env0"
+  }
+  ```
+
 ## Building the Terraform-based infrastructure ##
 
-Coming soon!
+1. Create a Terraform workspace (if you haven't already done so) for
+   your assessment by running `terraform workspace new <workspace_name>`.
+1. Create a `<workspace_name>.tfvars` file with all of the required
+   variables (see [Inputs](#Inputs) below for details).
+1. Run the command `terraform init`.
+1. Add all necessary permissions by running the command:
+
+   ```console
+   terraform apply -var-file=<workspace_name>.tfvars --target=aws_iam_policy.provisionassessment_policy --target=aws_iam_role_policy_attachment.provisionassessment_policy_attachment
+   ```
+
+1. Create all remaining Terraform infrastructure by running the command:
+
+   ```console
+   terraform apply -var-file=<workspace_name>.tfvars
+   ```
 
 ## Inputs ##
 
