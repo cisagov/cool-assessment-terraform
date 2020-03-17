@@ -81,6 +81,9 @@ resource "aws_network_acl_rule" "private_egress_to_operations_via_ssh" {
 # Allow ingress from operations subnet via ephemeral ports
 # For: DevOps ssh access from private subnet to operations subnet and
 #      Assessment team VNC access from private subnet to operations subnet
+#
+# Note that this also covers ingress from the operations subnet via
+# TCP port 2049 for EFS.
 resource "aws_network_acl_rule" "private_ingress_from_operations_via_ephemeral_ports" {
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
@@ -95,9 +98,12 @@ resource "aws_network_acl_rule" "private_ingress_from_operations_via_ephemeral_p
   to_port        = 65535
 }
 
-# Allow ingress from anywhere via ephemeral ports
-# For: Guacamole fetches its SSL certificate via boto3 (which uses HTTPS)
-resource "aws_network_acl_rule" "private_ingress_from_anywhere_via_ephemeral_ports" {
+# Allow ingress from anywhere via ephemeral ports, modulo port 2049
+# which is used for EFS.
+#
+# For: Guacamole fetches its SSL certificate via boto3 (which uses
+# HTTPS)
+resource "aws_network_acl_rule" "private_ingress_from_anywhere_via_ephemeral_ports_1" {
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
 
@@ -108,6 +114,19 @@ resource "aws_network_acl_rule" "private_ingress_from_anywhere_via_ephemeral_por
   rule_action    = "allow"
   cidr_block     = "0.0.0.0/0"
   from_port      = 1024
+  to_port        = 2048
+}
+resource "aws_network_acl_rule" "private_ingress_from_anywhere_via_ephemeral_ports_2" {
+  provider = aws.provisionassessment
+  for_each = toset(var.private_subnet_cidr_blocks)
+
+  network_acl_id = aws_network_acl.private[each.value].id
+  egress         = false
+  protocol       = "tcp"
+  rule_number    = 120 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_action    = "allow"
+  cidr_block     = "0.0.0.0/0"
+  from_port      = 2050
   to_port        = 65535
 }
 
