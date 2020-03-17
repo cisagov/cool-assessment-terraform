@@ -19,6 +19,7 @@ Coming soon!
 | cert_bucket_name | The name of the AWS S3 bucket where certificates are stored. | string | `cisa-cool-certificates` | no |
 | cool_domain | The domain where the COOL resources reside (e.g. "cool.cyber.dhs.gov"). | string | `cool.cyber.dhs.gov` | no |
 | guac_connection_setup_path | The full path to the dbinit directory where initialization files must be stored in order to work properly (e.g. "/var/guacamole/dbinit"). | string | `/var/guacamole/dbinit` | no |
+| operations_instance_counts | A map specifying how many instances of each type should be created in the operations subnet (e.g. {\ "kali\": 1 }). | map(number) | `{ "kali": 1 }` | no |
 | operations_subnet_cidr_block | The operations subnet CIDR block for this assessment (e.g. "10.10.0.0/24"). | string | | yes |
 | operations_subnet_inbound_tcp_ports_allowed | The list of TCP ports allowed inbound (from anywhere) to the operations subnet (e.g. ["80", "443"]). | list(string) | `["80", "443"]` | no |
 | private_domain | The local domain to use for this assessment (e.g. "env0"). | string | | yes |

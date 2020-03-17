@@ -72,6 +72,12 @@ variable "guac_connection_setup_path" {
   default     = "/var/guacamole/dbinit"
 }
 
+variable "operations_instance_counts" {
+  type        = map(number)
+  description = "A map specifying how many instances of each type should be created in the operations subnet (e.g. { \"kali\": 1 })."
+  default     = { "kali" : 1 }
+}
+
 variable "operations_subnet_inbound_tcp_ports_allowed" {
   type        = list(string)
   description = "The list of TCP ports allowed inbound (from anywhere) to the operations subnet (e.g. [\"80\", \"443\"])."
