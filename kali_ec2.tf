@@ -45,6 +45,7 @@ resource "aws_instance" "kali" {
   # user_data_base64 = data.template_cloudinit_config.kali_cloud_init_tasks.rendered
 
   vpc_security_group_ids = [
+    aws_security_group.efs_client.id,
     aws_security_group.operations.id,
   ]
 
