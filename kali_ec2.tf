@@ -41,8 +41,7 @@ resource "aws_instance" "kali" {
     delete_on_termination = true
   }
 
-  # Not needed until we add in cloud-init tasks (e.g. disk setup)
-  # user_data_base64 = data.template_cloudinit_config.kali_cloud_init_tasks.rendered
+  user_data_base64 = data.template_cloudinit_config.kali_cloud_init_tasks.rendered
 
   vpc_security_group_ids = [
     aws_security_group.efs_client.id,
