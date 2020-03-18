@@ -33,6 +33,15 @@ resource "aws_iam_role_policy_attachment" "cloudwatch_agent_policy_attachment_ka
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
 }
 
+# Attach a policy that allows the Kali instances to mount and write to
+# the EFS
+resource "aws_iam_role_policy_attachment" "efs_mount_policy_attachment_kali" {
+  provider = aws.provisionassessment
+
+  role       = aws_iam_role.kali_instance_role.id
+  policy_arn = aws_iam_policy.kali_efs_mount_policy.arn
+}
+
 ################################
 # Define the role policies below
 ################################
@@ -46,6 +55,27 @@ data "aws_iam_policy_document" "kali_assume_role_policy_doc" {
     }
     effect = "Allow"
   }
+}
+
+# The policy doc that allows the Kali instances to mount and write to
+# the EFS
+data "aws_iam_policy_document" "kali_efs_mount_policy_doc" {
+  statement {
+    actions = [
+      "elasticfilesystem:ClientMount",
+      "elasticfilesystem:ClientRootAccess",
+      "elasticfilesystem:ClientWrite"
+    ]
+    effect = "Allow"
+    resources = [
+      aws_efs_mount_target.target.file_system_id
+    ]
+  }
+}
+resource "aws_iam_policy" "kali_efs_mount_policy" {
+  provider = aws.provisionassessment
+
+  policy = data.aws_iam_policy_document.kali_efs_mount_policy_doc.json
 }
 
 # TODO: Determine if needed:
