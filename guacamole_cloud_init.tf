@@ -27,8 +27,6 @@ data "template_cloudinit_config" "guacamole_cloud_init_tasks" {
     content_type = "text/cloud-config"
     content = templatefile(
       "${path.module}/cloud-init/write-guac-connection-sql-template.tpl.yml", {
-        instance_hostname     = "kali0"
-        private_domain        = var.private_domain
         sql_template_fullpath = "/root/kali_guacamole_connection_template.sql"
     })
   }
@@ -44,8 +42,9 @@ data "template_cloudinit_config" "guacamole_cloud_init_tasks" {
     content = templatefile(
       "${path.module}/cloud-init/render-guac-connection-sql-template.py", {
         aws_region                       = var.aws_region
-        guac_connection_setup_filename   = "01_setup_kali_guac_connection.sql"
+        guac_connection_setup_filename   = "01_setup_guac_connections"
         guac_connection_setup_path       = var.guac_connection_setup_path
+        instance_hostnames               = join(",", aws_route53_record.kali_A[*].name)
         ssm_vnc_read_role_arn            = aws_iam_role.vnc_parameterstorereadonly_role.arn
         ssm_key_vnc_password             = var.ssm_key_vnc_password
         ssm_key_vnc_user                 = var.ssm_key_vnc_username
