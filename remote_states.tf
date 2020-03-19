@@ -15,7 +15,7 @@ data "terraform_remote_state" "dns_certboto" {
     key            = "cool-dns-certboto/terraform.tfstate"
   }
 
-  workspace = "production"
+  workspace = terraform.workspace
 }
 
 data "terraform_remote_state" "dynamic_assessment" {
@@ -45,7 +45,7 @@ data "terraform_remote_state" "images" {
     key            = "cool-accounts/images.tfstate"
   }
 
-  workspace = "production"
+  workspace = terraform.workspace
 }
 
 data "terraform_remote_state" "images_parameterstore" {
@@ -60,7 +60,7 @@ data "terraform_remote_state" "images_parameterstore" {
     key            = "cool-images-parameterstore/terraform.tfstate"
   }
 
-  workspace = "production"
+  workspace = terraform.workspace
 }
 
 data "terraform_remote_state" "master" {
@@ -75,7 +75,7 @@ data "terraform_remote_state" "master" {
     key            = "cool-accounts/master.tfstate"
   }
 
-  workspace = "production"
+  workspace = terraform.workspace
 }
 
 data "terraform_remote_state" "sharedservices" {
@@ -90,7 +90,7 @@ data "terraform_remote_state" "sharedservices" {
     key            = "cool-accounts/shared_services.tfstate"
   }
 
-  workspace = "production"
+  workspace = terraform.workspace
 }
 
 data "terraform_remote_state" "sharedservices_networking" {
@@ -105,5 +105,5 @@ data "terraform_remote_state" "sharedservices_networking" {
     key            = "cool-sharedservices-networking/terraform.tfstate"
   }
 
-  workspace = "production"
+  workspace = terraform.workspace
 }
