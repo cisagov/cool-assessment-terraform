@@ -44,6 +44,9 @@ data "terraform_remote_state" "dynamic_assessment" {
     key            = "cool-accounts/dynamic.tfstate"
   }
 
+  # Note that this workspace is different from all the others.  For
+  # the others we want production, staging, etc.  Here, though, we
+  # want (for example) env0, (for production), env0-staging, etc.
   workspace = local.workspace_name
 }
 
