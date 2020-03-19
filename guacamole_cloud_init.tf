@@ -34,6 +34,10 @@ data "template_cloudinit_config" "guacamole_cloud_init_tasks" {
   # NOTE: Postgres processes initialization files alphabetically, so it's
   # important to name guac_connection_setup_filename so it runs after the
   # file that defines the Guacamole tables and users ("00_initdb.sql").
+  # NOTE: Terraform's templatefile() function complains when I pass in a
+  # list input, so I convert the list of instance hostnames below to a
+  # comma-separated list of strings.  I tried to find a way to avoid
+  # doing this, but was unsuccessful.
   part {
     filename     = "render-kali-guac-connection-sql-template.py"
     content_type = "text/x-shellscript"
