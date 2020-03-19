@@ -20,7 +20,6 @@ data "template_cloudinit_config" "guacamole_cloud_init_tasks" {
     })
   }
 
-  # TODO: Make this more generalized and able to support a variety of connections
   # Set up Guacamole connection to Kali instance
   part {
     filename     = "write-kali-guac-connection-sql-template.yml"
@@ -31,7 +30,6 @@ data "template_cloudinit_config" "guacamole_cloud_init_tasks" {
     })
   }
 
-  # TODO: Make this more generalized and able to support a variety of connections
   # Set up Guacamole connection to Kali instance
   # NOTE: Postgres processes initialization files alphabetically, so it's
   # important to name guac_connection_setup_filename so it runs after the
