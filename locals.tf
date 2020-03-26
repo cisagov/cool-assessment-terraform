@@ -54,6 +54,8 @@ locals {
   # The Terraform workspace name for this assessment
   assessment_workspace_name = replace(replace(lower(var.assessment_account_name), "/[()]/", ""), " ", "-")
 
+  # Note that we are assuming that the assessment account name does
+  # not contain a space character.
   assessment_account_name_base = split(" ", var.assessment_account_name)[0]
 
   # Determine the ID of the corresponding Images account
