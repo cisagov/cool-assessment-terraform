@@ -47,7 +47,7 @@ locals {
   # Determine assessment account type based on account name.
   #
   # The account name format is "ACCOUNT_NAME (ACCOUNT_TYPE)" - for
-  # example, "Shared Services (Production)".
+  # example, "env0 (Production)".
   assessment_account_type = length(regexall("\\(([^()]*)\\)", local.assessment_account_name)) == 1 ? regex("\\(([^()]*)\\)", local.assessment_account_name)[0] : "Unknown"
   workspace_type          = lower(local.assessment_account_type)
 
