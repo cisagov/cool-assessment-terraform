@@ -37,10 +37,30 @@ locals {
 
   guacamole_fqdn = format("guac.%s.%s", local.assessment_account_name_base, var.cool_domain)
 
-  # Find the Images account by name.
+  # Look up assessment account name from AWS organizations provider
+  assessment_account_name = [
+    for account in data.aws_organizations_organization.cool.accounts :
+    account.name
+    if account.id == local.assessment_account_id
+  ][0]
+
+  # Determine assessment account type based on account name.
+  #
+  # The account name format is "ACCOUNT_NAME (ACCOUNT_TYPE)" - for
+  # example, "Shared Services (Production)".
+  assessment_account_type = length(regexall("\\(([^()]*)\\)", local.assessment_account_name)) == 1 ? regex("\\(([^()]*)\\)", local.assessment_account_name)[0] : "Unknown"
+  workspace_type          = lower(local.assessment_account_type)
+
+  # The Terraform workspace name for this assessment
+  assessment_workspace_name = replace(replace(lower(var.assessment_account_name), "/[()]/", ""), " ", "-")
+
+  assessment_account_name_base = split(" ", var.assessment_account_name)[0]
+
+  # Determine the ID of the corresponding Images account
   images_account_id = [
-    for x in data.aws_organizations_organization.cool.accounts :
-    x.id if x.name == "Images"
+    for account in data.aws_organizations_organization.cool.accounts :
+    account.id
+    if account.name == "Images (${local.assessment_account_type})"
   ][0]
 
   # Helpful lists for defining ACL and security group rules
