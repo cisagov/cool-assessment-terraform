@@ -4,7 +4,6 @@
 # for this configuration.
 # ------------------------------------------------------------------------------
 
-
 data "terraform_remote_state" "dns_certboto" {
   backend = "s3"
 
