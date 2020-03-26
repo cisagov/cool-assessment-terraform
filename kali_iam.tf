@@ -68,7 +68,9 @@ data "aws_iam_policy_document" "kali_efs_mount_policy_doc" {
     ]
     effect = "Allow"
     resources = [
-      aws_efs_mount_target.target.file_system_id
+      # Allow mounting of the EFS mount target in the first private
+      # subnet
+      aws_efs_mount_target.target[var.private_subnet_cidr_blocks[0]].file_system_arn
     ]
   }
 }
