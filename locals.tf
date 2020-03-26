@@ -35,7 +35,7 @@ locals {
 
   cool_shared_services_cidr_block = data.terraform_remote_state.sharedservices_networking.outputs.vpc.cidr_block
 
-  guacamole_fqdn = format("guac.%s.%s", var.assessment_account_name, var.cool_domain)
+  guacamole_fqdn = format("guac.%s.%s", local.assessment_account_name_base, var.cool_domain)
 
   # Find the Images account by name.
   images_account_id = [
@@ -57,7 +57,7 @@ locals {
   transit_gateway_id = data.terraform_remote_state.sharedservices_networking.outputs.transit_gateway.id
   # The ID of the route table to be associated with the Transit
   # Gateway attachment for this account.
-  transit_gateway_route_table_id = data.terraform_remote_state.sharedservices_networking.outputs.transit_gateway_attachment_route_tables[local.assessment_account_id]
+  transit_gateway_route_table_id = data.terraform_remote_state.sharedservices_networking.outputs.transit_gateway_attachment_route_tables[local.assessment_account_id].id
 
   # Find the new Users account by name and email.
   users_account_id = [
@@ -70,7 +70,7 @@ locals {
   # Images account.
   vnc_parameterstorereadonly_role_description = format("Allows read-only access to VNC-related SSM Parameter Store parameters required for the %s assessment.", var.assessment_account_name)
 
-  vnc_parameterstorereadonly_role_name = format("ParameterStoreReadOnly-%s-VNC", var.assessment_account_name)
+  vnc_parameterstorereadonly_role_name = format("ParameterStoreReadOnly-%s-VNC", local.assessment_workspace_name)
 
   # Calculate the VPN server CIDR block using the
   # sharedservices_networking remote state
