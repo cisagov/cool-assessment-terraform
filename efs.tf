@@ -11,13 +11,20 @@ resource "aws_efs_file_system" "persistent_storage" {
   )
 }
 
-# Mount points for EFS
+# Mount targets for EFS
 resource "aws_efs_mount_target" "target" {
   provider = aws.provisionassessment
-  for_each = toset([for subnet in aws_subnet.private : subnet.id])
+  # Right now the private subnets are not distributed across AZs, and
+  # there can only be a single mount target per EFS per AZ.  As a
+  # result, we need only create one, in the first private subnet
+  # block.  Once the private subnets are properly distributed we can
+  # put a mount target in each subnet.
+  #
+  # for_each = toset(var.private_subnet_cidr_blocks)
+  for_each = toset([var.private_subnet_cidr_blocks[0]])
 
   file_system_id  = aws_efs_file_system.persistent_storage.id
-  subnet_id       = each.key
+  subnet_id       = aws_subnet.private[each.value].id
   security_groups = [aws_security_group.efs_mount_target.id]
 }
 
