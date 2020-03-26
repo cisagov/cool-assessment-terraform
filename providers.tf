@@ -56,3 +56,14 @@ provider "aws" {
     session_name = local.caller_user_name
   }
 }
+
+# The provider used to manipulate Transit Gateway route tables inside
+# the Shared Services account
+provider "aws" {
+  alias  = "provisionsharedservices"
+  region = var.aws_region
+  assume_role {
+    role_arn     = data.terraform_remote_state.sharedservices.outputs.provisionaccount_role.arn
+    session_name = local.caller_user_name
+  }
+}
