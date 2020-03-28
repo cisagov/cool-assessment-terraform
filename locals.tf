@@ -65,6 +65,11 @@ locals {
     if account.name == "Images (${local.assessment_account_type})"
   ][0]
 
+
+  # If var.private_domain is provided, use it.  Otherwise, default to
+  # local.assessment_account_name_base
+  private_domain = var.private_domain != "" ? var.private_domain : local.assessment_account_name_base
+
   # Helpful lists for defining ACL and security group rules
   ingress_and_egress = [
     "ingress",
