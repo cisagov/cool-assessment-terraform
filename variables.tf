@@ -14,11 +14,6 @@ variable "operations_subnet_cidr_block" {
   description = "The operations subnet CIDR block for this assessment (e.g. \"10.10.0.0/24\")."
 }
 
-variable "private_domain" {
-  type        = string
-  description = "The local domain to use for this assessment (e.g. \"env0\")."
-}
-
 variable "private_subnet_cidr_blocks" {
   type        = list(string)
   description = "The list of private subnet CIDR blocks for this assessment (e.g. [\"10.10.1.0/24\", \"10.10.2.0/24\"])."
@@ -82,6 +77,12 @@ variable "operations_subnet_inbound_tcp_ports_allowed" {
   type        = list(string)
   description = "The list of TCP ports allowed inbound (from anywhere) to the operations subnet (e.g. [\"80\", \"443\"])."
   default     = ["80", "443"]
+}
+
+variable "private_domain" {
+  type        = string
+  description = "The local domain to use for this assessment (e.g. \"env0\").   If not provided, it will default to the base of the assessment account name.  For example, if the account name is \"env0 (Staging)\", private_domain will default to \"env0\"."
+  default     = ""
 }
 
 variable "provisionaccount_role_name" {

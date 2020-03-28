@@ -75,7 +75,7 @@ the COOL environment.
 | operations_instance_counts | A map specifying how many instances of each type should be created in the operations subnet (e.g. { "kali": 1 }).  The currently-supported instance keys are: ["kali"]. | map(number) | `{ "kali": 1 }` | no |
 | operations_subnet_cidr_block | The operations subnet CIDR block for this assessment (e.g. "10.10.0.0/24"). | string | | yes |
 | operations_subnet_inbound_tcp_ports_allowed | The list of TCP ports allowed inbound (from anywhere) to the operations subnet (e.g. ["80", "443"]). | list(string) | `["80", "443"]` | no |
-| private_domain | The local domain to use for this assessment (e.g. "env0"). | string | | yes |
+| private_domain | The local domain to use for this assessment (e.g. "env0"). If not provided, it will default to the base of the assessment account name.  For example, if the account name is "env0 (Staging)", private_domain will default to "env0". | string | Assessment account name base | no |
 | private_subnet_cidr_blocks | The list of private subnet CIDR blocks for this assessment (e.g. ["10.10.1.0/24", "10.10.2.0/24"]). | list(string) | | yes |
 | provisionaccount_role_name | The name of the IAM role that allows sufficient permissions to provision all AWS resources in the assessment account. | string | `ProvisionAccount` | no |
 | provisionassessment_policy_description | The description to associate with the IAM policy that allows provisioning of the resources required in the assessment account. | string | `Allows provisioning of the resources required in the assessment account` | no |
