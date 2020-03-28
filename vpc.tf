@@ -24,7 +24,7 @@ resource "aws_vpc" "assessment" {
 resource "aws_vpc_dhcp_options" "assessment" {
   provider = aws.provisionassessment
 
-  domain_name         = var.private_domain
+  domain_name         = local.private_domain
   domain_name_servers = ["AmazonProvidedDNS"]
   tags                = var.tags
 }

@@ -2,7 +2,7 @@
 resource "aws_route53_zone" "assessment_private" {
   provider = aws.provisionassessment
 
-  name = "${var.private_domain}."
+  name = "${local.private_domain}."
 
   vpc {
     vpc_id = aws_vpc.assessment.id
@@ -11,7 +11,7 @@ resource "aws_route53_zone" "assessment_private" {
   tags = merge(
     var.tags,
     {
-      "Name" = format("%s Private Zone", var.private_domain)
+      "Name" = format("%s Private Zone", local.private_domain)
     },
   )
   comment = "Terraform Workspace: ${terraform.workspace}"
