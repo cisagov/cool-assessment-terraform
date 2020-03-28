@@ -81,7 +81,7 @@ variable "operations_subnet_inbound_tcp_ports_allowed" {
 
 variable "private_domain" {
   type        = string
-  description = "The local domain to use for this assessment (e.g. \"env0\").   If not provided, it will default to the base of the assessment account name.  For example, if the account name is \"env0 (Staging)\", private_domain will default to \"env0\"."
+  description = "The local domain to use for this assessment (e.g. \"env0\"). If not provided, `local.private_domain` will be set to the base of the assessment account name.  For example, if the account name is \"env0 (Staging)\", `local.private_domain` will default to \"env0\".  Note that `local.private_domain` should be used in place of `var.private_domain` throughout this project."
   default     = ""
 }
 
