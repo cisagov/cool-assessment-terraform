@@ -80,6 +80,8 @@ jobs:
         run: |
           cd examples/default_vpc
           terraform init -backend=false
+          cd ../..
+          terraform init -backend=false
       - name: Run pre-commit on all files
         run: pre-commit run --all-files
       - name: Setup tmate debug session
