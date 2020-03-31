@@ -2,4 +2,4 @@
 
 # Add an fstab entry for the EFS mount
 mounts:
-  - ["${efs_id}", "${mount_point}", efs, "_netdev,tls,iam", 0, 0]
+  - ["${efs_id}:/", "${mount_point}", efs, "_netdev,iam,tls", 0, 0]
