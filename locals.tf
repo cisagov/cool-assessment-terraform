@@ -35,12 +35,34 @@ locals {
 
   cool_shared_services_cidr_block = data.terraform_remote_state.sharedservices_networking.outputs.vpc.cidr_block
 
-  guacamole_fqdn = format("guac.%s.%s", var.assessment_account_name, var.cool_domain)
+  guacamole_fqdn = format("guac.%s.%s", local.assessment_account_name_base, var.cool_domain)
 
-  # Find the Images account by name.
+  # Look up assessment account name from AWS organizations provider
+  assessment_account_name = [
+    for account in data.aws_organizations_organization.cool.accounts :
+    account.name
+    if account.id == local.assessment_account_id
+  ][0]
+
+  # Determine assessment account type based on account name.
+  #
+  # The account name format is "ACCOUNT_NAME (ACCOUNT_TYPE)" - for
+  # example, "env0 (Production)".
+  assessment_account_type = length(regexall("\\(([^()]*)\\)", local.assessment_account_name)) == 1 ? regex("\\(([^()]*)\\)", local.assessment_account_name)[0] : "Unknown"
+  workspace_type          = lower(local.assessment_account_type)
+
+  # The Terraform workspace name for this assessment
+  assessment_workspace_name = replace(replace(lower(var.assessment_account_name), "/[()]/", ""), " ", "-")
+
+  # Note that we are assuming that the assessment account name does
+  # not contain a "(" character.
+  assessment_account_name_base = trimspace(split("(", var.assessment_account_name)[0])
+
+  # Determine the ID of the corresponding Images account
   images_account_id = [
-    for x in data.aws_organizations_organization.cool.accounts :
-    x.id if x.name == "Images"
+    for account in data.aws_organizations_organization.cool.accounts :
+    account.id
+    if account.name == "Images (${local.assessment_account_type})"
   ][0]
 
   # Helpful lists for defining ACL and security group rules
@@ -57,7 +79,7 @@ locals {
   transit_gateway_id = data.terraform_remote_state.sharedservices_networking.outputs.transit_gateway.id
   # The ID of the route table to be associated with the Transit
   # Gateway attachment for this account.
-  transit_gateway_route_table_id = data.terraform_remote_state.sharedservices_networking.outputs.transit_gateway_attachment_route_tables[local.assessment_account_id]
+  transit_gateway_route_table_id = data.terraform_remote_state.sharedservices_networking.outputs.transit_gateway_attachment_route_tables[local.assessment_account_id].id
 
   # Find the new Users account by name and email.
   users_account_id = [
@@ -70,7 +92,7 @@ locals {
   # Images account.
   vnc_parameterstorereadonly_role_description = format("Allows read-only access to VNC-related SSM Parameter Store parameters required for the %s assessment.", var.assessment_account_name)
 
-  vnc_parameterstorereadonly_role_name = format("ParameterStoreReadOnly-%s-VNC", var.assessment_account_name)
+  vnc_parameterstorereadonly_role_name = format("ParameterStoreReadOnly-%s-VNC", local.assessment_workspace_name)
 
   # Calculate the VPN server CIDR block using the
   # sharedservices_networking remote state

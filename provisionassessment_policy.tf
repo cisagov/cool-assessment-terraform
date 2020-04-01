@@ -9,6 +9,7 @@ data "aws_iam_policy_document" "provisionassessment_policy_doc" {
       "ec2:AllocateAddress",
       "ec2:AssociateDhcpOptions",
       "ec2:AssociateRouteTable",
+      "ec2:AssociateTransitGatewayRouteTable",
       "ec2:AttachInternetGateway",
       "ec2:AuthorizeSecurityGroupEgress",
       "ec2:AuthorizeSecurityGroupEgress",
@@ -23,6 +24,7 @@ data "aws_iam_policy_document" "provisionassessment_policy_doc" {
       "ec2:CreateSecurityGroup",
       "ec2:CreateSubnet",
       "ec2:CreateTags",
+      "ec2:CreateTransitGatewayRoute",
       "ec2:CreateTransitGatewayVpcAttachment",
       "ec2:CreateVpc",
       "ec2:DeleteDhcpOptions",
@@ -34,11 +36,13 @@ data "aws_iam_policy_document" "provisionassessment_policy_doc" {
       "ec2:DeleteRouteTable",
       "ec2:DeleteSecurityGroup",
       "ec2:DeleteSubnet",
+      "ec2:DeleteTransitGatewayRoute",
       "ec2:DeleteTransitGatewayVpcAttachment",
       "ec2:DeleteVpc",
       "ec2:Describe*",
       "ec2:DetachInternetGateway",
       "ec2:DisassociateRouteTable",
+      "ec2:DisassociateTransitGatewayRouteTable",
       "ec2:DisassociateVpcCidrBlock",
       "ec2:GetTransitGatewayRouteTableAssociations",
       "ec2:GetTransitGatewayRouteTablePropagations",
@@ -59,6 +63,23 @@ data "aws_iam_policy_document" "provisionassessment_policy_doc" {
       "ec2:TerminateInstances",
       "ec2:UpdateSecurityGroupRuleDescriptionsEgress",
       "ec2:UpdateSecurityGroupRuleDescriptionsIngress",
+    ]
+
+    resources = [
+      "*",
+    ]
+  }
+
+  statement {
+    actions = [
+      "elasticfilesystem:CreateFileSystem",
+      "elasticfilesystem:CreateMountTarget",
+      "elasticfilesystem:DeleteFileSystem",
+      "elasticfilesystem:DeleteMountTarget",
+      "elasticfilesystem:DescribeFileSystems",
+      "elasticfilesystem:DescribeLifecycleConfiguration",
+      "elasticfilesystem:DescribeMountTargets",
+      "elasticfilesystem:DescribeMountTargetSecurityGroups",
     ]
 
     resources = [
