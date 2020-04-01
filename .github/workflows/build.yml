@@ -78,9 +78,8 @@ jobs:
           pip install --upgrade --requirement requirements-test.txt
       - name: Initialize Terraform
         run: |
-          cd examples/default_vpc
           terraform init -backend=false
-          cd ../..
+          cd examples/default_vpc
           terraform init -backend=false
       - name: Run pre-commit on all files
         run: pre-commit run --all-files
