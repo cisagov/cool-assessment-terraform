@@ -75,8 +75,8 @@ repos:
     hooks:
       - id: ansible-lint
       # files: molecule/default/playbook.yml
-  - repo: https://github.com/antonbabenko/pre-commit-terraform.git
-    rev: v1.27.0
+  - repo: https://github.com/mcdonnnj/pre-commit-terraform.git
+    rev: v1.27.3
     hooks:
       - id: terraform_fmt
       - id: terraform_validate
