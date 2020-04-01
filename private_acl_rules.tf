@@ -62,6 +62,22 @@ resource "aws_network_acl_rule" "private_egress_to_cool_via_ephemeral_ports" {
   to_port        = 65535
 }
 
+# Allow egress to operations subnet via ephemeral ports, for EFS
+# access.  (EFS is just NFS under the hood.)
+resource "aws_network_acl_rule" "private_egress_to_operations_via_ephemeral_ports" {
+  provider = aws.provisionassessment
+  for_each = toset(var.private_subnet_cidr_blocks)
+
+  network_acl_id = aws_network_acl.private[each.value].id
+  egress         = true
+  protocol       = "tcp"
+  rule_number    = 108 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_action    = "allow"
+  cidr_block     = aws_subnet.operations.cidr_block
+  from_port      = 1024
+  to_port        = 65535
+}
+
 # Allow egress to operations subnet via ssh
 # For: DevOps ssh access from private subnet to operations subnet
 resource "aws_network_acl_rule" "private_egress_to_operations_via_ssh" {
@@ -71,7 +87,7 @@ resource "aws_network_acl_rule" "private_egress_to_operations_via_ssh" {
   network_acl_id = aws_network_acl.private[each.value].id
   egress         = true
   protocol       = "tcp"
-  rule_number    = 108 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 110 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = aws_subnet.operations.cidr_block
   from_port      = 22
@@ -91,7 +107,7 @@ resource "aws_network_acl_rule" "private_ingress_from_operations_via_ephemeral_p
   network_acl_id = aws_network_acl.private[each.value].id
   egress         = false
   protocol       = "tcp"
-  rule_number    = 110 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 112 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = aws_subnet.operations.cidr_block
   from_port      = 1024
@@ -110,7 +126,7 @@ resource "aws_network_acl_rule" "private_ingress_from_anywhere_via_ephemeral_por
   network_acl_id = aws_network_acl.private[each.value].id
   egress         = false
   protocol       = "tcp"
-  rule_number    = 112 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 114 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = "0.0.0.0/0"
   from_port      = 1024

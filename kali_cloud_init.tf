@@ -12,15 +12,6 @@ data "template_cloudinit_config" "kali_cloud_init_tasks" {
 
   part {
     content = templatefile(
-      "${path.module}/cloud-init/create-mount-point.tpl.sh", {
-        mount_point = "/data"
-    })
-    content_type = "text/x-shellscript"
-    filename     = "create-mount-point.sh"
-  }
-
-  part {
-    content = templatefile(
       "${path.module}/cloud-init/efs-mount.tpl.yml", {
         # Just mount the EFS mount target in the first private subnet
         efs_id      = aws_efs_mount_target.target[var.private_subnet_cidr_blocks[0]].file_system_id
