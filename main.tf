@@ -7,11 +7,6 @@
 # The AWS account ID being used
 data "aws_caller_identity" "current" {}
 
-# Default provider information.
-provider "aws" {
-  region = "us-east-1"
-}
-
 # ------------------------------------------------------------------------------
 # AUTOMATICALLY LOOK UP THE LATEST PRE-BUILT EXAMPLE AMI FROM
 # cisagov/skeleton-packer.
