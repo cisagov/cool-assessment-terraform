@@ -78,9 +78,8 @@ jobs:
           pip install --upgrade --requirement requirements-test.txt
       - name: Initialize Terraform
         run: |
-          terraform init -backend=false
-          cd examples/default_vpc
-          terraform init -backend=false
+          terraform init -backend=false -input=false
+          terraform init -backend=false -input=false examples/default_vpc/
       - name: Run pre-commit on all files
         run: pre-commit run --all-files
       - name: Setup tmate debug session
