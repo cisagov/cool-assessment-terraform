@@ -66,16 +66,3 @@ resource "aws_security_group_rule" "desktop_gw_egress_to_ops_via_vnc" {
   from_port         = 5901
   to_port           = 5901
 }
-
-# Allow ingress from anywhere via ephemeral ports
-# For: Guacamole fetches its SSL certificate via boto3 (which uses HTTPS)
-resource "aws_security_group_rule" "desktop_gw_ingress_from_anywhere_via_ephemeral_ports" {
-  provider = aws.provisionassessment
-
-  security_group_id = aws_security_group.desktop_gateway.id
-  type              = "ingress"
-  protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
-  from_port         = 1024
-  to_port           = 65535
-}
