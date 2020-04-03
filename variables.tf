@@ -79,6 +79,12 @@ variable "operations_subnet_inbound_tcp_ports_allowed" {
   default     = ["80", "443"]
 }
 
+variable "operations_subnet_inbound_udp_ports_allowed" {
+  type        = list(string)
+  description = "The list of UDP ports allowed inbound (from anywhere) to the operations subnet (e.g. [\"53\", \"8080\"])."
+  default     = []
+}
+
 variable "private_domain" {
   type        = string
   description = "The local domain to use for this assessment (e.g. \"env0\"). If not provided, `local.private_domain` will be set to the base of the assessment account name.  For example, if the account name is \"env0 (Staging)\", `local.private_domain` will default to \"env0\".  Note that `local.private_domain` should be used in place of `var.private_domain` throughout this project."
