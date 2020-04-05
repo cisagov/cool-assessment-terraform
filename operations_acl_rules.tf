@@ -47,6 +47,23 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_allowed_tc
   to_port        = each.value
 }
 
+# Allow ingress from anywhere via the UDP ports specified in
+# var.operations_subnet_inbound_udp_ports_allowed
+# For: Assessment team operational use
+resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_allowed_udp_ports" {
+  provider = aws.provisionassessment
+  for_each = toset(var.operations_subnet_inbound_udp_ports_allowed)
+
+  network_acl_id = aws_network_acl.operations.id
+  egress         = false
+  protocol       = "udp"
+  rule_number    = 200 + index(var.operations_subnet_inbound_udp_ports_allowed, each.value)
+  rule_action    = "allow"
+  cidr_block     = "0.0.0.0/0"
+  from_port      = each.value
+  to_port        = each.value
+}
+
 # Allow ingress from anywhere via ephemeral TCP/UDP ports below 3389 (1024-3388)
 # For: Assessment team operational use, but don't want to allow
 #      public access to RDP on port 3389

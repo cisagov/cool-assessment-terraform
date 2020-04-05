@@ -39,6 +39,21 @@ resource "aws_security_group_rule" "operations_ingress_from_anywhere_via_allowed
   to_port           = each.value
 }
 
+# Allow ingress from anywhere via the UDP ports specified in
+# var.operations_subnet_inbound_udp_ports_allowed
+# For: Assessment team operational use
+resource "aws_security_group_rule" "operations_ingress_from_anywhere_via_allowed_udp_ports" {
+  provider = aws.provisionassessment
+  for_each = toset(var.operations_subnet_inbound_udp_ports_allowed)
+
+  security_group_id = aws_security_group.operations.id
+  type              = "ingress"
+  protocol          = "udp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  from_port         = each.value
+  to_port           = each.value
+}
+
 # Allow ingress from anywhere via ICMP
 # For: Assessment team operational use (e.g. ping responses)
 resource "aws_security_group_rule" "operations_ingress_from_anywhere_via_icmp" {
