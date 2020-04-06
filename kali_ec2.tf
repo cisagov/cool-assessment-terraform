@@ -48,6 +48,6 @@ resource "aws_instance" "kali" {
     aws_security_group.operations.id,
   ]
 
-  tags        = merge(var.tags, map("Name", "Kali"))
-  volume_tags = merge(var.tags, map("Name", "Kali"))
+  tags        = merge(var.tags, map("Name", format("Kali%d", count.index)))
+  volume_tags = merge(var.tags, map("Name", format("Kali%d", count.index)))
 }
