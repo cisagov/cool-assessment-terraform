@@ -30,7 +30,7 @@ resource "aws_instance" "guacamole" {
   ami                  = data.aws_ami.guacamole.id
   availability_zone    = "${var.aws_region}${var.aws_availability_zone}"
   iam_instance_profile = aws_iam_instance_profile.guacamole.name
-  instance_type        = "t3.micro"
+  instance_type        = "t3.medium"
   subnet_id            = aws_subnet.private[var.private_subnet_cidr_blocks[0]].id
 
   root_block_device {
