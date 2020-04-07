@@ -32,7 +32,7 @@ resource "aws_instance" "kali" {
   associate_public_ip_address = true
   availability_zone           = "${var.aws_region}${var.aws_availability_zone}"
   iam_instance_profile        = aws_iam_instance_profile.kali.name
-  instance_type               = "t2.medium"
+  instance_type               = "t2.large"
   subnet_id                   = aws_subnet.operations.id
 
   root_block_device {
@@ -48,6 +48,6 @@ resource "aws_instance" "kali" {
     aws_security_group.operations.id,
   ]
 
-  tags        = merge(var.tags, map("Name", "Kali"))
-  volume_tags = merge(var.tags, map("Name", "Kali"))
+  tags        = merge(var.tags, map("Name", format("Kali%d", count.index)))
+  volume_tags = merge(var.tags, map("Name", format("Kali%d", count.index)))
 }
