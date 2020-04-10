@@ -82,7 +82,7 @@ jobs:
         run: |
           for path in [[ $(find . -type f -iname "*.tf" -exec dirname "{}" \; \
             | sort -u) ]]; do \
-            terraform init -input=false -backend=false "$path"; \
+            terraform init -upgrade=true -input=false -backend=false "$path"; \
             done
       - name: Install dependencies
         run: |
