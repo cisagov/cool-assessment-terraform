@@ -57,8 +57,8 @@ module "example" {
 ## Notes ##
 
 Running `pre-commit` requires running `terraform init` in every directory that
-contains Terraform code. In this repository these are the main directory and the
-`examples/default_vpc` directory.
+contains Terraform code. In this repository, these are the main directory and
+every directory under `examples/`.
 
 ## Contributing ##
 
