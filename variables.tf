@@ -5,14 +5,19 @@
 # ------------------------------------------------------------------------------
 
 variable "aws_region" {
+  type        = string
   description = "The AWS region to deploy into (e.g. us-east-1)"
+  default     = "us-east-1"
 }
 
 variable "aws_availability_zone" {
+  type        = string
   description = "The AWS availability zone to deploy into (e.g. a, b, c, etc.)"
+  default     = "a"
 }
 
 variable "subnet_id" {
+  type        = string
   description = "The ID of the AWS subnet to deploy into (e.g. subnet-0123456789abcdef0)"
 }
 
