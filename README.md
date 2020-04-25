@@ -72,7 +72,10 @@ the COOL environment.
 | cert_bucket_name | The name of the AWS S3 bucket where certificates are stored. | string | `cisa-cool-certificates` | no |
 | cool_domain | The domain where the COOL resources reside (e.g. "cool.cyber.dhs.gov"). | string | `cool.cyber.dhs.gov` | no |
 | guac_connection_setup_path | The full path to the dbinit directory where initialization files must be stored in order to work properly (e.g. "/var/guacamole/dbinit"). | string | `/var/guacamole/dbinit` | no |
-| operations_instance_counts | A map specifying how many instances of each type should be created in the operations subnet (e.g. { "kali": 1 }).  The currently-supported instance keys are: ["kali"]. | map(number) | `{ "kali": 1 }` | no |
+| nessus_activation_codes | The list of Nessus activation codes (e.g. ["AAAA-BBBB-CCCC-DDDD"]). The number of codes in this list should match the number of Nessus instances defined in operations_instance_counts. | list(string) | `[]` | no |
+| nessus_admin_password | The password for the Nessus admin user (if created). | string | `""` | no |
+| nessus_admin_username | The username of the Nessus admin user to create.  If left empty, the admin user will not be created. | string | `""` | no |
+| operations_instance_counts | A map specifying how many instances of each type should be created in the operations subnet (e.g. { "kali": 1 }).  The currently-supported instance keys are: ["kali", "nessus"]. | map(number) | `{ "kali": 1 }` | no |
 | operations_subnet_cidr_block | The operations subnet CIDR block for this assessment (e.g. "10.10.0.0/24"). | string | | yes |
 | operations_subnet_inbound_tcp_ports_allowed | The list of TCP ports allowed inbound (from anywhere) to the operations subnet (e.g. ["80", "443"]). | list(string) | `["80", "443"]` | no |
 | operations_subnet_inbound_udp_ports_allowed | The list of UDP ports allowed inbound (from anywhere) to the operations subnet (e.g. ["53", "8080"]). | list(string) | `[]` | no |
