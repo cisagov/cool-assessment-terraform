@@ -24,6 +24,19 @@ resource "aws_security_group_rule" "operations_ingress_from_guacamole_via_vnc" {
   to_port           = 5901
 }
 
+# Allow ingress from Kali instances via Nessus web GUI
+# For: Assessment team Nessus web access from Kali instances
+resource "aws_security_group_rule" "operations_ingress_from_kali_for_nessus" {
+  provider = aws.provisionassessment
+
+  security_group_id = aws_security_group.operations.id
+  type              = "ingress"
+  protocol          = "tcp"
+  cidr_blocks       = formatlist("%s/32", aws_instance.kali[*].private_ip)
+  from_port         = 8834
+  to_port           = 8834
+}
+
 # Allow ingress from anywhere via the TCP ports specified in
 # var.operations_subnet_inbound_tcp_ports_allowed
 # For: Assessment team operational use
