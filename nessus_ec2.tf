@@ -44,8 +44,7 @@ resource "aws_instance" "nessus" {
   user_data_base64 = data.template_cloudinit_config.nessus_cloud_init_tasks[count.index].rendered
 
   vpc_security_group_ids = [
-    aws_security_group.efs_client.id,
-    aws_security_group.operations.id,
+    aws_security_group.operations.id
   ]
 
   tags        = merge(var.tags, map("Name", format("Nessus%d", count.index)))
