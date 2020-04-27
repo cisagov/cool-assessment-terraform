@@ -16,9 +16,11 @@ data "template_cloudinit_config" "nessus_cloud_init_tasks" {
     content_type = "text/x-shellscript"
     content = templatefile(
       "${path.module}/cloud-init/nessus-setup.sh", {
-        nessus_activation_code = var.nessus_activation_codes[count.index]
-        nessus_admin_password  = var.nessus_admin_password
-        nessus_admin_username  = var.nessus_admin_username
+        aws_region                    = var.aws_region
+        nessus_activation_code        = var.nessus_activation_codes[count.index]
+        ssm_key_nessus_admin_password = var.ssm_key_nessus_admin_password
+        ssm_key_nessus_admin_username = var.ssm_key_nessus_admin_username
+        ssm_nessus_read_role_arn      = aws_iam_role.nessus_parameterstorereadonly_role.arn
     })
   }
 }
