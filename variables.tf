@@ -67,9 +67,15 @@ variable "guac_connection_setup_path" {
   default     = "/var/guacamole/dbinit"
 }
 
+variable "nessus_activation_codes" {
+  type        = list(string)
+  description = "The list of Nessus activation codes (e.g. [\"AAAA-BBBB-CCCC-DDDD\"]). The number of codes in this list should match the number of Nessus instances defined in operations_instance_counts."
+  default     = []
+}
+
 variable "operations_instance_counts" {
   type        = map(number)
-  description = "A map specifying how many instances of each type should be created in the operations subnet (e.g. { \"kali\": 1 }).  The currently-supported instance keys are: [\"kali\"]."
+  description = "A map specifying how many instances of each type should be created in the operations subnet (e.g. { \"kali\": 1 }).  The currently-supported instance keys are: [\"kali\", \"nessus\"]."
   default     = { "kali" : 1 }
 }
 
@@ -107,6 +113,18 @@ variable "provisionassessment_policy_name" {
   type        = string
   description = "The name to assign the IAM policy that allows provisioning of the resources required in the assessment account."
   default     = "ProvisionAssessment"
+}
+
+variable "ssm_key_nessus_admin_password" {
+  type        = string
+  description = "The AWS SSM Parameter Store parameter that contains the password of the Nessus admin user (e.g. \"/nessus/assessment/admin_password\")."
+  default     = "/nessus/assessment/admin_password"
+}
+
+variable "ssm_key_nessus_admin_username" {
+  type        = string
+  description = "The AWS SSM Parameter Store parameter that contains the username of the Nessus admin user (e.g. \"/nessus/assessment/admin_username\")."
+  default     = "/nessus/assessment/admin_username"
 }
 
 variable "ssm_key_vnc_password" {
