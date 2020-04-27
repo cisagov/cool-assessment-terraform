@@ -6,11 +6,13 @@
 #  - Update plugins
 #  - Rebuild plugin database
 #
-# NOTE: Since this script is processed by Terraform's templatefile()
-# function before it is deployed via cloud-init, shell script variables that
-# that would normally be referenced as
-# <dollar-sign><left-curly-brace>var_name<right-curly-brace> are escaped
-# via <dollar-sign><dollar-sign><left-curly-brace>var_name<right-curly-brace>.
+# NOTES:
+#  - The "expect" and "jq" packages are REQUIRED by this script.
+#  - Since this script is processed by Terraform's templatefile() function
+#    before it is deployed via cloud-init, shell script variables that
+#    that would normally be referenced as
+#    <dollar-sign><left-curly-brace>var_name<right-curly-brace> are escaped
+#    via <dollar-sign><dollar-sign><left-curly-brace>var_name<right-curly-brace>.
 
 set -o nounset
 set -o pipefail
@@ -18,13 +20,41 @@ set -o pipefail
 nessus_sbin_path="/opt/nessus/sbin"
 
 # Ignore this shellcheck:
-# "SC2154: nessus_activation_code/nessus_admin_username/nessus_admin_password
-# is referenced but not assigned." since these variables are passed in from
-# any *_cloud_init.tf files that call this script.
+# "SC2154: nessus_activation_code is referenced but not assigned."
+# since this variable is passed in from any *_cloud_init.tf files
+# that call this script.
+#
+# Similar cases below for ssm_nessus_read_role_arn, aws_region,
+# ssm_key_nessus_admin_username, ssm_key_nessus_admin_password, and
+# nessus_activation_code are also ignored.
 # shellcheck disable=SC2154
 activation_code_to_apply="${nessus_activation_code}"
-nessus_admin_username="${nessus_admin_username}"
-nessus_admin_password="${nessus_admin_password}"
+
+# Assume the role that can read Nessus-related SSM Parameter Store parameters
+echo "Assuming role that can read Nessus-related SSM Parameter Store parameters"
+
+# shellcheck disable=SC2154
+assumed_role_output=$(aws sts assume-role --role-arn "${ssm_nessus_read_role_arn}" --role-session-name "cloud-init-nessus-setup")
+
+aws_access_key_id=$(echo "$assumed_role_output" | jq -r .Credentials.AccessKeyId)
+export AWS_ACCESS_KEY_ID=$aws_access_key_id
+
+aws_secret_access_key=$(echo "$assumed_role_output" | jq -r .Credentials.SecretAccessKey)
+export AWS_SECRET_ACCESS_KEY=$aws_secret_access_key
+
+aws_session_token=$(echo "$assumed_role_output" | jq -r .Credentials.SessionToken)
+export AWS_SESSION_TOKEN=$aws_session_token
+
+# Fetch the Nessus-related SSM Parameter Store parameters
+echo "Reading Nessus-related parameters from SSM Parameter Store..."
+
+# shellcheck disable=SC2154
+nessus_admin_username=$(aws --region "${aws_region}" ssm get-parameter --name "${ssm_key_nessus_admin_username}" --with-decryption | jq -r .Parameter.Value)
+echo "  Nessus admin username found in SSM: $${nessus_admin_username}"
+
+# shellcheck disable=SC2154
+nessus_admin_password=$(aws --region "${aws_region}" ssm get-parameter --name "${ssm_key_nessus_admin_password}" --with-decryption | jq -r .Parameter.Value)
+
 
 register_nessus()
 {
