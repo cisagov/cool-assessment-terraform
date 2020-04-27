@@ -73,8 +73,6 @@ the COOL environment.
 | cool_domain | The domain where the COOL resources reside (e.g. "cool.cyber.dhs.gov"). | string | `cool.cyber.dhs.gov` | no |
 | guac_connection_setup_path | The full path to the dbinit directory where initialization files must be stored in order to work properly (e.g. "/var/guacamole/dbinit"). | string | `/var/guacamole/dbinit` | no |
 | nessus_activation_codes | The list of Nessus activation codes (e.g. ["AAAA-BBBB-CCCC-DDDD"]). The number of codes in this list should match the number of Nessus instances defined in operations_instance_counts. | list(string) | `[]` | no |
-| nessus_admin_password | The password for the Nessus admin user (if created). | string | `""` | no |
-| nessus_admin_username | The username of the Nessus admin user to create.  If left empty, the admin user will not be created. | string | `""` | no |
 | operations_instance_counts | A map specifying how many instances of each type should be created in the operations subnet (e.g. { "kali": 1 }).  The currently-supported instance keys are: ["kali", "nessus"]. | map(number) | `{ "kali": 1 }` | no |
 | operations_subnet_cidr_block | The operations subnet CIDR block for this assessment (e.g. "10.10.0.0/24"). | string | | yes |
 | operations_subnet_inbound_tcp_ports_allowed | The list of TCP ports allowed inbound (from anywhere) to the operations subnet (e.g. ["80", "443"]). | list(string) | `["80", "443"]` | no |
@@ -84,6 +82,8 @@ the COOL environment.
 | provisionaccount_role_name | The name of the IAM role that allows sufficient permissions to provision all AWS resources in the assessment account. | string | `ProvisionAccount` | no |
 | provisionassessment_policy_description | The description to associate with the IAM policy that allows provisioning of the resources required in the assessment account. | string | `Allows provisioning of the resources required in the assessment account` | no |
 | provisionassessment_policy_name | The name to assign the IAM policy that allows provisioning of the resources required in the assessment account. | string | `ProvisionAssessment` | no |
+| ssm_key_nessus_admin_password | The AWS SSM Parameter Store parameter that contains the password of the Nessus admin user (e.g. "/nessus/assessment/admin_password"). | string | `/nessus/assessment/admin_password` | no |
+| ssm_key_nessus_admin_username | The AWS SSM Parameter Store parameter that contains the username of the Nessus admin user (e.g. "/nessus/assessment/admin_username"). | string | `/nessus/assessment/admin_username` | no |
 | ssm_key_vnc_password | The AWS SSM Parameter Store parameter that contains the password needed to connect to the TBD instance via VNC (e.g. "/vnc/password"). | string | `/vnc/password` | no |
 | ssm_key_vnc_username | The AWS SSM Parameter Store parameter that contains the username of the VNC user on the TBD instance (e.g. "/vnc/username"). | string | `/vnc/username` | no |
 | ssm_key_vnc_user_private_ssh_key | The AWS SSM Parameter Store parameter that contains the private SSH key of the VNC user on the TBD instance (e.g. "/vnc/ssh/rsa_private_key". | string | `/vnc/ssh/rsa_private_key` | no |
