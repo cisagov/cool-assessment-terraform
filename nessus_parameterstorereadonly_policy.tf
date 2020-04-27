@@ -10,8 +10,8 @@ data "aws_iam_policy_document" "nessus_parameterstorereadonly_doc" {
       "ssm:GetParameters"
     ]
     resources = [
-      format("arn:aws:ssm:*:%s:parameter%s", local.images_account_id, var.ssm_key_nessus_admin_username),
-      format("arn:aws:ssm:*:%s:parameter%s", local.images_account_id, var.ssm_key_nessus_admin_password)
+      "arn:aws:ssm:*:${local.images_account_id}:parameter${var.ssm_key_nessus_admin_username}",
+      "arn:aws:ssm:*:${local.images_account_id}:parameter${var.ssm_key_nessus_admin_password}"
     ]
   }
 }
