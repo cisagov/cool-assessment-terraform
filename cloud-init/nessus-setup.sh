@@ -61,7 +61,6 @@ else
   nessus_admin_username=""
 fi
 
-
 # shellcheck disable=SC2154
 password_ssm_output=$(aws --region "${aws_region}" ssm get-parameter --name "${ssm_key_nessus_admin_password}" --with-decryption)
 password_rc="$?"
