@@ -65,6 +65,12 @@ locals {
     if account.name == "Images (${local.assessment_account_type})"
   ][0]
 
+  # The name and description of the role that allows read-only
+  # access to the Nessus-related SSM Parameter Store parameters in the
+  # Images account.
+  nessus_parameterstorereadonly_role_description = format("Allows read-only access to Nessus-related SSM Parameter Store parameters required for the %s assessment.", var.assessment_account_name)
+
+  nessus_parameterstorereadonly_role_name = format("ParameterStoreReadOnly-%s-Nessus", local.assessment_workspace_name)
 
   # If var.private_domain is provided, use it.  Otherwise, default to
   # local.assessment_account_name_base
