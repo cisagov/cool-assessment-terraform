@@ -49,11 +49,31 @@ export AWS_SESSION_TOKEN=$aws_session_token
 echo "Reading Nessus-related parameters from SSM Parameter Store..."
 
 # shellcheck disable=SC2154
-nessus_admin_username=$(aws --region "${aws_region}" ssm get-parameter --name "${ssm_key_nessus_admin_username}" --with-decryption | jq -r .Parameter.Value)
-echo "  Nessus admin username found in SSM: $${nessus_admin_username}"
+username_ssm_output=$(aws --region "${aws_region}" ssm get-parameter --name "${ssm_key_nessus_admin_username}" --with-decryption)
+username_rc="$?"
+
+if [ "$username_rc" -eq 0 ]
+then
+  nessus_admin_username=$(echo "$username_ssm_output" | jq -r .Parameter.Value)
+  echo "  Nessus admin username successfully read from SSM: $${nessus_admin_username}"
+else
+  echo "WARNING: Could not read admin username from SSM!"
+  nessus_admin_username=""
+fi
+
 
 # shellcheck disable=SC2154
-nessus_admin_password=$(aws --region "${aws_region}" ssm get-parameter --name "${ssm_key_nessus_admin_password}" --with-decryption | jq -r .Parameter.Value)
+password_ssm_output=$(aws --region "${aws_region}" ssm get-parameter --name "${ssm_key_nessus_admin_password}" --with-decryption)
+password_rc="$?"
+
+if [ "$password_rc" -eq 0 ]
+then
+  nessus_admin_password=$(echo "$password_ssm_output" | jq -r .Parameter.Value)
+  echo "  Nessus admin password successfully read from SSM."
+else
+  echo "WARNING: Could not read admin password from SSM!"
+  nessus_admin_password=""
+fi
 
 
 register_nessus()
