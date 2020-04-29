@@ -25,7 +25,7 @@ data "aws_ami" "nessus" {
 
 # The Nessus EC2 instance
 resource "aws_instance" "nessus" {
-  count    = var.operations_instance_counts["nessus"]
+  count    = lookup(var.operations_instance_counts, "nessus", 0)
   provider = aws.provisionassessment
 
   ami                         = data.aws_ami.nessus.id
