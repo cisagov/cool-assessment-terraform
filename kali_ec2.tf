@@ -25,7 +25,7 @@ data "aws_ami" "kali" {
 
 # The Kali EC2 instance
 resource "aws_instance" "kali" {
-  count    = var.operations_instance_counts["kali"]
+  count    = lookup(var.operations_instance_counts, "kali", 0)
   provider = aws.provisionassessment
 
   ami                         = data.aws_ami.kali.id

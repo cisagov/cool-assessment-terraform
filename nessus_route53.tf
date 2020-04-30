@@ -1,6 +1,6 @@
 # Private DNS A record for Nessus instance
 resource "aws_route53_record" "nessus_A" {
-  count    = var.operations_instance_counts["nessus"]
+  count    = lookup(var.operations_instance_counts, "nessus", 0)
   provider = aws.provisionassessment
 
   zone_id = aws_route53_zone.assessment_private.zone_id
