@@ -1,16 +1,18 @@
 ---
 name: build
 
-on: [
-  push,
-  pull_request
-]
+on:
+  push:
+  pull_request:
+  repository_dispatch:
+    types: [apb]
 
 env:
   CURL_CACHE_DIR: ~/.cache/curl
   PIP_CACHE_DIR: ~/.cache/pip
   PRE_COMMIT_CACHE_DIR: ~/.cache/pre-commit
   RUN_TMATE: ${{ secrets.RUN_TMATE }}
+  TF_CACHE_DIR: .terraform
 
 jobs:
   lint:
@@ -21,9 +23,9 @@ jobs:
       - uses: actions/setup-python@v1
         with:
           python-version: 3.8
-      - uses: actions/setup-go@v2-beta
+      - uses: actions/setup-go@v2
         with:
-          go-version: '1.13.8'
+          go-version: '1.14.2'
       - name: Store installed Python version
         run: |
           echo "::set-env name=PY_VERSION::"\
@@ -59,6 +61,11 @@ jobs:
         with:
           path: ${{ steps.go-cache.outputs.dir }}
           key: "${{ runner.os }}-go"
+      - name: Cache Terraform initialization
+        uses: actions/cache@v1
+        with:
+          path: ${{ env.TF_CACHE_DIR }}
+          key: "${{ runner.os }}-terraform-initialization"
       - name: Install Terraform
         run: |
           mkdir -p ${{ env.CURL_CACHE_DIR }}
@@ -71,11 +78,19 @@ jobs:
             ${{ env.CURL_CACHE_DIR }}/"${TERRAFORM_ZIP}"
           sudo ln -s /opt/terraform/terraform /usr/bin/terraform
       - name: Install Terraform-docs
-        run: go get github.com/segmentio/terraform-docs
+        run: GO111MODULE=on go get github.com/segmentio/terraform-docs
+      - name: Find and initialize Terraform directories
+        run: |
+          for path in [[ $(find . -type f -iname "*.tf" -exec dirname "{}" \; \
+            | sort -u) ]]; do \
+            terraform init -upgrade=true -input=false -backend=false "$path"; \
+            done
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install --upgrade --requirement requirements-test.txt
+      - name: Set up pre-commit hook environments
+        run: pre-commit install-hooks
       - name: Run pre-commit on all files
         run: pre-commit run --all-files
       - name: Setup tmate debug session
