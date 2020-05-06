@@ -35,16 +35,16 @@ resource "aws_network_acl_rule" "operations_ingress_from_private_via_vnc" {
 # For: Assessment team operational use
 resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_allowed_tcp_ports" {
   provider = aws.provisionassessment
-  for_each = toset(var.operations_subnet_inbound_tcp_ports_allowed)
+  for_each = local.operations_subnet_inbound_tcp_ports_allowed
 
   network_acl_id = aws_network_acl.operations.id
   egress         = false
   protocol       = "tcp"
-  rule_number    = 110 + index(var.operations_subnet_inbound_tcp_ports_allowed, each.value)
+  rule_number    = 110 + index(var.operations_subnet_inbound_tcp_ports_allowed, each.key)
   rule_action    = "allow"
   cidr_block     = "0.0.0.0/0"
-  from_port      = each.value
-  to_port        = each.value
+  from_port      = each.value["from"]
+  to_port        = each.value["to"]
 }
 
 # Allow ingress from anywhere via the UDP ports specified in
@@ -52,16 +52,16 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_allowed_tc
 # For: Assessment team operational use
 resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_allowed_udp_ports" {
   provider = aws.provisionassessment
-  for_each = toset(var.operations_subnet_inbound_udp_ports_allowed)
+  for_each = local.operations_subnet_inbound_udp_ports_allowed
 
   network_acl_id = aws_network_acl.operations.id
   egress         = false
   protocol       = "udp"
-  rule_number    = 200 + index(var.operations_subnet_inbound_udp_ports_allowed, each.value)
+  rule_number    = 200 + index(var.operations_subnet_inbound_udp_ports_allowed, each.key)
   rule_action    = "allow"
   cidr_block     = "0.0.0.0/0"
-  from_port      = each.value
-  to_port        = each.value
+  from_port      = each.value["from"]
+  to_port        = each.value["to"]
 }
 
 # Allow ingress from anywhere via ephemeral TCP/UDP ports below 3389 (1024-3388)
