@@ -81,13 +81,13 @@ variable "operations_instance_counts" {
 
 variable "operations_subnet_inbound_tcp_ports_allowed" {
   type        = list(string)
-  description = "The list of TCP ports allowed inbound (from anywhere) to the operations subnet (e.g. [\"80\", \"443\"])."
+  description = "The list of TCP ports allowed inbound (from anywhere) to the operations subnet.  Note that ranges of ports are allowed, by separating the start and end ports with a hyphen (e.g. [\"80\", \"443\", \"8000-8100\" ])."
   default     = ["80", "443"]
 }
 
 variable "operations_subnet_inbound_udp_ports_allowed" {
   type        = list(string)
-  description = "The list of UDP ports allowed inbound (from anywhere) to the operations subnet (e.g. [\"53\", \"8080\"])."
+  description = "The list of UDP ports allowed inbound (from anywhere) to the operations subnet.  Note that ranges of ports are allowed, by separating the start and end ports with a hyphen (e.g. [\"53\", \"8000-8100\" ])."
   default     = []
 }
 
