@@ -15,7 +15,7 @@ resource "aws_iam_role" "teamserver_instance_role" {
 
   name = "teamserver_instance_role_${terraform.workspace}"
   # We can just reuse the kali assume role policy here.  If we created
-  # a temserver-specific one it would be identical.
+  # a teamserver-specific one it would be identical.
   assume_role_policy = data.aws_iam_policy_document.kali_assume_role_policy_doc.json
 }
 
