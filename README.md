@@ -96,6 +96,11 @@ the COOL environment.
 |------|-------------|
 | remote_desktop_url | The URL of the remote desktop gateway (Guacamole) for this assessment. |
 
+## Notes ##
+
+Running `pre-commit` requires running `terraform init` in every directory that
+contains Terraform code. In this repository, this is only the main directory.
+
 ## Contributing ##
 
 We welcome contributions!  Please see [here](CONTRIBUTING.md) for
