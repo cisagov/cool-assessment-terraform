@@ -1,3 +1,8 @@
+# NOTE: Most of the Nessus-related Terraform in this repo can be replaced
+# with a module (e.g. "nessus-tf-module") AFTER Terraform modules support
+# the use of "count" - see https://github.com/cisagov/cool-system/issues/32
+# for details.
+
 # The Nessus AMI
 data "aws_ami" "nessus" {
   provider = aws.provisionassessment
