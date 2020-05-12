@@ -20,7 +20,7 @@ data "template_cloudinit_config" "nessus_cloud_init_tasks" {
         nessus_activation_code        = var.nessus_activation_codes[count.index]
         ssm_key_nessus_admin_password = var.ssm_key_nessus_admin_password
         ssm_key_nessus_admin_username = var.ssm_key_nessus_admin_username
-        ssm_nessus_read_role_arn      = aws_iam_role.nessus_parameterstorereadonly_role.arn
+        ssm_nessus_read_role_arn      = aws_iam_role.nessus_parameterstorereadonly_role[0].arn
     })
   }
 }
