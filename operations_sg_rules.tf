@@ -27,6 +27,7 @@ resource "aws_security_group_rule" "operations_ingress_from_guacamole_via_vnc" {
 # Allow ingress from Kali instances via Nessus web GUI
 # For: Assessment team Nessus web access from Kali instances
 resource "aws_security_group_rule" "operations_ingress_from_kali_for_nessus" {
+  count    = lookup(var.operations_instance_counts, "nessus", 0) > 0 ? 1 : 0
   provider = aws.provisionassessment
 
   security_group_id = aws_security_group.operations.id

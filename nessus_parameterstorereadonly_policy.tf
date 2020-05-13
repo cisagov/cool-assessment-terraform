@@ -17,6 +17,7 @@ data "aws_iam_policy_document" "nessus_parameterstorereadonly_doc" {
 }
 
 resource "aws_iam_policy" "nessus_parameterstorereadonly_policy" {
+  count    = lookup(var.operations_instance_counts, "nessus", 0) > 0 ? 1 : 0
   provider = aws.provisionparameterstorereadrole
 
   description = local.nessus_parameterstorereadonly_role_description
