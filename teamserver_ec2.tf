@@ -42,7 +42,6 @@ resource "aws_instance" "teamserver" {
   }
 
   vpc_security_group_ids = [
-    aws_security_group.efs_client.id,
     aws_security_group.operations.id,
   ]
 
