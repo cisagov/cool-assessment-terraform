@@ -24,6 +24,20 @@ resource "aws_security_group_rule" "operations_ingress_from_guacamole_via_vnc" {
   to_port           = 5901
 }
 
+# Allow ingress from Kali instances via port 993 (IMAP over TLS/SSL)
+# For: Assessment team IMAP access on Teamservers from Kali instances
+resource "aws_security_group_rule" "operations_ingress_from_kali_via_imaps" {
+  count    = lookup(var.operations_instance_counts, "teamserver", 0) > 0 ? 1 : 0
+  provider = aws.provisionassessment
+
+  security_group_id = aws_security_group.operations.id
+  type              = "ingress"
+  protocol          = "tcp"
+  cidr_blocks       = formatlist("%s/32", aws_instance.kali[*].private_ip)
+  from_port         = 993
+  to_port           = 993
+}
+
 # Allow ingress from Kali instances via Nessus web GUI
 # For: Assessment team Nessus web access from Kali instances
 resource "aws_security_group_rule" "operations_ingress_from_kali_for_nessus" {
