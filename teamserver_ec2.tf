@@ -48,3 +48,27 @@ resource "aws_instance" "teamserver" {
   tags        = merge(var.tags, map("Name", format("Teamserver%d", count.index)))
   volume_tags = merge(var.tags, map("Name", format("Teamserver%d", count.index)))
 }
+
+# The Elastic IP for each teamserver
+resource "aws_eip" "teamserver_eip" {
+  count    = lookup(var.operations_instance_counts, "teamserver", 0)
+  provider = aws.provisionassessment
+
+  vpc = true
+  tags = merge(
+    var.tags,
+    {
+      "Name"           = format("Teamserver%d EIP", count.index)
+      "Publish Egress" = "True"
+    },
+  )
+}
+
+# The EIP association for each teamserver
+resource "aws_eip_association" "eip_assoc" {
+  count    = lookup(var.operations_instance_counts, "teamserver", 0)
+  provider = aws.provisionassessment
+
+  instance_id   = aws_instance.teamserver[count.index].id
+  allocation_id = aws_eip.teamserver_eip[count.index].id
+}
