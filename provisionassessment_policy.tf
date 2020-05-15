@@ -7,6 +7,7 @@ data "aws_iam_policy_document" "provisionassessment_policy_doc" {
   statement {
     actions = [
       "ec2:AllocateAddress",
+      "ec2:AssociateAddress",
       "ec2:AssociateDhcpOptions",
       "ec2:AssociateRouteTable",
       "ec2:AssociateTransitGatewayRouteTable",
@@ -41,6 +42,7 @@ data "aws_iam_policy_document" "provisionassessment_policy_doc" {
       "ec2:DeleteVpc",
       "ec2:Describe*",
       "ec2:DetachInternetGateway",
+      "ec2:DisassociateAddress",
       "ec2:DisassociateRouteTable",
       "ec2:DisassociateTransitGatewayRouteTable",
       "ec2:DisassociateVpcCidrBlock",

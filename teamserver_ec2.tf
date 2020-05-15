@@ -41,10 +41,39 @@ resource "aws_instance" "teamserver" {
     delete_on_termination = true
   }
 
+  # We can use the same cloud-init code as the Kali instances, since
+  # all it does is set up /etc/fstab to mount the EFS file share.
+  user_data_base64 = data.template_cloudinit_config.kali_cloud_init_tasks.rendered
+
   vpc_security_group_ids = [
+    aws_security_group.efs_client.id,
     aws_security_group.operations.id,
   ]
 
   tags        = merge(var.tags, map("Name", format("Teamserver%d", count.index)))
   volume_tags = merge(var.tags, map("Name", format("Teamserver%d", count.index)))
+}
+
+# The Elastic IP for each teamserver
+resource "aws_eip" "teamserver_eip" {
+  count    = lookup(var.operations_instance_counts, "teamserver", 0)
+  provider = aws.provisionassessment
+
+  vpc = true
+  tags = merge(
+    var.tags,
+    {
+      "Name"           = format("Teamserver%d EIP", count.index)
+      "Publish Egress" = "True"
+    },
+  )
+}
+
+# The EIP association for each teamserver
+resource "aws_eip_association" "eip_assoc" {
+  count    = lookup(var.operations_instance_counts, "teamserver", 0)
+  provider = aws.provisionassessment
+
+  instance_id   = aws_instance.teamserver[count.index].id
+  allocation_id = aws_eip.teamserver_eip[count.index].id
 }
