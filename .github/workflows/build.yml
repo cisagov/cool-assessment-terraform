@@ -75,9 +75,9 @@ jobs:
         run: GO111MODULE=on go get github.com/segmentio/terraform-docs
       - name: Find and initialize Terraform directories
         run: |
-          for path in [[ $(find . -type f -iname "*.tf" -exec dirname "{}" \; \
-            | sort -u) ]]; do \
-            echo "Initializing '$path'..." \
+          for path in $(find . -type f -iname "*.tf" -exec dirname "{}" \; \
+            | sort -u); do \
+            echo "Initializing '$path'...\n" \
             terraform init -upgrade=true -input=false -backend=false "$path"; \
             done
       - name: Install dependencies
