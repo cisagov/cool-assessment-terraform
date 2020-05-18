@@ -12,7 +12,6 @@ env:
   PIP_CACHE_DIR: ~/.cache/pip
   PRE_COMMIT_CACHE_DIR: ~/.cache/pre-commit
   RUN_TMATE: ${{ secrets.RUN_TMATE }}
-  TF_CACHE_DIR: .terraform
 
 jobs:
   lint:
@@ -61,11 +60,6 @@ jobs:
         with:
           path: ${{ steps.go-cache.outputs.dir }}
           key: "${{ runner.os }}-go"
-      - name: Cache Terraform initialization
-        uses: actions/cache@v1
-        with:
-          path: ${{ env.TF_CACHE_DIR }}
-          key: "${{ runner.os }}-terraform-initialization"
       - name: Install Terraform
         run: |
           mkdir -p ${{ env.CURL_CACHE_DIR }}
@@ -81,8 +75,9 @@ jobs:
         run: GO111MODULE=on go get github.com/segmentio/terraform-docs
       - name: Find and initialize Terraform directories
         run: |
-          for path in [[ $(find . -type f -iname "*.tf" -exec dirname "{}" \; \
-            | sort -u) ]]; do \
+          for path in $(find . -type f -iname "*.tf" -exec dirname "{}" \; \
+            | sort -u); do \
+            echo "Initializing '$path'..."; \
             terraform init -upgrade=true -input=false -backend=false "$path"; \
             done
       - name: Install dependencies
