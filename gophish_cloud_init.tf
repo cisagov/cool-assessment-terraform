@@ -24,6 +24,8 @@ data "template_cloudinit_config" "gophish_cloud_init_tasks" {
     merge_type   = "list(append)+dict(recurse_array)+str()"
   }
 
+  # Set up everything needed to successfully launch the
+  # pca-gophish-composition service.
   part {
     content = templatefile(
       "${path.module}/cloud-init/gophish-dir-setup.tpl.yml", {
