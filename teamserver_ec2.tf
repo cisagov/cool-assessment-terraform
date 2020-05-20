@@ -55,7 +55,7 @@ resource "aws_instance" "teamserver" {
 }
 
 # The Elastic IP for each teamserver
-resource "aws_eip" "teamserver_eip" {
+resource "aws_eip" "teamserver" {
   count    = lookup(var.operations_instance_counts, "teamserver", 0)
   provider = aws.provisionassessment
 
@@ -70,10 +70,10 @@ resource "aws_eip" "teamserver_eip" {
 }
 
 # The EIP association for each teamserver
-resource "aws_eip_association" "eip_assoc" {
+resource "aws_eip_association" "teamserver" {
   count    = lookup(var.operations_instance_counts, "teamserver", 0)
   provider = aws.provisionassessment
 
   instance_id   = aws_instance.teamserver[count.index].id
-  allocation_id = aws_eip.teamserver_eip[count.index].id
+  allocation_id = aws_eip.teamserver[count.index].id
 }
