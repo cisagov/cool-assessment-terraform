@@ -5,10 +5,9 @@ runcmd:
   # Set group ownership of the gophish data directory to the gophish group
   - [chown, --verbose, --recursive, ":gophish", "${efs_gophish_data_dir}"]
   # Give full permissions on the gophish data directory to the gophish group
-  - [chmod, "0775", "${efs_gophish_data_dir}"]
-  # Set the group sticky bit on the gophish data directory so that future
-  # content in the directory will also be owned by the gophish group
-  - [chmod, g+s, "${efs_gophish_data_dir}"]
+  # and set the group sticky bit so that future content in the directory
+  # will also be owned by the gophish group
+  - [chmod, "2775", "${efs_gophish_data_dir}"]
   # Remove the default GoPhish data directory
   - [rm, -r, "${gophish_data_dir}"]
   # Make a symbolic link to the GoPhish data directory on the EFS share
