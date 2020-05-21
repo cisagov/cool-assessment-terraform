@@ -145,6 +145,18 @@ variable "ssm_key_vnc_user_private_ssh_key" {
   default     = "/vnc/ssh/rsa_private_key"
 }
 
+variable "ssmsession_role_description" {
+  type        = string
+  description = "The description to associate with the IAM role (and policy) that allows creation of SSM SessionManager sessions to any EC2 instance in this account."
+  default     = "Allows creation of SSM SessionManager sessions to any EC2 instance in this account."
+}
+
+variable "ssmsession_role_name" {
+  type        = string
+  description = "The name to assign the IAM role (and policy) that allows creation of SSM SessionManager sessions to any EC2 instance in this account."
+  default     = "StartStopSSMSession"
+}
+
 variable "tags" {
   type        = map(string)
   description = "Tags to apply to all AWS resources created"

@@ -1,19 +1,3 @@
-# Allow ingress from COOL Shared Services VPN server CIDR block via ssh
-# For: DevOps ssh access to private subnet
-resource "aws_network_acl_rule" "private_ingress_from_cool_via_ssh" {
-  provider = aws.provisionassessment
-  for_each = toset(var.private_subnet_cidr_blocks)
-
-  network_acl_id = aws_network_acl.private[each.value].id
-  egress         = false
-  protocol       = "tcp"
-  rule_number    = 100 + index(var.private_subnet_cidr_blocks, each.value)
-  rule_action    = "allow"
-  cidr_block     = local.vpn_server_cidr_block
-  from_port      = 22
-  to_port        = 22
-}
-
 # Allow ingress from COOL Shared Services VPN server CIDR block via https
 # For: Assessment team access to guacamole web client
 resource "aws_network_acl_rule" "private_ingress_from_cool_via_https" {
@@ -47,7 +31,7 @@ resource "aws_network_acl_rule" "private_egress_to_anywhere_via_https" {
 }
 
 # Allow egress to COOL Shared Services via ephemeral ports
-# For: DevOps ssh access to private subnet
+# For: Assessment team access to guacamole web client
 resource "aws_network_acl_rule" "private_egress_to_cool_via_ephemeral_ports" {
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
