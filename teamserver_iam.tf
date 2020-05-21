@@ -27,6 +27,14 @@ resource "aws_iam_role_policy_attachment" "cloudwatch_agent_policy_attachment_te
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
 }
 
+# Attach the SSM Agent policy to this role as well
+resource "aws_iam_role_policy_attachment" "ssm_agent_policy_attachment_teamserver" {
+  provider = aws.provisionassessment
+
+  role       = aws_iam_role.teamserver_instance_role.id
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
 # Attach a policy that allows the Teamserver instances to mount and
 # write to the EFS
 resource "aws_iam_role_policy_attachment" "efs_mount_policy_attachment_teamserver" {
