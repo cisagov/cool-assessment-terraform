@@ -13,9 +13,10 @@ data "aws_iam_policy_document" "ssmsession_doc" {
       "ssm:StartSession",
     ]
     resources = [
-      "arn:aws:ec2:*:*:instance/*",
-      "arn:aws:ssm:*:*:document/AWS-StartSSHSession",
-      "arn:aws:ssm:*:*:document/SSM-SessionManagerRunShell",
+      "arn:aws:ec2:${var.aws_region}:${local.assessment_account_id}:instance/*",
+      "arn:aws:ssm:${var.aws_region}::document/AWS-StartPortForwardingSession",
+      "arn:aws:ssm:${var.aws_region}::document/AWS-StartSSHSession",
+      "arn:aws:ssm:${var.aws_region}:${local.assessment_account_id}:document/SSM-SessionManagerRunShell",
     ]
     condition {
       test     = "BoolIfExists"
@@ -24,6 +25,18 @@ data "aws_iam_policy_document" "ssmsession_doc" {
         true,
       ]
     }
+  }
+
+  # Allow the user to read documents
+  statement {
+    actions = [
+      "ssm:GetDocument",
+    ]
+    resources = [
+      "arn:aws:ssm:${var.aws_region}::document/AWS-StartPortForwardingSession",
+      "arn:aws:ssm:${var.aws_region}::document/AWS-StartSSHSession",
+      "arn:aws:ssm:${var.aws_region}:${local.assessment_account_id}:document/SSM-SessionManagerRunShell",
+    ]
   }
 
   # Allow the user to collect some information
@@ -46,7 +59,7 @@ data "aws_iam_policy_document" "ssmsession_doc" {
       "ssm:TerminateSession",
     ]
     resources = [
-      "arn:aws:ssm:*:*:session/&{aws:username}-*",
+      "arn:aws:ssm:${var.aws_region}:${local.assessment_account_id}:session/&{aws:username}-*",
     ]
   }
 }
