@@ -1,19 +1,5 @@
-# Allow ingress from COOL Shared Services VPN server CIDR block via ssh
-# For: DevOps ssh access to Guacamole instance
-resource "aws_security_group_rule" "desktop_gw_ingress_from_cool_via_ssh" {
-  provider = aws.provisionassessment
-
-  security_group_id = aws_security_group.desktop_gateway.id
-  type              = "ingress"
-  protocol          = "tcp"
-  cidr_blocks       = [local.vpn_server_cidr_block]
-  # ipv6_cidr_blocks  = TBD
-  from_port = 22
-  to_port   = 22
-}
-
 # Allow egress via ssh to the Operations subnet
-# For: DevOps ssh access to assessment operating instances
+# For: Guacamole scp access to assessment operating instances
 resource "aws_security_group_rule" "desktop_gw_egress_to_ops_via_ssh" {
   provider = aws.provisionassessment
 
