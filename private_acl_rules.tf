@@ -145,3 +145,20 @@ resource "aws_network_acl_rule" "private_egress_to_operations_via_vnc" {
   from_port      = 5901
   to_port        = 5901
 }
+
+# Allow egress to COOL Shared Services via IPA-related ports
+# For: Guacamole instance communication with FreeIPA
+# Note that these rules only apply to the private subnet with Guacamole.
+resource "aws_network_acl_rule" "private_egress_to_cool_via_ipa_ports" {
+  provider = aws.provisionassessment
+  for_each = local.ipa_ports
+
+  network_acl_id = aws_network_acl.private[var.private_subnet_cidr_blocks[0]].id
+  egress         = true
+  protocol       = each.value.proto
+  rule_number    = 130 + each.value.index
+  rule_action    = "allow"
+  cidr_block     = local.cool_shared_services_cidr_block
+  from_port      = each.value.port
+  to_port        = each.value.port
+}
