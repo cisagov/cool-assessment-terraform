@@ -4,10 +4,50 @@ data "template_cloudinit_config" "guacamole_cloud_init_tasks" {
   gzip          = true
   base64_encode = true
 
-  # Note: The filename parameters in each part below are only used to name the
+  #-------------------------------------------------------------------------------
+  # Cloud Config parts
+  #-------------------------------------------------------------------------------
+
+  # Notes:
+  # * All the cloud-config parts will write to the same file on the instance
+  # at boot. To prevent one part from clobbering another, you must specify a
+  # merge_type.  See:
+  # https://cloudinit.readthedocs.io/en/latest/topics/merging.html#built-in-mergers
+  # * The filename parameters in each part below are only used to name the
   # mime-parts of the user-data.  It does not affect the final name for the
-  # templates. For the x-shellscript parts, it will also be used as a filename
-  # in the scripts directory.
+  # templates.
+
+  # Set up Guacamole connection(s) to operations instance(s)
+  part {
+    filename     = "write-guac-connection-sql-template.yml"
+    content_type = "text/cloud-config"
+    content = templatefile(
+      "${path.module}/cloud-init/write-guac-connection-sql-template.tpl.yml", {
+        sql_template_fullpath = "/root/guacamole_connection_template.sql"
+    })
+    merge_type = "list(append)+dict(recurse_array)+str()"
+  }
+
+  # Set environment variables required to enroll in the FreeIPA domain.
+  part {
+    filename     = "freeipa-creds.yml"
+    content_type = "text/cloud-config"
+    content = templatefile(
+      "${path.module}/cloud-init/freeipa-creds.tpl.yml", {
+        admin_pw = var.freeipa_admin_pw
+        hostname = "guac.${local.assessment_account_name_base}.${var.cool_domain}"
+        realm    = upper(var.cool_domain)
+    })
+    merge_type = "list(append)+dict(recurse_array)+str()"
+  }
+
+  #-------------------------------------------------------------------------------
+  # Shell script parts
+  #-------------------------------------------------------------------------------
+
+  # Note: The filename parameters in each part below are used to name
+  # the mime-parts of the user-data as well as the filename in the
+  # scripts directory.
 
   part {
     filename     = "install-certificates.py"
@@ -17,16 +57,6 @@ data "template_cloudinit_config" "guacamole_cloud_init_tasks" {
         cert_bucket_name   = var.cert_bucket_name
         cert_read_role_arn = module.guacamole_certreadrole.role.arn
         server_fqdn        = local.guacamole_fqdn
-    })
-  }
-
-  # Set up Guacamole connection(s) to operations instance(s)
-  part {
-    filename     = "write-guac-connection-sql-template.yml"
-    content_type = "text/cloud-config"
-    content = templatefile(
-      "${path.module}/cloud-init/write-guac-connection-sql-template.tpl.yml", {
-        sql_template_fullpath = "/root/guacamole_connection_template.sql"
     })
   }
 
