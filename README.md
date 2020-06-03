@@ -71,6 +71,7 @@ the COOL environment.
 | aws_region | The AWS region to deploy into (e.g. us-east-1). | string | `us-east-1` | no |
 | cert_bucket_name | The name of the AWS S3 bucket where certificates are stored. | string | `cisa-cool-certificates` | no |
 | cool_domain | The domain where the COOL resources reside (e.g. "cool.cyber.dhs.gov"). | string | `cool.cyber.dhs.gov` | no |
+| freeipa_admin_pw | The password for the Kerberos admin role, which is required for the Guacamole instance to join the FreeIPA domain. | string | | yes |
 | guac_connection_setup_path | The full path to the dbinit directory where initialization files must be stored in order to work properly (e.g. "/var/guacamole/dbinit"). | string | `/var/guacamole/dbinit` | no |
 | nessus_activation_codes | The list of Nessus activation codes (e.g. ["AAAA-BBBB-CCCC-DDDD"]). The number of codes in this list should match the number of Nessus instances defined in operations_instance_counts. | list(string) | `[]` | no |
 | operations_instance_counts | A map specifying how many instances of each type should be created in the operations subnet (e.g. { "kali": 1 }).  The currently-supported instance keys are: ["gophish", "kali", "nessus", "teamserver"]. | map(number) | `{ "kali": 1 }` | no |

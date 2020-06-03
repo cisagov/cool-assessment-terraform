@@ -52,3 +52,17 @@ resource "aws_security_group_rule" "desktop_gw_egress_to_ops_via_vnc" {
   from_port         = 5901
   to_port           = 5901
 }
+
+# Allow egress to COOL Shared Services via IPA-related ports
+# For: Guacamole instance communication with FreeIPA
+resource "aws_security_group_rule" "desktop_gw_egress_to_cool_via_ipa_ports" {
+  provider = aws.provisionassessment
+  for_each = local.ipa_ports
+
+  security_group_id = aws_security_group.desktop_gateway.id
+  type              = "egress"
+  protocol          = each.value.proto
+  cidr_blocks       = [local.cool_shared_services_cidr_block]
+  from_port         = each.value.port
+  to_port           = each.value.port
+}
