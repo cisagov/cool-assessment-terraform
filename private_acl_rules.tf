@@ -162,3 +162,23 @@ resource "aws_network_acl_rule" "private_egress_to_cool_via_ipa_ports" {
   from_port      = each.value.port
   to_port        = each.value.port
 }
+
+# Allow ingress from private subnet to private subnet via IPA-related ports.
+# For: Guacamole instance communication with FreeIPA
+# Note that these rules only apply to the private subnet with Guacamole.
+# Full disclosure: We are not totally clear on why this access is needed,
+# but without it, traffic is unable to go from the Guacamole instance to the
+# Transit Gateway attachment (both reside in the same private subnet).
+resource "aws_network_acl_rule" "private_ingress_to_tg_attachment_via_ipa_ports" {
+  provider = aws.provisionassessment
+  for_each = local.ipa_ports
+
+  network_acl_id = aws_network_acl.private[var.private_subnet_cidr_blocks[0]].id
+  egress         = false
+  protocol       = each.value.proto
+  rule_number    = 140 + each.value.index
+  rule_action    = "allow"
+  cidr_block     = var.private_subnet_cidr_blocks[0]
+  from_port      = each.value.port
+  to_port        = each.value.port
+}
