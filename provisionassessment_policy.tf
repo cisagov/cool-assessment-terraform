@@ -16,6 +16,7 @@ data "aws_iam_policy_document" "provisionassessment_policy_doc" {
       "ec2:AuthorizeSecurityGroupEgress",
       "ec2:AuthorizeSecurityGroupIngress",
       "ec2:CreateDhcpOptions",
+      "ec2:CreateFlowLogs",
       "ec2:CreateInternetGateway",
       "ec2:CreateNatGateway",
       "ec2:CreateNetworkAcl",
@@ -29,6 +30,7 @@ data "aws_iam_policy_document" "provisionassessment_policy_doc" {
       "ec2:CreateTransitGatewayVpcAttachment",
       "ec2:CreateVpc",
       "ec2:DeleteDhcpOptions",
+      "ec2:DeleteFlowLogs",
       "ec2:DeleteInternetGateway",
       "ec2:DeleteNatGateway",
       "ec2:DeleteNetworkAcl",
@@ -140,6 +142,28 @@ data "aws_iam_policy_document" "provisionassessment_policy_doc" {
 
     resources = [
       "arn:aws:ssm:${var.aws_region}:${local.assessment_account_id}:document/SSM-SessionManagerRunShell",
+    ]
+  }
+
+  statement {
+    actions = [
+      "logs:CreateLogGroup",
+      "logs:DescribeLogGroups",
+    ]
+
+    resources = [
+      "*"
+    ]
+  }
+
+  statement {
+    actions = [
+      "logs:DeleteLogGroup",
+      "logs:ListTagsLogGroup",
+    ]
+
+    resources = [
+      "arn:aws:logs:${var.aws_region}:${local.assessment_account_id}:log-group:vpc_flow_log_*"
     ]
   }
 }
