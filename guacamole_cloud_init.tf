@@ -28,15 +28,15 @@ data "template_cloudinit_config" "guacamole_cloud_init_tasks" {
     merge_type = "list(append)+dict(recurse_array)+str()"
   }
 
-  # Set environment variables required to enroll in the FreeIPA domain.
+  # Set environment variables required to enroll in the FreeIPA
+  # domain.
   part {
-    filename     = "freeipa-creds.yml"
+    filename     = "freeipa-vars.yml"
     content_type = "text/cloud-config"
     content = templatefile(
-      "${path.module}/cloud-init/freeipa-creds.tpl.yml", {
-        admin_pw = var.freeipa_admin_pw
+      "${path.module}/cloud-init/freeipa-vars.tpl.yml", {
+        domain   = var.cool_domain
         hostname = "guac.${local.assessment_account_name_base}.${var.cool_domain}"
-        realm    = upper(var.cool_domain)
     })
     merge_type = "list(append)+dict(recurse_array)+str()"
   }

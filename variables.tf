@@ -9,11 +9,6 @@ variable "assessment_account_name" {
   description = "The name of the AWS account for this assessment (e.g. \"env0\")."
 }
 
-variable "freeipa_admin_pw" {
-  type        = string
-  description = "The password for the Kerberos admin role, which is required for the Guacamole instance to join the FreeIPA domain."
-}
-
 variable "operations_subnet_cidr_block" {
   type        = string
   description = "The operations subnet CIDR block for this assessment (e.g. \"10.10.0.0/24\")."
