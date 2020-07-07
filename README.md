@@ -116,6 +116,7 @@ the COOL environment.
 
 | Name | Description |
 |------|-------------|
+| guacamole_server | The AWS EC2 instance hosting guacamole. |
 | remote_desktop_url | The URL of the remote desktop gateway (Guacamole) for this assessment. |
 | ssm_session_role | An IAM role that allows creation of SSM SessionManager sessions to any EC2 instance in this account. |
 
