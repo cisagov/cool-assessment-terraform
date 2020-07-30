@@ -41,11 +41,14 @@ jobs:
             ${{ env.PRE_COMMIT_CACHE_DIR }}
             ${{ env.CURL_CACHE_DIR }}
             ${{ steps.go-cache.outputs.dir }}
-          key: "lint-${{ runner.os }}-py${{ env.PY_VERSION }}-\
+          key: "lint-${{ runner.os }}-\
+            py${{ env.PY_VERSION }}-\
+            tf${{ env.TERRAFORM_VERSION }}-\
             ${{ hashFiles('**/requirements-test.txt') }}-\
             ${{ hashFiles('**/.pre-commit-config.yaml') }}"
           restore-keys: |
-            lint-${{ runner.os }}-py${{ env.PY_VERSION }}-
+            lint-${{ runner.os }}-py${{ env.PY_VERSION }}-\
+            tf${{ env.TERRAFORM_VERSION }}-
             lint-${{ runner.os }}-
       - name: Install Terraform
         run: |
