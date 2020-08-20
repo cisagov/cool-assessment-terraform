@@ -73,14 +73,15 @@ jobs:
           sudo unzip -d /opt/terraform \
             ${{ env.CURL_CACHE_DIR }}/"${TERRAFORM_ZIP}"
           sudo ln -s /opt/terraform/terraform /usr/bin/terraform
+          sudo mv /usr/local/bin/terraform /usr/local/bin/terraform-default
+          sudo ln -s /opt/terraform/terraform /usr/local/bin/terraform
       - name: Install Terraform-docs
         run: GO111MODULE=on go get github.com/segmentio/terraform-docs
       - name: Find and initialize Terraform directories
         run: |
-          for path in $(find . -type f -iname "*.tf" -exec dirname "{}" \; \
-            | sort -u); do \
-            echo "Initializing '$path'..."; \
-            terraform init -upgrade=true -input=false -backend=false "$path"; \
+          for path in $(find . -not \( -type d -name ".terraform" -prune \) \
+            -type f -iname "*.tf" -exec dirname "{}" \; | sort -u); do \
+            terraform init -input=false -backend=false "$path"; \
             done
       - name: Install dependencies
         run: |
