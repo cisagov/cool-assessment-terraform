@@ -1,11 +1,4 @@
 terraform {
-<<<<<<< HEAD
-  required_version = ">= 0.12"
-
-  required_providers {
-    aws      = "~> 2.0"
-    template = "~> 2.0"
-=======
   # We want to hold off on 0.13 until we have tested it.
   required_version = "~> 0.12.0"
 
@@ -13,7 +6,7 @@ terraform {
   # major version currently being used.  This practice will help us
   # avoid unwelcome surprises.
   required_providers {
-    aws = "~> 2.0"
->>>>>>> f61b641be1ef68f5889274e9ee3ecdfaf193e3c9
+    aws      = "~> 2.0"
+    template = "~> 2.1"
   }
 }
