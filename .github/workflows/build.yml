@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: cisagov/setup-env-github-action@develop
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v1
+      - uses: actions/setup-python@v2
         with:
           python-version: 3.8
       - uses: actions/setup-go@v2
@@ -29,37 +29,40 @@ jobs:
         run: |
           echo "::set-env name=PY_VERSION::"\
           "$(python -c "import platform;print(platform.python_version())")"
-      - name: Cache pip test requirements
-        uses: actions/cache@v1
-        with:
-          path: ${{ env.PIP_CACHE_DIR }}
-          key: "${{ runner.os }}-pip-test-py${{ env.PY_VERSION }}-\
-            ${{ hashFiles('**/requirements-test.txt') }}"
-          restore-keys: |
-            ${{ runner.os }}-pip-test-py${{ env.PY_VERSION }}-
-            ${{ runner.os }}-pip-test-
-            ${{ runner.os }}-pip-
-      - name: Cache pre-commit hooks
-        uses: actions/cache@v1
-        with:
-          path: ${{ env.PRE_COMMIT_CACHE_DIR }}
-          key: "${{ runner.os }}-pre-commit-py${{ env.PY_VERSION }}-\
-            ${{ hashFiles('**/.pre-commit-config.yaml') }}"
-      - name: Cache curl downloads
-        uses: actions/cache@v1
-        with:
-          path: ${{ env.CURL_CACHE_DIR }}
-          key: "${{ runner.os }}-curl-\
-            terraform-${{ env.TERRAFORM_VERSION }}"
+      - name: Store installed Go version
+        run: |
+          echo "::set-env name=GO_VERSION::"\
+          "$(go version | sed 's/^go version go\([0-9.]\+\) .*/\1/')"
       - name: Lookup go cache directory
         id: go-cache
         run: |
           echo "::set-output name=dir::$(go env GOCACHE)"
-      - name: Cache go
-        uses: actions/cache@v1
+      - name: Cache linting environments
+        uses: actions/cache@v2
         with:
-          path: ${{ steps.go-cache.outputs.dir }}
-          key: "${{ runner.os }}-go"
+          # Note that the .terraform directory IS NOT included in the
+          # cache because if we were caching, then we would need to use
+          # the `-upgrade=true` option. This option blindly pulls down the
+          # latest modules and providers instead of checking to see if an
+          # update is required. That behavior defeats the benefits of caching.
+          # so there is no point in doing it for the .terraform directory.
+          path: |
+            ${{ env.PIP_CACHE_DIR }}
+            ${{ env.PRE_COMMIT_CACHE_DIR }}
+            ${{ env.CURL_CACHE_DIR }}
+            ${{ steps.go-cache.outputs.dir }}
+          key: "lint-${{ runner.os }}-\
+            py${{ env.PY_VERSION }}-\
+            go${{ env.GO_VERSION }}-\
+            tf${{ env.TERRAFORM_VERSION }}-\
+            ${{ hashFiles('**/requirements-test.txt') }}-\
+            ${{ hashFiles('**/.pre-commit-config.yaml') }}"
+          restore-keys: |
+            lint-${{ runner.os }}-\
+            py${{ env.PY_VERSION }}-\
+            go${{ env.GO_VERSION }}-\
+            tf${{ env.TERRAFORM_VERSION }}-
+            lint-${{ runner.os }}-
       - name: Install Terraform
         run: |
           mkdir -p ${{ env.CURL_CACHE_DIR }}
@@ -71,14 +74,16 @@ jobs:
           sudo unzip -d /opt/terraform \
             ${{ env.CURL_CACHE_DIR }}/"${TERRAFORM_ZIP}"
           sudo ln -s /opt/terraform/terraform /usr/bin/terraform
+          sudo mv /usr/local/bin/terraform /usr/local/bin/terraform-default
+          sudo ln -s /opt/terraform/terraform /usr/local/bin/terraform
       - name: Install Terraform-docs
         run: GO111MODULE=on go get github.com/segmentio/terraform-docs
       - name: Find and initialize Terraform directories
         run: |
-          for path in $(find . -type f -iname "*.tf" -exec dirname "{}" \; \
-            | sort -u); do \
+          for path in $(find . -not \( -type d -name ".terraform" -prune \) \
+            -type f -iname "*.tf" -exec dirname "{}" \; | sort -u); do \
             echo "Initializing '$path'..."; \
-            terraform init -upgrade=true -input=false -backend=false "$path"; \
+            terraform init -input=false -backend=false "$path"; \
             done
       - name: Install dependencies
         run: |
