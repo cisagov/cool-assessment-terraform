@@ -98,10 +98,11 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_3390
   to_port        = 5900
 }
 
-# Allow ingress from anywhere via ephemeral TCP/UDP ports above 5901 (5902-65535)
+# Allow ingress from anywhere via ephemeral TCP/UDP ports 5901-50049
 # For: Assessment team operational use, but don't want to allow
-#      public access to VNC on port 5901
-resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_5902_thru_65535" {
+#      public access to VNC on port 5901 or Cobalt Strike teamserver
+#      on port 50050
+resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_5902_thru_50049" {
   provider = aws.provisionassessment
   for_each = toset(local.tcp_and_udp)
 
@@ -112,6 +113,23 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_5902
   rule_action    = "allow"
   cidr_block     = "0.0.0.0/0"
   from_port      = 5902
+  to_port        = 50049
+}
+
+# Allow ingress from anywhere via ephemeral TCP/UDP ports 50051-65535
+# For: Assessment team operational use, but don't want to allow
+#      public access to Cobalt Strike teamserver on port 50050
+resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_50051_thru_65535" {
+  provider = aws.provisionassessment
+  for_each = toset(local.tcp_and_udp)
+
+  network_acl_id = aws_network_acl.operations.id
+  egress         = false
+  protocol       = each.value
+  rule_number    = 306 + index(local.tcp_and_udp, each.value)
+  rule_action    = "allow"
+  cidr_block     = "0.0.0.0/0"
+  from_port      = 50051
   to_port        = 65535
 }
 
