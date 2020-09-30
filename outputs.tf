@@ -1,8 +1,3 @@
-output "id" {
-  value       = aws_instance.example.id
-  description = "The EC2 instance ID"
-}
-
 output "arn" {
   value       = aws_instance.example.arn
   description = "The EC2 instance ARN"
@@ -11,6 +6,11 @@ output "arn" {
 output "availability_zone" {
   value       = aws_instance.example.availability_zone
   description = "The AZ where the EC2 instance is deployed"
+}
+
+output "id" {
+  value       = aws_instance.example.id
+  description = "The EC2 instance ID"
 }
 
 output "private_ip" {

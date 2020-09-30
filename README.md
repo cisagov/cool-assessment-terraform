@@ -35,22 +35,35 @@ module "example" {
 
 * [Deploying into the default VPC](https://github.com/cisagov/skeleton-tf-module/tree/develop/examples/default_vpc)
 
+## Requirements ##
+
+| Name | Version |
+|------|---------|
+| terraform | ~> 0.12.0 |
+| aws | ~> 2.0 |
+
+## Providers ##
+
+| Name | Version |
+|------|---------|
+| aws | ~> 2.0 |
+
 ## Inputs ##
 
 | Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-------:|:--------:|
-| aws_region | The AWS region to deploy into (e.g. us-east-1) | string | | yes |
-| aws_availability_zone | The AWS availability zone to deploy into (e.g. a, b, c, etc.) | string | | yes |
-| subnet_id | The ID of the AWS subnet to deploy into (e.g. subnet-0123456789abcdef0) | string | | yes |
-| tags | Tags to apply to all AWS resources created | map(string) | `{}` | no |
+|------|-------------|------|---------|:--------:|
+| aws_availability_zone | The AWS availability zone to deploy into (e.g. a, b, c, etc.) | `string` | `a` | no |
+| aws_region | The AWS region to deploy into (e.g. us-east-1) | `string` | `us-east-1` | no |
+| subnet_id | The ID of the AWS subnet to deploy into (e.g. subnet-0123456789abcdef0) | `string` | n/a | yes |
+| tags | Tags to apply to all AWS resources created | `map(string)` | `{}` | no |
 
 ## Outputs ##
 
 | Name | Description |
 |------|-------------|
-| id | The EC2 instance ID |
 | arn | The EC2 instance ARN |
 | availability_zone | The AZ where the EC2 instance is deployed |
+| id | The EC2 instance ID |
 | private_ip | The private IP of the EC2 instance |
 | subnet_id | The ID of the subnet where the EC2 instance is deployed |
 
