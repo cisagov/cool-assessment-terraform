@@ -67,6 +67,8 @@ the COOL environment.
 | Name | Version |
 |------|---------|
 | terraform | ~> 0.12.0 |
+| aws | ~> 2.0 |
+| template | ~> 2.1 |
 
 ## Providers ##
 
@@ -78,7 +80,8 @@ the COOL environment.
 | aws.provisionassessment | ~> 2.0 |
 | aws.provisionparameterstorereadrole | ~> 2.0 |
 | aws.provisionsharedservices | ~> 2.0 |
-| template | ~> 2.0 |
+| template | ~> 2.1 |
+| terraform | n/a |
 
 ## Inputs ##
 
