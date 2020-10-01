@@ -81,6 +81,19 @@ the COOL environment.
 | template | n/a |
 | terraform | n/a |
 
+## Requirements ##
+
+| Name | Version |
+|------|---------|
+| terraform | ~> 0.12.0 |
+| aws | ~> 2.0 |
+
+## Providers ##
+
+| Name | Version |
+|------|---------|
+| aws | ~> 2.0 |
+
 ## Inputs ##
 
 | Name | Description | Type | Default | Required |
