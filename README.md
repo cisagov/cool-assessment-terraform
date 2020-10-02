@@ -66,19 +66,21 @@ the COOL environment.
 
 | Name | Version |
 |------|---------|
-| terraform | >= 0.12 |
+| terraform | ~> 0.12.0 |
+| aws | ~> 2.0 |
+| template | ~> 2.1 |
 
 ## Providers ##
 
 | Name | Version |
 |------|---------|
-| aws | n/a |
-| aws.dns_sharedservices | n/a |
-| aws.organizationsreadonly | n/a |
-| aws.provisionassessment | n/a |
-| aws.provisionparameterstorereadrole | n/a |
-| aws.provisionsharedservices | n/a |
-| template | n/a |
+| aws | ~> 2.0 |
+| aws.dns_sharedservices | ~> 2.0 |
+| aws.organizationsreadonly | ~> 2.0 |
+| aws.provisionassessment | ~> 2.0 |
+| aws.provisionparameterstorereadrole | ~> 2.0 |
+| aws.provisionsharedservices | ~> 2.0 |
+| template | ~> 2.1 |
 | terraform | n/a |
 
 ## Inputs ##
