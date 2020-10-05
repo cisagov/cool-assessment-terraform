@@ -24,7 +24,8 @@ resource "aws_security_group_rule" "operations_ingress_from_guacamole_via_vnc" {
   to_port           = 5901
 }
 
-# Allow ingress from Kali instances via port 993 (IMAP over TLS/SSL)
+# Allow ingress from Kali instances to teamservers via port 993 (IMAP
+# over TLS/SSL)
 # For: Assessment team IMAP access on Teamservers from Kali instances
 resource "aws_security_group_rule" "operations_ingress_from_kali_via_imaps" {
   count    = lookup(var.operations_instance_counts, "teamserver", 0) > 0 ? 1 : 0
@@ -50,6 +51,22 @@ resource "aws_security_group_rule" "operations_ingress_from_kali_for_nessus" {
   cidr_blocks       = formatlist("%s/32", aws_instance.kali[*].private_ip)
   from_port         = 8834
   to_port           = 8834
+}
+
+# Allow ingress from Kali instances to teamservers via port 50050
+# (Cobalt Strike)
+# For: Assessment team to access Cobalt Strike on Teamservers from
+# Kali instances
+resource "aws_security_group_rule" "operations_ingress_from_kali_via_cs" {
+  count    = lookup(var.operations_instance_counts, "teamserver", 0) > 0 ? 1 : 0
+  provider = aws.provisionassessment
+
+  security_group_id = aws_security_group.operations.id
+  type              = "ingress"
+  protocol          = "tcp"
+  cidr_blocks       = formatlist("%s/32", aws_instance.kali[*].private_ip)
+  from_port         = 50050
+  to_port           = 50050
 }
 
 # Allow ingress from anywhere via the TCP ports specified in
