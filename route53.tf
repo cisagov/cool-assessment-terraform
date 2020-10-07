@@ -39,3 +39,18 @@ resource "aws_route53_zone" "private_subnet_reverse" {
     vpc_id = aws_vpc.assessment.id
   }
 }
+
+# Associate assessment VPC with Shared Services Route53 (private DNS) zone
+resource "aws_route53_vpc_association_authorization" "assessment_public" {
+  provider = aws.dns_sharedservices
+
+  vpc_id  = aws_vpc.assessment.id
+  zone_id = data.terraform_remote_state.sharedservices_networking.outputs.private_zone.id
+}
+
+resource "aws_route53_zone_association" "assessment_public" {
+  provider = aws.provisionassessment
+
+  vpc_id  = aws_route53_vpc_association_authorization.assessment_public.vpc_id
+  zone_id = aws_route53_vpc_association_authorization.assessment_public.zone_id
+}
