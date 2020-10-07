@@ -121,6 +121,7 @@ data "aws_iam_policy_document" "provisionassessment_policy_doc" {
       "route53:DeleteHostedZone",
       "route53:GetChange",
       "route53:GetHostedZone",
+      "route53:ListHostedZonesByVPC",
       "route53:ListResourceRecordSets",
       "route53:ListTagsForResource",
       "route53:UpdateHostedZoneComment",
