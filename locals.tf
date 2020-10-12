@@ -154,7 +154,7 @@ locals {
     "udp",
   ]
 
-  # The ID of the Transit Gateway in the Shared Services account
+  # The ID of the Transit Gateway in the Shared Services account.
   transit_gateway_id = data.terraform_remote_state.sharedservices_networking.outputs.transit_gateway.id
   # The ID of the route table to be associated with the Transit
   # Gateway attachment for this account.
