@@ -36,28 +36,3 @@ resource "aws_vpc_dhcp_options_association" "assessment" {
   dhcp_options_id = aws_vpc_dhcp_options.assessment.id
   vpc_id          = aws_vpc.assessment.id
 }
-
-# # Associate the COOL private DNS zone with this VPC
-#
-# Not available right now in Terraform
-# See https://github.com/cisagov/cool-assessment-terraform/issues/7
-# for details.
-#
-# For now, I manually executed:
-# aws route53 create-vpc-association-authorization \
-# --hosted-zone-id COOLPRIVATEZONEID \
-# --vpc VPCRegion=us-east-1,VPCId=vpc-MY_ENV_VPC_ID \
-# --profile cool-sharedservices-provisionaccount
-#
-# aws route53 associate-vpc-with-hosted-zone \
-# --hosted-zone-id COOLPRIVATEZONEID \
-# --vpc VPCRegion=us-east-1,VPCId=vpc-MY_ENV_VPC_ID \
-# --profile cool-MYENV-provisionaccount
-#
-#
-# resource "aws_route53_zone_association" "cool_private" {
-#   provider = aws.provisionassessment
-#
-#   vpc_id  = aws_vpc.assessment.id
-#   zone_id = local.cool_dns_private_zone.zone_id
-# }
