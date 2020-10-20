@@ -1,6 +1,6 @@
 # cloud-init commands for configuring Kali instances
 
-data "template_cloudinit_config" "kali_cloud_init_tasks" {
+data "cloudinit_config" "kali_cloud_init_tasks" {
   gzip          = true
   base64_encode = true
 

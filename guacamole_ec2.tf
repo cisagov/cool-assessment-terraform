@@ -39,7 +39,7 @@ resource "aws_instance" "guacamole" {
     delete_on_termination = true
   }
 
-  user_data_base64 = data.template_cloudinit_config.guacamole_cloud_init_tasks.rendered
+  user_data_base64 = data.cloudinit_config.guacamole_cloud_init_tasks.rendered
 
   vpc_security_group_ids = [
     aws_security_group.desktop_gateway.id,
