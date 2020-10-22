@@ -20,5 +20,4 @@ module "example" {
   aws_availability_zone = var.aws_availability_zone
   aws_region            = var.aws_region
   subnet_id             = aws_subnet.example.id
-
 }
