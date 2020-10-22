@@ -1,15 +1,9 @@
 # ------------------------------------------------------------------------------
-# DEPLOY THE EXAMPLE AMI FROM cisagov/skeleton-packer IN AWS
-#
 # Deploy the example AMI from cisagov/skeleton-packer in AWS.
 # ------------------------------------------------------------------------------
 
-# The AWS account ID being used
-data "aws_caller_identity" "current" {}
-
 # ------------------------------------------------------------------------------
-# AUTOMATICALLY LOOK UP THE LATEST PRE-BUILT EXAMPLE AMI FROM
-# cisagov/skeleton-packer.
+# Look up the latest example AMI from cisagov/skeleton-packer.
 #
 # NOTE: This Terraform data source must return at least one AMI result
 # or the apply will fail.
@@ -20,9 +14,7 @@ data "aws_ami" "example" {
   filter {
     name = "name"
     values = [
-      # Use the bastion AMI until the cisagov/skeleton-packer repo is
-      # ready
-      "cyhy-bastion-hvm-*-x86_64-ebs",
+      "example-hvm-*-x86_64-ebs",
     ]
   }
 
@@ -36,7 +28,9 @@ data "aws_ami" "example" {
     values = ["ebs"]
   }
 
-  owners      = [data.aws_caller_identity.current.account_id] # This is us
+  owners = [
+    var.ami_owner_account_id
+  ]
   most_recent = true
 }
 

@@ -1,22 +1,23 @@
 # ------------------------------------------------------------------------------
-# REQUIRED PARAMETERS
+# Required parameters
 #
 # You must provide a value for each of these parameters.
 # ------------------------------------------------------------------------------
 
-variable "subnet_id" {
+variable "tf_role_arn" {
   type        = string
-  description = "The ID of the AWS subnet to deploy into (e.g. subnet-0123456789abcdef0)"
+  description = "The ARN of the role that can terraform non-specialized resources."
 }
 
 # ------------------------------------------------------------------------------
-# OPTIONAL PARAMETERS
+# Optional parameters
 #
 # These parameters have reasonable defaults.
 # ------------------------------------------------------------------------------
+
 variable "ami_owner_account_id" {
   type        = string
-  description = "The ID of the AWS account that owns the Example AMI, or \"self\" if the AMI is owned by the same account as the provisioner."
+  description = "The ID of the AWS account that owns the AMI, or \"self\" if the AMI is owned by the same account as the provisioner."
   default     = "self"
 }
 
@@ -28,12 +29,6 @@ variable "aws_availability_zone" {
 
 variable "aws_region" {
   type        = string
-  description = "The AWS region to deploy into (e.g. us-east-1)"
+  description = "The AWS region to deploy into (e.g. us-east-1)."
   default     = "us-east-1"
-}
-
-variable "tags" {
-  type        = map(string)
-  description = "Tags to apply to all AWS resources created"
-  default     = {}
 }
