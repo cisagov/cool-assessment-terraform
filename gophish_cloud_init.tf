@@ -1,6 +1,6 @@
 # cloud-init commands for configuring GoPhish instances
 
-data "template_cloudinit_config" "gophish_cloud_init_tasks" {
+data "cloudinit_config" "gophish_cloud_init_tasks" {
   count = lookup(var.operations_instance_counts, "gophish", 0)
 
   gzip          = true

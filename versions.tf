@@ -6,8 +6,8 @@ terraform {
   # major version currently being used.  This practice will help us
   # avoid unwelcome surprises.
   required_providers {
-    aws      = "~> 3.0"
-    null     = "~> 3.0"
-    template = "~> 2.1"
+    aws       = "~> 3.0"
+    cloudinit = "~> 2.0"
+    null      = "~> 3.0"
   }
 }

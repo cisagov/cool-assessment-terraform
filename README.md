@@ -68,8 +68,8 @@ the COOL environment.
 |------|---------|
 | terraform | ~> 0.12.0 |
 | aws | ~> 3.0 |
+| cloudinit | ~> 2.0 |
 | null | ~> 3.0 |
-| template | ~> 2.1 |
 
 ## Providers ##
 
@@ -81,8 +81,8 @@ the COOL environment.
 | aws.provisionassessment | ~> 3.0 |
 | aws.provisionparameterstorereadrole | ~> 3.0 |
 | aws.provisionsharedservices | ~> 3.0 |
+| cloudinit | ~> 2.0 |
 | null | ~> 3.0 |
-| template | ~> 2.1 |
 | terraform | n/a |
 
 ## Inputs ##
@@ -131,7 +131,7 @@ contains Terraform code. In this repository, this is only the main directory.
 
 ## Contributing ##
 
-We welcome contributions!  Please see [here](CONTRIBUTING.md) for
+We welcome contributions!  Please see [`CONTRIBUTING.md`](CONTRIBUTING.md) for
 details.
 
 ## License ##

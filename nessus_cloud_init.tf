@@ -1,6 +1,6 @@
 # cloud-init commands for configuring Nessus instances
 
-data "template_cloudinit_config" "nessus_cloud_init_tasks" {
+data "cloudinit_config" "nessus_cloud_init_tasks" {
   count = lookup(var.operations_instance_counts, "nessus", 0)
 
   gzip          = true
