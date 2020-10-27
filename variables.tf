@@ -75,7 +75,7 @@ variable "nessus_activation_codes" {
 
 variable "operations_instance_counts" {
   type        = map(number)
-  description = "A map specifying how many instances of each type should be created in the operations subnet (e.g. { \"kali\": 1 }).  The currently-supported instance keys are: [\"gophish\", \"kali\", \"nessus\", \"pentestportal\", \"teamserver\"]."
+  description = "A map specifying how many instances of each type should be created in the operations subnet (e.g. { \"kali\": 1 }).  The currently-supported instance keys are: [\"debiandesktop\", \"gophish\", \"kali\", \"nessus\", \"pentestportal\", \"teamserver\"]."
   default     = { "kali" : 1 }
 }
 
