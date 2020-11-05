@@ -1,6 +1,7 @@
 # Allow ingress from Guacamole instance via ssh
 # For: DevOps ssh access from Guacamole instance to Debian desktop instance
 resource "aws_security_group_rule" "debiandesktop_ingress_from_guacamole_via_ssh" {
+  count    = lookup(var.operations_instance_counts, "debiandesktop", 0) > 0 ? 1 : 0
   provider = aws.provisionassessment
 
   security_group_id = aws_security_group.debiandesktop.id
@@ -15,6 +16,7 @@ resource "aws_security_group_rule" "debiandesktop_ingress_from_guacamole_via_ssh
 # For: Assessment team VNC access from Guacamole instance to Debian desktop
 # instance
 resource "aws_security_group_rule" "debiandesktop_ingress_from_guacamole_via_vnc" {
+  count    = lookup(var.operations_instance_counts, "debiandesktop", 0) > 0 ? 1 : 0
   provider = aws.provisionassessment
 
   security_group_id = aws_security_group.debiandesktop.id
@@ -27,8 +29,11 @@ resource "aws_security_group_rule" "debiandesktop_ingress_from_guacamole_via_vnc
 
 # Allow egress from Debian desktop instances via Nessus web GUI port (8834)
 # For: Operator Nessus web access from Debian desktop instances
-resource "aws_security_group_rule" "debiandesktop_egress_to_nessus_" {
-  count    = lookup(var.operations_instance_counts, "debiandesktop", 0) > 0 ? 1 : 0
+#
+# NOTE: This rule will only be created if there is at least one Nessus instance
+# and at least one Debian Desktop instance.
+resource "aws_security_group_rule" "debiandesktop_egress_to_nessus_via_gui_port" {
+  count    = lookup(var.operations_instance_counts, "debiandesktop", 0) * lookup(var.operations_instance_counts, "nessus", 0) > 0 ? 1 : 0
   provider = aws.provisionassessment
 
   security_group_id = aws_security_group.debiandesktop.id
@@ -42,8 +47,8 @@ resource "aws_security_group_rule" "debiandesktop_egress_to_nessus_" {
 # Allow egress to anywhere via HTTP and HTTPS
 # For: Operator web access, package downloads and updates
 resource "aws_security_group_rule" "debiandesktop_egress_to_anywhere_via_allowed_ports" {
+  for_each = lookup(var.operations_instance_counts, "debiandesktop", 0) > 0 ? toset(["80", "443"]) : toset([])
   provider = aws.provisionassessment
-  for_each = toset(["80", "443"])
 
   security_group_id = aws_security_group.debiandesktop.id
   type              = "egress"
