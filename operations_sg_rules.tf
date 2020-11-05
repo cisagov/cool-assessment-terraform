@@ -37,7 +37,7 @@ resource "aws_security_group_rule" "operations_ingress_from_kali_via_imaps" {
   security_group_id = aws_security_group.operations.id
   type              = "ingress"
   protocol          = "tcp"
-  cidr_blocks       = formatlist("%s/32", aws_instance.kali[*].private_ip)
+  cidr_blocks       = [for instance in aws_instance.kali : format("%s/32", instance.private_ip)]
   from_port         = 993
   to_port           = 993
 }
@@ -73,7 +73,7 @@ resource "aws_security_group_rule" "operations_ingress_from_kali_via_cs" {
   security_group_id = aws_security_group.operations.id
   type              = "ingress"
   protocol          = "tcp"
-  cidr_blocks       = formatlist("%s/32", aws_instance.kali[*].private_ip)
+  cidr_blocks       = [for instance in aws_instance.kali : format("%s/32", instance.private_ip)]
   from_port         = 50050
   to_port           = 50050
 }
