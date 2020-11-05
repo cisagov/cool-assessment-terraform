@@ -47,7 +47,7 @@ resource "aws_security_group_rule" "debiandesktop_egress_to_nessus_via_gui_port"
 # Allow egress to anywhere via HTTP and HTTPS
 # For: Operator web access, package downloads and updates
 resource "aws_security_group_rule" "debiandesktop_egress_to_anywhere_via_allowed_ports" {
-  for_each = toset([for port in ["80", "443"] : port if lookup(var.operations_instance_counts, "debiandesktop", 0) > 0])
+  for_each = lookup(var.operations_instance_counts, "debiandesktop", 0) > 0 ? toset(["80", "443"]) : toset([])
   provider = aws.provisionassessment
 
   security_group_id = aws_security_group.debiandesktop.id
