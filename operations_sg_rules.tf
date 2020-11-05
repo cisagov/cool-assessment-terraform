@@ -27,8 +27,11 @@ resource "aws_security_group_rule" "operations_ingress_from_guacamole_via_vnc" {
 # Allow ingress from Kali instances to teamservers via port 993 (IMAP
 # over TLS/SSL)
 # For: Assessment team IMAP access on Teamservers from Kali instances
+#
+# NOTE: This rule will only be created if there is at least one Kali instance
+# and at least one Teamserver instance.
 resource "aws_security_group_rule" "operations_ingress_from_kali_via_imaps" {
-  count    = lookup(var.operations_instance_counts, "teamserver", 0) > 0 ? 1 : 0
+  count    = lookup(var.operations_instance_counts, "kali", 0) * lookup(var.operations_instance_counts, "teamserver", 0) > 0 ? 1 : 0
   provider = aws.provisionassessment
 
   security_group_id = aws_security_group.operations.id
@@ -41,8 +44,11 @@ resource "aws_security_group_rule" "operations_ingress_from_kali_via_imaps" {
 
 # Allow ingress from Kali and Debian desktop instances via Nessus web GUI
 # For: Assessment team Nessus web access from Kali and Debian desktop instances
+#
+# NOTE: This rule will only be created if there is at least one Nessus instance
+# and at least one Kali or Debian Desktop instance.
 resource "aws_security_group_rule" "operations_ingress_from_allowed_instances_for_nessus" {
-  count    = lookup(var.operations_instance_counts, "nessus", 0) > 0 ? 1 : 0
+  count    = lookup(var.operations_instance_counts, "nessus", 0) * (lookup(var.operations_instance_counts, "kali", 0) + lookup(var.operations_instance_counts, "debiandesktop", 0)) > 0 ? 1 : 0
   provider = aws.provisionassessment
 
   security_group_id = aws_security_group.operations.id
@@ -57,8 +63,11 @@ resource "aws_security_group_rule" "operations_ingress_from_allowed_instances_fo
 # (Cobalt Strike)
 # For: Assessment team to access Cobalt Strike on Teamservers from
 # Kali instances
+#
+# NOTE: This rule will only be created if there is at least one Kali instance
+# and at least one Teamserver instance.
 resource "aws_security_group_rule" "operations_ingress_from_kali_via_cs" {
-  count    = lookup(var.operations_instance_counts, "teamserver", 0) > 0 ? 1 : 0
+  count    = lookup(var.operations_instance_counts, "kali", 0) * lookup(var.operations_instance_counts, "teamserver", 0) > 0 ? 1 : 0
   provider = aws.provisionassessment
 
   security_group_id = aws_security_group.operations.id
