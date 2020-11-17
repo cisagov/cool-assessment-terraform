@@ -25,8 +25,11 @@ data "aws_ami" "teamserver" {
 
 # The teamserver EC2 instances
 resource "aws_instance" "teamserver" {
-  count    = lookup(var.operations_instance_counts, "teamserver", 0)
-  provider = aws.provisionassessment
+  count = lookup(var.operations_instance_counts, "teamserver", 0)
+  # These instances require the EFS mount target to be present in
+  # order to mount the EFS volume at boot time.
+  depends_on = [aws_efs_mount_target.target]
+  provider   = aws.provisionassessment
 
   ami                         = data.aws_ami.teamserver.id
   associate_public_ip_address = true
