@@ -88,5 +88,5 @@ jobs:
       - name: Run pre-commit on all files
         run: pre-commit run --all-files
       - name: Setup tmate debug session
-        uses: mxschmitt/action-tmate@v1
+        uses: mxschmitt/action-tmate@v3
         if: env.RUN_TMATE
