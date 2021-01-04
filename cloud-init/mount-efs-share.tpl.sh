@@ -11,6 +11,6 @@ set -o pipefail
 until findmnt "${mount_point}"
 do
     sleep 2
-    echo "Attempting to mount EFS share."
+    echo Attempting to mount EFS share at "${mount_point}".
     mount --all
 done
