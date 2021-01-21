@@ -12,12 +12,13 @@
 # defined in operations_routing.tf.
 # -------------------------------------------------------------------------------
 
-# Each private subnet gets its own routing table, since each subnet
-# uses its own NAT gateway.
-resource "aws_route_table" "private_route_tables" {
+# The private subnets can all share a single routing table.  Normally
+# we would assign each subnet its own NAT gateway, which would require
+# separate routing tables, but in this case we do not create any NAT
+# gateways since nothing in the private subnets requires access to the
+# internet outside the VPC.
+resource "aws_route_table" "private_route_table" {
   provider = aws.provisionassessment
-
-  for_each = toset(var.private_subnet_cidr_blocks)
 
   tags   = var.tags
   vpc_id = aws_vpc.assessment.id
@@ -27,19 +28,17 @@ resource "aws_route_table" "private_route_tables" {
 resource "aws_route" "cool_routes" {
   provider = aws.provisionassessment
 
-  for_each = toset(var.private_subnet_cidr_blocks)
-
-  route_table_id         = aws_route_table.private_route_tables[each.value].id
+  route_table_id         = aws_route_table.private_route_table.id
   destination_cidr_block = local.cool_shared_services_cidr_block
   transit_gateway_id     = local.transit_gateway_id
 }
 
-# Associate the routing tables with the subnets
+# Associate the routing table with the subnets
 resource "aws_route_table_association" "private_route_table_associations" {
   provider = aws.provisionassessment
 
   for_each = toset(var.private_subnet_cidr_blocks)
 
   subnet_id      = aws_subnet.private[each.value].id
-  route_table_id = aws_route_table.private_route_tables[each.value].id
+  route_table_id = aws_route_table.private_route_table.id
 }
