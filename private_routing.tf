@@ -41,6 +41,16 @@ resource "aws_vpc_endpoint_route_table_association" "s3_private" {
   vpc_endpoint_id = aws_vpc_endpoint.s3.id
 }
 
+# Route all external (outside this VPC and outside the COOL) traffic
+# through the NAT gateway
+resource "aws_route" "external_private" {
+  provider = aws.provisionassessment
+
+  route_table_id         = aws_route_table.private_route_table.id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = aws_nat_gateway.nat_gw.id
+}
+
 # Associate the routing table with the subnets
 resource "aws_route_table_association" "private_route_table_associations" {
   provider = aws.provisionassessment
