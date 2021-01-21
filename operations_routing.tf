@@ -15,7 +15,7 @@ resource "aws_default_route_table" "operations" {
 }
 
 # Route all COOL Shared Services traffic through the transit gateway
-resource "aws_route" "cool_route" {
+resource "aws_route" "cool_operations" {
   provider = aws.provisionassessment
 
   route_table_id         = aws_default_route_table.operations.id
@@ -23,9 +23,17 @@ resource "aws_route" "cool_route" {
   transit_gateway_id     = local.transit_gateway_id
 }
 
+# Associate the S3 gateway endpoint with the route table
+resource "aws_vpc_endpoint_route_table_association" "s3_operations" {
+  provider = aws.provisionassessment
+
+  route_table_id  = aws_default_route_table.operations.id
+  vpc_endpoint_id = aws_vpc_endpoint.s3.id
+}
+
 # Route all external (outside this VPC and outside the COOL) traffic
 # through the internet gateway
-resource "aws_route" "external_route" {
+resource "aws_route" "external_operations" {
   provider = aws.provisionassessment
 
   route_table_id         = aws_default_route_table.operations.id

@@ -25,7 +25,7 @@ resource "aws_route_table" "private_route_table" {
 }
 
 # Route all COOL Shared Services traffic through the transit gateway.
-resource "aws_route" "cool_routes" {
+resource "aws_route" "cool_private" {
   provider = aws.provisionassessment
 
   route_table_id         = aws_route_table.private_route_table.id
@@ -34,7 +34,7 @@ resource "aws_route" "cool_routes" {
 }
 
 # Associate the S3 gateway endpoint with the route table
-resource "aws_vpc_endpoint_route_table_association" "s3" {
+resource "aws_vpc_endpoint_route_table_association" "s3_private" {
   provider = aws.provisionassessment
 
   route_table_id  = aws_route_table.private_route_table.id
