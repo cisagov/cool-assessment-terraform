@@ -1,6 +1,6 @@
 # Allow ingress from COOL Shared Services VPN server CIDR block via https
 # For: Assessment team access to guacamole web client
-resource "aws_network_acl_rule" "private_ingress_from_cool_via_https" {
+resource "aws_network_acl_rule" "private_ingress_from_cool_vpn_via_https" {
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
 
@@ -139,7 +139,7 @@ resource "aws_network_acl_rule" "private_egress_to_operations_via_vnc" {
   network_acl_id = aws_network_acl.private[each.value].id
   egress         = true
   protocol       = "tcp"
-  rule_number    = 120 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 130 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = aws_subnet.operations.cidr_block
   from_port      = 5901
@@ -156,7 +156,7 @@ resource "aws_network_acl_rule" "private_egress_to_cool_via_ipa_ports" {
   network_acl_id = aws_network_acl.private[var.private_subnet_cidr_blocks[0]].id
   egress         = true
   protocol       = each.value.proto
-  rule_number    = 130 + each.value.index
+  rule_number    = 140 + each.value.index
   rule_action    = "allow"
   cidr_block     = local.cool_shared_services_cidr_block
   from_port      = each.value.port
@@ -176,9 +176,26 @@ resource "aws_network_acl_rule" "private_ingress_to_tg_attachment_via_ipa_ports"
   network_acl_id = aws_network_acl.private[var.private_subnet_cidr_blocks[0]].id
   egress         = false
   protocol       = each.value.proto
-  rule_number    = 140 + each.value.index
+  rule_number    = 150 + each.value.index
   rule_action    = "allow"
   cidr_block     = var.private_subnet_cidr_blocks[0]
   from_port      = each.value.port
   to_port        = each.value.port
+}
+
+# Allow ingress from the operations subnet via https
+#
+# For: Operations subnet access to VPC endpoints
+resource "aws_network_acl_rule" "private_ingress_from_operations_via_https" {
+  provider = aws.provisionassessment
+  for_each = toset(var.private_subnet_cidr_blocks)
+
+  network_acl_id = aws_network_acl.private[each.value].id
+  egress         = false
+  protocol       = "tcp"
+  rule_number    = 160 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_action    = "allow"
+  cidr_block     = aws_subnet.operations.cidr_block
+  from_port      = 443
+  to_port        = 443
 }
