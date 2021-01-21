@@ -33,6 +33,14 @@ resource "aws_route" "cool_routes" {
   transit_gateway_id     = local.transit_gateway_id
 }
 
+# Associate the S3 gateway endpoint with the route table
+resource "aws_vpc_endpoint_route_table_association" "s3" {
+  provider = aws.provisionassessment
+
+  route_table_id  = aws_route_table.private_route_table.id
+  vpc_endpoint_id = aws_vpc_endpoint.s3.id
+}
+
 # Associate the routing table with the subnets
 resource "aws_route_table_association" "private_route_table_associations" {
   provider = aws.provisionassessment
