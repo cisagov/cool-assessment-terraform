@@ -40,7 +40,22 @@ resource "aws_security_group" "ssm" {
   tags = merge(
     var.tags,
     {
-      "Name" = "SSM endpoint"
+      "Name" = "SSM endpoints"
+    },
+  )
+}
+
+# Security group for the CloudWatch interface endpoints in the private
+# subnet
+resource "aws_security_group" "cloudwatch" {
+  provider = aws.provisionassessment
+
+  vpc_id = aws_vpc.assessment.id
+
+  tags = merge(
+    var.tags,
+    {
+      "Name" = "CloudWatch endpoints"
     },
   )
 }

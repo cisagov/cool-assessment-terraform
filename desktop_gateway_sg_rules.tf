@@ -26,10 +26,10 @@ resource "aws_security_group_rule" "desktop_gw_egress_to_sts_via_https" {
   to_port                  = 443
 }
 
-# Allow egress via https to any SSM interface endpoint
+# Allow egress via https to any SSM interface endpoints
 #
-# For: Guacamole requires access to SSM for CloudWatch log forwarding
-# and for ssh access via the AWS control plane.
+# For: Guacamole requires access to SSM for ssh access via the AWS
+# control plane.
 resource "aws_security_group_rule" "desktop_gw_egress_to_ssm_via_https" {
   provider = aws.provisionassessment
 
@@ -37,6 +37,21 @@ resource "aws_security_group_rule" "desktop_gw_egress_to_ssm_via_https" {
   type                     = "egress"
   protocol                 = "tcp"
   source_security_group_id = aws_security_group.ssm.id
+  from_port                = 443
+  to_port                  = 443
+}
+
+# Allow egress via https to any Cloudwatch interface endpoints
+#
+# For: Guacamole requires access to CloudWatch for CloudWatch log
+# forwarding via the CloudWatch agent.
+resource "aws_security_group_rule" "desktop_gw_egress_to_cloudwatch_via_https" {
+  provider = aws.provisionassessment
+
+  security_group_id        = aws_security_group.desktop_gateway.id
+  type                     = "egress"
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.cloudwatch.id
   from_port                = 443
   to_port                  = 443
 }
