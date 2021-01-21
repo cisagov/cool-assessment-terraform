@@ -11,15 +11,47 @@ resource "aws_security_group_rule" "desktop_gw_egress_to_ops_via_ssh" {
   to_port           = 22
 }
 
-# Allow egress via https to anywhere
-# For: Guacamole fetches its SSL certificate via boto3 (which uses HTTPS)
-resource "aws_security_group_rule" "desktop_gw_egress_to_anywhere_via_https" {
+# Allow egress via https to any STS interface endpoint
+#
+# For: Guacamole assumes a role via STS.  This role allows Guacamole
+# to then fetch its SSL certificate from S3.
+resource "aws_security_group_rule" "desktop_gw_egress_to_sts_via_https" {
+  provider = aws.provisionassessment
+
+  security_group_id        = aws_security_group.desktop_gateway.id
+  type                     = "egress"
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.sts.id
+  from_port                = 443
+  to_port                  = 443
+}
+
+# Allow egress via https to any SSM interface endpoint
+#
+# For: Guacamole requires access to SSM for CloudWatch log forwarding
+# and for ssh access via the AWS control plane.
+resource "aws_security_group_rule" "desktop_gw_egress_to_ssm_via_https" {
+  provider = aws.provisionassessment
+
+  security_group_id        = aws_security_group.desktop_gateway.id
+  type                     = "egress"
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.ssm.id
+  from_port                = 443
+  to_port                  = 443
+}
+
+# Allow egress via https to the S3 gateway endpoint
+#
+# For: Guacamole requires access to S3 in order to download its
+# certificate.
+resource "aws_security_group_rule" "desktop_gw_egress_to_s3_via_https" {
   provider = aws.provisionassessment
 
   security_group_id = aws_security_group.desktop_gateway.id
   type              = "egress"
   protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
+  prefix_list_ids   = [aws_vpc_endpoint.s3.prefix_list_id]
   from_port         = 443
   to_port           = 443
 }
