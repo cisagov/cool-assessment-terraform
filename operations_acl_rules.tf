@@ -30,6 +30,23 @@ resource "aws_network_acl_rule" "operations_ingress_from_private_via_vnc" {
   to_port        = 5901
 }
 
+# Allow ingress from the private subnets via port 443.  This is
+# necessary so that the guacamole instance can download the Docker
+# images used in the docker composition via the NAT gateway.
+resource "aws_network_acl_rule" "operations_ingress_from_private_via_https" {
+  provider = aws.provisionassessment
+  for_each = toset(var.private_subnet_cidr_blocks)
+
+  network_acl_id = aws_network_acl.operations.id
+  egress         = false
+  protocol       = "tcp"
+  rule_number    = 104 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_action    = "allow"
+  cidr_block     = aws_subnet.private[each.value].cidr_block
+  from_port      = 443
+  to_port        = 443
+}
+
 # Allow ingress from anywhere via the TCP ports specified in
 # var.operations_subnet_inbound_tcp_ports_allowed
 # For: Assessment team operational use

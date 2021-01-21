@@ -15,7 +15,10 @@ resource "aws_network_acl_rule" "private_ingress_from_cool_vpn_via_https" {
 }
 
 # Allow egress to anywhere via HTTPS
-# For: Guacamole fetches its SSL certificate via boto3 (which uses HTTPS)
+#
+# For: Guacamole fetches its SSL certificate via boto3 (which uses
+# HTTPS).  It also needs to download the Docker images used in the
+# guacamole Docker composition.
 resource "aws_network_acl_rule" "private_egress_to_anywhere_via_https" {
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)

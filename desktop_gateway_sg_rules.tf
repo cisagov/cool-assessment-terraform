@@ -11,6 +11,20 @@ resource "aws_security_group_rule" "desktop_gw_egress_to_ops_via_ssh" {
   to_port           = 22
 }
 
+# Allow egress via https
+#
+# For: Guacamole access to DockerHub via the NAT gateway
+resource "aws_security_group_rule" "desktop_gw_egress_anywhere_via_https" {
+  provider = aws.provisionassessment
+
+  security_group_id = aws_security_group.desktop_gateway.id
+  type              = "egress"
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  from_port         = 443
+  to_port           = 443
+}
+
 # Allow egress via https to any STS interface endpoint
 #
 # For: Guacamole assumes a role via STS.  This role allows Guacamole
