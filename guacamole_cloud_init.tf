@@ -54,9 +54,9 @@ data "cloudinit_config" "guacamole_cloud_init_tasks" {
     content_type = "text/x-shellscript"
     content = templatefile(
       "${path.module}/cloud-init/install-certificates.py", {
+        aws_region         = var.aws_region
         cert_bucket_name   = var.cert_bucket_name
         cert_read_role_arn = module.guacamole_certreadrole.role.arn
-        region             = var.aws_region
         server_fqdn        = local.guacamole_fqdn
     })
   }
@@ -82,7 +82,6 @@ data "cloudinit_config" "guacamole_cloud_init_tasks" {
         guac_connection_setup_filename   = "01_setup_guac_connections"
         guac_connection_setup_path       = var.guac_connection_setup_path
         instance_hostnames               = join(",", concat(aws_route53_record.debiandesktop_A[*].name, aws_route53_record.gophish_A[*].name, aws_route53_record.kali_A[*].name, aws_route53_record.pentestportal_A[*].name, aws_route53_record.teamserver_A[*].name))
-        region                           = var.aws_region
         ssm_vnc_read_role_arn            = aws_iam_role.vnc_parameterstorereadonly_role.arn
         ssm_key_vnc_password             = var.ssm_key_vnc_password
         ssm_key_vnc_user                 = var.ssm_key_vnc_username

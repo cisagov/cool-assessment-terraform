@@ -23,7 +23,7 @@ SQL_OUTPUT_FILE_PREFIX = (
 )
 
 # Inputs from terraform
-REGION = "${region}"
+AWS_REGION = "${aws_region}"
 SSM_READ_ROLE_ARN = "${ssm_vnc_read_role_arn}"
 # nosec on following line tells bandit (pre-commit hook) to ignore security
 # warnings; otherwise bandit complains about "Possible hardcoded password"
@@ -35,19 +35,21 @@ SSM_KEY_VNC_USER_PRIVATE_SSH_KEY = "${ssm_key_vnc_user_private_ssh_key}"
 #
 # STS used to be un-regioned, like S3, but now it is regioned.  This
 # is the one case where boto3 _does not_ do the right thing when you
-# set the region.  We have to set the region-specific endpint URL
+# set the region.  We have to set the region-specific endpoint URL
 # manually.
 #
 # This is important since the STS VPC endpoint _only_ sets a local DNS
 # record to override the _local region's_ public STS endpoint.  If we
-# don't do this then boto3 will reach out to the _global_
+# don't set the endpoint URL then boto3 will reach out to the _global_
 # https://sts.amazonaws.com URL, and that DNS entry will still point
 # to an external IP.
 #
 # See this link for more information about boto3's perverse behavior
 # in the case of STS: https://github.com/boto/boto3/issues/1859.
 sts = boto3.client(
-    "sts", region_name=REGION, endpoint_url=f"https://sts.{REGION}.amazonaws.com"
+    "sts",
+    region_name=AWS_REGION,
+    endpoint_url=f"https://sts.{AWS_REGION}.amazonaws.com",
 )
 
 # Assume the role that can read the SSM parameters
@@ -61,7 +63,7 @@ newsession_token = stsresponse["Credentials"]["SessionToken"]
 # Create a new client to access SSM using the temporary credentials
 ssm = boto3.client(
     "ssm",
-    region_name="${aws_region}",
+    region_name=AWS_REGION,
     aws_access_key_id=newsession_id,
     aws_secret_access_key=newsession_key,
     aws_session_token=newsession_token,
