@@ -19,6 +19,10 @@ resource "aws_network_acl_rule" "private_ingress_from_cool_vpn_via_https" {
 # For: Guacamole fetches its SSL certificate via boto3 (which uses
 # HTTPS).  It also needs to download the Docker images used in the
 # guacamole Docker composition.
+#
+# Note that, even though the S3 traffic is routed to the S3 VPC
+# gateway endpoint via the router, it still leaves the subnet as
+# traffic destined for a public IP of the S3 AWS API.
 resource "aws_network_acl_rule" "private_egress_to_anywhere_via_https" {
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
@@ -87,6 +91,9 @@ resource "aws_network_acl_rule" "private_egress_to_operations_via_ssh" {
 #
 # Note that this also covers ingress from the operations subnet via
 # TCP port 2049 for EFS.
+#
+# Note that this also allows the return traffic from any HTTPS
+# requests sent out via the NAT gateway in the operations subnet.
 resource "aws_network_acl_rule" "private_ingress_from_operations_via_ephemeral_ports" {
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)

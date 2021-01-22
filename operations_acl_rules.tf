@@ -167,6 +167,10 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_icmp" {
 
 # Allow egress to anywhere via any protocol and port
 # For: Assessment team operational use
+#
+# Note that this also covers the return traffic when the guacamole
+# instance downloads the Docker images used in the docker composition
+# via the NAT gateway in the operations subnet.
 resource "aws_network_acl_rule" "operations_egress_to_anywhere_via_any_port" {
   provider = aws.provisionassessment
 
