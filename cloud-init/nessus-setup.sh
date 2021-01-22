@@ -34,7 +34,11 @@ activation_code_to_apply="${nessus_activation_code}"
 echo "Assuming role that can read Nessus-related SSM Parameter Store parameters"
 
 # shellcheck disable=SC2154
-assumed_role_output=$(aws sts assume-role --role-arn "${ssm_nessus_read_role_arn}" --role-session-name "cloud-init-nessus-setup")
+assumed_role_output=$(aws --region "${aws_region}" \
+                          --endpoint-url "https://sts.${aws_region}.amazonaws.com" \
+                          sts assume-role \
+                          --role-arn "${ssm_nessus_read_role_arn}" \
+                          --role-session-name "cloud-init-nessus-setup")
 
 aws_access_key_id=$(echo "$assumed_role_output" | jq -r .Credentials.AccessKeyId)
 export AWS_ACCESS_KEY_ID=$aws_access_key_id
