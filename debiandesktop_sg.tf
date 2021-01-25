@@ -1,3 +1,18 @@
+# Security group for the Debian desktop instances in the operations
+# subnet
+resource "aws_security_group" "debiandesktop" {
+  provider = aws.provisionassessment
+
+  vpc_id = aws_vpc.assessment.id
+
+  tags = merge(
+    var.tags,
+    {
+      "Name" = "Debian Desktop"
+    },
+  )
+}
+
 # Allow ingress from Guacamole instance via ssh
 # For: DevOps ssh access from Guacamole instance to Debian desktop instance
 resource "aws_security_group_rule" "debiandesktop_ingress_from_guacamole_via_ssh" {

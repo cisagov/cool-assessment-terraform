@@ -1,3 +1,18 @@
+# Security group for the CloudWatch interface endpoints in the private
+# subnet
+resource "aws_security_group" "cloudwatch" {
+  provider = aws.provisionassessment
+
+  vpc_id = aws_vpc.assessment.id
+
+  tags = merge(
+    var.tags,
+    {
+      "Name" = "CloudWatch endpoints"
+    },
+  )
+}
+
 # Allow ingress via HTTPS from the desktop gateway security group
 resource "aws_security_group_rule" "ingress_from_desktop_gw_to_cloudwatch_via_https" {
   provider = aws.provisionassessment

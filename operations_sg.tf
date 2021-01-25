@@ -1,3 +1,17 @@
+# Security group for the operations instances in the operations subnet
+resource "aws_security_group" "operations" {
+  provider = aws.provisionassessment
+
+  vpc_id = aws_vpc.assessment.id
+
+  tags = merge(
+    var.tags,
+    {
+      "Name" = "Operations"
+    },
+  )
+}
+
 # Allow ingress from Guacamole instance via ssh
 # For: DevOps ssh access from Guacamole instance to Operations instance
 resource "aws_security_group_rule" "operations_ingress_from_guacamole_via_ssh" {

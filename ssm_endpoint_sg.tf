@@ -1,3 +1,18 @@
+# Security group for the SSM interface endpoint (and other endpoints
+# required when using the SSM service) in the private subnet
+resource "aws_security_group" "ssm" {
+  provider = aws.provisionassessment
+
+  vpc_id = aws_vpc.assessment.id
+
+  tags = merge(
+    var.tags,
+    {
+      "Name" = "SSM endpoints"
+    },
+  )
+}
+
 # Allow ingress via HTTPS from the desktop gateway security group
 resource "aws_security_group_rule" "ingress_from_desktop_gw_to_ssm_via_https" {
   provider = aws.provisionassessment

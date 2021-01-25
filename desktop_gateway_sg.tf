@@ -1,3 +1,18 @@
+# Security group for the desktop gateway instance in the private
+# subnet
+resource "aws_security_group" "desktop_gateway" {
+  provider = aws.provisionassessment
+
+  vpc_id = aws_vpc.assessment.id
+
+  tags = merge(
+    var.tags,
+    {
+      "Name" = "Desktop Gateway"
+    },
+  )
+}
+
 # Allow egress via ssh to the Operations subnet
 # For: Guacamole scp access to assessment operating instances
 resource "aws_security_group_rule" "desktop_gw_egress_to_ops_via_ssh" {
@@ -11,7 +26,7 @@ resource "aws_security_group_rule" "desktop_gw_egress_to_ops_via_ssh" {
   to_port           = 22
 }
 
-# Allow egress via https
+# Allow egress anywhere via https
 #
 # For: Guacamole access to DockerHub via the NAT gateway
 resource "aws_security_group_rule" "desktop_gw_egress_anywhere_via_https" {
