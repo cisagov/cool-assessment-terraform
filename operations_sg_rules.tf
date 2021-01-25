@@ -3,12 +3,12 @@
 resource "aws_security_group_rule" "operations_ingress_from_guacamole_via_ssh" {
   provider = aws.provisionassessment
 
-  security_group_id = aws_security_group.operations.id
-  type              = "ingress"
-  protocol          = "tcp"
-  cidr_blocks       = ["${aws_instance.guacamole.private_ip}/32"]
-  from_port         = 22
-  to_port           = 22
+  security_group_id        = aws_security_group.operations.id
+  type                     = "ingress"
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.desktop_gateway.id
+  from_port                = 22
+  to_port                  = 22
 }
 
 # Allow ingress from Guacamole instance via VNC
@@ -16,12 +16,12 @@ resource "aws_security_group_rule" "operations_ingress_from_guacamole_via_ssh" {
 resource "aws_security_group_rule" "operations_ingress_from_guacamole_via_vnc" {
   provider = aws.provisionassessment
 
-  security_group_id = aws_security_group.operations.id
-  type              = "ingress"
-  protocol          = "tcp"
-  cidr_blocks       = ["${aws_instance.guacamole.private_ip}/32"]
-  from_port         = 5901
-  to_port           = 5901
+  security_group_id        = aws_security_group.operations.id
+  type                     = "ingress"
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.desktop_gateway.id
+  from_port                = 5901
+  to_port                  = 5901
 }
 
 # Allow ingress from Kali instances to teamservers via port 993 (IMAP
