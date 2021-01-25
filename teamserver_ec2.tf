@@ -52,6 +52,7 @@ resource "aws_instance" "teamserver" {
     aws_security_group.efs_client.id,
     aws_security_group.guacamole_accessible.id,
     aws_security_group.operations.id,
+    aws_security_group.teamserver.id,
   ]
 
   tags        = merge(var.tags, map("Name", format("Teamserver%d", count.index)))
