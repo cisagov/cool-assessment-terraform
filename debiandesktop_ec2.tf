@@ -55,8 +55,9 @@ resource "aws_instance" "debiandesktop" {
   # inbound to Operations instances from anywhere, DO NOT APPLY to
   # Debian desktop instances.
   vpc_security_group_ids = [
-    aws_security_group.efs_client.id,
     aws_security_group.debiandesktop.id,
+    aws_security_group.efs_client.id,
+    aws_security_group.guacamole_accessible.id,
   ]
 
   tags        = merge(var.tags, map("Name", format("DebianDesktop%d", count.index)))

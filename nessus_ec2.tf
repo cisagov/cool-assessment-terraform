@@ -49,6 +49,7 @@ resource "aws_instance" "nessus" {
   user_data_base64 = data.cloudinit_config.nessus_cloud_init_tasks[count.index].rendered
 
   vpc_security_group_ids = [
+    aws_security_group.guacamole_accessible.id,
     aws_security_group.operations.id
   ]
 

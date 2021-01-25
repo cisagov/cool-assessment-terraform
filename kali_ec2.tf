@@ -48,6 +48,7 @@ resource "aws_instance" "kali" {
 
   vpc_security_group_ids = [
     aws_security_group.efs_client.id,
+    aws_security_group.guacamole_accessible.id,
     aws_security_group.operations.id,
   ]
 
