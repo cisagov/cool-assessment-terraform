@@ -1,6 +1,5 @@
-# Security group for the desktop gateway instance in the private
-# subnet
-resource "aws_security_group" "desktop_gateway" {
+# Security group for guacamole instances
+resource "aws_security_group" "guacamole" {
   provider = aws.provisionassessment
 
   vpc_id = aws_vpc.assessment.id
@@ -8,17 +7,18 @@ resource "aws_security_group" "desktop_gateway" {
   tags = merge(
     var.tags,
     {
-      "Name" = "Desktop Gateway"
+      "Name" = "Desktop gateway (Guacamole)"
     },
   )
 }
 
 # Allow egress via ssh to the Operations subnet
+#
 # For: Guacamole scp access to assessment operating instances
-resource "aws_security_group_rule" "desktop_gw_egress_to_ops_via_ssh" {
+resource "aws_security_group_rule" "guacamole_egress_to_ops_via_ssh" {
   provider = aws.provisionassessment
 
-  security_group_id = aws_security_group.desktop_gateway.id
+  security_group_id = aws_security_group.guacamole.id
   type              = "egress"
   protocol          = "tcp"
   cidr_blocks       = [aws_subnet.operations.cidr_block]
@@ -29,10 +29,10 @@ resource "aws_security_group_rule" "desktop_gw_egress_to_ops_via_ssh" {
 # Allow egress anywhere via https
 #
 # For: Guacamole access to DockerHub via the NAT gateway
-resource "aws_security_group_rule" "desktop_gw_egress_anywhere_via_https" {
+resource "aws_security_group_rule" "guacamole_egress_anywhere_via_https" {
   provider = aws.provisionassessment
 
-  security_group_id = aws_security_group.desktop_gateway.id
+  security_group_id = aws_security_group.guacamole.id
   type              = "egress"
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
@@ -44,10 +44,10 @@ resource "aws_security_group_rule" "desktop_gw_egress_anywhere_via_https" {
 #
 # For: Guacamole assumes a role via STS.  This role allows Guacamole
 # to then fetch its SSL certificate from S3.
-resource "aws_security_group_rule" "desktop_gw_egress_to_sts_via_https" {
+resource "aws_security_group_rule" "guacamole_egress_to_sts_via_https" {
   provider = aws.provisionassessment
 
-  security_group_id        = aws_security_group.desktop_gateway.id
+  security_group_id        = aws_security_group.guacamole.id
   type                     = "egress"
   protocol                 = "tcp"
   source_security_group_id = aws_security_group.sts.id
@@ -59,10 +59,10 @@ resource "aws_security_group_rule" "desktop_gw_egress_to_sts_via_https" {
 #
 # For: Guacamole requires access to SSM for ssh access via the AWS
 # control plane.
-resource "aws_security_group_rule" "desktop_gw_egress_to_ssm_via_https" {
+resource "aws_security_group_rule" "guacamole_egress_to_ssm_via_https" {
   provider = aws.provisionassessment
 
-  security_group_id        = aws_security_group.desktop_gateway.id
+  security_group_id        = aws_security_group.guacamole.id
   type                     = "egress"
   protocol                 = "tcp"
   source_security_group_id = aws_security_group.ssm.id
@@ -74,10 +74,10 @@ resource "aws_security_group_rule" "desktop_gw_egress_to_ssm_via_https" {
 #
 # For: Guacamole requires access to CloudWatch for CloudWatch log
 # forwarding via the CloudWatch agent.
-resource "aws_security_group_rule" "desktop_gw_egress_to_cloudwatch_via_https" {
+resource "aws_security_group_rule" "guacamole_egress_to_cloudwatch_via_https" {
   provider = aws.provisionassessment
 
-  security_group_id        = aws_security_group.desktop_gateway.id
+  security_group_id        = aws_security_group.guacamole.id
   type                     = "egress"
   protocol                 = "tcp"
   source_security_group_id = aws_security_group.cloudwatch.id
@@ -89,10 +89,10 @@ resource "aws_security_group_rule" "desktop_gw_egress_to_cloudwatch_via_https" {
 #
 # For: Guacamole requires access to S3 in order to download its
 # certificate.
-resource "aws_security_group_rule" "desktop_gw_egress_to_s3_via_https" {
+resource "aws_security_group_rule" "guacamole_egress_to_s3_via_https" {
   provider = aws.provisionassessment
 
-  security_group_id = aws_security_group.desktop_gateway.id
+  security_group_id = aws_security_group.guacamole.id
   type              = "egress"
   protocol          = "tcp"
   prefix_list_ids   = [aws_vpc_endpoint.s3.prefix_list_id]
@@ -100,13 +100,14 @@ resource "aws_security_group_rule" "desktop_gw_egress_to_s3_via_https" {
   to_port           = 443
 }
 
-# Allow ingress from COOL Shared Services VPN server CIDR block
-# via port 443 (nginx/guacamole web)
+# Allow ingress from COOL Shared Services VPN server CIDR block via
+# port 443 (nginx/guacamole web)
+#
 # For: Assessment team access to Guacamole web client
-resource "aws_security_group_rule" "desktop_gw_ingress_from_trusted_via_port_443" {
+resource "aws_security_group_rule" "guacamole_ingress_from_trusted_via_port_443" {
   provider = aws.provisionassessment
 
-  security_group_id = aws_security_group.desktop_gateway.id
+  security_group_id = aws_security_group.guacamole.id
   type              = "ingress"
   protocol          = "tcp"
   cidr_blocks       = [local.vpn_server_cidr_block]
@@ -116,12 +117,13 @@ resource "aws_security_group_rule" "desktop_gw_ingress_from_trusted_via_port_443
 }
 
 # Allow egress via VNC to the Operations subnet
-# For: Assessment team VNC (via Guacamole) access to
-# assessment operating instances
-resource "aws_security_group_rule" "desktop_gw_egress_to_ops_via_vnc" {
+#
+# For: Assessment team VNC (via Guacamole) access to assessment
+# operating instances
+resource "aws_security_group_rule" "guacamole_egress_to_ops_via_vnc" {
   provider = aws.provisionassessment
 
-  security_group_id = aws_security_group.desktop_gateway.id
+  security_group_id = aws_security_group.guacamole.id
   type              = "egress"
   protocol          = "tcp"
   cidr_blocks       = [aws_subnet.operations.cidr_block]
@@ -130,12 +132,13 @@ resource "aws_security_group_rule" "desktop_gw_egress_to_ops_via_vnc" {
 }
 
 # Allow egress to COOL Shared Services via IPA-related ports
+#
 # For: Guacamole instance communication with FreeIPA
-resource "aws_security_group_rule" "desktop_gw_egress_to_cool_via_ipa_ports" {
+resource "aws_security_group_rule" "guacamole_egress_to_cool_via_ipa_ports" {
   provider = aws.provisionassessment
   for_each = local.ipa_ports
 
-  security_group_id = aws_security_group.desktop_gateway.id
+  security_group_id = aws_security_group.guacamole.id
   type              = "egress"
   protocol          = each.value.proto
   cidr_blocks       = [local.cool_shared_services_cidr_block]

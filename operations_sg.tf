@@ -1,4 +1,4 @@
-# Security group for the operations instances in the operations subnet
+# Security group for the operations instances
 resource "aws_security_group" "operations" {
   provider = aws.provisionassessment
 
@@ -13,37 +13,42 @@ resource "aws_security_group" "operations" {
 }
 
 # Allow ingress from Guacamole instance via ssh
-# For: DevOps ssh access from Guacamole instance to Operations instance
+#
+# For: DevOps ssh access from Guacamole instance to Operations
+# instance
 resource "aws_security_group_rule" "operations_ingress_from_guacamole_via_ssh" {
   provider = aws.provisionassessment
 
   security_group_id        = aws_security_group.operations.id
   type                     = "ingress"
   protocol                 = "tcp"
-  source_security_group_id = aws_security_group.desktop_gateway.id
+  source_security_group_id = aws_security_group.gateway.id
   from_port                = 22
   to_port                  = 22
 }
 
 # Allow ingress from Guacamole instance via VNC
-# For: Assessment team VNC access from Guacamole instance to Operations instance
+#
+# For: Assessment team VNC access from Guacamole instance to
+# Operations instance
 resource "aws_security_group_rule" "operations_ingress_from_guacamole_via_vnc" {
   provider = aws.provisionassessment
 
   security_group_id        = aws_security_group.operations.id
   type                     = "ingress"
   protocol                 = "tcp"
-  source_security_group_id = aws_security_group.desktop_gateway.id
+  source_security_group_id = aws_security_group.guacamole.id
   from_port                = 5901
   to_port                  = 5901
 }
 
 # Allow ingress from Kali instances to teamservers via port 993 (IMAP
 # over TLS/SSL)
+#
 # For: Assessment team IMAP access on Teamservers from Kali instances
 #
-# NOTE: This rule will only be created if there is at least one Kali instance
-# and at least one Teamserver instance.
+# NOTE: This rule will only be created if there is at least one Kali
+# instance and at least one Teamserver instance.
 resource "aws_security_group_rule" "operations_ingress_from_kali_via_imaps" {
   count    = lookup(var.operations_instance_counts, "kali", 0) * lookup(var.operations_instance_counts, "teamserver", 0) > 0 ? 1 : 0
   provider = aws.provisionassessment
