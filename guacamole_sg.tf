@@ -12,18 +12,30 @@ resource "aws_security_group" "guacamole" {
   )
 }
 
-# Allow egress via ssh to the Operations subnet
-#
-# For: Guacamole scp access to assessment operating instances
-resource "aws_security_group_rule" "guacamole_egress_to_ops_via_ssh" {
+# Allow egress via ssh to instances that wish to be accessible via
+# guacamole
+resource "aws_security_group_rule" "guacamole_egress_to_hosts_via_ssh" {
   provider = aws.provisionassessment
 
-  security_group_id = aws_security_group.guacamole.id
-  type              = "egress"
-  protocol          = "tcp"
-  cidr_blocks       = [aws_subnet.operations.cidr_block]
-  from_port         = 22
-  to_port           = 22
+  security_group_id        = aws_security_group.guacamole.id
+  type                     = "egress"
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.guacamole_accessible.id
+  from_port                = 22
+  to_port                  = 22
+}
+
+# Allow egress via VNC to instances that wish to be accessible via
+# guacamole
+resource "aws_security_group_rule" "guacamole_egress_to_hosts_via_vnc" {
+  provider = aws.provisionassessment
+
+  security_group_id        = aws_security_group.guacamole.id
+  type                     = "egress"
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.guacamole_accessible.id
+  from_port                = 5901
+  to_port                  = 5901
 }
 
 # Allow egress anywhere via https
@@ -114,21 +126,6 @@ resource "aws_security_group_rule" "guacamole_ingress_from_trusted_via_port_443"
   # ipv6_cidr_blocks  = TBD
   from_port = 443
   to_port   = 443
-}
-
-# Allow egress via VNC to the Operations subnet
-#
-# For: Assessment team VNC (via Guacamole) access to assessment
-# operating instances
-resource "aws_security_group_rule" "guacamole_egress_to_ops_via_vnc" {
-  provider = aws.provisionassessment
-
-  security_group_id = aws_security_group.guacamole.id
-  type              = "egress"
-  protocol          = "tcp"
-  cidr_blocks       = [aws_subnet.operations.cidr_block]
-  from_port         = 5901
-  to_port           = 5901
 }
 
 # Allow egress to COOL Shared Services via IPA-related ports
