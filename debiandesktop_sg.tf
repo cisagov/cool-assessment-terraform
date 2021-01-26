@@ -15,7 +15,7 @@ resource "aws_security_group" "debiandesktop" {
 # Allow egress to Nessus web GUI port (8834)
 #
 # For: Operator Nessus web access from Debian desktop instances
-resource "aws_security_group_rule" "debiandesktop_egress_to_nessus_via_gui_port" {
+resource "aws_security_group_rule" "debiandesktop_egress_to_nessus_via_web_ui" {
   provider = aws.provisionassessment
 
   security_group_id        = aws_security_group.debiandesktop.id

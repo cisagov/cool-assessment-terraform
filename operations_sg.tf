@@ -12,23 +12,6 @@ resource "aws_security_group" "operations" {
   )
 }
 
-# Allow ingress from Kali and Debian desktop instances via Nessus web GUI
-# For: Assessment team Nessus web access from Kali and Debian desktop instances
-#
-# NOTE: This rule will only be created if there is at least one Nessus instance
-# and at least one Kali or Debian Desktop instance.
-resource "aws_security_group_rule" "operations_ingress_from_allowed_instances_for_nessus" {
-  count    = lookup(var.operations_instance_counts, "nessus", 0) * (lookup(var.operations_instance_counts, "kali", 0) + lookup(var.operations_instance_counts, "debiandesktop", 0)) > 0 ? 1 : 0
-  provider = aws.provisionassessment
-
-  security_group_id = aws_security_group.operations.id
-  type              = "ingress"
-  protocol          = "tcp"
-  cidr_blocks       = [for instance in concat(aws_instance.kali, aws_instance.debiandesktop) : format("%s/32", instance.private_ip)]
-  from_port         = 8834
-  to_port           = 8834
-}
-
 # Allow ingress from anywhere via the TCP ports specified in
 # var.operations_subnet_inbound_tcp_ports_allowed
 # For: Assessment team operational use
