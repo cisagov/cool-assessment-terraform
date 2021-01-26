@@ -48,12 +48,6 @@ resource "aws_instance" "debiandesktop" {
   # all it does is set up /etc/fstab to mount the EFS file share.
   user_data_base64 = data.cloudinit_config.kali_cloud_init_tasks.rendered
 
-  # Even though the Debian desktop instances are in the Operations subnet,
-  # we put them in the "debiandesktop" security group.  This means that the
-  # ports in "operations_subnet_inbound_tcp_ports_allowed" and
-  # "operations_subnet_inbound_udp_ports_allowed", which are normally allowed
-  # inbound to Operations instances from anywhere, DO NOT APPLY to
-  # Debian desktop instances.
   vpc_security_group_ids = [
     aws_security_group.cloudwatch_and_ssm_agent.id,
     aws_security_group.debiandesktop.id,
