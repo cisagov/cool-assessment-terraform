@@ -50,7 +50,8 @@ resource "aws_instance" "nessus" {
 
   vpc_security_group_ids = [
     aws_security_group.guacamole_accessible.id,
-    aws_security_group.operations.id
+    aws_security_group.nessus.id,
+    aws_security_group.operations.id,
   ]
 
   tags        = merge(var.tags, map("Name", format("Nessus%d", count.index)))
