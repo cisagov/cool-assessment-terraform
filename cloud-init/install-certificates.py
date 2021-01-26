@@ -12,6 +12,7 @@ import os
 import boto3
 
 # Inputs from terraform
+AWS_REGION = "${aws_region}"
 CERT_BUCKET_NAME = "${cert_bucket_name}"
 CERT_READ_ROLE_ARN = "${cert_read_role_arn}"
 SERVER_FQDN = "${server_fqdn}"
@@ -24,7 +25,25 @@ INSTALLATION_MAP = {
 }
 
 # Create STS client
-sts = boto3.client("sts")
+#
+# STS used to be un-regioned, like S3, but now it is regioned.  This
+# is the one case where boto3 _does not_ do the right thing when you
+# set the region.  We have to set the region-specific endpoint URL
+# manually.
+#
+# This is important since the STS VPC endpoint _only_ sets a local DNS
+# record to override the _local region's_ public STS endpoint.  If we
+# don't set the endpoint URL then boto3 will reach out to the _global_
+# https://sts.amazonaws.com URL, and that DNS entry will still point
+# to an external IP.
+#
+# See this link for more information about boto3's perverse behavior
+# in the case of STS: https://github.com/boto/boto3/issues/1859.
+sts = boto3.client(
+    "sts",
+    region_name=AWS_REGION,
+    endpoint_url=f"https://sts.{AWS_REGION}.amazonaws.com",
+)
 
 # Assume the role that can read the certificate
 stsresponse = sts.assume_role(
