@@ -13,6 +13,18 @@ resource "aws_security_group" "ssm" {
   )
 }
 
+# Allow ingress via HTTPS from the Debian Desktop security group
+resource "aws_security_group_rule" "ingress_from_debiandesktop_to_ssm_via_https" {
+  provider = aws.provisionassessment
+
+  security_group_id        = aws_security_group.ssm.id
+  type                     = "ingress"
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.debiandesktop.id
+  from_port                = 443
+  to_port                  = 443
+}
+
 # Allow ingress via HTTPS from the guacamole security group
 resource "aws_security_group_rule" "ingress_from_guacamole_to_ssm_via_https" {
   provider = aws.provisionassessment
@@ -25,6 +37,17 @@ resource "aws_security_group_rule" "ingress_from_guacamole_to_ssm_via_https" {
   to_port                  = 443
 }
 
+# Allow ingress via HTTPS from the nessus security group
+resource "aws_security_group_rule" "ingress_from_nessus_to_ssm_via_https" {
+  provider = aws.provisionassessment
+
+  security_group_id        = aws_security_group.ssm.id
+  type                     = "ingress"
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.nessus.id
+  from_port                = 443
+  to_port                  = 443
+}
 
 # Allow ingress via HTTPS from the operations security group
 resource "aws_security_group_rule" "ingress_from_operations_to_ssm_via_https" {
@@ -46,18 +69,6 @@ resource "aws_security_group_rule" "ingress_from_pentestportal_to_ssm_via_https"
   type                     = "ingress"
   protocol                 = "tcp"
   source_security_group_id = aws_security_group.pentestportal.id
-  from_port                = 443
-  to_port                  = 443
-}
-
-# Allow ingress via HTTPS from the Debian Desktop security group
-resource "aws_security_group_rule" "ingress_from_debiandesktop_to_ssm_via_https" {
-  provider = aws.provisionassessment
-
-  security_group_id        = aws_security_group.ssm.id
-  type                     = "ingress"
-  protocol                 = "tcp"
-  source_security_group_id = aws_security_group.debiandesktop.id
   from_port                = 443
   to_port                  = 443
 }
