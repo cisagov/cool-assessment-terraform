@@ -18,9 +18,9 @@ resource "aws_network_acl_rule" "private_ingress_from_cool_vpn_via_https" {
 
 # Allow egress to anywhere via HTTPS
 #
-# For: Guacamole fetches its SSL certificate via boto3 (which uses
-# HTTPS).  It also needs to download the Docker images used in the
-# Guacamole Docker composition.
+# For: Guacamole assumes a role via STS.  This role allows Guacamole
+# to then fetch its SSL certificate from S3.  Guacamole also needs to
+# download the Docker images used in the Guacamole Docker composition.
 #
 # Note that, even though the S3 traffic is routed to the S3 VPC
 # gateway endpoint via the router, it still leaves the subnet as
