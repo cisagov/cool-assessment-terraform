@@ -112,8 +112,8 @@ resource "aws_security_group_rule" "guacamole_egress_to_s3_via_https" {
   to_port           = 443
 }
 
-# Allow ingress from COOL Shared Services VPN server CIDR block via
-# port 443 (nginx/guacamole web)
+# Allow ingress from COOL Shared Services VPN server CIDR block
+# via port 443 (nginx/Guacamole web)
 #
 # For: Assessment team access to Guacamole web client
 resource "aws_security_group_rule" "guacamole_ingress_from_trusted_via_port_443" {

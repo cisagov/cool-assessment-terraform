@@ -2,6 +2,10 @@
 # Create the VPC endpoints.
 #-------------------------------------------------------------------------------
 
+#
+# VPC interface endpoints
+#
+
 # STS interface endpoint
 resource "aws_vpc_endpoint" "sts" {
   provider = aws.provisionassessment
@@ -214,6 +218,10 @@ resource "aws_vpc_endpoint_subnet_association" "monitoring" {
   subnet_id       = aws_subnet.private[var.private_subnet_cidr_blocks[0]].id
   vpc_endpoint_id = aws_vpc_endpoint.monitoring.id
 }
+
+#
+# VPC gateway endpoints
+#
 
 # S3 gateway endpoint
 resource "aws_vpc_endpoint" "s3" {
