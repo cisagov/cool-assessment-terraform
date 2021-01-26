@@ -1,4 +1,6 @@
-# Allow ingress from COOL Shared Services VPN server CIDR block via https
+# Allow ingress from COOL Shared Services VPN server CIDR block via
+# https
+#
 # For: Assessment team access to guacamole web client
 resource "aws_network_acl_rule" "private_ingress_from_cool_vpn_via_https" {
   provider = aws.provisionassessment
@@ -38,6 +40,7 @@ resource "aws_network_acl_rule" "private_egress_to_anywhere_via_https" {
 }
 
 # Allow egress to COOL Shared Services via ephemeral ports
+#
 # For: Assessment team access to guacamole web client
 resource "aws_network_acl_rule" "private_egress_to_cool_via_ephemeral_ports" {
   provider = aws.provisionassessment
@@ -70,6 +73,7 @@ resource "aws_network_acl_rule" "private_egress_to_operations_via_ephemeral_port
 }
 
 # Allow egress to operations subnet via ssh
+#
 # For: DevOps ssh access from private subnet to operations subnet
 resource "aws_network_acl_rule" "private_egress_to_operations_via_ssh" {
   provider = aws.provisionassessment
@@ -86,8 +90,9 @@ resource "aws_network_acl_rule" "private_egress_to_operations_via_ssh" {
 }
 
 # Allow ingress from operations subnet via ephemeral ports
+#
 # For: DevOps ssh access from private subnet to operations subnet and
-#      Assessment team VNC access from private subnet to operations subnet
+# Assessment team VNC access from private subnet to operations subnet
 #
 # Note that this also covers ingress from the operations subnet via
 # TCP port 2049 for EFS.
@@ -157,8 +162,11 @@ resource "aws_network_acl_rule" "private_egress_to_operations_via_vnc" {
 }
 
 # Allow egress to COOL Shared Services via IPA-related ports
+#
 # For: Guacamole instance communication with FreeIPA
-# Note that these rules only apply to the private subnet with Guacamole.
+#
+# Note that these rules only apply to the private subnet with
+# Guacamole.
 resource "aws_network_acl_rule" "private_egress_to_cool_via_ipa_ports" {
   provider = aws.provisionassessment
   for_each = local.ipa_ports
@@ -173,12 +181,18 @@ resource "aws_network_acl_rule" "private_egress_to_cool_via_ipa_ports" {
   to_port        = each.value.port
 }
 
-# Allow ingress from private subnet to private subnet via IPA-related ports.
+# Allow ingress from private subnet to private subnet via IPA-related
+# ports.
+#
 # For: Guacamole instance communication with FreeIPA
-# Note that these rules only apply to the private subnet with Guacamole.
-# Full disclosure: We are not totally clear on why this access is needed,
-# but without it, traffic is unable to go from the Guacamole instance to the
-# Transit Gateway attachment (both reside in the same private subnet).
+#
+# Note that these rules only apply to the private subnet with
+# Guacamole.
+#
+# Full disclosure: We are not totally clear on why this access is
+# needed, but without it, traffic is unable to go from the Guacamole
+# instance to the Transit Gateway attachment (both reside in the same
+# private subnet).
 resource "aws_network_acl_rule" "private_ingress_to_tg_attachment_via_ipa_ports" {
   provider = aws.provisionassessment
   for_each = local.ipa_ports

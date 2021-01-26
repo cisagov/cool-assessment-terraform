@@ -1,4 +1,5 @@
 # Allow ingress from private subnet via ssh
+#
 # For: DevOps ssh access from private subnet to operations subnet
 resource "aws_network_acl_rule" "operations_ingress_from_private_via_ssh" {
   provider = aws.provisionassessment
@@ -15,7 +16,9 @@ resource "aws_network_acl_rule" "operations_ingress_from_private_via_ssh" {
 }
 
 # Allow ingress from private subnet via VNC
-# For: Assessment team VNC access from private subnet to operations subnet
+#
+# For: Assessment team VNC access from private subnet to operations
+# subnet
 resource "aws_network_acl_rule" "operations_ingress_from_private_via_vnc" {
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
@@ -49,6 +52,7 @@ resource "aws_network_acl_rule" "operations_ingress_from_private_via_https" {
 
 # Allow ingress from anywhere via the TCP ports specified in
 # var.operations_subnet_inbound_tcp_ports_allowed
+#
 # For: Assessment team operational use
 resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_allowed_tcp_ports" {
   provider = aws.provisionassessment
@@ -66,6 +70,7 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_allowed_tc
 
 # Allow ingress from anywhere via the UDP ports specified in
 # var.operations_subnet_inbound_udp_ports_allowed
+#
 # For: Assessment team operational use
 resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_allowed_udp_ports" {
   provider = aws.provisionassessment
@@ -81,9 +86,11 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_allowed_ud
   to_port        = each.value["to"]
 }
 
-# Allow ingress from anywhere via ephemeral TCP/UDP ports below 3389 (1024-3388)
-# For: Assessment team operational use, but don't want to allow
-#      public access to RDP on port 3389
+# Allow ingress from anywhere via ephemeral TCP/UDP ports below 3389
+# (1024-3388)
+#
+# For: Assessment team operational use, but don't want to allow public
+# access to RDP on port 3389
 resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_1024_thru_3388" {
   provider = aws.provisionassessment
   for_each = toset(local.tcp_and_udp)
@@ -99,8 +106,9 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_1024
 }
 
 # Allow ingress from anywhere via ephemeral TCP/UDP ports 3390-5900
-# For: Assessment team operational use, but don't want to allow
-#      public access to RDP on port 3389 or VNC on port 5901
+#
+# For: Assessment team operational use, but don't want to allow public
+# access to RDP on port 3389 or VNC on port 5901
 resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_3390_thru_5900" {
   provider = aws.provisionassessment
   for_each = toset(local.tcp_and_udp)
@@ -116,9 +124,9 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_3390
 }
 
 # Allow ingress from anywhere via ephemeral TCP/UDP ports 5901-50049
-# For: Assessment team operational use, but don't want to allow
-#      public access to VNC on port 5901 or Cobalt Strike teamserver
-#      on port 50050
+#
+# For: Assessment team operational use, but don't want to allow public
+# access to VNC on port 5901 or Cobalt Strike teamserver on port 50050
 resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_5902_thru_50049" {
   provider = aws.provisionassessment
   for_each = toset(local.tcp_and_udp)
@@ -134,8 +142,9 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_5902
 }
 
 # Allow ingress from anywhere via ephemeral TCP/UDP ports 50051-65535
-# For: Assessment team operational use, but don't want to allow
-#      public access to Cobalt Strike teamserver on port 50050
+#
+# For: Assessment team operational use, but don't want to allow public
+# access to Cobalt Strike teamserver on port 50050
 resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_50051_thru_65535" {
   provider = aws.provisionassessment
   for_each = toset(local.tcp_and_udp)
@@ -151,6 +160,7 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_5005
 }
 
 # Allow ingress from anywhere via ICMP
+#
 # For: Assessment team operational use (e.g. ping responses)
 resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_icmp" {
   provider = aws.provisionassessment
@@ -166,6 +176,7 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_icmp" {
 }
 
 # Allow egress to anywhere via any protocol and port
+#
 # For: Assessment team operational use
 #
 # Note that this also covers the return traffic when the Guacamole
