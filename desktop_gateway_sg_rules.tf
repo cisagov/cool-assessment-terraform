@@ -86,7 +86,7 @@ resource "aws_security_group_rule" "desktop_gw_egress_to_s3_via_https" {
 }
 
 # Allow ingress from COOL Shared Services VPN server CIDR block
-# via port 443 (nginx/guacamole web)
+# via port 443 (nginx/Guacamole web)
 # For: Assessment team access to Guacamole web client
 resource "aws_security_group_rule" "desktop_gw_ingress_from_trusted_via_port_443" {
   provider = aws.provisionassessment
