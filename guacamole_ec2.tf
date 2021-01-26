@@ -42,6 +42,7 @@ resource "aws_instance" "guacamole" {
   user_data_base64 = data.cloudinit_config.guacamole_cloud_init_tasks.rendered
 
   vpc_security_group_ids = [
+    aws_security_group.cloudwatch_and_ssm_agent.id,
     aws_security_group.guacamole.id,
   ]
 
