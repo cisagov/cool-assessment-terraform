@@ -51,7 +51,7 @@ resource "aws_instance" "gophish" {
     aws_security_group.efs_client.id,
     aws_security_group.gophish.id,
     aws_security_group.guacamole_accessible.id,
-    aws_security_group.operations.id,
+    aws_security_group.scanner.id,
   ]
 
   tags        = merge(var.tags, map("Name", format("GoPhish%d", count.index)))

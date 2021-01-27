@@ -52,7 +52,7 @@ resource "aws_instance" "nessus" {
     aws_security_group.cloudwatch_and_ssm_agent.id,
     aws_security_group.guacamole_accessible.id,
     aws_security_group.nessus.id,
-    aws_security_group.operations.id,
+    aws_security_group.scanner.id,
   ]
 
   tags        = merge(var.tags, map("Name", format("Nessus%d", count.index)))
