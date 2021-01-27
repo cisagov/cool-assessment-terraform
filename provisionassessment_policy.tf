@@ -53,6 +53,7 @@ data "aws_iam_policy_document" "provisionassessment_policy_doc" {
       "ec2:GetTransitGatewayRouteTableAssociations",
       "ec2:GetTransitGatewayRouteTablePropagations",
       "ec2:ModifyInstanceAttribute",
+      "ec2:ModifyNetworkInterfaceAttribute",
       "ec2:ModifyTransitGatewayVpcAttachment",
       "ec2:ModifyVpcAttribute",
       "ec2:ModifyVpcEndpoint",
