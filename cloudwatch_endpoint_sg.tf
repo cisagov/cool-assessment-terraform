@@ -49,18 +49,6 @@ resource "aws_security_group_rule" "ingress_from_nessus_to_cloudwatch_via_https"
   to_port                  = 443
 }
 
-# Allow ingress via HTTPS from the operations security group
-resource "aws_security_group_rule" "ingress_from_operations_to_cloudwatch_via_https" {
-  provider = aws.provisionassessment
-
-  security_group_id        = aws_security_group.cloudwatch.id
-  type                     = "ingress"
-  protocol                 = "tcp"
-  source_security_group_id = aws_security_group.operations.id
-  from_port                = 443
-  to_port                  = 443
-}
-
 # Allow ingress via HTTPS from the PenTest Portal security group
 resource "aws_security_group_rule" "ingress_from_pentestportal_to_cloudwatch_via_https" {
   provider = aws.provisionassessment
