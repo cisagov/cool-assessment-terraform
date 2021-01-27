@@ -49,6 +49,7 @@ resource "aws_instance" "gophish" {
   vpc_security_group_ids = [
     aws_security_group.cloudwatch_and_ssm_agent.id,
     aws_security_group.efs_client.id,
+    aws_security_group.gophish.id,
     aws_security_group.guacamole_accessible.id,
     aws_security_group.operations.id,
   ]
