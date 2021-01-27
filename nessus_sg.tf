@@ -18,12 +18,12 @@ resource "aws_security_group" "nessus" {
 resource "aws_security_group_rule" "nessus_ingress_from_debiandesktop_via_web_ui" {
   provider = aws.provisionassessment
 
-  security_group_id     = aws_security_group.nessus.id
-  type                  = "ingress"
-  protocol              = "tcp"
-  source_security_group = aws_security_group.debiandesktop.id
-  from_port             = 8834
-  to_port               = 8834
+  security_group_id        = aws_security_group.nessus.id
+  type                     = "ingress"
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.debiandesktop.id
+  from_port                = 8834
+  to_port                  = 8834
 }
 
 # Allow ingress from Kali instances via Nessus web GUI
@@ -32,10 +32,10 @@ resource "aws_security_group_rule" "nessus_ingress_from_debiandesktop_via_web_ui
 resource "aws_security_group_rule" "nessus_ingress_from_kali_via_web_ui" {
   provider = aws.provisionassessment
 
-  security_group_id     = aws_security_group.nessus.id
-  type                  = "ingress"
-  protocol              = "tcp"
-  source_security_group = aws_security_group.kali.id
-  from_port             = 8834
-  to_port               = 8834
+  security_group_id        = aws_security_group.nessus.id
+  type                     = "ingress"
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.kali.id
+  from_port                = 8834
+  to_port                  = 8834
 }
