@@ -25,6 +25,18 @@ resource "aws_security_group_rule" "ingress_from_debiandesktop_to_ssm_via_https"
   to_port                  = 443
 }
 
+# Allow ingress via HTTPS from the gophish security group
+resource "aws_security_group_rule" "ingress_from_gophish_to_ssm_via_https" {
+  provider = aws.provisionassessment
+
+  security_group_id        = aws_security_group.ssm.id
+  type                     = "ingress"
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.gophish.id
+  from_port                = 443
+  to_port                  = 443
+}
+
 # Allow ingress via HTTPS from the guacamole security group
 resource "aws_security_group_rule" "ingress_from_guacamole_to_ssm_via_https" {
   provider = aws.provisionassessment
@@ -33,6 +45,18 @@ resource "aws_security_group_rule" "ingress_from_guacamole_to_ssm_via_https" {
   type                     = "ingress"
   protocol                 = "tcp"
   source_security_group_id = aws_security_group.guacamole.id
+  from_port                = 443
+  to_port                  = 443
+}
+
+# Allow ingress via HTTPS from the kali security group
+resource "aws_security_group_rule" "ingress_from_kali_to_ssm_via_https" {
+  provider = aws.provisionassessment
+
+  security_group_id        = aws_security_group.ssm.id
+  type                     = "ingress"
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.kali.id
   from_port                = 443
   to_port                  = 443
 }
@@ -57,6 +81,18 @@ resource "aws_security_group_rule" "ingress_from_pentestportal_to_ssm_via_https"
   type                     = "ingress"
   protocol                 = "tcp"
   source_security_group_id = aws_security_group.pentestportal.id
+  from_port                = 443
+  to_port                  = 443
+}
+
+# Allow ingress via HTTPS from the teamserver security group
+resource "aws_security_group_rule" "ingress_from_teamserver_to_ssm_via_https" {
+  provider = aws.provisionassessment
+
+  security_group_id        = aws_security_group.ssm.id
+  type                     = "ingress"
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.teamserver.id
   from_port                = 443
   to_port                  = 443
 }
