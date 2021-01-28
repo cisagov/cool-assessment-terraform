@@ -12,7 +12,7 @@ resource "aws_security_group" "nessus" {
   )
 }
 
-# Allow ingress from Debian Desktop instances via Nessus web GUI
+# Allow ingress from Debian desktop instances via Nessus web GUI
 #
 # For: Assessment team Nessus web access from Debian desktop instances
 resource "aws_security_group_rule" "nessus_ingress_from_debiandesktop_via_web_ui" {

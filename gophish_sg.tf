@@ -1,4 +1,4 @@
-# Security group for GoPhish instances
+# Security group for Gophish instances
 resource "aws_security_group" "gophish" {
   provider = aws.provisionassessment
 
@@ -7,7 +7,7 @@ resource "aws_security_group" "gophish" {
   tags = merge(
     var.tags,
     {
-      "Name" = "GoPhish"
+      "Name" = "Gophish"
     },
   )
 }

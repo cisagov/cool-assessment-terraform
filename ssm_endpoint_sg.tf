@@ -13,7 +13,7 @@ resource "aws_security_group" "ssm" {
   )
 }
 
-# Allow ingress via HTTPS from the Debian Desktop security group
+# Allow ingress via HTTPS from the Debian desktop security group
 resource "aws_security_group_rule" "ingress_from_debiandesktop_to_ssm_via_https" {
   provider = aws.provisionassessment
 
@@ -25,7 +25,7 @@ resource "aws_security_group_rule" "ingress_from_debiandesktop_to_ssm_via_https"
   to_port                  = 443
 }
 
-# Allow ingress via HTTPS from the gophish security group
+# Allow ingress via HTTPS from the Gophish security group
 resource "aws_security_group_rule" "ingress_from_gophish_to_ssm_via_https" {
   provider = aws.provisionassessment
 
@@ -37,7 +37,7 @@ resource "aws_security_group_rule" "ingress_from_gophish_to_ssm_via_https" {
   to_port                  = 443
 }
 
-# Allow ingress via HTTPS from the guacamole security group
+# Allow ingress via HTTPS from the Guacamole security group
 resource "aws_security_group_rule" "ingress_from_guacamole_to_ssm_via_https" {
   provider = aws.provisionassessment
 
@@ -49,7 +49,7 @@ resource "aws_security_group_rule" "ingress_from_guacamole_to_ssm_via_https" {
   to_port                  = 443
 }
 
-# Allow ingress via HTTPS from the kali security group
+# Allow ingress via HTTPS from the Kali security group
 resource "aws_security_group_rule" "ingress_from_kali_to_ssm_via_https" {
   provider = aws.provisionassessment
 
@@ -61,7 +61,7 @@ resource "aws_security_group_rule" "ingress_from_kali_to_ssm_via_https" {
   to_port                  = 443
 }
 
-# Allow ingress via HTTPS from the nessus security group
+# Allow ingress via HTTPS from the Nessus security group
 resource "aws_security_group_rule" "ingress_from_nessus_to_ssm_via_https" {
   provider = aws.provisionassessment
 

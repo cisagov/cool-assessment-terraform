@@ -14,9 +14,9 @@ resource "aws_security_group" "cloudwatch_and_ssm_agent" {
   )
 }
 
-# Allow egress via https to any SSM interface endpoints
+# Allow egress via HTTPS to any SSM interface endpoints
 #
-# For: All instances require access to SSM for ssh access via the AWS
+# For: All instances require access to SSM for SSH access via the AWS
 # control plane.
 resource "aws_security_group_rule" "agent_egress_to_ssm_via_https" {
   provider = aws.provisionassessment
@@ -29,7 +29,7 @@ resource "aws_security_group_rule" "agent_egress_to_ssm_via_https" {
   to_port                  = 443
 }
 
-# Allow egress via https to any Cloudwatch interface endpoints
+# Allow egress via HTTPS to any Cloudwatch interface endpoints
 #
 # For: All instances requires access to CloudWatch for CloudWatch log
 # forwarding via the CloudWatch agent.

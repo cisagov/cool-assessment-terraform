@@ -1,4 +1,4 @@
-# Security group for guacamole instances
+# Security group for Guacamole instances
 resource "aws_security_group" "guacamole" {
   provider = aws.provisionassessment
 
@@ -12,8 +12,8 @@ resource "aws_security_group" "guacamole" {
   )
 }
 
-# Allow egress via ssh to instances that wish to be accessible via
-# guacamole
+# Allow egress via SSH to instances that wish to be accessible via
+# Guacamole
 resource "aws_security_group_rule" "guacamole_egress_to_hosts_via_ssh" {
   provider = aws.provisionassessment
 
@@ -26,7 +26,7 @@ resource "aws_security_group_rule" "guacamole_egress_to_hosts_via_ssh" {
 }
 
 # Allow egress via VNC to instances that wish to be accessible via
-# guacamole
+# Guacamole
 resource "aws_security_group_rule" "guacamole_egress_to_hosts_via_vnc" {
   provider = aws.provisionassessment
 
@@ -38,9 +38,9 @@ resource "aws_security_group_rule" "guacamole_egress_to_hosts_via_vnc" {
   to_port                  = 5901
 }
 
-# Allow egress anywhere via https
+# Allow egress anywhere via HTTPS
 #
-# For: Guacamole access to DockerHub via the NAT gateway
+# For: Guacamole access to Docker Hub via the NAT gateway
 resource "aws_security_group_rule" "guacamole_egress_anywhere_via_https" {
   provider = aws.provisionassessment
 
@@ -52,7 +52,7 @@ resource "aws_security_group_rule" "guacamole_egress_anywhere_via_https" {
   to_port           = 443
 }
 
-# Allow egress via https to any STS interface endpoint
+# Allow egress via HTTPS to any STS interface endpoint
 #
 # For: Guacamole assumes a role via STS.  This role allows Guacamole
 # to then fetch its SSL certificate from S3.
@@ -67,7 +67,7 @@ resource "aws_security_group_rule" "guacamole_egress_to_sts_via_https" {
   to_port                  = 443
 }
 
-# Allow egress via https to the S3 gateway endpoint
+# Allow egress via HTTPS to the S3 gateway endpoint
 #
 # For: Guacamole requires access to S3 in order to download its
 # certificate.

@@ -1,4 +1,4 @@
-# Security group for the instances accessible by guacamole
+# Security group for the instances accessible by Guacamole
 resource "aws_security_group" "guacamole_accessible" {
   provider = aws.provisionassessment
 
@@ -12,7 +12,7 @@ resource "aws_security_group" "guacamole_accessible" {
   )
 }
 
-# Allow ingress from Guacamole instances via ssh
+# Allow ingress from Guacamole instances via SSH
 resource "aws_security_group_rule" "ingress_from_guacamole_via_ssh" {
   provider = aws.provisionassessment
 

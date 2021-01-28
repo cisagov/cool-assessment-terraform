@@ -12,7 +12,7 @@ resource "aws_security_group" "kali" {
   )
 }
 
-# Allow egress to Pentest Portal instances via ports 443 and 8080
+# Allow egress to PenTest Portal instances via ports 443 and 8080
 resource "aws_security_group_rule" "kali_egress_to_pentestportal_via_web" {
   for_each = toset(["443", "8080"])
   provider = aws.provisionassessment

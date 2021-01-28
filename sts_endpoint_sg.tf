@@ -12,7 +12,7 @@ resource "aws_security_group" "sts" {
   )
 }
 
-# Allow ingress via HTTPS from the guacamole security group
+# Allow ingress via HTTPS from the Guacamole security group
 resource "aws_security_group_rule" "ingress_from_guacamole_to_sts_via_https" {
   provider = aws.provisionassessment
 
@@ -24,7 +24,7 @@ resource "aws_security_group_rule" "ingress_from_guacamole_to_sts_via_https" {
   to_port                  = 443
 }
 
-# Allow ingress via HTTPS from the nessus security group
+# Allow ingress via HTTPS from the Nessus security group
 resource "aws_security_group_rule" "ingress_from_nessus_to_sts_via_https" {
   provider = aws.provisionassessment
 
