@@ -7,7 +7,7 @@ resource "aws_security_group" "guacamole" {
   tags = merge(
     var.tags,
     {
-      "Name" = "Desktop gateway (Guacamole)"
+      "Name" = "Guacamole (desktop gateway)"
     },
   )
 }
