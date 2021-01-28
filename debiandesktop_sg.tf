@@ -28,7 +28,7 @@ resource "aws_security_group_rule" "debiandesktop_egress_to_nessus_via_web_ui" {
 
 # Allow egress to anywhere via HTTP and HTTPS
 #
-# For: Operator web access, package downloads and updates
+# For: Assessment team web access, package downloads and updates
 resource "aws_security_group_rule" "debiandesktop_egress_to_anywhere_via_http_and_https" {
   for_each = toset(["80", "443"])
   provider = aws.provisionassessment
