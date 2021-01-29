@@ -45,22 +45,3 @@ resource "aws_internet_gateway" "assessment" {
   vpc_id = aws_vpc.assessment.id
   tags   = var.tags
 }
-
-#-------------------------------------------------------------------------------
-# Create a NAT gateway for the private subnets.
-# -------------------------------------------------------------------------------
-resource "aws_eip" "nat_gw" {
-  provider = aws.provisionassessment
-
-  tags = var.tags
-  vpc  = true
-}
-
-resource "aws_nat_gateway" "nat_gw" {
-  provider = aws.provisionassessment
-
-  allocation_id = aws_eip.nat_gw.id
-  # Reminder: The NAT gateway lives in the operations subnet
-  subnet_id = aws_subnet.operations.id
-  tags      = var.tags
-}
