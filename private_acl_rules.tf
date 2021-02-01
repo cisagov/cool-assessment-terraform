@@ -96,9 +96,6 @@ resource "aws_network_acl_rule" "private_egress_to_operations_via_ssh" {
 #
 # Note that this also covers ingress from the operations subnet via
 # TCP port 2049 for EFS.
-#
-# Note that this also allows the return traffic from any HTTPS
-# requests sent out via the NAT gateway in the operations subnet.
 resource "aws_network_acl_rule" "private_ingress_from_operations_via_ephemeral_ports" {
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)

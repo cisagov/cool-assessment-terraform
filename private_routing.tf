@@ -1,6 +1,5 @@
 #-------------------------------------------------------------------------------
-# Note that all these resources depend on the VPC, the NAT GWs, or
-# both, and hence on the
+# Note that all these resources depend on the VPC, and hence on the
 # aws_iam_role_policy_attachment.provisionassessment_policy_attachment
 # resource.
 # -------------------------------------------------------------------------------
@@ -18,8 +17,7 @@
 # route external traffic from each private subnet to the NAT gateway
 # in the public subnet that resides in the same AZ, and this would
 # obviously require separate routing tables.  However, in this case we
-# only create a single NAT gateway in the one operations subnet that
-# is shared by all private subnets.
+# create no NAT gateways.
 resource "aws_route_table" "private_route_table" {
   provider = aws.provisionassessment
 
@@ -42,16 +40,6 @@ resource "aws_vpc_endpoint_route_table_association" "s3_private" {
 
   route_table_id  = aws_route_table.private_route_table.id
   vpc_endpoint_id = aws_vpc_endpoint.s3.id
-}
-
-# Route all external (outside this VPC and outside the COOL) traffic
-# through the NAT gateway
-resource "aws_route" "external_private" {
-  provider = aws.provisionassessment
-
-  route_table_id         = aws_route_table.private_route_table.id
-  destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.nat_gw.id
 }
 
 # Associate the routing table with the subnets
