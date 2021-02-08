@@ -33,6 +33,15 @@ resource "aws_instance" "nessus" {
   count    = lookup(var.operations_instance_counts, "nessus", 0)
   provider = aws.provisionassessment
 
+  # When a Nessus instance starts up, it executes cloud-init/nessus-setup.sh,
+  # which requires access to the STS and SSM endpoints.  To ensure that access
+  # is available, we force dependencies on the security group rules that
+  # allow STS and SSM endpoint access from Nessus.
+  depends_on = [
+    aws_security_group_rule.ingress_from_nessus_to_sts_via_https,
+    aws_security_group_rule.ingress_from_nessus_to_ssm_via_https
+  ]
+
   ami                         = data.aws_ami.nessus.id
   associate_public_ip_address = true
   availability_zone           = "${var.aws_region}${var.aws_availability_zone}"
