@@ -13,7 +13,6 @@ data "aws_iam_policy_document" "provisionassessment_policy_doc" {
       "ec2:AssociateTransitGatewayRouteTable",
       "ec2:AttachInternetGateway",
       "ec2:AuthorizeSecurityGroupEgress",
-      "ec2:AuthorizeSecurityGroupEgress",
       "ec2:AuthorizeSecurityGroupIngress",
       "ec2:CreateDhcpOptions",
       "ec2:CreateFlowLogs",
