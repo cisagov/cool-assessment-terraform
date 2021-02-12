@@ -36,10 +36,13 @@ resource "aws_instance" "nessus" {
   # When a Nessus instance starts up, it executes cloud-init/nessus-setup.sh,
   # which requires access to the STS and SSM endpoints.  To ensure that access
   # is available, we force dependencies on the security group rules that
-  # allow STS and SSM endpoint access from Nessus.
+  # allow STS and SSM endpoint access from Nessus, as well as the endpoints
+  # themselves.
   depends_on = [
     aws_security_group_rule.ingress_from_nessus_to_sts_via_https,
-    aws_security_group_rule.ingress_from_nessus_to_ssm_via_https
+    aws_security_group_rule.ingress_from_nessus_to_ssm_via_https,
+    aws_vpc_endpoint.sts,
+    aws_vpc_endpoint.ssm
   ]
 
   ami                         = data.aws_ami.nessus.id
