@@ -72,27 +72,12 @@ locals {
 
   nessus_parameterstorereadonly_role_name = format("ParameterStoreReadOnly-%s-Nessus", local.assessment_workspace_name)
 
-  # Parse var.operations_subnet_inbound_tcp_ports_allowed and
-  # var.operations_subnet_inbound_udp_ports_allowed in order to expand
-  # port ranges (e.g. "8000-8100") into a map of maps, whose format is
-  # more useful when defining ACL and security group rules
-  operations_subnet_inbound_tcp_ports_allowed = merge(
-    { for p in var.operations_subnet_inbound_tcp_ports_allowed :
-    p => { "from" : p, "to" : p } if length(split("-", p)) == 1 },
-    { for p in var.operations_subnet_inbound_tcp_ports_allowed :
-      p => { "from" : trimspace(split("-", p)[0]),
-      "to" : trimspace(split("-", p)[1]) }
-    if length(split("-", p)) == 2 }
-  )
-
-  operations_subnet_inbound_udp_ports_allowed = merge(
-    { for p in var.operations_subnet_inbound_udp_ports_allowed :
-    p => { "from" : p, "to" : p } if length(split("-", p)) == 1 },
-    { for p in var.operations_subnet_inbound_udp_ports_allowed :
-      p => { "from" : trimspace(split("-", p)[0]),
-      "to" : trimspace(split("-", p)[1]) }
-    if length(split("-", p)) == 2 }
-  )
+  # Return a map containing the union of all ports to be opened for
+  # instance types that will actually be instantiated in the
+  # operations subnet.  We use the index as the key for the resulting
+  # map so that we can number the corresponding ACL rules
+  # consecutively.
+  union_of_inbound_ports_allowed = { for index, d in distinct(flatten([for k, v in var.inbound_ports_allowed : v if var.operations_instance_counts[k] > 0])) : index => d }
 
   # If var.private_domain is provided, use it.  Otherwise, default to
   # local.assessment_account_name_base
