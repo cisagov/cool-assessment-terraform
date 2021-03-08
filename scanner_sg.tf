@@ -16,7 +16,7 @@ resource "aws_security_group" "scanner" {
 
 # Allow ingress from anywhere via ICMP
 #
-# For: Assessment team operational use (e.g. ping responses)
+# For: Assessment team operational use
 resource "aws_security_group_rule" "scanner_ingress_from_anywhere_via_icmp" {
   provider = aws.provisionassessment
 
@@ -24,8 +24,8 @@ resource "aws_security_group_rule" "scanner_ingress_from_anywhere_via_icmp" {
   type              = "ingress"
   protocol          = "icmp"
   cidr_blocks       = ["0.0.0.0/0"]
-  from_port         = -1
-  to_port           = -1
+  from_port         = 8
+  to_port           = 0
 }
 
 # Allow egress to anywhere via any protocol and port
