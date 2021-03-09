@@ -35,7 +35,7 @@ resource "aws_instance" "debiandesktop" {
   associate_public_ip_address = true
   availability_zone           = "${var.aws_region}${var.aws_availability_zone}"
   iam_instance_profile        = aws_iam_instance_profile.debiandesktop.name
-  instance_type               = "t3.small"
+  instance_type               = "t3.medium"
   subnet_id                   = aws_subnet.operations.id
 
   root_block_device {
