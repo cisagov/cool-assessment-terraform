@@ -14,41 +14,9 @@ resource "aws_security_group" "scanner" {
   )
 }
 
-# Allow ingress from anywhere via the TCP ports specified in
-# var.operations_subnet_inbound_tcp_ports_allowed
-#
-# For: Assessment team operational use
-resource "aws_security_group_rule" "scanner_ingress_from_anywhere_via_allowed_tcp_ports" {
-  provider = aws.provisionassessment
-  for_each = local.operations_subnet_inbound_tcp_ports_allowed
-
-  security_group_id = aws_security_group.scanner.id
-  type              = "ingress"
-  protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
-  from_port         = each.value["from"]
-  to_port           = each.value["to"]
-}
-
-# Allow ingress from anywhere via the UDP ports specified in
-# var.operations_subnet_inbound_udp_ports_allowed
-#
-# For: Assessment team operational use
-resource "aws_security_group_rule" "scanner_ingress_from_anywhere_via_allowed_udp_ports" {
-  provider = aws.provisionassessment
-  for_each = local.operations_subnet_inbound_udp_ports_allowed
-
-  security_group_id = aws_security_group.scanner.id
-  type              = "ingress"
-  protocol          = "udp"
-  cidr_blocks       = ["0.0.0.0/0"]
-  from_port         = each.value["from"]
-  to_port           = each.value["to"]
-}
-
 # Allow ingress from anywhere via ICMP
 #
-# For: Assessment team operational use (e.g. ping responses)
+# For: Assessment team operational use
 resource "aws_security_group_rule" "scanner_ingress_from_anywhere_via_icmp" {
   provider = aws.provisionassessment
 
@@ -56,8 +24,8 @@ resource "aws_security_group_rule" "scanner_ingress_from_anywhere_via_icmp" {
   type              = "ingress"
   protocol          = "icmp"
   cidr_blocks       = ["0.0.0.0/0"]
-  from_port         = -1
-  to_port           = -1
+  from_port         = 8
+  to_port           = 0
 }
 
 # Allow egress to anywhere via any protocol and port

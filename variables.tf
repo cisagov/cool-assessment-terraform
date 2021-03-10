@@ -67,6 +67,12 @@ variable "guac_connection_setup_path" {
   default     = "/var/guacamole/dbinit"
 }
 
+variable "inbound_ports_allowed" {
+  type        = map(list(object({ protocol = string, from_port = number, to_port = number })))
+  description = "A map specifying the ports allowed inbound (from anywhere) to the various instance types (e.g. {\"kali\": [{\"protocol\": \"tcp\", \"from_port\": 8000, \"to_port\": 8999}]}).  The currently-supported keys are: \"debiandesktop\", \"gophish\", \"kali\", \"nessus\", \"pentestportal\", and \"teamserver\"."
+  default     = { "debiandesktop" : [], "gophish" : [{ "protocol" : "tcp", "from_port" : 25, "to_port" : 25 }, { "protocol" : "tcp", "from_port" : 80, "to_port" : 80 }, { "protocol" : "tcp", "from_port" : 443, "to_port" : 443 }, { "protocol" : "tcp", "from_port" : 587, "to_port" : 587 }], "kali" : [{ "protocol" : "tcp", "from_port" : 8000, "to_port" : 8999 }], "nessus" : [], "pentestportal" : [], "teamserver" : [{ "protocol" : "tcp", "from_port" : 25, "to_port" : 25 }, { "protocol" : "tcp", "from_port" : 53, "to_port" : 53 }, { "protocol" : "tcp", "from_port" : 443, "to_port" : 443 }, { "protocol" : "tcp", "from_port" : 587, "to_port" : 587 }, { "protocol" : "udp", "from_port" : 53, "to_port" : 53 }, { "protocol" : "udp", "from_port" : 8080, "to_port" : 8080 }, { "protocol" : "tcp", "from_port" : 8000, "to_port" : 8999 }] }
+}
+
 variable "nessus_activation_codes" {
   type        = list(string)
   description = "The list of Nessus activation codes (e.g. [\"AAAA-BBBB-CCCC-DDDD\"]). The number of codes in this list should match the number of Nessus instances defined in operations_instance_counts."
@@ -77,18 +83,6 @@ variable "operations_instance_counts" {
   type        = map(number)
   description = "A map specifying how many instances of each type should be created in the operations subnet (e.g. { \"kali\": 1 }).  The currently-supported instance keys are: [\"debiandesktop\", \"gophish\", \"kali\", \"nessus\", \"pentestportal\", \"teamserver\"]."
   default     = { "kali" : 1 }
-}
-
-variable "operations_subnet_inbound_tcp_ports_allowed" {
-  type        = list(string)
-  description = "The list of TCP ports allowed inbound (from anywhere) to the operations subnet.  Note that ranges of ports are allowed, by separating the start and end ports with a hyphen (e.g. [\"80\", \"443\", \"8000-8100\" ])."
-  default     = ["80", "443"]
-}
-
-variable "operations_subnet_inbound_udp_ports_allowed" {
-  type        = list(string)
-  description = "The list of UDP ports allowed inbound (from anywhere) to the operations subnet.  Note that ranges of ports are allowed, by separating the start and end ports with a hyphen (e.g. [\"53\", \"8000-8100\" ])."
-  default     = []
 }
 
 variable "private_domain" {
