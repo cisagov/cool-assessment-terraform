@@ -51,22 +51,29 @@ resource "aws_instance" "nessus" {
   iam_instance_profile        = aws_iam_instance_profile.nessus[0].name
   instance_type               = "m5.large"
   subnet_id                   = aws_subnet.operations.id
-
+  # AWS Instance Meta-Data Service (IMDS) options
+  metadata_options {
+    # Enable IMDS (this is the default value)
+    http_endpoint = "enabled"
+    # Restrict put responses from IMDS to a single hop (this is the
+    # default value).  This effectively disallows the retrieval of an
+    # IMDSv2 token via this machine from anywhere else.
+    http_put_response_hop_limit = 1
+    # Require IMDS tokens AKA require the use of IMDSv2
+    http_tokens = "required"
+  }
   root_block_device {
     volume_type           = "gp2"
     volume_size           = 128
     delete_on_termination = true
   }
-
   user_data_base64 = data.cloudinit_config.nessus_cloud_init_tasks[count.index].rendered
-
   vpc_security_group_ids = [
     aws_security_group.cloudwatch_and_ssm_agent.id,
     aws_security_group.guacamole_accessible.id,
     aws_security_group.nessus.id,
     aws_security_group.scanner.id,
   ]
-
   tags        = merge(var.tags, map("Name", format("Nessus%d", count.index)))
   volume_tags = merge(var.tags, map("Name", format("Nessus%d", count.index)))
 }
