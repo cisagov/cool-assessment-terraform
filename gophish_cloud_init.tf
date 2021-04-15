@@ -54,4 +54,16 @@ data "cloudinit_config" "gophish_cloud_init_tasks" {
     filename     = "gophish-dir-setup.yml"
     merge_type   = "list(append)+dict(recurse_array)+str()"
   }
+
+  # Configure postfix in the pca-gophish Docker composition.
+  part {
+    content = templatefile(
+      "${path.module}/cloud-init/postfix-setup.tpl.yml", {
+        email_sending_domain    = var.email_sending_domain
+        pca_docker_compose_file = "/var/pca/pca-gophish-composition/docker-compose.yml"
+    })
+    content_type = "text/cloud-config"
+    filename     = "postfix-setup.yml"
+    merge_type   = "list(append)+dict(recurse_array)+str()"
+  }
 }
