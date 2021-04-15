@@ -1,0 +1,6 @@
+---
+runcmd:
+  # Modify postfix's PRIMARY_DOMAIN in pca-gophish-composition docker-compose
+  # file to the email-sending domain for this assessment
+  - [sed, -i, "s|PRIMARY_DOMAIN=.*|PRIMARY_DOMAIN=${email_sending_domain}|g",
+     "${pca_docker_compose_file}"]
