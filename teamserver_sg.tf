@@ -12,6 +12,19 @@ resource "aws_security_group" "teamserver" {
   )
 }
 
+# Allow egress via port 1587 (Docker-published SMTP mail submission) to
+# Gophish instances so that mail can be sent out via its mail server
+resource "aws_security_group_rule" "teamserver_egress_to_gophish_via_1587" {
+  provider = aws.provisionassessment
+
+  security_group_id        = aws_security_group.teamserver.id
+  type                     = "egress"
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.gophish.id
+  from_port                = 1587
+  to_port                  = 1587
+}
+
 # Allow ingress from Kali instances via ports 993 and 50050 (IMAP over
 # TLS/SSL and Cobalt Strike, respectively)
 resource "aws_security_group_rule" "teamserver_ingress_from_kali_via_imaps_and_cs" {
