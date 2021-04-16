@@ -61,6 +61,12 @@ variable "dns_ttl" {
   default     = 60
 }
 
+variable "email_sending_domain" {
+  type        = string
+  description = "The domain to send emails from within the assessment environment (e.g. \"example.com\")."
+  default     = "example.com"
+}
+
 variable "guac_connection_setup_path" {
   type        = string
   description = "The full path to the dbinit directory where initialization files must be stored in order to work properly. (e.g. \"/var/guacamole/dbinit\")"
