@@ -12,6 +12,19 @@ resource "aws_security_group" "gophish" {
   )
 }
 
+# Allow ingress from Teamservers via port 1587 (Docker-published SMTP mail
+# submission) so mail can be sent via the mail server on Gophish instances
+resource "aws_security_group_rule" "ingress_from_teamserver_to_gophish_via_1587" {
+  provider = aws.provisionassessment
+
+  security_group_id        = aws_security_group.gophish.id
+  type                     = "ingress"
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.teamserver.id
+  from_port                = 1587
+  to_port                  = 1587
+}
+
 # Allow ingress from anywhere via the allowed ports
 resource "aws_security_group_rule" "ingress_from_anywhere_to_gophish_via_allowed_ports" {
   provider = aws.provisionassessment
