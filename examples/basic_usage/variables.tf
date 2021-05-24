@@ -23,7 +23,7 @@ variable "ami_owner_account_id" {
 
 variable "aws_availability_zone" {
   type        = string
-  description = "The AWS availability zone to deploy into (e.g. a, b, c, etc.)"
+  description = "The AWS availability zone to deploy into (e.g. a, b, c, etc.)."
   default     = "a"
 }
 
