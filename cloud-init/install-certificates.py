@@ -15,13 +15,15 @@ import boto3
 AWS_REGION = "${aws_region}"
 CERT_BUCKET_NAME = "${cert_bucket_name}"
 CERT_READ_ROLE_ARN = "${cert_read_role_arn}"
+FULL_CHAIN_PEM_DEST = "${full_chain_pem_dest}"
+PRIV_KEY_PEM_DEST = "${priv_key_pem_dest}"
 SERVER_FQDN = "${server_fqdn}"
 
 # These files will be copied from the bucket
 # and installed in the specified location.
 INSTALLATION_MAP = {
-    "fullchain.pem": "/var/guacamole/httpd/ssl/self.cert",
-    "privkey.pem": "/var/guacamole/httpd/ssl/self-ssl.key",
+    "fullchain.pem": FULL_CHAIN_PEM_DEST,
+    "privkey.pem": PRIV_KEY_PEM_DEST,
 }
 
 # Create STS client
