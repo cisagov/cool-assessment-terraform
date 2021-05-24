@@ -44,10 +44,12 @@ data "cloudinit_config" "teamserver_cloud_init_tasks" {
     content_type = "text/x-shellscript"
     content = templatefile(
       "${path.module}/cloud-init/install-certificates.py", {
-        aws_region         = var.aws_region
-        cert_bucket_name   = var.cert_bucket_name
-        cert_read_role_arn = module.teamserver_certreadrole.role.arn
-        server_fqdn        = "*.${var.email_sending_domain}"
+        aws_region          = var.aws_region
+        cert_bucket_name    = var.cert_bucket_name
+        cert_read_role_arn  = module.teamserver_certreadrole.role.arn
+        full_chain_pem_dest = "/tmp/fullchain.pem"
+        priv_key_pem_dest   = "/tmp/privkey.pem"
+        server_fqdn         = "*.${var.email_sending_domain}"
     })
   }
 }
