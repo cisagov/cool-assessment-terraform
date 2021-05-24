@@ -49,7 +49,9 @@ data "cloudinit_config" "teamserver_cloud_init_tasks" {
         cert_read_role_arn  = module.teamserver_certreadrole.role.arn
         full_chain_pem_dest = "/tmp/fullchain.pem"
         priv_key_pem_dest   = "/tmp/privkey.pem"
-        server_fqdn         = "*.${var.email_sending_domain}"
+        # Certbot stores wildcard certs in a directory with the name
+        # of the domain, instead of pre-pending an asterisk.
+        server_fqdn = var.email_sending_domain
     })
   }
 }

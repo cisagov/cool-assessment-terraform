@@ -8,7 +8,9 @@ module "teamserver_certreadrole" {
 
   account_ids      = [local.assessment_account_id]
   cert_bucket_name = var.cert_bucket_name
-  hostname         = "*.${var.email_sending_domain}"
+  # Certbot stores wildcard certs in a directory with the name of the
+  # domain, instead of pre-pending an asterisk.
+  hostname = var.email_sending_domain
 }
 
 # Create the IAM instance profile for the Teamserver EC2 server
