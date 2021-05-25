@@ -35,7 +35,6 @@ data "cloudinit_config" "teamserver_cloud_init_tasks" {
     })
     content_type = "text/x-shellscript"
     filename     = "mount-efs-share.sh"
-    merge_type   = "list(append)+dict(recurse_array)+str()"
   }
 
   # Install certificates.  Note that this script and the next one must
