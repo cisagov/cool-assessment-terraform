@@ -40,3 +40,6 @@ CERT_BLOCK
 
 cat /tmp/cert-block.txt >> "${c2_profile_location}/amazon.profile"
 cat /tmp/cert-block.txt >> "${c2_profile_location}/ocsp.profile"
+
+# Clean up
+rm /tmp/cert-block.txt
