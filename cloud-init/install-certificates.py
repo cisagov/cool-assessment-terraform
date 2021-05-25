@@ -15,6 +15,7 @@ import boto3
 AWS_REGION = "${aws_region}"
 CERT_BUCKET_NAME = "${cert_bucket_name}"
 CERT_READ_ROLE_ARN = "${cert_read_role_arn}"
+CREATE_DEST_DIRS = "${create_dest_dirs}" == "true"
 FULL_CHAIN_PEM_DEST = "${full_chain_pem_dest}"
 PRIV_KEY_PEM_DEST = "${priv_key_pem_dest}"
 SERVER_FQDN = "${server_fqdn}"
@@ -63,15 +64,19 @@ s3 = boto3.client(
     aws_session_token=newsession_token,
 )
 
-# The guacamole-composition systemd service is guaranteed to start
-# AFTER this cloud-init script runs.  Therefore, we have to ensure
-# that the httpd ssl directory exists before we put the certificate
-# files in there.  Also, since the guacamole-composition service has
-# not started up (when cloud-init executes this script), there's no
-# need to restart it to use the newly-deployed certificate.
-
-# Ensure httpd ssl directory exists before we put the cert files there
-os.makedirs("/var/guacamole/httpd/ssl/", exist_ok=True)
+# The following two lines were added to support Guacamole instances.  In
+# that case the guacamole-composition systemd service is guaranteed to
+# start AFTER this cloud-init script runs.  Therefore, we have to
+# ensure that the httpd ssl directory exists before we put the
+# certificate files in there.  Also, since the guacamole-composition
+# service has not started up (when cloud-init executes this script),
+# there's no need to restart it to use the newly-deployed certificate.
+#
+# Ensure destination directories exist before we put the cert files
+# there.
+if CREATE_DEST_DIRS:
+    os.makedirs(os.path.dirname(FULL_CHAIN_PEM_DEST), exist_ok=True)
+    os.makedirs(os.path.dirname(PRIV_KEY_PEM_DEST), exist_ok=True)
 
 # Copy each file from the bucket to the local file system
 for src, dst in INSTALLATION_MAP.items():
