@@ -61,7 +61,7 @@ data "cloudinit_config" "teamserver_cloud_init_tasks" {
     content_type = "text/x-shellscript"
     content = templatefile(
       "${path.module}/cloud-init/add-https-certificate-block-to-cs-profiles.tpl.sh", {
-        c2_profile_location = "/tools/Malleable-C2-Profiles"
+        c2_profile_location = "/tools/Malleable-C2-Profiles/normal"
         domain              = var.email_sending_domain
         full_chain_pem      = "/tmp/fullchain.pem"
         priv_key_pem        = "/tmp/privkey.pem"
