@@ -26,7 +26,7 @@ resource "aws_iam_role" "guacamole_instance_role" {
   provider = aws.provisionassessment
 
   name               = "guacamole_instance_role_${terraform.workspace}"
-  assume_role_policy = data.aws_iam_policy_document.guacamole_assume_role_policy_doc.json
+  assume_role_policy = data.aws_iam_policy_document.ec2_service_assume_role_doc.json
 }
 
 resource "aws_iam_role_policy" "guacamole_assume_delegated_role_policy" {
@@ -56,17 +56,6 @@ resource "aws_iam_role_policy_attachment" "ssm_agent_policy_attachment_guacamole
 ################################
 # Define the role policies below
 ################################
-
-data "aws_iam_policy_document" "guacamole_assume_role_policy_doc" {
-  statement {
-    actions = ["sts:AssumeRole"]
-    principals {
-      type        = "Service"
-      identifiers = ["ec2.amazonaws.com"]
-    }
-    effect = "Allow"
-  }
-}
 
 # Allow the Guacamole instance to assume the necessary roles:
 #  - To read the Guacamole certificates from an S3 bucket

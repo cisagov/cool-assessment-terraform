@@ -29,7 +29,7 @@ resource "aws_iam_role" "teamserver_instance_role" {
   provider = aws.provisionassessment
 
   name               = "teamserver_instance_role_${terraform.workspace}"
-  assume_role_policy = data.aws_iam_policy_document.teamserver_assume_role_policy_doc.json
+  assume_role_policy = data.aws_iam_policy_document.ec2_service_assume_role_doc.json
 }
 
 resource "aws_iam_role_policy" "teamserver_assume_delegated_role_policy" {
@@ -68,17 +68,6 @@ resource "aws_iam_role_policy_attachment" "efs_mount_policy_attachment_teamserve
 ################################
 # Define the role policies below
 ################################
-
-data "aws_iam_policy_document" "teamserver_assume_role_policy_doc" {
-  statement {
-    actions = ["sts:AssumeRole"]
-    effect  = "Allow"
-    principals {
-      type        = "Service"
-      identifiers = ["ec2.amazonaws.com"]
-    }
-  }
-}
 
 # The policy doc that allows the teamserver instances to mount and
 # write to the EFS
