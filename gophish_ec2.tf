@@ -26,10 +26,13 @@ data "aws_ami" "gophish" {
 # The GoPhish EC2 instances
 resource "aws_instance" "gophish" {
   count = lookup(var.operations_instance_counts, "gophish", 0)
-  # These instances require the EFS mount target to be present in
-  # order to mount the EFS volume at boot time.
-  depends_on = [aws_efs_mount_target.target]
-  provider   = aws.provisionassessment
+  # These instances require the EBS Docker volume and EFS mount target to be
+  # present so that both volumes can be mounted at boot time.
+  depends_on = [
+    aws_ebs_volume.gophish_docker,
+    aws_efs_mount_target.target
+  ]
+  provider = aws.provisionassessment
 
   ami                         = data.aws_ami.gophish.id
   associate_public_ip_address = true
@@ -87,4 +90,31 @@ resource "aws_eip_association" "gophish" {
 
   instance_id   = aws_instance.gophish[count.index].id
   allocation_id = aws_eip.gophish[count.index].id
+}
+
+# The EBS volume for each GoPhish instance; it is used to persist Docker volume
+# data across instance restarts and redeployments.  Note that Docker data
+# cannot be stored on the existing EFS volume because EFS is not supported
+# as a backing file system for Docker:
+# https://docs.docker.com/storage/storagedriver/select-storage-driver/#supported-backing-filesystems
+resource "aws_ebs_volume" "gophish_docker" {
+  count    = lookup(var.operations_instance_counts, "gophish", 0)
+  provider = aws.provisionassessment
+
+  availability_zone = "${var.aws_region}${var.aws_availability_zone}"
+  encrypted         = true
+  size              = 16
+  type              = "gp2"
+
+  tags = merge(var.tags, map("Name", format("GoPhish%d Docker", count.index)))
+}
+
+# Attach EBS volume to GoPhish instance
+resource "aws_volume_attachment" "gophish_docker" {
+  count    = lookup(var.operations_instance_counts, "gophish", 0)
+  provider = aws.provisionassessment
+
+  device_name = local.docker_ebs_device_name
+  instance_id = aws_instance.gophish[count.index].id
+  volume_id   = aws_ebs_volume.gophish_docker[count.index].id
 }
