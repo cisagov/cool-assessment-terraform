@@ -37,6 +37,18 @@ data "cloudinit_config" "gophish_cloud_init_tasks" {
     })
     content_type = "text/x-shellscript"
     filename     = "mount-efs-share.sh"
+  }
+
+  # Create the JSON file used to configure Docker daemon.  This allows us
+  # to tell Docker to store volume data on our persistent
+  # EBS Docker data volume (created below).
+  part {
+    content = templatefile(
+      "${path.module}/cloud-init/write-docker-daemon-json.tpl.yml", {
+        docker_data_root_dir = local.docker_volume_mount_point
+    })
+    content_type = "text/cloud-config"
+    filename     = "write-docker-daemon-json.yml"
     merge_type   = "list(append)+dict(recurse_array)+str()"
   }
 
