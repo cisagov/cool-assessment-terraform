@@ -35,6 +35,9 @@ locals {
 
   cool_shared_services_cidr_block = data.terraform_remote_state.sharedservices_networking.outputs.vpc.cidr_block
 
+  docker_ebs_device_name    = "/dev/xvdb"
+  docker_volume_mount_point = "/docker_data"
+
   guacamole_fqdn = format("guac.%s.%s", local.assessment_account_name_base, var.cool_domain)
 
   # Look up assessment account name from AWS organizations provider
