@@ -13,10 +13,8 @@ resource "aws_iam_instance_profile" "gophish" {
 resource "aws_iam_role" "gophish_instance_role" {
   provider = aws.provisionassessment
 
-  name = "gophish_instance_role_${terraform.workspace}"
-  # We can just reuse the kali assume role policy here.  If we created
-  # a gophish-specific one it would be identical.
-  assume_role_policy = data.aws_iam_policy_document.kali_assume_role_policy_doc.json
+  name               = "gophish_instance_role_${terraform.workspace}"
+  assume_role_policy = data.aws_iam_policy_document.ec2_service_assume_role_doc.json
 }
 
 # Attach the CloudWatch Agent policy to this role as well
@@ -40,8 +38,6 @@ resource "aws_iam_role_policy_attachment" "ssm_agent_policy_attachment_gophics" 
 resource "aws_iam_role_policy_attachment" "efs_mount_policy_attachment_gophish" {
   provider = aws.provisionassessment
 
-  role = aws_iam_role.gophish_instance_role.id
-  # We can just reuse the kali policy here.  If we created a
-  # gophish-specific one it would be identical.
-  policy_arn = aws_iam_policy.kali_efs_mount_policy.arn
+  role       = aws_iam_role.gophish_instance_role.id
+  policy_arn = aws_iam_policy.efs_mount_policy.arn
 }
