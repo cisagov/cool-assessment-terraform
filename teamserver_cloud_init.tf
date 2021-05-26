@@ -41,7 +41,7 @@ data "cloudinit_config" "teamserver_cloud_init_tasks" {
   # take place in a certain order, so we prepend numbers to the script
   # names to force that to that happen.
   #
-  # Here is there the user scripts are called by cloud-init:
+  # Here is where the user scripts are called by cloud-init:
   # https://github.com/canonical/cloud-init/blob/master/cloudinit/config/cc_scripts_user.py#L45
   #
   # And here is where you can see how cloud-init sorts the scripts:
