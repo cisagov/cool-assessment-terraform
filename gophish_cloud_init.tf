@@ -52,6 +52,40 @@ data "cloudinit_config" "gophish_cloud_init_tasks" {
     merge_type   = "list(append)+dict(recurse_array)+str()"
   }
 
+  # Prepare and mount EBS volume to hold Docker data-root data.
+  # Note that this script and the next one must take place in a certain order,
+  # so we prepend numbers to the script names to force that to that happen.
+  #
+  # Here is where the user scripts are called by cloud-init:
+  # https://github.com/canonical/cloud-init/blob/master/cloudinit/config/cc_scripts_user.py#L45
+  #
+  # And here is where you can see how cloud-init sorts the scripts:
+  # https://github.com/canonical/cloud-init/blob/master/cloudinit/subp.py#L373
+  part {
+    content = templatefile(
+      "${path.module}/cloud-init/ebs-disk-setup.tpl.sh", {
+        device_name   = local.docker_ebs_device_name
+        fs_type       = "ext4"
+        label         = "docker_data"
+        mount_options = "defaults"
+        mount_point   = local.docker_volume_mount_point
+        num_disks     = 2
+    })
+    content_type = "text/x-shellscript"
+    filename     = "01-ebs-disk-setup.sh"
+  }
+
+  # Copy Docker data from default directory to new data-root directory.
+  part {
+    content = templatefile(
+      "${path.module}/cloud-init/copy-docker-data-to-new-root-dir.tpl.sh", {
+        mount_point       = local.docker_volume_mount_point
+        new_data_root_dir = local.docker_volume_mount_point
+    })
+    content_type = "text/x-shellscript"
+    filename     = "02-copy-docker-data-to-new-root-dir.sh"
+  }
+
   # Set up everything needed to successfully launch the
   # pca-gophish-composition service.
   part {
