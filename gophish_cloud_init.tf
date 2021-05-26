@@ -88,6 +88,9 @@ data "cloudinit_config" "gophish_cloud_init_tasks" {
 
   # Set up everything needed to successfully launch the
   # pca-gophish-composition service.
+  # TODO Persist Gophish data on EBS volume, instead of EFS volume.
+  # For details, see:
+  #   https://github.com/cisagov/cool-assessment-terraform/issues/120
   part {
     content = templatefile(
       "${path.module}/cloud-init/gophish-dir-setup.tpl.yml", {
