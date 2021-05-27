@@ -73,8 +73,11 @@ resource "aws_iam_role_policy_attachment" "efs_mount_policy_attachment_teamserve
 # the teamserver certificates from an S3 bucket.
 data "aws_iam_policy_document" "teamserver_assume_delegated_role_policy_doc" {
   statement {
-    actions = ["sts:AssumeRole"]
-    effect  = "Allow"
+    actions = [
+      "sts:AssumeRole",
+      "sts:TagSession",
+    ]
+    effect = "Allow"
     resources = [
       module.teamserver_certreadrole.role.arn,
     ]
