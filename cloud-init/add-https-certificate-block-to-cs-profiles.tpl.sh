@@ -38,6 +38,10 @@ https-certificate {
 }
 CERT_BLOCK
 
+# This is a Terraform template file, and the c2_profile_location
+# variable is passed in via the templatefile().
+#
+# shellcheck disable=SC2154
 cat /tmp/cert-block.txt >> "${c2_profile_location}/amazon.profile"
 cat /tmp/cert-block.txt >> "${c2_profile_location}/ocsp.profile"
 
