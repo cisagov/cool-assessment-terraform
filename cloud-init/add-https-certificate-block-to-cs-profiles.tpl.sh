@@ -10,7 +10,7 @@ password=$(openssl rand -base64 32)
 # Convert the full chain and private key PEMs into a single P12 file.
 #
 # This is a Terraform template file, and the domain, full_chain_pem,
-# and priv_key_pem variables are passed in via the templatefile().
+# and priv_key_pem variables are passed in via templatefile().
 #
 # shellcheck disable=SC2154
 openssl pkcs12 -export -in "${full_chain_pem}" -inkey "${priv_key_pem}" \
@@ -22,7 +22,7 @@ openssl pkcs12 -export -in "${full_chain_pem}" -inkey "${priv_key_pem}" \
 # to specify the location of the Java keystore.
 #
 # This is a Terraform template file, and the c2_profile_location and
-# domain variables are passed in via the templatefile().
+# domain variables are passed in via templatefile().
 #
 # shellcheck disable=SC2154
 keytool -importkeystore \
