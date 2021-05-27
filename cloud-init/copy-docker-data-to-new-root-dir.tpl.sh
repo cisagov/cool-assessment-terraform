@@ -15,6 +15,7 @@
 # shellcheck disable=SC2154
 set -o nounset
 set -o errexit
+set -o pipefail
 
 # Check if we have previously populated the new data-root directory
 if [[ ! -d "${new_data_root_dir}/volumes" ]]
