@@ -1,4 +1,4 @@
-# Private DNS A record for GoPhish instances
+# Private DNS A record for Gophish instances
 resource "aws_route53_record" "gophish_A" {
   count    = lookup(var.operations_instance_counts, "gophish", 0)
   provider = aws.provisionassessment
