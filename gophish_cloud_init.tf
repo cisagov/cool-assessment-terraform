@@ -1,4 +1,4 @@
-# cloud-init commands for configuring GoPhish instances
+# cloud-init commands for configuring Gophish instances
 
 data "cloudinit_config" "gophish_cloud_init_tasks" {
   count = lookup(var.operations_instance_counts, "gophish", 0)

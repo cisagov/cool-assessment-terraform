@@ -1,4 +1,4 @@
-# The GoPhish AMI
+# The Gophish AMI
 data "aws_ami" "gophish" {
   provider = aws.provisionassessment
 
@@ -23,7 +23,7 @@ data "aws_ami" "gophish" {
   most_recent = true
 }
 
-# The GoPhish EC2 instances
+# The Gophish EC2 instances
 resource "aws_instance" "gophish" {
   count = lookup(var.operations_instance_counts, "gophish", 0)
   # These instances require the EBS Docker volume and EFS mount target to be
@@ -64,11 +64,11 @@ resource "aws_instance" "gophish" {
     aws_security_group.guacamole_accessible.id,
     aws_security_group.scanner.id,
   ]
-  tags        = merge(var.tags, map("Name", format("GoPhish%d", count.index)))
-  volume_tags = merge(var.tags, map("Name", format("GoPhish%d", count.index)))
+  tags        = merge(var.tags, map("Name", format("Gophish%d", count.index)))
+  volume_tags = merge(var.tags, map("Name", format("Gophish%d", count.index)))
 }
 
-# The Elastic IP for each GoPhish instance
+# The Elastic IP for each Gophish instance
 resource "aws_eip" "gophish" {
   count    = lookup(var.operations_instance_counts, "gophish", 0)
   provider = aws.provisionassessment
@@ -77,13 +77,13 @@ resource "aws_eip" "gophish" {
   tags = merge(
     var.tags,
     {
-      "Name"           = format("GoPhish%d EIP", count.index)
+      "Name"           = format("Gophish%d EIP", count.index)
       "Publish Egress" = "True"
     },
   )
 }
 
-# The EIP association for each GoPhish instance
+# The EIP association for each Gophish instance
 resource "aws_eip_association" "gophish" {
   count    = lookup(var.operations_instance_counts, "gophish", 0)
   provider = aws.provisionassessment
@@ -92,7 +92,7 @@ resource "aws_eip_association" "gophish" {
   allocation_id = aws_eip.gophish[count.index].id
 }
 
-# The EBS volume for each GoPhish instance; it is used to persist Docker volume
+# The EBS volume for each Gophish instance; it is used to persist Docker volume
 # data across instance restarts and redeployments.  Note that Docker data
 # cannot be stored on the existing EFS volume because EFS is not supported
 # as a backing file system for Docker:
@@ -106,10 +106,10 @@ resource "aws_ebs_volume" "gophish_docker" {
   size              = 16
   type              = "gp2"
 
-  tags = merge(var.tags, map("Name", format("GoPhish%d Docker", count.index)))
+  tags = merge(var.tags, map("Name", format("Gophish%d Docker", count.index)))
 }
 
-# Attach EBS volume to GoPhish instance
+# Attach EBS volume to Gophish instance
 resource "aws_volume_attachment" "gophish_docker" {
   count    = lookup(var.operations_instance_counts, "gophish", 0)
   provider = aws.provisionassessment
