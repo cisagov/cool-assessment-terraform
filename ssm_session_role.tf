@@ -6,7 +6,7 @@
 resource "aws_iam_role" "ssmsession_role" {
   provider = aws.provisionassessment
 
-  assume_role_policy = data.aws_iam_policy_document.assume_role_doc.json
+  assume_role_policy = data.aws_iam_policy_document.users_account_assume_role_doc.json
   description        = var.ssmsession_role_description
   name               = var.ssmsession_role_name
   tags               = var.tags

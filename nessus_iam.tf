@@ -15,7 +15,7 @@ resource "aws_iam_role" "nessus_instance_role" {
   provider = aws.provisionassessment
 
   name               = "nessus_instance_role_${terraform.workspace}"
-  assume_role_policy = data.aws_iam_policy_document.nessus_assume_role_policy_doc.json
+  assume_role_policy = data.aws_iam_policy_document.ec2_service_assume_role_doc.json
 }
 
 resource "aws_iam_role_policy" "nessus_assume_delegated_role_policy" {
@@ -48,17 +48,6 @@ resource "aws_iam_role_policy_attachment" "ssm_agent_policy_attachment_nessus" {
 ################################
 # Define the role policies below
 ################################
-
-data "aws_iam_policy_document" "nessus_assume_role_policy_doc" {
-  statement {
-    actions = ["sts:AssumeRole"]
-    principals {
-      type        = "Service"
-      identifiers = ["ec2.amazonaws.com"]
-    }
-    effect = "Allow"
-  }
-}
 
 # Allow the Nessus instance to assume the role needed
 # to read the Nessus-related data from the SSM Parameter Store

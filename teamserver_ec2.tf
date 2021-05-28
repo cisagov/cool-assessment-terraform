@@ -28,8 +28,21 @@ resource "aws_instance" "teamserver" {
   count = lookup(var.operations_instance_counts, "teamserver", 0)
   # These instances require the EFS mount target to be present in
   # order to mount the EFS volume at boot time.
-  depends_on = [aws_efs_mount_target.target]
-  provider   = aws.provisionassessment
+  #
+  # When a Teamserver instance starts up, it executes cloud-init
+  # scripts which require access to the S3 and STS endpoints.  To
+  # ensure that access is available, we force dependencies on the
+  # security group rules that allow STS endpoint access from the
+  # Teamserver, as well as the endpoints themselves.  Note that there
+  # is no security group rule for S3 because it's a _gateway_
+  # endpoint, while STS is an _interface_ endpoint.
+  depends_on = [
+    aws_efs_mount_target.target,
+    aws_security_group_rule.ingress_from_teamserver_to_sts_via_https,
+    aws_vpc_endpoint.s3,
+    aws_vpc_endpoint.sts,
+  ]
+  provider = aws.provisionassessment
 
   ami                         = data.aws_ami.teamserver.id
   associate_public_ip_address = true
@@ -53,9 +66,7 @@ resource "aws_instance" "teamserver" {
     # Require IMDS tokens AKA require the use of IMDSv2
     http_tokens = "required"
   }
-  # We can use the same cloud-init code as the Kali instances, since
-  # all it does is set up /etc/fstab to mount the EFS file share.
-  user_data_base64 = data.cloudinit_config.kali_cloud_init_tasks.rendered
+  user_data_base64 = data.cloudinit_config.teamserver_cloud_init_tasks.rendered
   vpc_security_group_ids = [
     aws_security_group.cloudwatch_and_ssm_agent.id,
     aws_security_group.efs_client.id,

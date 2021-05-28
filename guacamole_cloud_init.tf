@@ -54,10 +54,13 @@ data "cloudinit_config" "guacamole_cloud_init_tasks" {
     content_type = "text/x-shellscript"
     content = templatefile(
       "${path.module}/cloud-init/install-certificates.py", {
-        aws_region         = var.aws_region
-        cert_bucket_name   = var.cert_bucket_name
-        cert_read_role_arn = module.guacamole_certreadrole.role.arn
-        server_fqdn        = local.guacamole_fqdn
+        aws_region          = var.aws_region
+        cert_bucket_name    = var.cert_bucket_name
+        cert_read_role_arn  = module.guacamole_certreadrole.role.arn
+        create_dest_dirs    = true
+        full_chain_pem_dest = "/var/guacamole/httpd/ssl/self.cert"
+        priv_key_pem_dest   = "/var/guacamole/httpd/ssl/self-ssl.key"
+        server_fqdn         = local.guacamole_fqdn
     })
   }
 

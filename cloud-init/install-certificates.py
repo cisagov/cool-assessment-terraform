@@ -6,7 +6,7 @@ This file is a template.  It should be processed by terraform.
 """
 
 # Standard Python Libraries
-import os
+from pathlib import Path
 
 # Third-Party Libraries
 import boto3
@@ -15,13 +15,16 @@ import boto3
 AWS_REGION = "${aws_region}"
 CERT_BUCKET_NAME = "${cert_bucket_name}"
 CERT_READ_ROLE_ARN = "${cert_read_role_arn}"
+CREATE_DEST_DIRS = "${create_dest_dirs}" == "true"
+FULL_CHAIN_PEM_DEST = "${full_chain_pem_dest}"
+PRIV_KEY_PEM_DEST = "${priv_key_pem_dest}"
 SERVER_FQDN = "${server_fqdn}"
 
 # These files will be copied from the bucket
 # and installed in the specified location.
 INSTALLATION_MAP = {
-    "fullchain.pem": "/var/guacamole/httpd/ssl/self.cert",
-    "privkey.pem": "/var/guacamole/httpd/ssl/self-ssl.key",
+    "fullchain.pem": FULL_CHAIN_PEM_DEST,
+    "privkey.pem": PRIV_KEY_PEM_DEST,
 }
 
 # Create STS client
@@ -61,15 +64,19 @@ s3 = boto3.client(
     aws_session_token=newsession_token,
 )
 
-# The guacamole-composition systemd service is guaranteed to start
-# AFTER this cloud-init script runs.  Therefore, we have to ensure
-# that the httpd ssl directory exists before we put the certificate
-# files in there.  Also, since the guacamole-composition service has
-# not started up (when cloud-init executes this script), there's no
-# need to restart it to use the newly-deployed certificate.
-
-# Ensure httpd ssl directory exists before we put the cert files there
-os.makedirs("/var/guacamole/httpd/ssl/", exist_ok=True)
+# The following two lines were added to support Guacamole instances.  In
+# that case the guacamole-composition systemd service is guaranteed to
+# start AFTER this cloud-init script runs.  Therefore, we have to
+# ensure that the httpd ssl directory exists before we put the
+# certificate files in there.  Also, since the guacamole-composition
+# service has not started up (when cloud-init executes this script),
+# there's no need to restart it to use the newly-deployed certificate.
+#
+# Ensure destination directories exist before we put the cert files
+# there.
+if CREATE_DEST_DIRS:
+    Path.mkdir(Path(FULL_CHAIN_PEM_DEST).parent, parents=True, exist_ok=True)
+    Path.mkdir(Path(PRIV_KEY_PEM_DEST).parent, parents=True, exist_ok=True)
 
 # Copy each file from the bucket to the local file system
 for src, dst in INSTALLATION_MAP.items():
