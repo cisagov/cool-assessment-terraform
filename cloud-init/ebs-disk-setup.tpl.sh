@@ -18,7 +18,7 @@
 # mounting (defaults or defaults,noauto, for example)
 
 # This is a Terraform template file, and the input variables are
-# passed in via the templatefile().
+# passed in via templatefile().
 #
 # shellcheck disable=SC2154
 set -o nounset
