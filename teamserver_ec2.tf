@@ -66,8 +66,6 @@ resource "aws_instance" "teamserver" {
     # Require IMDS tokens AKA require the use of IMDSv2
     http_tokens = "required"
   }
-  # We can use the same cloud-init code as the Kali instances, since
-  # all it does is set up /etc/fstab to mount the EFS file share.
   user_data_base64 = data.cloudinit_config.teamserver_cloud_init_tasks.rendered
   vpc_security_group_ids = [
     aws_security_group.cloudwatch_and_ssm_agent.id,
