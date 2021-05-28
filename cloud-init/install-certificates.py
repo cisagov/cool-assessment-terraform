@@ -6,7 +6,7 @@ This file is a template.  It should be processed by terraform.
 """
 
 # Standard Python Libraries
-import os
+from pathlib import Path
 
 # Third-Party Libraries
 import boto3
@@ -75,8 +75,8 @@ s3 = boto3.client(
 # Ensure destination directories exist before we put the cert files
 # there.
 if CREATE_DEST_DIRS:
-    os.makedirs(os.path.dirname(FULL_CHAIN_PEM_DEST), exist_ok=True)
-    os.makedirs(os.path.dirname(PRIV_KEY_PEM_DEST), exist_ok=True)
+    Path.mkdir(Path(FULL_CHAIN_PEM_DEST).parent, parents=True, exist_ok=True)
+    Path.mkdir(Path(PRIV_KEY_PEM_DEST).parent, parents=True, exist_ok=True)
 
 # Copy each file from the bucket to the local file system
 for src, dst in INSTALLATION_MAP.items():
