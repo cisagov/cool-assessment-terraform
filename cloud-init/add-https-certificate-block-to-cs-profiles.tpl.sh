@@ -10,7 +10,7 @@ password=$(openssl rand -base64 32)
 # Convert the full chain and private key PEMs into a single P12 file.
 #
 # This is a Terraform template file, and the domain, full_chain_pem,
-# and priv_key_pem variables are passed in via the templatefile().
+# and priv_key_pem variables are passed in via templatefile().
 #
 # shellcheck disable=SC2154
 openssl pkcs12 -export -in "${full_chain_pem}" -inkey "${priv_key_pem}" \
@@ -18,11 +18,12 @@ openssl pkcs12 -export -in "${full_chain_pem}" -inkey "${priv_key_pem}" \
 
 # Create the Java keystore from the P12 file.
 #
-# TODO: issue #121 suggests improving this code by allowing the user
-# to specify the location of the Java keystore.
+# TODO: issue cisagov/cool-assessment-terraform#121 suggests improving
+# this code by allowing the user to specify the location of the Java
+# keystore.
 #
 # This is a Terraform template file, and the c2_profile_location and
-# domain variables are passed in via the templatefile().
+# domain variables are passed in via templatefile().
 #
 # shellcheck disable=SC2154
 keytool -importkeystore \
@@ -44,9 +45,9 @@ CERT_BLOCK
 # Append the https-certificate blocks to the Cobalt Strike C2
 # profiles.
 #
-# TODO: issue #121 suggests improving this code by allowing the user
-# to specify the Cobalt Strike C2 profiles to which an
-# https-certificate block should be added.
+# TODO: issue cisagov/cool-assessment-terraform#121 suggests improving
+# this code by allowing the user to specify the Cobalt Strike C2 profiles
+# to which an https-certificate block should be added.
 #
 # This is a Terraform template file, and the c2_profile_location
 # variable is passed in via the templatefile().

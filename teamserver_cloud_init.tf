@@ -1,5 +1,12 @@
 # cloud-init commands for configuring teamserver instances
 
+locals {
+  # These values are used twice below, so we may as well define them
+  # in one place.
+  full_chain_pem = "/tmp/fullchain.pem"
+  priv_key_pem   = "/tmp/privkey.pem"
+}
+
 data "cloudinit_config" "teamserver_cloud_init_tasks" {
   gzip          = true
   base64_encode = true
@@ -53,8 +60,8 @@ data "cloudinit_config" "teamserver_cloud_init_tasks" {
         cert_bucket_name    = var.cert_bucket_name
         cert_read_role_arn  = module.teamserver_certreadrole.role.arn
         create_dest_dirs    = false
-        full_chain_pem_dest = "/tmp/fullchain.pem"
-        priv_key_pem_dest   = "/tmp/privkey.pem"
+        full_chain_pem_dest = local.full_chain_pem
+        priv_key_pem_dest   = local.priv_key_pem
         # Certbot stores wildcard certs in a directory with the name
         # of the domain, instead of pre-pending an asterisk.
         server_fqdn = var.email_sending_domain
@@ -69,8 +76,8 @@ data "cloudinit_config" "teamserver_cloud_init_tasks" {
       "${path.module}/cloud-init/add-https-certificate-block-to-cs-profiles.tpl.sh", {
         c2_profile_location = "/tools/Malleable-C2-Profiles/normal"
         domain              = var.email_sending_domain
-        full_chain_pem      = "/tmp/fullchain.pem"
-        priv_key_pem        = "/tmp/privkey.pem"
+        full_chain_pem      = local.full_chain_pem
+        priv_key_pem        = local.priv_key_pem
     })
     content_type = "text/x-shellscript"
     filename     = "02-add-https-certificate-block-to-cs-profiles.sh"

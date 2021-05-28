@@ -1,4 +1,4 @@
-# Create the IAM instance profile for the GoPhish EC2 server
+# Create the IAM instance profile for the Gophish EC2 server
 # instances
 
 # The instance profile to be used
@@ -33,7 +33,7 @@ resource "aws_iam_role_policy_attachment" "ssm_agent_policy_attachment_gophics" 
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
 
-# Attach a policy that allows the GoPhish instances to mount and
+# Attach a policy that allows the Gophish instances to mount and
 # write to the EFS
 resource "aws_iam_role_policy_attachment" "efs_mount_policy_attachment_gophish" {
   provider = aws.provisionassessment

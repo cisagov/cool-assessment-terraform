@@ -1,16 +1,16 @@
 ---
 runcmd:
-  # Create a subdirectory on the EFS share for GoPhish data
+  # Create a subdirectory on the EFS share for Gophish data
   - [mkdir, -p, "${efs_gophish_data_dir}"]
-  # Set group ownership of the gophish data directory to the gophish group
+  # Set group ownership of the Gophish data directory to the gophish group
   - [chown, --verbose, --recursive, ":gophish", "${efs_gophish_data_dir}"]
-  # Give full permissions on the gophish data directory to the gophish group
+  # Give full permissions on the Gophish data directory to the gophish group
   # and set the group sticky bit so that future content in the directory
   # will also be owned by the gophish group
   - [chmod, "2775", "${efs_gophish_data_dir}"]
-  # Remove the default GoPhish data directory
+  # Remove the default Gophish data directory
   - [rm, -r, "${gophish_data_dir}"]
-  # Make a symbolic link to the GoPhish data directory on the EFS share
+  # Make a symbolic link to the Gophish data directory on the EFS share
   - [ln, -snf, "${efs_gophish_data_dir}", "${gophish_data_dir}"]
   # Modify pca-gophish-composition systemd unit file to wait for EFS share
   # to be mounted before starting up pca-gophish-composition service

@@ -35,7 +35,7 @@ resource "aws_instance" "teamserver" {
   # security group rules that allow STS endpoint access from the
   # Teamserver, as well as the endpoints themselves.  Note that there
   # is no security group rule for S3 because it's a _gateway_
-  # endpoint, while STS is a _interface_ endpoints.
+  # endpoint, while STS is an _interface_ endpoint.
   depends_on = [
     aws_efs_mount_target.target,
     aws_security_group_rule.ingress_from_teamserver_to_sts_via_https,
@@ -66,8 +66,6 @@ resource "aws_instance" "teamserver" {
     # Require IMDS tokens AKA require the use of IMDSv2
     http_tokens = "required"
   }
-  # We can use the same cloud-init code as the Kali instances, since
-  # all it does is set up /etc/fstab to mount the EFS file share.
   user_data_base64 = data.cloudinit_config.teamserver_cloud_init_tasks.rendered
   vpc_security_group_ids = [
     aws_security_group.cloudwatch_and_ssm_agent.id,
