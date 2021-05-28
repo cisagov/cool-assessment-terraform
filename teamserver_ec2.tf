@@ -35,7 +35,7 @@ resource "aws_instance" "teamserver" {
   # security group rules that allow STS endpoint access from the
   # Teamserver, as well as the endpoints themselves.  Note that there
   # is no security group rule for S3 because it's a _gateway_
-  # endpoint, while STS is a _interface_ endpoints.
+  # endpoint, while STS is an _interface_ endpoint.
   depends_on = [
     aws_efs_mount_target.target,
     aws_security_group_rule.ingress_from_teamserver_to_sts_via_https,
