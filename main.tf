@@ -41,14 +41,16 @@ resource "aws_instance" "example" {
   availability_zone = "${var.aws_region}${var.aws_availability_zone}"
   subnet_id         = var.subnet_id
 
-  tags = merge(
-    var.tags,
-    {
-      "Name" = "Example"
-    },
-  )
+  # The tag or tags specified here will be merged with the provider's
+  # default tags.
+  tags = {
+    "Name" = "Example"
+  }
+  # volume_tags does not yet inherit the default tags from the
+  # provider.  See hashicorp/terraform-provider-aws#19188 for more
+  # details.
   volume_tags = merge(
-    var.tags,
+    provider.aws.default_tags,
     {
       "Name" = "Example"
     },
