@@ -17,6 +17,14 @@ resource "aws_iam_role" "gophish_instance_role" {
   assume_role_policy = data.aws_iam_policy_document.ec2_service_assume_role_doc.json
 }
 
+resource "aws_iam_role_policy" "gophish_assume_delegated_role_policy" {
+  provider = aws.provisionassessment
+
+  name   = "assume_delegated_role_policy"
+  role   = aws_iam_role.gophish_instance_role.id
+  policy = data.aws_iam_policy_document.gophish_assume_delegated_role_policy_doc.json
+}
+
 # Attach the CloudWatch Agent policy to this role as well
 resource "aws_iam_role_policy_attachment" "cloudwatch_agent_policy_attachment_gophish" {
   provider = aws.provisionassessment
@@ -40,4 +48,23 @@ resource "aws_iam_role_policy_attachment" "efs_mount_policy_attachment_gophish" 
 
   role       = aws_iam_role.gophish_instance_role.id
   policy_arn = aws_iam_policy.efs_mount_policy.arn
+}
+
+################################
+# Define the role policies below
+################################
+
+# Allow the Gophish instance to assume the necessary role to read
+# its email-sending domain certificates from an S3 bucket.
+data "aws_iam_policy_document" "gophish_assume_delegated_role_policy_doc" {
+  statement {
+    actions = [
+      "sts:AssumeRole",
+      "sts:TagSession",
+    ]
+    effect = "Allow"
+    resources = [
+      module.email_sending_domain_certreadrole.role.arn,
+    ]
+  }
 }
