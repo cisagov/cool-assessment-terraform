@@ -1,5 +1,11 @@
 # cloud-init commands for configuring Gophish instances
 
+locals {
+  # This value is used multiple times below, so we may as well define it
+  # in one place.
+  pca_gophish_composition_dir = "/var/pca/pca-gophish-composition"
+}
+
 data "cloudinit_config" "gophish_cloud_init_tasks" {
   count = lookup(var.operations_instance_counts, "gophish", 0)
 
@@ -96,7 +102,7 @@ data "cloudinit_config" "gophish_cloud_init_tasks" {
       "${path.module}/cloud-init/gophish-dir-setup.tpl.yml", {
         efs_mount_point      = "/share"
         efs_gophish_data_dir = "/share/gophish${count.index}_data"
-        gophish_data_dir     = "/var/pca/pca-gophish-composition/data"
+        gophish_data_dir     = "${local.pca_gophish_composition_dir}/data"
         pca_systemd_file     = "/etc/systemd/system/pca-gophish-composition.service"
     })
     content_type = "text/cloud-config"
@@ -109,7 +115,7 @@ data "cloudinit_config" "gophish_cloud_init_tasks" {
     content = templatefile(
       "${path.module}/cloud-init/postfix-setup.tpl.yml", {
         email_sending_domain    = var.email_sending_domain
-        pca_docker_compose_file = "/var/pca/pca-gophish-composition/docker-compose.yml"
+        pca_docker_compose_file = "${local.pca_gophish_composition_dir}/docker-compose.yml"
     })
     content_type = "text/cloud-config"
     filename     = "postfix-setup.yml"
