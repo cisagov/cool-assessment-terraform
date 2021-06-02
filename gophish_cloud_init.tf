@@ -110,6 +110,24 @@ data "cloudinit_config" "gophish_cloud_init_tasks" {
     merge_type   = "list(append)+dict(recurse_array)+str()"
   }
 
+  # Install certificate for postfix.
+  part {
+    content = templatefile(
+      "${path.module}/cloud-init/install-certificates.py", {
+        aws_region          = var.aws_region
+        cert_bucket_name    = var.cert_bucket_name
+        cert_read_role_arn  = module.email_sending_domain_certreadrole.role.arn
+        create_dest_dirs    = false
+        full_chain_pem_dest = "${local.pca_gophish_composition_dir}/secrets/postfix/fullchain.pem"
+        priv_key_pem_dest   = "${local.pca_gophish_composition_dir}/secrets/postfix/privkey.pem"
+        # Certbot stores wildcard certs in a directory with the name
+        # of the domain, instead of pre-pending an asterisk.
+        server_fqdn = var.email_sending_domain
+    })
+    content_type = "text/x-shellscript"
+    filename     = "install-certificates.py"
+  }
+
   # Configure postfix in the pca-gophish Docker composition.
   part {
     content = templatefile(
