@@ -1,18 +1,3 @@
-# Create a role that allows the instance to read its certs from S3.
-module "teamserver_certreadrole" {
-  source = "github.com/cisagov/cert-read-role-tf-module"
-
-  providers = {
-    aws = aws.provisioncertreadrole
-  }
-
-  account_ids      = [local.assessment_account_id]
-  cert_bucket_name = var.cert_bucket_name
-  # Certbot stores wildcard certs in a directory with the name of the
-  # domain, instead of pre-pending an asterisk.
-  hostname = var.email_sending_domain
-}
-
 # Create the IAM instance profile for the Teamserver EC2 server
 # instance
 
@@ -70,7 +55,7 @@ resource "aws_iam_role_policy_attachment" "efs_mount_policy_attachment_teamserve
 ################################
 
 # Allow the teamserver instance to assume the necessary role to read
-# the teamserver certificates from an S3 bucket.
+# its email-sending domain certificates from an S3 bucket.
 data "aws_iam_policy_document" "teamserver_assume_delegated_role_policy_doc" {
   statement {
     actions = [
@@ -79,7 +64,7 @@ data "aws_iam_policy_document" "teamserver_assume_delegated_role_policy_doc" {
     ]
     effect = "Allow"
     resources = [
-      module.teamserver_certreadrole.role.arn,
+      module.email_sending_domain_certreadrole.role.arn,
     ]
   }
 }
