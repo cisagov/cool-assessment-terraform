@@ -7,9 +7,11 @@ This file is a template.  It should be processed by terraform.
 
 # Standard Python Libraries
 from pathlib import Path
+import sys
 
 # Third-Party Libraries
 import boto3
+import botocore
 
 # Inputs from terraform
 AWS_REGION = "${aws_region}"
@@ -80,8 +82,17 @@ if CREATE_DEST_DIRS:
 
 # Copy each file from the bucket to the local file system
 for src, dst in INSTALLATION_MAP.items():
-    obj = s3.get_object(
-        Bucket=CERT_BUCKET_NAME, Key="live/{}/{}".format(SERVER_FQDN, src)
-    )
+    try:
+        obj = s3.get_object(
+            Bucket=CERT_BUCKET_NAME, Key="live/{}/{}".format(SERVER_FQDN, src)
+        )
+    except botocore.exceptions.ClientError as e:
+        print(
+            "Error fetching '{}/live/{}/{}' from S3: {}".format(
+                CERT_BUCKET_NAME, SERVER_FQDN, src, e
+            )
+        )
+        print("Exiting script!")
+        sys.exit(-1)
     with open(dst, "wb") as f:
         f.write(obj["Body"].read())
