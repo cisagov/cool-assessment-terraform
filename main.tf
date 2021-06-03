@@ -34,6 +34,9 @@ data "aws_ami" "example" {
   most_recent = true
 }
 
+# The default tags configured for the default provider
+data "aws_default_tags" "default" {}
+
 # The example EC2 instance
 resource "aws_instance" "example" {
   ami               = data.aws_ami.example.id
@@ -50,7 +53,7 @@ resource "aws_instance" "example" {
   # provider.  See hashicorp/terraform-provider-aws#19188 for more
   # details.
   volume_tags = merge(
-    provider.aws.default_tags,
+    data.aws_default_tags.default.tags,
     {
       "Name" = "Example"
     },

@@ -38,7 +38,7 @@ No requirements.
 | ami\_owner\_account\_id | The ID of the AWS account that owns the AMI, or "self" if the AMI is owned by the same account as the provisioner. | `string` | `"self"` | no |
 | aws\_availability\_zone | The AWS availability zone to deploy into (e.g. a, b, c, etc.). | `string` | `"a"` | no |
 | aws\_region | The AWS region to deploy into (e.g. us-east-1). | `string` | `"us-east-1"` | no |
-| tags | Tags to apply to all AWS resources created. | `map(string)` | `{}` | no |
+| tags | Tags to apply to all AWS resources created. | `map(string)` | `{"Testing": true}` | no |
 | tf\_role\_arn | The ARN of the role that can terraform non-specialized resources. | `string` | n/a | yes |
 
 ## Outputs ##
