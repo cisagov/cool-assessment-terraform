@@ -4,8 +4,10 @@ provider "aws" {
     role_arn     = var.tf_role_arn
     session_name = "terraform-example"
   }
-  default_tags = var.tags
-  region       = var.aws_region
+  default_tags {
+    tags = var.tags
+  }
+  region = var.aws_region
 }
 
 #-------------------------------------------------------------------------------
