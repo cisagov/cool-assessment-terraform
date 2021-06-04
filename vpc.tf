@@ -17,7 +17,6 @@ resource "aws_vpc" "assessment" {
 
   cidr_block           = var.vpc_cidr_block
   enable_dns_hostnames = true
-  tags                 = var.tags
 }
 
 # Setup DHCP so we can resolve private DNS names
@@ -26,7 +25,6 @@ resource "aws_vpc_dhcp_options" "assessment" {
 
   domain_name         = local.private_domain
   domain_name_servers = ["AmazonProvidedDNS"]
-  tags                = var.tags
 }
 
 # Associate the DHCP options above with the VPC

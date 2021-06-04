@@ -15,7 +15,6 @@ resource "aws_vpc_endpoint" "sts" {
     aws_security_group.sts.id,
   ]
   service_name      = "com.amazonaws.${var.aws_region}.sts"
-  tags              = var.tags
   vpc_endpoint_type = "Interface"
   vpc_id            = aws_vpc.assessment.id
 }
@@ -29,7 +28,6 @@ resource "aws_vpc_endpoint" "ssm" {
     aws_security_group.ssm.id,
   ]
   service_name      = "com.amazonaws.${var.aws_region}.ssm"
-  tags              = var.tags
   vpc_endpoint_type = "Interface"
   vpc_id            = aws_vpc.assessment.id
 }
@@ -45,7 +43,6 @@ resource "aws_vpc_endpoint" "ec2" {
     aws_security_group.ssm.id,
   ]
   service_name      = "com.amazonaws.${var.aws_region}.ec2"
-  tags              = var.tags
   vpc_endpoint_type = "Interface"
   vpc_id            = aws_vpc.assessment.id
 }
@@ -57,7 +54,6 @@ resource "aws_vpc_endpoint" "ec2messages" {
     aws_security_group.ssm.id,
   ]
   service_name      = "com.amazonaws.${var.aws_region}.ec2messages"
-  tags              = var.tags
   vpc_endpoint_type = "Interface"
   vpc_id            = aws_vpc.assessment.id
 }
@@ -69,7 +65,6 @@ resource "aws_vpc_endpoint" "kms" {
     aws_security_group.ssm.id,
   ]
   service_name      = "com.amazonaws.${var.aws_region}.kms"
-  tags              = var.tags
   vpc_endpoint_type = "Interface"
   vpc_id            = aws_vpc.assessment.id
 }
@@ -81,7 +76,6 @@ resource "aws_vpc_endpoint" "ssmmessages" {
     aws_security_group.ssm.id,
   ]
   service_name      = "com.amazonaws.${var.aws_region}.ssmmessages"
-  tags              = var.tags
   vpc_endpoint_type = "Interface"
   vpc_id            = aws_vpc.assessment.id
 }
@@ -95,7 +89,6 @@ resource "aws_vpc_endpoint" "logs" {
     aws_security_group.cloudwatch.id,
   ]
   service_name      = "com.amazonaws.${var.aws_region}.logs"
-  tags              = var.tags
   vpc_endpoint_type = "Interface"
   vpc_id            = aws_vpc.assessment.id
 }
@@ -107,7 +100,6 @@ resource "aws_vpc_endpoint" "monitoring" {
     aws_security_group.cloudwatch.id,
   ]
   service_name      = "com.amazonaws.${var.aws_region}.monitoring"
-  tags              = var.tags
   vpc_endpoint_type = "Interface"
   vpc_id            = aws_vpc.assessment.id
 }
@@ -230,5 +222,4 @@ resource "aws_vpc_endpoint" "s3" {
   service_name      = "com.amazonaws.${var.aws_region}.s3"
   vpc_endpoint_type = "Gateway"
   vpc_id            = aws_vpc.assessment.id
-  tags              = var.tags
 }

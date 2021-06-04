@@ -10,7 +10,6 @@ resource "aws_iam_role" "nessus_parameterstorereadonly_role" {
   assume_role_policy = data.aws_iam_policy_document.nessus_assume_role_doc[count.index].json
   description        = local.nessus_parameterstorereadonly_role_description
   name               = local.nessus_parameterstorereadonly_role_name
-  tags               = var.tags
 }
 
 resource "aws_iam_role_policy_attachment" "nessus_parameterstorereadonly_policy_attachment" {

@@ -11,7 +11,6 @@ resource "aws_default_route_table" "operations" {
   provider = aws.provisionassessment
 
   default_route_table_id = aws_vpc.assessment.default_route_table_id
-  tags                   = var.tags
 }
 
 # Route all COOL Shared Services traffic through the transit gateway

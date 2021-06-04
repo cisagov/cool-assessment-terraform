@@ -4,12 +4,9 @@ resource "aws_security_group" "teamserver" {
 
   vpc_id = aws_vpc.assessment.id
 
-  tags = merge(
-    var.tags,
-    {
-      "Name" = "Teamserver"
-    },
-  )
+  tags = {
+    Name = "Teamserver"
+  }
 }
 
 # Allow egress via port 587 (SMTP mail submission) to Gophish instances

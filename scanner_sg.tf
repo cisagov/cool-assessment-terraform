@@ -6,12 +6,9 @@ resource "aws_security_group" "scanner" {
 
   vpc_id = aws_vpc.assessment.id
 
-  tags = merge(
-    var.tags,
-    {
-      "Name" = "Scanner"
-    },
-  )
+  tags = {
+    Name = "Scanner"
+  }
 }
 
 # Allow ingress from anywhere via ICMP

@@ -67,6 +67,13 @@ resource "aws_instance" "guacamole" {
     aws_security_group.cloudwatch_and_ssm_agent.id,
     aws_security_group.guacamole.id,
   ]
-  tags        = merge(var.tags, map("Name", "Guacamole"))
-  volume_tags = merge(var.tags, map("Name", "Guacamole"))
+  tags = {
+    Name = "Guacamole"
+  }
+  # volume_tags does not yet inherit the default tags from the
+  # provider.  See hashicorp/terraform-provider-aws#19188 for more
+  # details.
+  volume_tags = merge(data.aws_default_tags.assessment.tags, {
+    Name = "Guacamole"
+  })
 }

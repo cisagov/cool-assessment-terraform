@@ -8,12 +8,9 @@ resource "aws_route53_zone" "assessment_private" {
     vpc_id = aws_vpc.assessment.id
   }
 
-  tags = merge(
-    var.tags,
-    {
-      "Name" = format("%s Private Zone", local.private_domain)
-    },
-  )
+  tags = {
+    Name = format("%s Private Zone", local.private_domain)
+  }
   comment = "Terraform Workspace: ${terraform.workspace}"
 }
 
@@ -34,7 +31,6 @@ resource "aws_route53_zone" "private_subnet_reverse" {
     element(split(".", each.value), 1),
     element(split(".", each.value), 0),
   )
-  tags = var.tags
   vpc {
     vpc_id = aws_vpc.assessment.id
   }

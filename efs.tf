@@ -3,12 +3,9 @@ resource "aws_efs_file_system" "persistent_storage" {
   provider = aws.provisionassessment
 
   encrypted = true
-  tags = merge(
-    var.tags,
-    {
-      "Name" = "Persistent Storage"
-    },
-  )
+  tags = {
+    Name = "Persistent Storage"
+  }
 }
 
 # Mount targets for EFS
@@ -32,12 +29,9 @@ resource "aws_efs_mount_target" "target" {
 resource "aws_security_group" "efs_mount_target" {
   provider = aws.provisionassessment
 
-  tags = merge(
-    var.tags,
-    {
-      "Name" = "EFS Mount Target"
-    },
-  )
+  tags = {
+    "Name" = "EFS Mount Target"
+  }
   vpc_id = aws_vpc.assessment.id
 }
 resource "aws_security_group_rule" "allow_nfs_inbound" {
@@ -55,12 +49,9 @@ resource "aws_security_group_rule" "allow_nfs_inbound" {
 resource "aws_security_group" "efs_client" {
   provider = aws.provisionassessment
 
-  tags = merge(
-    var.tags,
-    {
-      "Name" = "EFS Client"
-    },
-  )
+  tags = {
+    Name = "EFS Client"
+  }
   vpc_id = aws_vpc.assessment.id
 }
 resource "aws_security_group_rule" "allow_nfs_outbound" {
