@@ -67,7 +67,7 @@ the COOL environment.
 | Name | Version |
 |------|---------|
 | terraform | ~> 0.12.0 |
-| aws | ~> 3.0 |
+| aws | ~> 3.38 |
 | cloudinit | ~> 2.0 |
 | null | ~> 3.0 |
 
@@ -75,12 +75,12 @@ the COOL environment.
 
 | Name | Version |
 |------|---------|
-| aws | ~> 3.0 |
-| aws.dns\_sharedservices | ~> 3.0 |
-| aws.organizationsreadonly | ~> 3.0 |
-| aws.provisionassessment | ~> 3.0 |
-| aws.provisionparameterstorereadrole | ~> 3.0 |
-| aws.provisionsharedservices | ~> 3.0 |
+| aws | ~> 3.38 |
+| aws.dns\_sharedservices | ~> 3.38 |
+| aws.organizationsreadonly | ~> 3.38 |
+| aws.provisionassessment | ~> 3.38 |
+| aws.provisionparameterstorereadrole | ~> 3.38 |
+| aws.provisionsharedservices | ~> 3.38 |
 | cloudinit | ~> 2.0 |
 | null | ~> 3.0 |
 | terraform | n/a |
@@ -99,6 +99,7 @@ the COOL environment.
 | Name | Type |
 |------|------|
 | [aws_default_route_table.operations](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_route_table) | resource |
+| [aws_ebs_volume.gophish_docker](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ebs_volume) | resource |
 | [aws_ec2_transit_gateway_route.assessment_route](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_transit_gateway_route) | resource |
 | [aws_ec2_transit_gateway_route_table_association.association](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_transit_gateway_route_table_association) | resource |
 | [aws_ec2_transit_gateway_vpc_attachment.assessment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_transit_gateway_vpc_attachment) | resource |
@@ -274,6 +275,7 @@ the COOL environment.
 | [aws_security_group_rule.teamserver_ingress_from_kali_via_imaps_and_cs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_subnet.operations](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
 | [aws_subnet.private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
+| [aws_volume_attachment.gophish_docker](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/volume_attachment) | resource |
 | [aws_vpc.assessment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc) | resource |
 | [aws_vpc_dhcp_options.assessment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_dhcp_options) | resource |
 | [aws_vpc_dhcp_options_association.assessment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_dhcp_options_association) | resource |
@@ -306,6 +308,7 @@ the COOL environment.
 | [aws_ami.teamserver](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
 | [aws_caller_identity.assessment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
+| [aws_default_tags.assessment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/default_tags) | data source |
 | [aws_iam_policy_document.ec2_service_assume_role_doc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.efs_mount_policy_doc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.guacamole_assume_delegated_role_policy_doc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
@@ -344,7 +347,7 @@ the COOL environment.
 | dns\_ttl | The TTL value to use for Route53 DNS records (e.g. 86400).  A smaller value may be useful when the DNS records are changing often, for example when testing. | `number` | `60` | no |
 | email\_sending\_domain | The domain to send emails from within the assessment environment (e.g. "example.com"). | `string` | `"example.com"` | no |
 | guac\_connection\_setup\_path | The full path to the dbinit directory where initialization files must be stored in order to work properly. (e.g. "/var/guacamole/dbinit") | `string` | `"/var/guacamole/dbinit"` | no |
-| inbound\_ports\_allowed | A map specifying the ports allowed inbound (from anywhere) to the various instance types (e.g. {"kali": [{"protocol": "tcp", "from_port": 8000, "to_port": 8999}]}).  The currently-supported keys are: "debiandesktop", "gophish", "kali", "nessus", "pentestportal", and "teamserver". | `map(list(object({ protocol = string, from_port = number, to_port = number })))` | `{"debiandesktop": [], "gophish": [{"from_port": 25, "protocol": "tcp", "to_port": 25}, {"from_port": 80, "protocol": "tcp", "to_port": 80},{"from_port": 443, "protocol": "tcp", "to_port": 443}, {"from_port": 587, "protocol": "tcp", "to_port": 587}], "kali": [{"from_port": 8000, "protocol": "tcp", "to_port": 8999}], "nessus": [], "pentestportal": [], "teamserver": [{"from_port": 25, "protocol": "tcp", "to_port": 25}, {"from_port": 53, "protocol": "tcp", "to_port": 53}, {"from_port": 80, "protocol": "tcp", "to_port": 80}, {"from_port": 443, "protocol": "tcp", "to_port": 443}, {"from_port": 587, "protocol": "tcp", "to_port": 587}, {"from_port": 53, "protocol": "udp", "to_port": 53}, {"from_port": 8080, "protocol": "udp", "to_port": 8080}, {"from_port": 8000, "protocol": "tcp", "to_port": 8999}]}` | no |
+| inbound\_ports\_allowed | A map specifying the ports allowed inbound (from anywhere) to the various instance types (e.g. {"kali": [{"protocol": "tcp", "from\_port": 8000, "to\_port": 8999}]}).  The currently-supported keys are: "debiandesktop", "gophish", "kali", "nessus", "pentestportal", and "teamserver". | `map(list(object({ protocol = string, from\_port = number, to\_port = number })))` | `{"debiandesktop": [], "gophish": [{"from\_port": 25, "protocol": "tcp", "to\_port": 25}, {"from\_port": 80, "protocol": "tcp", "to\_port": 80},{"from\_port": 443, "protocol": "tcp", "to\_port": 443}, {"from\_port": 587, "protocol": "tcp", "to\_port": 587}], "kali": [{"from\_port": 8000, "protocol": "tcp", "to\_port": 8999}], "nessus": [], "pentestportal": [], "teamserver": [{"from\_port": 25, "protocol": "tcp", "to\_port": 25}, {"from\_port": 53, "protocol": "tcp", "to\_port": 53}, {"from\_port": 80, "protocol": "tcp", "to\_port": 80}, {"from\_port": 443, "protocol": "tcp", "to\_port": 443}, {"from\_port": 587, "protocol": "tcp", "to\_port": 587}, {"from\_port": 53, "protocol": "udp", "to\_port": 53}, {"from\_port": 8080, "protocol": "udp", "to\_port": 8080}, {"from\_port": 8000, "protocol": "tcp", "to\_port": 8999}]}` | no |
 | nessus\_activation\_codes | The list of Nessus activation codes (e.g. ["AAAA-BBBB-CCCC-DDDD"]). The number of codes in this list should match the number of Nessus instances defined in operations\_instance\_counts. | `list(string)` | `[]` | no |
 | operations\_instance\_counts | A map specifying how many instances of each type should be created in the operations subnet (e.g. { "kali": 1 }).  The currently-supported instance keys are: ["debiandesktop", "gophish", "kali", "nessus", "pentestportal", "teamserver"]. | `map(number)` | `{"kali": 1}` | no |
 | operations\_subnet\_cidr\_block | The operations subnet CIDR block for this assessment (e.g. "10.10.0.0/24"). | `string` | n/a | yes |

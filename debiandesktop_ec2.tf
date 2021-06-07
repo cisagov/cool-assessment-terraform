@@ -62,6 +62,13 @@ resource "aws_instance" "debiandesktop" {
     aws_security_group.efs_client.id,
     aws_security_group.guacamole_accessible.id,
   ]
-  tags        = merge(var.tags, map("Name", format("DebianDesktop%d", count.index)))
-  volume_tags = merge(var.tags, map("Name", format("DebianDesktop%d", count.index)))
+  tags = {
+    Name = format("DebianDesktop%d", count.index)
+  }
+  # volume_tags does not yet inherit the default tags from the
+  # provider.  See hashicorp/terraform-provider-aws#19188 for more
+  # details.
+  volume_tags = merge(data.aws_default_tags.assessment.tags, {
+    Name = format("DebianDesktop%d", count.index)
+  })
 }

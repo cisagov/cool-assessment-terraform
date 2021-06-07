@@ -4,12 +4,9 @@ resource "aws_security_group" "debiandesktop" {
 
   vpc_id = aws_vpc.assessment.id
 
-  tags = merge(
-    var.tags,
-    {
-      "Name" = "Debian Desktop"
-    },
-  )
+  tags = {
+    "Name" = "Debian Desktop"
+  }
 }
 
 # Allow egress to Nessus web GUI port (8834)

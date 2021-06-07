@@ -4,12 +4,9 @@ resource "aws_security_group" "gophish" {
 
   vpc_id = aws_vpc.assessment.id
 
-  tags = merge(
-    var.tags,
-    {
-      "Name" = "Gophish"
-    },
-  )
+  tags = {
+    Name = "Gophish"
+  }
 }
 
 # Allow ingress from Teamserver instances via port 587 (SMTP mail submission)

@@ -5,12 +5,9 @@ resource "aws_security_group" "cloudwatch" {
 
   vpc_id = aws_vpc.assessment.id
 
-  tags = merge(
-    var.tags,
-    {
-      "Name" = "CloudWatch endpoints"
-    },
-  )
+  tags = {
+    Name = "CloudWatch endpoints"
+  }
 }
 
 # Allow ingress via HTTPS from the Debian Desktop security group

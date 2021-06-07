@@ -4,12 +4,9 @@ resource "aws_security_group" "nessus" {
 
   vpc_id = aws_vpc.assessment.id
 
-  tags = merge(
-    var.tags,
-    {
-      "Name" = "Nessus"
-    },
-  )
+  tags = {
+    Name = "Nessus"
+  }
 }
 
 # Allow ingress from Debian desktop instances via Nessus web GUI

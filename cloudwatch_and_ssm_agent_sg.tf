@@ -6,12 +6,9 @@ resource "aws_security_group" "cloudwatch_and_ssm_agent" {
 
   vpc_id = aws_vpc.assessment.id
 
-  tags = merge(
-    var.tags,
-    {
-      "Name" = "AWS CloudWatch and SSM agents"
-    },
-  )
+  tags = {
+    Name = "AWS CloudWatch and SSM agents"
+  }
 }
 
 # Allow egress via HTTPS to any SSM interface endpoints

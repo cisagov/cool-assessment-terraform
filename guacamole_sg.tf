@@ -4,12 +4,9 @@ resource "aws_security_group" "guacamole" {
 
   vpc_id = aws_vpc.assessment.id
 
-  tags = merge(
-    var.tags,
-    {
-      "Name" = "Guacamole (desktop gateway)"
-    },
-  )
+  tags = {
+    Name = "Guacamole (desktop gateway)"
+  }
 }
 
 # Allow egress via SSH to instances that wish to be accessible via

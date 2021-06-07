@@ -5,12 +5,9 @@ resource "aws_security_group" "ssm" {
 
   vpc_id = aws_vpc.assessment.id
 
-  tags = merge(
-    var.tags,
-    {
-      "Name" = "SSM endpoints"
-    },
-  )
+  tags = {
+    Name = "SSM endpoints"
+  }
 }
 
 # Allow ingress via HTTPS from the Debian desktop security group

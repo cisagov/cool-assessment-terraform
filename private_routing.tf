@@ -21,7 +21,6 @@
 resource "aws_route_table" "private_route_table" {
   provider = aws.provisionassessment
 
-  tags   = var.tags
   vpc_id = aws_vpc.assessment.id
 }
 

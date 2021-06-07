@@ -4,12 +4,9 @@ resource "aws_security_group" "guacamole_accessible" {
 
   vpc_id = aws_vpc.assessment.id
 
-  tags = merge(
-    var.tags,
-    {
-      "Name" = "Guacamole accessible"
-    },
-  )
+  tags = {
+    Name = "Guacamole accessible"
+  }
 }
 
 # Allow ingress from Guacamole instances via SSH

@@ -12,12 +12,9 @@ resource "aws_network_acl" "operations" {
     aws_subnet.operations.id,
   ]
 
-  tags = merge(
-    var.tags,
-    {
-      "Name" = "Assessment Operations"
-    },
-  )
+  tags = {
+    "Name" = "Assessment Operations"
+  }
 }
 
 # ACLs for the private subnets of the VPC
@@ -31,10 +28,7 @@ resource "aws_network_acl" "private" {
     aws_subnet.private[each.key].id,
   ]
 
-  tags = merge(
-    var.tags,
-    {
-      "Name" = format("Assessment Private - %s", each.key)
-    },
-  )
+  tags = {
+    "Name" = format("Assessment Private - %s", each.key)
+  }
 }
