@@ -9,6 +9,18 @@ resource "aws_security_group" "sts" {
   }
 }
 
+# Allow ingress via HTTPS from the Gophish security group
+resource "aws_security_group_rule" "ingress_from_gophish_to_sts_via_https" {
+  provider = aws.provisionassessment
+
+  security_group_id        = aws_security_group.sts.id
+  type                     = "ingress"
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.gophish.id
+  from_port                = 443
+  to_port                  = 443
+}
+
 # Allow ingress via HTTPS from the Guacamole security group
 resource "aws_security_group_rule" "ingress_from_guacamole_to_sts_via_https" {
   provider = aws.provisionassessment

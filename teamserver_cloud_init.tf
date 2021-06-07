@@ -58,7 +58,7 @@ data "cloudinit_config" "teamserver_cloud_init_tasks" {
       "${path.module}/cloud-init/install-certificates.py", {
         aws_region          = var.aws_region
         cert_bucket_name    = var.cert_bucket_name
-        cert_read_role_arn  = module.teamserver_certreadrole.role.arn
+        cert_read_role_arn  = module.email_sending_domain_certreadrole.role.arn
         create_dest_dirs    = false
         full_chain_pem_dest = local.full_chain_pem
         priv_key_pem_dest   = local.priv_key_pem
