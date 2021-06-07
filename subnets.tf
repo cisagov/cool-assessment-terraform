@@ -12,12 +12,9 @@ resource "aws_subnet" "operations" {
 
   depends_on = [aws_internet_gateway.assessment]
 
-  tags = merge(
-    var.tags,
-    {
-      "Name" = "Assessment Operations"
-    },
-  )
+  tags = {
+    Name = "Assessment Operations"
+  }
 }
 
 # Private subnets of the VPC
@@ -30,12 +27,9 @@ resource "aws_subnet" "private" {
   cidr_block        = each.key
   availability_zone = "${var.aws_region}${var.aws_availability_zone}"
 
-  tags = merge(
-    var.tags,
-    {
-      "Name" = format("Assessment Private - %s", each.key)
-    },
-  )
+  tags = {
+    Name = format("Assessment Private - %s", each.key)
+  }
 }
 
 # The internet gateway for the VPC
@@ -43,5 +37,4 @@ resource "aws_internet_gateway" "assessment" {
   provider = aws.provisionassessment
 
   vpc_id = aws_vpc.assessment.id
-  tags   = var.tags
 }

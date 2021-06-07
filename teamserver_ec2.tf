@@ -74,8 +74,15 @@ resource "aws_instance" "teamserver" {
     aws_security_group.scanner.id,
     aws_security_group.teamserver.id,
   ]
-  tags        = merge(var.tags, map("Name", format("Teamserver%d", count.index)))
-  volume_tags = merge(var.tags, map("Name", format("Teamserver%d", count.index)))
+  tags = {
+    Name = format("Teamserver%d", count.index)
+  }
+  # volume_tags does not yet inherit the default tags from the
+  # provider.  See hashicorp/terraform-provider-aws#19188 for more
+  # details.
+  volume_tags = merge(data.aws_default_tags.assessment.tags, {
+    Name = format("Teamserver%d", count.index)
+  })
 }
 
 # The Elastic IP for each teamserver
@@ -84,13 +91,10 @@ resource "aws_eip" "teamserver" {
   provider = aws.provisionassessment
 
   vpc = true
-  tags = merge(
-    var.tags,
-    {
-      "Name"           = format("Teamserver%d EIP", count.index)
-      "Publish Egress" = "True"
-    },
-  )
+  tags = {
+    Name             = format("Teamserver%d EIP", count.index)
+    "Publish Egress" = "True"
+  }
 }
 
 # The EIP association for each teamserver

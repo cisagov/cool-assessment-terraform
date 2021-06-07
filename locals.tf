@@ -21,6 +21,16 @@ data "aws_organizations_organization" "cool" {
 }
 
 # ------------------------------------------------------------------------------
+# Retrieve the default tags for the assessment provider.  These are
+# used to create volume tags for EC2 instances, since volume_tags does
+# not yet inherit the default tags from the provider.  See
+# hashicorp/terraform-provider-aws#19188 for more details.
+# ------------------------------------------------------------------------------
+data "aws_default_tags" "assessment" {
+  provider = aws.provisionassessment
+}
+
+# ------------------------------------------------------------------------------
 # Evaluate expressions for use throughout this configuration.
 # ------------------------------------------------------------------------------
 locals {

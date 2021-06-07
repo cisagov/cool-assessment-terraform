@@ -4,12 +4,9 @@ resource "aws_security_group" "sts" {
 
   vpc_id = aws_vpc.assessment.id
 
-  tags = merge(
-    var.tags,
-    {
-      "Name" = "STS endpoint"
-    },
-  )
+  tags = {
+    Name = "STS endpoint"
+  }
 }
 
 # Allow ingress via HTTPS from the Gophish security group

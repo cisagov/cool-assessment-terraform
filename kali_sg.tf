@@ -4,12 +4,9 @@ resource "aws_security_group" "kali" {
 
   vpc_id = aws_vpc.assessment.id
 
-  tags = merge(
-    var.tags,
-    {
-      "Name" = "Kali"
-    },
-  )
+  tags = {
+    Name = "Kali"
+  }
 }
 
 # Allow egress to PenTest Portal instances via ports 443 and 8080

@@ -64,8 +64,15 @@ resource "aws_instance" "gophish" {
     aws_security_group.guacamole_accessible.id,
     aws_security_group.scanner.id,
   ]
-  tags        = merge(var.tags, map("Name", format("Gophish%d", count.index)))
-  volume_tags = merge(var.tags, map("Name", format("Gophish%d", count.index)))
+  tags = {
+    Name = format("Gophish%d", count.index)
+  }
+  # volume_tags does not yet inherit the default tags from the
+  # provider.  See hashicorp/terraform-provider-aws#19188 for more
+  # details.
+  volume_tags = merge(data.aws_default_tags.assessment.tags, {
+    Name = format("Gophish%d", count.index)
+  })
 }
 
 # The Elastic IP for each Gophish instance
@@ -74,13 +81,10 @@ resource "aws_eip" "gophish" {
   provider = aws.provisionassessment
 
   vpc = true
-  tags = merge(
-    var.tags,
-    {
-      "Name"           = format("Gophish%d EIP", count.index)
-      "Publish Egress" = "True"
-    },
-  )
+  tags = {
+    Name             = format("Gophish%d EIP", count.index)
+    "Publish Egress" = "True"
+  }
 }
 
 # The EIP association for each Gophish instance
@@ -106,7 +110,9 @@ resource "aws_ebs_volume" "gophish_docker" {
   size              = 16
   type              = "gp2"
 
-  tags = merge(var.tags, map("Name", format("Gophish%d Docker", count.index)))
+  tags = {
+    Name = format("Gophish%d Docker", count.index)
+  }
 }
 
 # Attach EBS volume to Gophish instance
