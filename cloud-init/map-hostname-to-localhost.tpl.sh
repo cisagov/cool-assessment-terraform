@@ -39,6 +39,7 @@ set +o errexit
 
 # beautysh (pre-commit hook) doesn't handle the following grep correctly, so
 # we have to temporarily turn off the formatting.
+# Issue logged at: https://github.com/lovesegfault/beautysh/issues/86
 # @formatter:off
 # The hosts_file variable is passed in via Terraform templatefile().
 # shellcheck disable=SC2154
