@@ -143,6 +143,7 @@ data "aws_iam_policy_document" "provisionassessment_policy_doc" {
 
   statement {
     actions = [
+      "ssm:AddTagsToResource",
       "ssm:CreateDocument",
       "ssm:DeleteDocument",
       "ssm:DescribeDocument*",
@@ -171,6 +172,7 @@ data "aws_iam_policy_document" "provisionassessment_policy_doc" {
       "logs:DeleteLogGroup",
       "logs:ListTagsLogGroup",
       "logs:PutRetentionPolicy",
+      "logs:TagLogGroup",
     ]
 
     resources = [
