@@ -139,4 +139,31 @@ data "cloudinit_config" "gophish_cloud_init_tasks" {
     filename     = "postfix-setup.yml"
     merge_type   = "list(append)+dict(recurse_array)+str()"
   }
+
+  # Configure Thunderbird to autoconfigure email accounts from this
+  # assessment's email-sending domain.
+  part {
+    content = templatefile(
+      "${path.module}/cloud-init/write-thunderbird-email-autoconfig.tpl.yml", {
+        email_sending_domain = var.email_sending_domain
+    })
+    content_type = "text/cloud-config"
+    filename     = "write-thunderbird-email-autoconfig.yml"
+    merge_type   = "list(append)+dict(recurse_array)+str()"
+  }
+
+  # Ensure email-sending domain is mapped to 127.0.0.1 in /etc/hosts.
+  # Note: Even though /etc/hosts on this instance is managed by cloud-init
+  # in /etc/cloud/templates/hosts.debian.tmpl, we can safely modify
+  # /etc/hosts here because our change will be applied at every startup,
+  # after the earlier cloud-init code applies hosts.debian.tmpl.
+  part {
+    content = templatefile(
+      "${path.module}/cloud-init/map-hostname-to-localhost.tpl.sh", {
+        hostname   = var.email_sending_domain
+        hosts_file = "/etc/hosts"
+    })
+    content_type = "text/x-shellscript"
+    filename     = "map-hostname-to-localhost.sh"
+  }
 }
