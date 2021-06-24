@@ -92,24 +92,6 @@ data "cloudinit_config" "gophish_cloud_init_tasks" {
     filename     = "02-copy-docker-data-to-new-root-dir.sh"
   }
 
-  # Set up everything needed to successfully launch the
-  # pca-gophish-composition service.
-  # TODO Persist Gophish data on EBS volume, instead of EFS volume.
-  # For details, see:
-  #   https://github.com/cisagov/cool-assessment-terraform/issues/120
-  part {
-    content = templatefile(
-      "${path.module}/cloud-init/gophish-dir-setup.tpl.yml", {
-        efs_mount_point      = "/share"
-        efs_gophish_data_dir = "/share/gophish${count.index}_data"
-        gophish_data_dir     = "${local.pca_gophish_composition_dir}/data"
-        pca_systemd_file     = "/etc/systemd/system/pca-gophish-composition.service"
-    })
-    content_type = "text/cloud-config"
-    filename     = "gophish-dir-setup.yml"
-    merge_type   = "list(append)+dict(recurse_array)+str()"
-  }
-
   # Install certificate for postfix.
   part {
     content = templatefile(
