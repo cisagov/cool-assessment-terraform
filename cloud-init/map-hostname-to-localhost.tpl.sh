@@ -22,6 +22,10 @@ set -o pipefail
 
 # Put Terraform-supplied hostname in a shell variable so we can use parameter
 # expansion to create the escaped hostname.
+#
+# The hostname variable is passed in via Terraform templatefile().
+# This line is not actually assigning a shell variable to itself.
+# shellcheck disable=SC2269
 hostname="${hostname}"
 
 # Escape periods in hostname
@@ -48,8 +52,7 @@ grep --quiet --ignore-case "^127\.0\.0\.1\s$${escaped_hostname}\s*$" "${hosts_fi
 grep_rc="$?"
 set -o errexit
 
-if [[ "$grep_rc" -ne 0 ]]
-then
+if [[ "$grep_rc" -ne 0 ]]; then
   # Add the mapping to the hosts file
   echo -e "\n127.0.0.1 ${hostname}" >> "${hosts_file}"
 else
