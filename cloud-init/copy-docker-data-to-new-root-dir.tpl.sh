@@ -18,13 +18,10 @@ set -o errexit
 set -o pipefail
 
 # Check if we have previously populated the new data-root directory
-if [[ ! -d "${new_data_root_dir}/volumes" ]]
-then
-  if [[ -n "${mount_point}" ]]
-  then
+if [[ ! -d "${new_data_root_dir}/volumes" ]]; then
+  if [[ -n "${mount_point}" ]]; then
     # Ensure volume containing new_data_root_dir has been mounted
-    until findmnt "${mount_point}"
-    do
+    until findmnt "${mount_point}"; do
       sleep 2
       echo Waiting for "${mount_point}" to be mounted...
     done
@@ -35,8 +32,7 @@ then
 fi
 
 # Check if default directory still exists
-if [[ -d /var/lib/docker ]]
-then
+if [[ -d /var/lib/docker ]]; then
   # Rename default directory for safe keeping
   mv /var/lib/docker /var/lib/docker.orig
 fi

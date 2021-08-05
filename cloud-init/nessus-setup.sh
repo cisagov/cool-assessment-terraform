@@ -35,8 +35,8 @@ echo "Assuming role that can read Nessus-related SSM Parameter Store parameters"
 
 # shellcheck disable=SC2154
 assumed_role_output=$(aws --region "${aws_region}" \
-    --endpoint-url "https://sts.${aws_region}.amazonaws.com" \
-    sts assume-role --role-arn "${ssm_nessus_read_role_arn}" \
+  --endpoint-url "https://sts.${aws_region}.amazonaws.com" \
+  sts assume-role --role-arn "${ssm_nessus_read_role_arn}" \
   --role-session-name "cloud-init-nessus-setup")
 
 aws_access_key_id=$(echo "$assumed_role_output" | jq -r .Credentials.AccessKeyId)
@@ -55,8 +55,7 @@ echo "Reading Nessus-related parameters from SSM Parameter Store..."
 username_ssm_output=$(aws --region "${aws_region}" ssm get-parameter --name "${ssm_key_nessus_admin_username}" --with-decryption)
 username_rc="$?"
 
-if [ "$username_rc" -eq 0 ]
-then
+if [ "$username_rc" -eq 0 ]; then
   nessus_admin_username=$(echo "$username_ssm_output" | jq -r .Parameter.Value)
   echo "  Nessus admin username successfully read from SSM: $${nessus_admin_username}"
 else
@@ -68,8 +67,7 @@ fi
 password_ssm_output=$(aws --region "${aws_region}" ssm get-parameter --name "${ssm_key_nessus_admin_password}" --with-decryption)
 password_rc="$?"
 
-if [ "$password_rc" -eq 0 ]
-then
+if [ "$password_rc" -eq 0 ]; then
   nessus_admin_password=$(echo "$password_ssm_output" | jq -r .Parameter.Value)
   echo "  Nessus admin password successfully read from SSM."
 else
@@ -77,9 +75,7 @@ else
   nessus_admin_password=""
 fi
 
-
-register_nessus()
-{
+register_nessus() {
   # Ignore this shellcheck:
   # "SC2034: activation_code appears unused. Verify use (or export if used
   # externally)." since the use of this variable is escaped (due to
@@ -92,8 +88,7 @@ register_nessus()
   $nessus_sbin_path/nessuscli fetch --register-only "$${activation_code}"
   registration_rc="$?"
 
-  if [ "$registration_rc" -eq 0 ]
-  then
+  if [ "$registration_rc" -eq 0 ]; then
     echo "Nessus successfully registered"
     return 0
   else
@@ -102,8 +97,7 @@ register_nessus()
   fi
 }
 
-create_admin_user()
-{
+create_admin_user() {
   username=$1
   # Ignore this shellcheck:
   # "SC2034: password appears unused. Verify use (or export if used
@@ -132,8 +126,7 @@ create_admin_user()
     expect eof
 EOF
   user_created="$?"
-  if [ "$user_created" -eq 0 ]
-  then
+  if [ "$user_created" -eq 0 ]; then
     echo "Admin user successfully created"
     return 0
   else
@@ -142,8 +135,7 @@ EOF
   fi
 }
 
-update_plugins()
-{
+update_plugins() {
   echo "Stopping Nessus service..."
   systemctl stop nessusd
 
@@ -162,35 +154,30 @@ echo "Checking if Nessus is already registered..."
 $nessus_sbin_path/nessuscli fetch --check
 registered="$?"
 
-if [ "$registered" -eq 0 ]
-then
+if [ "$registered" -eq 0 ]; then
   echo "Nessus is already registered"
   echo "Checking if activation code matches previously-registered code..."
 
   # Retrieve the previously-registered activation code
   registered_activation_code="$($nessus_sbin_path/nessuscli fetch --code-in-use | grep -oP '[a-zA-Z0-9]{4}(?:\-[a-zA-Z0-9]{4}){3,4}')"
 
-  if [ "$registered_activation_code" = "$activation_code_to_apply" ]
-  then
+  if [ "$registered_activation_code" = "$activation_code_to_apply" ]; then
     echo "Activation code matches previously-registered code"
   else
     echo "Previously-registered activation code ($${registered_activation_code}) differs from code ($${activation_code_to_apply})"
     register_nessus "$activation_code_to_apply"
     register_rc="$?"
-    if [ "$register_rc" -eq 0 ]
-    then
+    if [ "$register_rc" -eq 0 ]; then
       update_plugins
     else
       exit $register_rc
     fi
   fi
-elif [ "$registered" -eq 1 ]
-then
+elif [ "$registered" -eq 1 ]; then
   echo "Nessus is not registered; attempting to register..."
   register_nessus "$activation_code_to_apply"
   register_rc="$?"
-  if [ "$register_rc" -eq 0 ]
-  then
+  if [ "$register_rc" -eq 0 ]; then
     update_plugins
   else
     exit $register_rc
@@ -200,21 +187,18 @@ else
   exit $registered
 fi
 
-if [ "$nessus_admin_username" = "" ]
-then
+if [ "$nessus_admin_username" = "" ]; then
   echo "Admin username is empty; skipping creation of admin user"
 else
   echo "Checking if admin user '$${nessus_admin_username}' exists..."
   $nessus_sbin_path/nessuscli lsuser | grep -q "^$${nessus_admin_username}"
   admin_user_exists="$?"
-  if [ "$admin_user_exists" -eq 0 ]
-  then
+  if [ "$admin_user_exists" -eq 0 ]; then
     echo "Admin user already exists; no need to create it"
   else
     create_admin_user "$nessus_admin_username" "$nessus_admin_password"
     admin_user_created="$?"
-    if [ "$admin_user_exists" -ne 0 ]
-    then
+    if [ "$admin_user_exists" -ne 0 ]; then
       exit $admin_user_created
     fi
   fi
