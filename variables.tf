@@ -75,8 +75,8 @@ variable "guac_connection_setup_path" {
 
 variable "inbound_ports_allowed" {
   type        = map(list(object({ protocol = string, from_port = number, to_port = number })))
-  description = "A map specifying the ports allowed inbound (from anywhere) to the various instance types (e.g. {\"kali\": [{\"protocol\": \"tcp\", \"from_port\": 8000, \"to_port\": 8999}]}).  The currently-supported keys are: \"assessorportal\", \"debiandesktop\", \"gophish\", \"kali\", \"nessus\", \"pentestportal\", and \"teamserver\"."
-  default     = { "assessorportal" : [], "debiandesktop" : [], "gophish" : [{ "protocol" : "tcp", "from_port" : 25, "to_port" : 25 }, { "protocol" : "tcp", "from_port" : 80, "to_port" : 80 }, { "protocol" : "tcp", "from_port" : 443, "to_port" : 443 }, { "protocol" : "tcp", "from_port" : 587, "to_port" : 587 }], "kali" : [{ "protocol" : "tcp", "from_port" : 8000, "to_port" : 8999 }], "nessus" : [], "pentestportal" : [], "teamserver" : [{ "protocol" : "tcp", "from_port" : 25, "to_port" : 25 }, { "protocol" : "tcp", "from_port" : 53, "to_port" : 53 }, { "protocol" : "tcp", "from_port" : 80, "to_port" : 80 }, { "protocol" : "tcp", "from_port" : 443, "to_port" : 443 }, { "protocol" : "tcp", "from_port" : 587, "to_port" : 587 }, { "protocol" : "udp", "from_port" : 53, "to_port" : 53 }, { "protocol" : "udp", "from_port" : 8080, "to_port" : 8080 }, { "protocol" : "tcp", "from_port" : 8000, "to_port" : 8999 }] }
+  description = "A map specifying the ports allowed inbound (from anywhere) to the various instance types (e.g. {\"kali\": [{\"protocol\": \"tcp\", \"from_port\": 8000, \"to_port\": 8999}]}).  The currently-supported keys are: \"assessorportal\", \"debiandesktop\", \"gophish\", \"kali\", \"nessus\", \"pentestportal\", \"teamserver\", and \"terraformer\"."
+  default     = { "assessorportal" : [], "debiandesktop" : [], "gophish" : [{ "protocol" : "tcp", "from_port" : 25, "to_port" : 25 }, { "protocol" : "tcp", "from_port" : 80, "to_port" : 80 }, { "protocol" : "tcp", "from_port" : 443, "to_port" : 443 }, { "protocol" : "tcp", "from_port" : 587, "to_port" : 587 }], "kali" : [{ "protocol" : "tcp", "from_port" : 8000, "to_port" : 8999 }], "nessus" : [], "pentestportal" : [], "teamserver" : [{ "protocol" : "tcp", "from_port" : 25, "to_port" : 25 }, { "protocol" : "tcp", "from_port" : 53, "to_port" : 53 }, { "protocol" : "tcp", "from_port" : 80, "to_port" : 80 }, { "protocol" : "tcp", "from_port" : 443, "to_port" : 443 }, { "protocol" : "tcp", "from_port" : 587, "to_port" : 587 }, { "protocol" : "udp", "from_port" : 53, "to_port" : 53 }, { "protocol" : "udp", "from_port" : 8080, "to_port" : 8080 }, { "protocol" : "tcp", "from_port" : 8000, "to_port" : 8999 }], "terraformer" : [] }
 }
 
 variable "nessus_activation_codes" {
@@ -87,7 +87,7 @@ variable "nessus_activation_codes" {
 
 variable "operations_instance_counts" {
   type        = map(number)
-  description = "A map specifying how many instances of each type should be created in the operations subnet (e.g. { \"kali\": 1 }).  The currently-supported instance keys are: [\"assessorportal\", \"debiandesktop\", \"gophish\", \"kali\", \"nessus\", \"pentestportal\", \"teamserver\"]."
+  description = "A map specifying how many instances of each type should be created in the operations subnet (e.g. { \"kali\": 1 }).  The currently-supported instance keys are: [\"assessorportal\", \"debiandesktop\", \"gophish\", \"kali\", \"nessus\", \"pentestportal\", \"teamserver\", \"terraformer\"]."
   default     = { "kali" : 1 }
 }
 
