@@ -34,7 +34,7 @@ resource "aws_iam_role_policy_attachment" "cloudwatch_agent_policy_attachment_go
 }
 
 # Attach the SSM Agent policy to this role as well
-resource "aws_iam_role_policy_attachment" "ssm_agent_policy_attachment_gophics" {
+resource "aws_iam_role_policy_attachment" "ssm_agent_policy_attachment_gophish" {
   provider = aws.provisionassessment
 
   role       = aws_iam_role.gophish_instance_role.id
