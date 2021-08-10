@@ -56,3 +56,15 @@ resource "aws_security_group_rule" "ingress_from_teamserver_to_sts_via_https" {
   from_port                = 443
   to_port                  = 443
 }
+
+# Allow ingress via HTTPS from the Terraformer security group
+resource "aws_security_group_rule" "ingress_from_terraformer_to_sts_via_https" {
+  provider = aws.provisionassessment
+
+  security_group_id        = aws_security_group.sts.id
+  type                     = "ingress"
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.terraformer.id
+  from_port                = 443
+  to_port                  = 443
+}
