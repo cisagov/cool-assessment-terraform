@@ -8,6 +8,7 @@ write_files:
       credential_source = Ec2InstanceMetadata
       region = ${aws_region}
       role_arn = ${role_arn}
+      sts_regional_endpoints = regional
     owner: ${owner}
     path: ${path}
     permissions: ${permissions}
