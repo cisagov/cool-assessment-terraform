@@ -10,17 +10,16 @@ data "cloudinit_config" "terraformer_cloud_init_tasks" {
   # filenames will also be used as a filename in the scripts
   # directory.
 
-  # Create a file /var/terraformer/aws_config that can be used to
+  # Create a configuration file for the VNC user that can be used to
   # configure the AWS CLI to assume the Terraformer role by default.
-  # This file can be utilized by a user by simply copying it to
-  # ~/.aws/config.  For details, see
+  # For details, see
   # https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html#using-a-configuration-file
   part {
     content = templatefile(
       "${path.module}/cloud-init/write-aws-config.tpl.yml", {
         aws_region  = var.aws_region
         owner       = "root:root"
-        path        = "/var/terraformer/aws_config"
+        path        = "/home/vnc/.aws/config"
         permissions = "0444"
         role_arn    = aws_iam_role.terraformer_role.arn
     })
