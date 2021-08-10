@@ -18,9 +18,9 @@ data "cloudinit_config" "terraformer_cloud_init_tasks" {
     content = templatefile(
       "${path.module}/cloud-init/write-aws-config.tpl.yml", {
         aws_region  = var.aws_region
-        owner       = "root:root"
+        owner       = "vnc:vnc"
         path        = "/home/vnc/.aws/config"
-        permissions = "0444"
+        permissions = "0400"
         role_arn    = aws_iam_role.terraformer_role.arn
     })
     content_type = "text/cloud-config"
