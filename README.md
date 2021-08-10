@@ -396,6 +396,8 @@ the COOL environment.
 | ssmsession\_role\_description | The description to associate with the IAM role (and policy) that allows creation of SSM SessionManager sessions to any EC2 instance in this account. | `string` | `"Allows creation of SSM SessionManager sessions to any EC2 instance in this account."` | no |
 | ssmsession\_role\_name | The name to assign the IAM role (and policy) that allows creation of SSM SessionManager sessions to any EC2 instance in this account. | `string` | `"StartStopSSMSession"` | no |
 | tags | Tags to apply to all AWS resources created | `map(string)` | `{}` | no |
+| terraformer\_role\_description | The description to associate with the IAM role (and policy) that allows Terraformer instances to create appropriate AWS resources in this account. | `string` | `"Allows Terraformer instances to create appropriate AWS resources in this account."` | no |
+| terraformer\_role\_name | The name to assign the IAM role (and policy) that allows Terraformer instances to create appropriate AWS resources in this account. | `string` | `"Terraformer"` | no |
 | vpc\_cidr\_block | The CIDR block to use this assessment's VPC (e.g. "10.224.0.0/21"). | `string` | n/a | yes |
 
 ## Outputs ##

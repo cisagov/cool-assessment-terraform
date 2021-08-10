@@ -162,3 +162,15 @@ variable "tags" {
   description = "Tags to apply to all AWS resources created"
   default     = {}
 }
+
+variable "terraformer_role_description" {
+  type        = string
+  description = "The description to associate with the IAM role (and policy) that allows Terraformer instances to create appropriate AWS resources in this account."
+  default     = "Allows Terraformer instances to create appropriate AWS resources in this account."
+}
+
+variable "terraformer_role_name" {
+  type        = string
+  description = "The name to assign the IAM role (and policy) that allows Terraformer instances to create appropriate AWS resources in this account."
+  default     = "Terraformer"
+}

@@ -47,7 +47,7 @@ data "aws_iam_policy_document" "terraformer_assume_delegated_role_policy_doc" {
     ]
     effect = "Allow"
     resources = [
-      # module.email_sending_domain_certreadrole.role.arn,
+      aws_iam_role.terraformer_role.arn,
     ]
   }
 }
