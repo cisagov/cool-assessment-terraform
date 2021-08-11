@@ -3,6 +3,9 @@
 # specified role by default.  For details, see
 # https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html#using-a-configuration-file
 write_files:
+  # Create a file that can be used to configure the AWS CLI to assume
+  # a specified role by default.  For details, see
+  # https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html#using-a-configuration-file
   - content: |
       [default]
       credential_source = Ec2InstanceMetadata
