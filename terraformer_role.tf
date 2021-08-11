@@ -10,9 +10,19 @@ resource "aws_iam_role" "terraformer_role" {
   name               = var.terraformer_role_name
 }
 
-resource "aws_iam_role_policy_attachment" "terraformer_policy_attachment" {
+# Grant read-only access to everything
+resource "aws_iam_role_policy_attachment" "read_only_policy_attachment" {
   provider = aws.provisionassessment
 
-  policy_arn = aws_iam_policy.terraformer_policy.arn
+  policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
+  role       = aws_iam_role.terraformer_role.name
+}
+
+# Grant full access to anything that was not created by the "VM Fusion
+# - Development" team
+resource "aws_iam_role_policy_attachment" "full_access_policy_attachment" {
+  provider = aws.provisionassessment
+
+  policy_arn = aws_iam_policy.full_access_policy.arn
   role       = aws_iam_role.terraformer_role.name
 }

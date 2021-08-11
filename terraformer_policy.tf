@@ -1,12 +1,13 @@
 # Create the IAM policy for the Terraformer EC2 server instances that
-# allows them to create/destroy.modify the appropriate (and _only_ the
-# appropriate) resources in this account.
+# allows full access to create/destroy new resources in this account
+# and create/modify/destroy existing resources not created by the "VM
+# Fusion - Development" team.
 
-data "aws_iam_policy_document" "terraformer_doc" {
+data "aws_iam_policy_document" "full_access_doc" {
   provider = aws.provisionassessment
 
-  # Allow the user to do _anything_ with resources that _were not_
-  # created by the "VM Fusion - Development" team.
+  # Allow full access to new resources and existing resources that
+  # _were not_ created by the "VM Fusion - Development" team.
   statement {
     actions = [
       "*",
@@ -24,10 +25,10 @@ data "aws_iam_policy_document" "terraformer_doc" {
   }
 }
 
-resource "aws_iam_policy" "terraformer_policy" {
+resource "aws_iam_policy" "full_access_policy" {
   provider = aws.provisionassessment
 
   description = var.terraformer_role_description
   name        = var.terraformer_role_name
-  policy      = data.aws_iam_policy_document.terraformer_doc.json
+  policy      = data.aws_iam_policy_document.full_access_doc.json
 }
