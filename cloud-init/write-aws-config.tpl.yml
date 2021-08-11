@@ -1,7 +1,21 @@
 ---
-# Create a file that can be used to configure the AWS CLI to assume a
-# specified role by default.  For details, see
-# https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html#using-a-configuration-file
+runcmd:
+  # This bit of bash just creates the necessary directories and makes
+  # them owned by the same user as the file that is created in the
+  # next step.  write_files will create the directories for you, but
+  # the owner is left as root.
+  #
+  # Note that we could probably leave out the mkdir command since
+  # write-files will run before runcmd:
+  # https://git.launchpad.net/cloud-init/tree/config/cloud.cfg.tmpl
+  #
+  # I'd like to use some bash shell parameter expansion here (see
+  # https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html,
+  # for example) to extract the directory from the path, but
+  # Terraform's templating engine balks at that; hence, I am using
+  # dirname instead.
+  - [bash, -c, "p=${path}; d=$(dirname $p); mkdir -p $d; chown -R ${owner} $d;"]
+
 write_files:
   # Create a file that can be used to configure the AWS CLI to assume
   # a specified role by default.  For details, see
