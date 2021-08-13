@@ -9,6 +9,21 @@ resource "aws_security_group" "terraformer" {
   }
 }
 
+# Allow egress anywhere via ssh
+#
+# For: Terraformer instances must be able to configure redirectors via
+# Ansible.
+resource "aws_security_group_rule" "terraformer_egress_anywhere_via_ssh" {
+  provider = aws.provisionassessment
+
+  security_group_id = aws_security_group.terraformer.id
+  type              = "egress"
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  from_port         = 22
+  to_port           = 22
+}
+
 # Allow egress anywhere via HTTP
 #
 # For: Terraformer instances must be able to install packages.

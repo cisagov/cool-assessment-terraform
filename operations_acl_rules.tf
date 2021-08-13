@@ -1,6 +1,8 @@
 # Allow ingress from private subnet via ssh
 #
-# For: DevOps ssh access from private subnet to operations subnet
+# For: DevOps ssh access from private subnet to operations subnet.
+# This is also necessary so that the Terraformer instance can
+# configure redirectors via Ansible.
 resource "aws_network_acl_rule" "operations_ingress_from_private_via_ssh" {
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
@@ -78,7 +80,7 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_allowed_po
   network_acl_id = aws_network_acl.operations.id
   egress         = false
   protocol       = each.value["protocol"]
-  rule_number    = 110 + each.key
+  rule_number    = 108 + each.key
   rule_action    = "allow"
   cidr_block     = "0.0.0.0/0"
   from_port      = each.value["from_port"]
