@@ -33,10 +33,10 @@ resource "aws_network_acl_rule" "operations_ingress_from_private_via_vnc" {
   to_port        = 5901
 }
 
-# Allow ingress from the private subnets via port 443.  This is
-# necessary so that the Guacamole instance can download the Docker
-# images used in the Docker composition via the NAT gateway.
-resource "aws_network_acl_rule" "operations_ingress_from_private_via_https" {
+# Allow ingress from the private subnets via port 80.  This is
+# necessary so that the Terraformer instance can install packages via
+# the NAT gateway.
+resource "aws_network_acl_rule" "operations_ingress_from_private_via_http" {
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
 
@@ -44,6 +44,23 @@ resource "aws_network_acl_rule" "operations_ingress_from_private_via_https" {
   egress         = false
   protocol       = "tcp"
   rule_number    = 104 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_action    = "allow"
+  cidr_block     = aws_subnet.private[each.value].cidr_block
+  from_port      = 80
+  to_port        = 80
+}
+
+# Allow ingress from the private subnets via port 443.  This is
+# necessary so that the Terraformer instance can perform a terraform
+# init via the NAT gateway.
+resource "aws_network_acl_rule" "operations_ingress_from_private_via_https" {
+  provider = aws.provisionassessment
+  for_each = toset(var.private_subnet_cidr_blocks)
+
+  network_acl_id = aws_network_acl.operations.id
+  egress         = false
+  protocol       = "tcp"
+  rule_number    = 106 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = aws_subnet.private[each.value].cidr_block
   from_port      = 443
@@ -161,9 +178,9 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_icmp" {
 #
 # For: Assessment team operational use
 #
-# Note that this also covers the return traffic when the Guacamole
-# instance downloads the Docker images used in the Docker composition
-# via the NAT gateway in the operations subnet.
+# Note that this also covers the return traffic when the Terraformer
+# instance performs a terraform init or installs packages via the NAT
+# gateway in the operations subnet.
 resource "aws_network_acl_rule" "operations_egress_to_anywhere_via_any_port" {
   provider = aws.provisionassessment
 
