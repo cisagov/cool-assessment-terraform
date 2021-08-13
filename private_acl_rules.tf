@@ -16,11 +16,28 @@ resource "aws_network_acl_rule" "private_ingress_from_cool_vpn_via_https" {
   to_port        = 443
 }
 
+# Allow egress to anywhere via HTTP
+#
+# For: Terraformer instances need to be able to install packages.
+resource "aws_network_acl_rule" "private_egress_to_anywhere_via_http" {
+  provider = aws.provisionassessment
+  for_each = toset(var.private_subnet_cidr_blocks)
+
+  network_acl_id = aws_network_acl.private[each.value].id
+  egress         = true
+  protocol       = "tcp"
+  rule_number    = 104 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_action    = "allow"
+  cidr_block     = "0.0.0.0/0"
+  from_port      = 80
+  to_port        = 80
+}
+
 # Allow egress to anywhere via HTTPS
 #
 # For: Guacamole assumes a role via STS.  This role allows Guacamole
-# to then fetch its SSL certificate from S3.  Guacamole also needs to
-# download the Docker images used in the Guacamole Docker composition.
+# to then fetch its SSL certificate from S3.  The Terraformer
+# instances also need to perform terraform init.
 #
 # Note that, even though the S3 traffic is routed to the S3 VPC
 # gateway endpoint via the router, it still leaves the subnet as
@@ -32,7 +49,7 @@ resource "aws_network_acl_rule" "private_egress_to_anywhere_via_https" {
   network_acl_id = aws_network_acl.private[each.value].id
   egress         = true
   protocol       = "tcp"
-  rule_number    = 104 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 106 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = "0.0.0.0/0"
   from_port      = 443
@@ -49,7 +66,7 @@ resource "aws_network_acl_rule" "private_egress_to_cool_via_ephemeral_ports" {
   network_acl_id = aws_network_acl.private[each.value].id
   egress         = true
   protocol       = "tcp"
-  rule_number    = 106 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 108 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = local.cool_shared_services_cidr_block
   from_port      = 1024
@@ -65,7 +82,7 @@ resource "aws_network_acl_rule" "private_egress_to_operations_via_ephemeral_port
   network_acl_id = aws_network_acl.private[each.value].id
   egress         = true
   protocol       = "tcp"
-  rule_number    = 108 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 110 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = aws_subnet.operations.cidr_block
   from_port      = 1024
@@ -82,7 +99,7 @@ resource "aws_network_acl_rule" "private_egress_to_operations_via_ssh" {
   network_acl_id = aws_network_acl.private[each.value].id
   egress         = true
   protocol       = "tcp"
-  rule_number    = 110 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 112 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = aws_subnet.operations.cidr_block
   from_port      = 22
@@ -106,7 +123,7 @@ resource "aws_network_acl_rule" "private_ingress_from_operations_via_ephemeral_p
   network_acl_id = aws_network_acl.private[each.value].id
   egress         = false
   protocol       = "tcp"
-  rule_number    = 112 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 114 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = aws_subnet.operations.cidr_block
   from_port      = 1024
@@ -125,7 +142,7 @@ resource "aws_network_acl_rule" "private_ingress_from_anywhere_via_ephemeral_por
   network_acl_id = aws_network_acl.private[each.value].id
   egress         = false
   protocol       = "tcp"
-  rule_number    = 114 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 116 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = "0.0.0.0/0"
   from_port      = 1024
