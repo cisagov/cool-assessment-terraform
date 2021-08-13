@@ -45,8 +45,7 @@ resource "aws_internet_gateway" "assessment" {
 resource "aws_eip" "nat_gw" {
   provider = aws.provisionassessment
 
-  tags = var.tags
-  vpc  = true
+  vpc = true
 }
 
 resource "aws_nat_gateway" "nat_gw" {
@@ -55,5 +54,4 @@ resource "aws_nat_gateway" "nat_gw" {
   allocation_id = aws_eip.nat_gw.id
   # Reminder: The NAT gateway lives in the operations subnet
   subnet_id = aws_subnet.operations.id
-  tags      = var.tags
 }
