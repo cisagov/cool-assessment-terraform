@@ -56,6 +56,7 @@ data "aws_iam_policy_document" "terraformer_assume_delegated_role_policy_doc" {
     effect = "Allow"
     resources = [
       aws_iam_role.terraformer_role.arn,
+      module.read_terraform_state.role.arn,
     ]
   }
 }

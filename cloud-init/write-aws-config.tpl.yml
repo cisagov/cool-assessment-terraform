@@ -18,13 +18,20 @@ runcmd:
 
 write_files:
   # Create a file that can be used to configure the AWS CLI to assume
-  # a specified role by default.  For details, see
+  # a specified role by default, as well as other roles.  For details,
+  # see
   # https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html#using-a-configuration-file
   - content: |
       [default]
       credential_source = Ec2InstanceMetadata
       region = ${aws_region}
-      role_arn = ${role_arn}
+      role_arn = ${terraformer_role_arn}
+      sts_regional_endpoints = regional
+
+      [read_terraform_state]
+      credential_source = Ec2InstanceMetadata
+      region = ${aws_region}
+      role_arn = ${read_terraform_state_role_arn}
       sts_regional_endpoints = regional
     owner: ${owner}
     path: ${path}
