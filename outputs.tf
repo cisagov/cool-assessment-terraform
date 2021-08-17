@@ -28,6 +28,11 @@ output "efs_mount_targets" {
   description = "The mount targets for the EFS file share."
 }
 
+output "email_sending_domain_certreadrole" {
+  value       = module.email_sending_domain_certreadrole
+  description = "The IAM role that allows for reading the certificate for the email-sending domain."
+}
+
 output "gophish_security_group" {
   value       = aws_security_group.gophish
   description = "The security group for the Gophish instances."
