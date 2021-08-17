@@ -1,3 +1,8 @@
+output "assessment_private_zone" {
+  value       = aws_route53_zone.assessment_private
+  description = "The private DNS zone for this assessment."
+}
+
 output "assessorportal_security_group" {
   value       = aws_security_group.assessorportal
   description = "The security group for the Assessor Portal instances."
