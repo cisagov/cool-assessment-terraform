@@ -13,6 +13,16 @@ output "debian_desktop_security_group" {
   description = "The security group for the Debian desktop instances."
 }
 
+output "efs_client_security_group" {
+  value       = aws_security_group.efs_client
+  description = "A security group that should be applied to all instances that will mount the EFS file share."
+}
+
+output "efs_mount_targets" {
+  value       = aws_efs_mount_target.target
+  description = "The mount targets for the EFS file share."
+}
+
 output "gophish_security_group" {
   value       = aws_security_group.gophish
   description = "The security group for the Gophish instances."
