@@ -5,7 +5,7 @@
 # ------------------------------------------------------------------------------
 
 module "read_terraform_state" {
-  source = "github.com/cisagov/terraform-state-read-role-tf-module?ref=improvement%2Fmake-assume-role-creation-optional"
+  source = "github.com/cisagov/terraform-state-read-role-tf-module"
 
   providers = {
     aws = aws.provisionterraform
