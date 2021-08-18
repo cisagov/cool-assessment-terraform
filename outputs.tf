@@ -13,6 +13,16 @@ output "assessorportal_security_group" {
   description = "The security group for the Assessor Portal instances."
 }
 
+output "aws_region" {
+  value       = var.aws_region
+  description = "The AWS region where this assessment environment lives."
+}
+
+output "certificate_bucket_name" {
+  value       = var.cert_bucket_name
+  description = "The name of the S3 bucket where certificate information is stored for this assessment."
+}
+
 output "cloudwatch_and_ssm_agent_security_group" {
   value       = aws_security_group.cloudwatch_and_ssm_agent
   description = "A security group for _all_ instances.  Allows access to the VPC endpoint resources necessary for the AWS CloudWatch agent and the AWS SSM agent."
@@ -96,6 +106,11 @@ output "pentestportal_instance_profile" {
 output "pentestportal_security_group" {
   value       = aws_security_group.pentestportal
   description = "The security group for the Pentest Portal instances."
+}
+
+output "private_subnet_cidr_blocks" {
+  value       = var.private_subnet_cidr_blocks
+  description = "The private subnet CIDR blocks.  These are used to index into the private_subnets and efs_mount_targets outputs."
 }
 
 output "private_subnets" {

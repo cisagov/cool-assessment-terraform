@@ -431,6 +431,8 @@ the COOL environment.
 | assessment\_private\_zone | The private DNS zone for this assessment. |
 | assessor\_portal\_instance\_profile | The instance profile for the Assessor Portal instances. |
 | assessorportal\_security\_group | The security group for the Assessor Portal instances. |
+| aws\_region | The AWS region where this assessment environment lives. |
+| certificate\_bucket\_name | The name of the S3 bucket where certificate information is stored for this assessment. |
 | cloudwatch\_and\_ssm\_agent\_security\_group | A security group for _all_ instances.  Allows access to the VPC endpoint resources necessary for the AWS CloudWatch agent and the AWS SSM agent. |
 | debian\_desktop\_instance\_profile | The instance profile for the Debian Desktop instances. |
 | debian\_desktop\_security\_group | The security group for the Debian desktop instances. |
@@ -448,6 +450,7 @@ the COOL environment.
 | operations\_subnet | The operations subnet. |
 | pentestportal\_instance\_profile | The instance profile for the Pentest Portal instances. |
 | pentestportal\_security\_group | The security group for the Pentest Portal instances. |
+| private\_subnet\_cidr\_blocks | The private subnet CIDR blocks.  These are used to index into the private\_subnets and efs\_mount\_targets outputs. |
 | private\_subnets | The private subnets. |
 | read\_terraform\_state\_module | The IAM policies and role that allow read-only access to the cool-assessment-terraform workspace-specific state in the Terraform state bucket. |
 | remote\_desktop\_url | The URL of the remote desktop gateway (Guacamole) for this assessment. |
