@@ -4,8 +4,6 @@
 # ------------------------------------------------------------------------------
 
 data "aws_iam_policy_document" "nessus_assume_role_doc" {
-  count = lookup(var.operations_instance_counts, "nessus", 0) > 0 ? 1 : 0
-
   statement {
     actions = [
       "sts:AssumeRole",
@@ -14,7 +12,7 @@ data "aws_iam_policy_document" "nessus_assume_role_doc" {
     principals {
       type = "AWS"
       identifiers = [
-        aws_iam_role.nessus_instance_role[count.index].arn
+        aws_iam_role.nessus_instance_role.arn
       ]
     }
   }
