@@ -19,10 +19,12 @@ resource "aws_iam_role_policy_attachment" "read_only_policy_attachment" {
 }
 
 # Grant full access to anything that was not created by the "VM Fusion
-# - Development" team
-resource "aws_iam_role_policy_attachment" "full_access_policy_attachment" {
+# - Development" team, and give sufficient permissions to launch
+# instances in the operations subnet and use the existing security
+# groups.
+resource "aws_iam_role_policy_attachment" "terraformer_policy_attachment" {
   provider = aws.provisionassessment
 
-  policy_arn = aws_iam_policy.full_access_policy.arn
+  policy_arn = aws_iam_policy.terraformer_policy.arn
   role       = aws_iam_role.terraformer_role.name
 }
