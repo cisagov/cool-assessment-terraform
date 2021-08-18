@@ -28,7 +28,7 @@ module "example" {
 
 ## Examples ##
 
-- [Deploying into the default VPC](https://github.com/cisagov/skeleton-tf-module/tree/develop/examples/default_vpc)
+- [Basic usage](https://github.com/cisagov/skeleton-tf-module/tree/develop/examples/basic_usage)
 
 ## Requirements ##
 
