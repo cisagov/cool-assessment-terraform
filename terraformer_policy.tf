@@ -1,7 +1,7 @@
 # Create the IAM policy for the Terraformer EC2 server instances that
 # allows full access to create/destroy new resources in this account
-# and create/modify/destroy existing resources not created by the "VM
-# Fusion - Development" team.
+# and create/modify/destroy existing resources that _are not_ tagged
+# as being created by the team that deploys this root module.
 #
 # Also allow sufficient permissions to launch instances in the
 # operations subnet and use the existing security groups.
@@ -10,7 +10,8 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
   provider = aws.provisionassessment
 
   # Allow full access to new resources and existing resources that
-  # _were not_ created by the "VM Fusion - Development" team.
+  # _are not_ tagged as being created by the team that deploys this
+  # root module.
   statement {
     actions = [
       "*",

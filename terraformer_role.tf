@@ -18,10 +18,9 @@ resource "aws_iam_role_policy_attachment" "read_only_policy_attachment" {
   role       = aws_iam_role.terraformer_role.name
 }
 
-# Grant full access to anything that was not created by the "VM Fusion
-# - Development" team, and give sufficient permissions to launch
-# instances in the operations subnet and use the existing security
-# groups.
+# Allow full access to new resources and existing resources that _are
+# not_ tagged as being created by the team that deploys this root
+# module.
 resource "aws_iam_role_policy_attachment" "terraformer_policy_attachment" {
   provider = aws.provisionassessment
 
