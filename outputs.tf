@@ -3,6 +3,11 @@ output "assessment_private_zone" {
   description = "The private DNS zone for this assessment."
 }
 
+output "assessor_portal_instance_profile" {
+  value       = aws_iam_instance_profile.assessorportal
+  description = "The instance profile for the Assessor Portal instances."
+}
+
 output "assessorportal_security_group" {
   value       = aws_security_group.assessorportal
   description = "The security group for the Assessor Portal instances."
@@ -10,7 +15,12 @@ output "assessorportal_security_group" {
 
 output "cloudwatch_and_ssm_agent_security_group" {
   value       = aws_security_group.cloudwatch_and_ssm_agent
-  description = "A security group for _all_ instances.  Allows access to the VPC endpoint resources necessary for teh AWS CloudWatch agent and the AWS SSM agent."
+  description = "A security group for _all_ instances.  Allows access to the VPC endpoint resources necessary for the AWS CloudWatch agent and the AWS SSM agent."
+}
+
+output "debian_desktop_instance_profile" {
+  value       = aws_iam_instance_profile.debiandesktop
+  description = "The instance profile for the Debian Desktop instances."
 }
 
 output "debian_desktop_security_group" {
@@ -33,6 +43,11 @@ output "email_sending_domain_certreadrole" {
   description = "The IAM role that allows for reading the certificate for the email-sending domain."
 }
 
+output "gophish_instance_profile" {
+  value       = aws_iam_instance_profile.gophish
+  description = "The instance profile for the Gophish instances."
+}
+
 output "gophish_security_group" {
   value       = aws_security_group.gophish
   description = "The security group for the Gophish instances."
@@ -48,9 +63,19 @@ output "guacamole_server" {
   description = "The AWS EC2 instance hosting guacamole."
 }
 
+output "kali_instance_profile" {
+  value       = aws_iam_instance_profile.kali
+  description = "The instance profile for the Kali instances."
+}
+
 output "kali_security_group" {
   value       = aws_security_group.kali
   description = "The security group for the Kali instances."
+}
+
+output "nessus_instance_profile" {
+  value       = aws_iam_instance_profile.nessus
+  description = "The instance profile for the Nessus instances."
 }
 
 output "nessus_security_group" {
@@ -61,6 +86,11 @@ output "nessus_security_group" {
 output "operations_subnet" {
   value       = aws_subnet.operations
   description = "The operations subnet."
+}
+
+output "pentestportal_instance_profile" {
+  value       = aws_iam_instance_profile.pentestportal
+  description = "The instance profile for the Pentest Portal instances."
 }
 
 output "pentestportal_security_group" {
@@ -91,6 +121,11 @@ output "scanner_security_group" {
 output "ssm_session_role" {
   value       = aws_iam_role.ssmsession_role
   description = "An IAM role that allows creation of SSM SessionManager sessions to any EC2 instance in this account."
+}
+
+output "teamserver_instance_profile" {
+  value       = aws_iam_instance_profile.teamserver
+  description = "The instance profile for the Teamserver instances."
 }
 
 output "teamserver_security_group" {
