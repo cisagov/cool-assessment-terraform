@@ -28,10 +28,16 @@ write_files:
       role_arn = ${terraformer_role_arn}
       sts_regional_endpoints = regional
 
-      [read_terraform_state]
+      [read_cool_assessment_terraform_state]
       credential_source = Ec2InstanceMetadata
       region = ${aws_region}
-      role_arn = ${read_terraform_state_role_arn}
+      role_arn = ${read_cool_assessment_terraform_state_role_arn}
+      sts_regional_endpoints = regional
+
+      [read_organization_information]
+      credential_source = Ec2InstanceMetadata
+      region = ${aws_region}
+      role_arn = ${organization_read_role_arn}
       sts_regional_endpoints = regional
     owner: ${owner}
     path: ${path}

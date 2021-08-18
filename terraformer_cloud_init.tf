@@ -18,12 +18,13 @@ data "cloudinit_config" "terraformer_cloud_init_tasks" {
   part {
     content = templatefile(
       "${path.module}/cloud-init/write-aws-config.tpl.yml", {
-        aws_region                    = var.aws_region
-        owner                         = "vnc:vnc"
-        path                          = "/home/vnc/.aws/credentials"
-        permissions                   = "0400"
-        read_terraform_state_role_arn = module.read_terraform_state.role.arn
-        terraformer_role_arn          = aws_iam_role.terraformer_role.arn
+        aws_region                                    = var.aws_region
+        owner                                         = "vnc:vnc"
+        path                                          = "/home/vnc/.aws/credentials"
+        permissions                                   = "0400"
+        read_cool_assessment_terraform_state_role_arn = module.read_terraform_state.role.arn
+        organization_read_role_arn                    = data.terraform_remote_state.master.outputs.organizationsreadonly_role.arn
+        terraformer_role_arn                          = aws_iam_role.terraformer_role.arn
     })
     content_type = "text/cloud-config"
     filename     = "write-aws-config.yml"
