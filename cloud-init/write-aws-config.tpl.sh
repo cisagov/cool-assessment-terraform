@@ -11,9 +11,6 @@
 
 # Input variables are:
 # * aws_region - the AWS region where the roles are to be assumed
-# * owner - the user in whose home directory the AWS configuration
-#   file is being created
-# * path - the full path to the AWS configuration file
 # * permissions - the octal permissions to assign the AWS
 #   configuration
 # * read_cool_assessment_terraform_state_role_arn - the ARN of the
@@ -25,10 +22,43 @@
 # * terraformer_role_arn - the ARN of the Terraformer role, which can
 #   be assumed to create certain resources in the assessment
 #   environment
+# * vnc_read_parameter_store_role_arn - the ARN of the role that
+#   grants read-only access to certain VNC-related SSM Parameter Store
+#   parameters, including the VNC username
+# * vnc_username_parameter_name - the name of the SSM Parameter Store
+#   parameter containing the VNC user's username
 
 set -o nounset
 set -o errexit
 set -o pipefail
+
+# Temporarily assume a role in order to retrieve the VNC user's
+# username from SSM Parameter Store.
+aws_sts_output=$(aws sts assume-role \
+  --role-arn="${vnc_read_parameter_store_role_arn}" \
+  --role-session-name=cloud-init)
+access_key_id=$(sed --quiet \
+  's/^[[:blank:]]*"AccessKeyId": "\([[:graph:]]\+\)",$/\1/p' \
+  <<< "$aws_sts_output")
+secret_access_key=$(sed --quiet \
+  's/^[[:blank:]]*"SecretAccessKey": "\([[:graph:]]\+\)",$/\1/p' \
+  <<< "$aws_sts_output")
+session_token=$(sed --quiet \
+  's/^[[:blank:]]*"SessionToken": "\([[:graph:]]\+\)",$/\1/p' \
+  <<< "$aws_sts_output")
+
+# Now retrieve the VNC user's username from SSM Parameter Store
+ssm_response=$(AWS_ACCESS_KEY_ID=$access_key_id \
+  AWS_SECRET_ACCESS_KEY=$secret_access_key \
+  AWS_SESSION_TOKEN=$session_token \
+  aws --region "${aws_region}" \
+  ssm get-parameter \
+  --name /vnc/username --with-decryption)
+vnc_username=$(sed --quiet \
+  's/^[[:blank:]]*"Value": "\([[:graph:]]\+\)",$/\1/p' \
+  <<< "$ssm_response")
+
+path=/home/$vnc_username/.aws/credentials
 
 # Create the path where the AWS config file will be created, and set
 # its ownership appropriately.
@@ -37,12 +67,12 @@ set -o pipefail
 # https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html,
 # for example) to extract the directory from the path, but Terraform's
 # templating engine balks at that; hence, I am using dirname instead.
-d=$(dirname "${path}")
+d=$(dirname "$path")
 mkdir -p "$d"
-chown -R "${owner}" "$d"
+chown -R "$vnc_username:$vnc_username" "$d"
 
 # Write the AWS config file
-cat > "${path}" << EOF
+cat > "$path" << EOF
 [default]
 credential_source = Ec2InstanceMetadata
 region = ${aws_region}
@@ -64,5 +94,5 @@ EOF
 
 # Set the ownership and permissions of the AWS config file
 # appropriately.
-chmod "${permissions}" "${path}"
-chown "${owner}" "${path}"
+chmod "${permissions}" "$path"
+chown "$vnc_username:$vnc_username" "$path"
