@@ -58,6 +58,7 @@ data "aws_iam_policy_document" "terraformer_assume_delegated_role_policy_doc" {
       aws_iam_role.terraformer_role.arn,
       module.read_terraform_state.role.arn,
       data.terraform_remote_state.master.outputs.organizationsreadonly_role.arn,
+      aws_iam_role.vnc_parameterstorereadonly_role.arn,
     ]
   }
 }
