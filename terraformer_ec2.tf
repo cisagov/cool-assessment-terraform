@@ -32,11 +32,14 @@ resource "aws_instance" "terraformer" {
   availability_zone    = "${var.aws_region}${var.aws_availability_zone}"
   iam_instance_profile = aws_iam_instance_profile.terraformer.name
   instance_type        = "t3.medium"
-  # For some reason I can't SSM to the instance unless I put it in the
-  # first private subnet.  I believe this has something to do with the
-  # NACLs that are in place for that subnet specifically.  I will
-  # figure this out later.  I'd definitely prefer to put this instance
-  # in a different subnet than the Guacamole instance.
+  # TODO: For some reason I can't ssh via SSM to the instance unless I
+  # put it in the first private subnet.  I believe this has something
+  # to do with the NACLs that are in place for that subnet
+  # specifically.  I will figure this out later.  I'd definitely
+  # prefer to put this instance in a different subnet than the
+  # Guacamole instance.
+  #
+  # See cisagov/cool-assessment-terraform#135 for more details.
   subnet_id = aws_subnet.private[var.private_subnet_cidr_blocks[0]].id
   # AWS Instance Meta-Data Service (IMDS) options
   metadata_options {
