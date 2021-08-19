@@ -45,7 +45,7 @@ resource "aws_iam_role_policy_attachment" "ssm_agent_policy_attachment_terraform
 # Define the role policies below
 ################################
 
-# Allow the Terraformer instance to assume the necessary role
+# Allow the Terraformer instance to assume the necessary role to
 # create/destroy/modify AWS resources.
 data "aws_iam_policy_document" "terraformer_assume_delegated_role_policy_doc" {
   statement {
