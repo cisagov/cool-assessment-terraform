@@ -17,17 +17,16 @@ data "cloudinit_config" "terraformer_cloud_init_tasks" {
   # https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html#using-a-configuration-file
   part {
     content = templatefile(
-      "${path.module}/cloud-init/write-aws-config.tpl.yml", {
+      "${path.module}/cloud-init/write-aws-config.tpl.sh", {
         aws_region                                    = var.aws_region
-        owner                                         = "vnc:vnc"
+        owner                                         = "vnc:vnc" # /vnc/username
         path                                          = "/home/vnc/.aws/credentials"
         permissions                                   = "0400"
         read_cool_assessment_terraform_state_role_arn = module.read_terraform_state.role.arn
         organization_read_role_arn                    = data.terraform_remote_state.master.outputs.organizationsreadonly_role.arn
         terraformer_role_arn                          = aws_iam_role.terraformer_role.arn
     })
-    content_type = "text/cloud-config"
-    filename     = "write-aws-config.yml"
-    merge_type   = "list(append)+dict(recurse_array)+str()"
+    content_type = "text/x-shellscript"
+    filename     = "write-aws-config.sh"
   }
 }
