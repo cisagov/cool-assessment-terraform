@@ -30,7 +30,7 @@ output "cloudwatch_and_ssm_agent_security_group" {
 
 output "debian_desktop_instance_profile" {
   value       = aws_iam_instance_profile.debiandesktop
-  description = "The instance profile for the Debian Desktop instances."
+  description = "The instance profile for the Debian desktop instances."
 }
 
 output "debian_desktop_security_group" {
