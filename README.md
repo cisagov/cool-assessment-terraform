@@ -62,6 +62,10 @@ the COOL environment.
    terraform apply -var-file=<workspace_name>.tfvars
    ```
 
+## Examples ##
+
+- [Using the Terraformer instance type](https://github.com/cisagov/cool-assessment-terraform/tree/develop/examples/use-terraformer-instance)
+
 ## Requirements ##
 
 | Name | Version |
