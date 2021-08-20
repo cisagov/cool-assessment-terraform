@@ -62,6 +62,17 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
       aws_security_group.teamserver.arn,
     ]
   }
+
+  # Allow Terraformer instances to create new security groups in the
+  # assessment VPC.
+  statement {
+    actions = [
+      "ec2:CreateSecurityGroup",
+    ]
+    resources = [
+      aws_vpc.assessment.arn,
+    ]
+  }
 }
 
 resource "aws_iam_policy" "terraformer_policy" {
