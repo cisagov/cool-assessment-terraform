@@ -41,12 +41,19 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
 
   # Allow the launching of new instances in the operations subnet,
   # using the existing security groups.
+  #
+  # Also allow the ModifyNetworkInterfaceAttribute permission when our
+  # existing security groups are involved.  This is necessary when the
+  # Terraformer instance is used to add or remove security groups from
+  # an instance.
   statement {
     actions = [
       "ec2:RunInstances",
+      "ec2:ModifyNetworkInterfaceAttribute",
     ]
     resources = [
-      # Subnets
+      # Subnets.  The ModifyNetworkInterfaceAttribute doesn't care
+      # about this resource, but it doesn't hurt anything being here.
       aws_subnet.operations.arn,
       # Security groups
       aws_security_group.assessorportal.arn,
