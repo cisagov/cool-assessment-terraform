@@ -462,6 +462,8 @@ the COOL environment.
 | ssm\_session\_role | An IAM role that allows creation of SSM SessionManager sessions to any EC2 instance in this account. |
 | teamserver\_instance\_profile | The instance profile for the Teamserver instances. |
 | teamserver\_security\_group | The security group for the Teamserver instances. |
+| terraformer\_security\_group | The security group for the Terraformer instances. |
+| vpc | The VPC for this assessment environment. |
 
 ## Notes ##
 

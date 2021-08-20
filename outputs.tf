@@ -147,3 +147,13 @@ output "teamserver_security_group" {
   value       = aws_security_group.teamserver
   description = "The security group for the Teamserver instances."
 }
+
+output "terraformer_security_group" {
+  value       = aws_security_group.terraformer
+  description = "The security group for the Terraformer instances."
+}
+
+output "vpc" {
+  value       = aws_vpc.assessment
+  description = "The VPC for this assessment environment."
+}
