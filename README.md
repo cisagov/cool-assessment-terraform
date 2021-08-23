@@ -434,25 +434,31 @@ the COOL environment.
 |------|-------------|
 | assessment\_private\_zone | The private DNS zone for this assessment. |
 | assessor\_portal\_instance\_profile | The instance profile for the Assessor Portal instances. |
+| assessor\_portal\_instances | The Assessor Portal instances. |
 | assessorportal\_security\_group | The security group for the Assessor Portal instances. |
 | aws\_region | The AWS region where this assessment environment lives. |
 | certificate\_bucket\_name | The name of the S3 bucket where certificate information is stored for this assessment. |
 | cloudwatch\_and\_ssm\_agent\_security\_group | A security group for _all_ instances.  Allows access to the VPC endpoint resources necessary for the AWS CloudWatch agent and the AWS SSM agent. |
-| debian\_desktop\_instance\_profile | The instance profile for the Debian Desktop instances. |
+| debian\_desktop\_instance\_profile | The instance profile for the Debian desktop instances. |
+| debian\_desktop\_instances | The Debian desktop instances. |
 | debian\_desktop\_security\_group | The security group for the Debian desktop instances. |
 | efs\_client\_security\_group | A security group that should be applied to all instances that will mount the EFS file share. |
 | efs\_mount\_targets | The mount targets for the EFS file share. |
 | email\_sending\_domain\_certreadrole | The IAM role that allows for reading the certificate for the email-sending domain. |
 | gophish\_instance\_profile | The instance profile for the Gophish instances. |
+| gophish\_instances | The Gophish instances. |
 | gophish\_security\_group | The security group for the Gophish instances. |
 | guacamole\_accessible\_security\_group | A security group that should be applied to all instances that are to be accessible from Guacamole. |
 | guacamole\_server | The AWS EC2 instance hosting guacamole. |
 | kali\_instance\_profile | The instance profile for the Kali instances. |
+| kali\_instances | The Kali instances. |
 | kali\_security\_group | The security group for the Kali instances. |
 | nessus\_instance\_profile | The instance profile for the Nessus instances. |
+| nessus\_instances | The Nessus instances. |
 | nessus\_security\_group | The security group for the Nessus instances. |
 | operations\_subnet | The operations subnet. |
 | pentestportal\_instance\_profile | The instance profile for the Pentest Portal instances. |
+| pentestportal\_instances | The Pentest Portal instances. |
 | pentestportal\_security\_group | The security group for the Pentest Portal instances. |
 | private\_subnet\_cidr\_blocks | The private subnet CIDR blocks.  These are used to index into the private\_subnets and efs\_mount\_targets outputs. |
 | private\_subnets | The private subnets. |
@@ -461,7 +467,9 @@ the COOL environment.
 | scanner\_security\_group | A security group that should be applied to all instance types that perform scanning.  This security group allows egress to anywhere as well as ingress from anywhere via ICMP. |
 | ssm\_session\_role | An IAM role that allows creation of SSM SessionManager sessions to any EC2 instance in this account. |
 | teamserver\_instance\_profile | The instance profile for the Teamserver instances. |
+| teamserver\_instances | The Teamserver instances. |
 | teamserver\_security\_group | The security group for the Teamserver instances. |
+| terraformer\_instances | The Terraformer instances. |
 | terraformer\_security\_group | The security group for the Terraformer instances. |
 | vpc | The VPC for this assessment environment. |
 

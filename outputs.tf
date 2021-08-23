@@ -8,6 +8,11 @@ output "assessor_portal_instance_profile" {
   description = "The instance profile for the Assessor Portal instances."
 }
 
+output "assessor_portal_instances" {
+  value       = aws_instance.assessorportal
+  description = "The Assessor Portal instances."
+}
+
 output "assessorportal_security_group" {
   value       = aws_security_group.assessorportal
   description = "The security group for the Assessor Portal instances."
@@ -31,6 +36,11 @@ output "cloudwatch_and_ssm_agent_security_group" {
 output "debian_desktop_instance_profile" {
   value       = aws_iam_instance_profile.debiandesktop
   description = "The instance profile for the Debian desktop instances."
+}
+
+output "debian_desktop_instances" {
+  value       = aws_instance.debiandesktop
+  description = "The Debian Desktop instances."
 }
 
 output "debian_desktop_security_group" {
@@ -58,6 +68,11 @@ output "gophish_instance_profile" {
   description = "The instance profile for the Gophish instances."
 }
 
+output "gophish_instances" {
+  value       = aws_instance.gophish
+  description = "The Gophish instances."
+}
+
 output "gophish_security_group" {
   value       = aws_security_group.gophish
   description = "The security group for the Gophish instances."
@@ -78,6 +93,11 @@ output "kali_instance_profile" {
   description = "The instance profile for the Kali instances."
 }
 
+output "kali_instances" {
+  value       = aws_instance.kali
+  description = "The Kali instances."
+}
+
 output "kali_security_group" {
   value       = aws_security_group.kali
   description = "The security group for the Kali instances."
@@ -86,6 +106,11 @@ output "kali_security_group" {
 output "nessus_instance_profile" {
   value       = aws_iam_instance_profile.nessus
   description = "The instance profile for the Nessus instances."
+}
+
+output "nessus_instances" {
+  value       = aws_instance.nessus
+  description = "The Nessus instances."
 }
 
 output "nessus_security_group" {
@@ -101,6 +126,11 @@ output "operations_subnet" {
 output "pentestportal_instance_profile" {
   value       = aws_iam_instance_profile.pentestportal
   description = "The instance profile for the Pentest Portal instances."
+}
+
+output "pentestportal_instances" {
+  value       = aws_instance.pentestportal
+  description = "The Pentest Portal instances."
 }
 
 output "pentestportal_security_group" {
@@ -143,9 +173,19 @@ output "teamserver_instance_profile" {
   description = "The instance profile for the Teamserver instances."
 }
 
+output "teamserver_instances" {
+  value       = aws_instance.teamserver
+  description = "The Teamserver instances."
+}
+
 output "teamserver_security_group" {
   value       = aws_security_group.teamserver
   description = "The security group for the Teamserver instances."
+}
+
+output "terraformer_instances" {
+  value       = aws_instance.terraformer
+  description = "The Terraformer instances."
 }
 
 output "terraformer_security_group" {
