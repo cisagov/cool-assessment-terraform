@@ -440,7 +440,7 @@ the COOL environment.
 | certificate\_bucket\_name | The name of the S3 bucket where certificate information is stored for this assessment. |
 | cloudwatch\_and\_ssm\_agent\_security\_group | A security group for _all_ instances.  Allows access to the VPC endpoint resources necessary for the AWS CloudWatch agent and the AWS SSM agent. |
 | debian\_desktop\_instance\_profile | The instance profile for the Debian desktop instances. |
-| debian\_desktop\_instances | The Debian desktop instances. |
+| debian\_desktop\_instances | The Debian Desktop instances. |
 | debian\_desktop\_security\_group | The security group for the Debian desktop instances. |
 | efs\_client\_security\_group | A security group that should be applied to all instances that will mount the EFS file share. |
 | efs\_mount\_targets | The mount targets for the EFS file share. |
@@ -461,6 +461,7 @@ the COOL environment.
 | pentestportal\_instances | The Pentest Portal instances. |
 | pentestportal\_security\_group | The security group for the Pentest Portal instances. |
 | private\_subnet\_cidr\_blocks | The private subnet CIDR blocks.  These are used to index into the private\_subnets and efs\_mount\_targets outputs. |
+| private\_subnet\_nat\_gateway | The NAT gateway for the private subnets. |
 | private\_subnets | The private subnets. |
 | read\_terraform\_state\_module | The IAM policies and role that allow read-only access to the cool-assessment-terraform workspace-specific state in the Terraform state bucket. |
 | remote\_desktop\_url | The URL of the remote desktop gateway (Guacamole) for this assessment. |

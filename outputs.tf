@@ -40,7 +40,7 @@ output "debian_desktop_instance_profile" {
 
 output "debian_desktop_instances" {
   value       = aws_instance.debiandesktop
-  description = "The Debian Desktop instances."
+  description = "The Debian desktop instances."
 }
 
 output "debian_desktop_security_group" {
@@ -141,6 +141,11 @@ output "pentestportal_security_group" {
 output "private_subnet_cidr_blocks" {
   value       = var.private_subnet_cidr_blocks
   description = "The private subnet CIDR blocks.  These are used to index into the private_subnets and efs_mount_targets outputs."
+}
+
+output "private_subnet_nat_gateway" {
+  value       = aws_nat_gateway.nat_gw
+  description = "The NAT gateway for the private subnets."
 }
 
 output "private_subnets" {
