@@ -18,7 +18,7 @@ Note that this example may create resources which cost money. Run
 
 | Name | Version |
 |------|---------|
-| aws | n/a |
+| aws | ~> 3.38 |
 
 ## Modules ##
 
