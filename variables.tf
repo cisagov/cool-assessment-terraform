@@ -121,6 +121,12 @@ variable "read_terraform_state_role_name" {
   default     = "ReadCoolAssessmentTerraformTerraformState-%s"
 }
 
+variable "rta_route53_role_arn" {
+  type        = string
+  description = "The ARN of the role in the RTA redirector account that allows access to AWS Route53."
+  default     = "arn:aws:iam::123456789012:role/Allow_It"
+}
+
 variable "ssm_key_nessus_admin_password" {
   type        = string
   description = "The AWS SSM Parameter Store parameter that contains the password of the Nessus admin user (e.g. \"/nessus/assessment/admin_password\")."

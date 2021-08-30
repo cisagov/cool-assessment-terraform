@@ -26,6 +26,9 @@ data "cloudinit_config" "terraformer_cloud_init_tasks" {
   # * organization_read_role_arn - the ARN of the IAM role that can be
   #   assumed to read information about the AWS Organization to which
   #   the assessment environment belongs
+  # * redirector_route53_role_arn - the ARN of the IAM role that can be
+  #   assumed to create, delete, and modify Route53 records in the RTA
+  #   redirector account
   # * terraformer_role_arn - the ARN of the Terraformer role, which can
   #   be assumed to create certain resources in the assessment
   #   environment
@@ -41,6 +44,7 @@ data "cloudinit_config" "terraformer_cloud_init_tasks" {
         permissions                                   = "0400"
         read_cool_assessment_terraform_state_role_arn = module.read_terraform_state.role.arn
         organization_read_role_arn                    = data.terraform_remote_state.master.outputs.organizationsreadonly_role.arn
+        redirector_route53_role_arn                   = var.rta_route53_role_arn
         terraformer_role_arn                          = aws_iam_role.terraformer_role.arn
         vnc_read_parameter_store_role_arn             = aws_iam_role.vnc_parameterstorereadonly_role.arn
         vnc_username_parameter_name                   = var.ssm_key_vnc_username

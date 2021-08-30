@@ -19,3 +19,14 @@ provider "aws" {
   profile = "read_organization_information"
   region  = var.aws_region
 }
+
+# This provider assumes a role so that it can create, modify, and
+# delete Route53 records in the RTA redirector account.
+provider "aws" {
+  alias = "redirector_route53"
+  default_tags {
+    tags = var.tags
+  }
+  profile = "redirector_route53"
+  region  = var.aws_region
+}

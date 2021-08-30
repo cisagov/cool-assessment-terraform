@@ -19,6 +19,9 @@
 # * organization_read_role_arn - the ARN of the IAM role that can be
 #   assumed to read information about the AWS Organization to which
 #   the assessment environment belongs
+# * redirector_route53_role_arn - the ARN of the IAM role that can be
+#   assumed to create, delete, and modify Route53 records in the RTA
+#   redirector account
 # * terraformer_role_arn - the ARN of the Terraformer role, which can
 #   be assumed to create certain resources in the assessment
 #   environment
@@ -89,6 +92,12 @@ sts_regional_endpoints = regional
 credential_source = Ec2InstanceMetadata
 region = ${aws_region}
 role_arn = ${organization_read_role_arn}
+sts_regional_endpoints = regional
+
+[redirector_route53]
+credential_source = Ec2InstanceMetadata
+region = ${aws_region}
+role_arn = ${redirector_route53_role_arn}
 sts_regional_endpoints = regional
 EOF
 
