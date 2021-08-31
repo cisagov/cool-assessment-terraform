@@ -30,6 +30,12 @@ variable "vpc_cidr_block" {
 # These parameters have reasonable defaults.
 # ------------------------------------------------------------------------------
 
+variable "assessor_account_role_arn" {
+  type        = string
+  description = "The ARN of an IAM role that can be assumed to create, delete, and modify AWS resources in a separate assessor-owned AWS account."
+  default     = "arn:aws:iam::123456789012:role/Allow_It"
+}
+
 variable "aws_availability_zone" {
   type        = string
   description = "The AWS availability zone to deploy into (e.g. a, b, c, etc.)"
@@ -119,12 +125,6 @@ variable "read_terraform_state_role_name" {
   type        = string
   description = "The name to assign the IAM role (as well as the corresponding policy) that allows read-only access to the cool-assessment-terraform state in the S3 bucket where Terraform state is stored.  The %s in this name will be replaced by the value of the assessment_account_name variable."
   default     = "ReadCoolAssessmentTerraformTerraformState-%s"
-}
-
-variable "rta_route53_role_arn" {
-  type        = string
-  description = "The ARN of the role in the RTA redirector account that allows access to AWS Route53."
-  default     = "arn:aws:iam::123456789012:role/Allow_It"
 }
 
 variable "ssm_key_nessus_admin_password" {

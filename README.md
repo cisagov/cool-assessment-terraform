@@ -399,6 +399,7 @@ the COOL environment.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | assessment\_account\_name | The name of the AWS account for this assessment (e.g. "env0"). | `string` | n/a | yes |
+| assessor\_role\_role\_arn | The ARN of an IAM role that can be assumed to create, delete, and modify AWS resources in a separate assessor-owned AWS account. | `string` | `"arn:aws:iam::123456789012:role/Allow_It"` | no |
 | aws\_availability\_zone | The AWS availability zone to deploy into (e.g. a, b, c, etc.) | `string` | `"a"` | no |
 | aws\_region | The AWS region where the non-global resources for this assessment are to be provisioned (e.g. "us-east-1"). | `string` | `"us-east-1"` | no |
 | cert\_bucket\_name | The name of the AWS S3 bucket where certificates are stored. | `string` | `"cisa-cool-certificates"` | no |
@@ -416,7 +417,6 @@ the COOL environment.
 | provisionassessment\_policy\_description | The description to associate with the IAM policy that allows provisioning of the resources required in the assessment account. | `string` | `"Allows provisioning of the resources required in the assessment account."` | no |
 | provisionassessment\_policy\_name | The name to assign the IAM policy that allows provisioning of the resources required in the assessment account. | `string` | `"ProvisionAssessment"` | no |
 | read\_terraform\_state\_role\_name | The name to assign the IAM role (as well as the corresponding policy) that allows read-only access to the cool-assessment-terraform state in the S3 bucket where Terraform state is stored.  The %s in this name will be replaced by the value of the assessment\_account\_name variable. | `string` | `"ReadCoolAssessmentTerraformTerraformState-%s"` | no |
-| rta\_route53\_role\_arn | The ARN of the role in the RTA redirector account that allows access to AWS Route53. | `string` | `"arn:aws:iam::123456789012:role/Allow_It"` | no |
 | ssm\_key\_nessus\_admin\_password | The AWS SSM Parameter Store parameter that contains the password of the Nessus admin user (e.g. "/nessus/assessment/admin\_password"). | `string` | `"/nessus/assessment/admin_password"` | no |
 | ssm\_key\_nessus\_admin\_username | The AWS SSM Parameter Store parameter that contains the username of the Nessus admin user (e.g. "/nessus/assessment/admin\_username"). | `string` | `"/nessus/assessment/admin_username"` | no |
 | ssm\_key\_vnc\_password | The AWS SSM Parameter Store parameter that contains the password needed to connect to the TBD instance via VNC (e.g. "/vnc/password") | `string` | `"/vnc/password"` | no |

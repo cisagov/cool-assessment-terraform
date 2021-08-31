@@ -21,12 +21,12 @@ provider "aws" {
 }
 
 # This provider assumes a role so that it can create, modify, and
-# delete Route53 records in the RTA redirector account.
+# delete AWS resources in a separate assessor-owner AWS account.
 provider "aws" {
-  alias = "redirector_route53"
+  alias = "assessor_account"
   default_tags {
     tags = var.tags
   }
-  profile = "redirector_route53"
+  profile = "assessor_account"
   region  = var.aws_region
 }

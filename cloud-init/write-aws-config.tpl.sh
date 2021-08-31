@@ -10,6 +10,9 @@
 # cisagov/cool-assessment-terraform Terraform state read-only roles.
 
 # Input variables are:
+# * assessor_account_role_arn - the ARN of an IAM role that can be
+#   assumed to create, delete, and modify AWS resources in a separate
+#   assessor-owned AWS account
 # * aws_region - the AWS region where the roles are to be assumed
 # * permissions - the octal permissions to assign the AWS
 #   configuration
@@ -19,9 +22,6 @@
 # * organization_read_role_arn - the ARN of the IAM role that can be
 #   assumed to read information about the AWS Organization to which
 #   the assessment environment belongs
-# * redirector_route53_role_arn - the ARN of the IAM role that can be
-#   assumed to create, delete, and modify Route53 records in the RTA
-#   redirector account
 # * terraformer_role_arn - the ARN of the Terraformer role, which can
 #   be assumed to create certain resources in the assessment
 #   environment
@@ -94,10 +94,10 @@ region = ${aws_region}
 role_arn = ${organization_read_role_arn}
 sts_regional_endpoints = regional
 
-[redirector_route53]
+[assessor_account]
 credential_source = Ec2InstanceMetadata
 region = ${aws_region}
-role_arn = ${redirector_route53_role_arn}
+role_arn = ${assessor_account_role_arn}
 sts_regional_endpoints = regional
 EOF
 
