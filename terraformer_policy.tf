@@ -80,6 +80,19 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
       aws_vpc.assessment.arn,
     ]
   }
+
+  # Allow Terraformer instances to create, modify, and delete network
+  # ACLs for the operations subnet.
+  statement {
+    actions = [
+      "ec2:CreateNetworkAclEntry",
+      "ec2:DeleteNetworkAclEntry",
+      "ec2:ReplaceNetworkAclEntry",
+    ]
+    resources = [
+      aws_network_acl.operations.arn,
+    ]
+  }
 }
 
 resource "aws_iam_policy" "terraformer_policy" {
