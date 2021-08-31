@@ -123,6 +123,11 @@ output "operations_subnet" {
   description = "The operations subnet."
 }
 
+output "operations_subnet_acl" {
+  value       = aws_network_acl.operations
+  description = "The access control list (ACL) for the operations subnet."
+}
+
 output "pentestportal_instance_profile" {
   value       = aws_iam_instance_profile.pentestportal
   description = "The instance profile for the Pentest Portal instances."
@@ -151,6 +156,11 @@ output "private_subnet_nat_gateway" {
 output "private_subnets" {
   value       = aws_subnet.private
   description = "The private subnets."
+}
+
+output "private_subnet_acls" {
+  value       = aws_network_acl.private
+  description = "The access control lists (ACLs) for the private subnets."
 }
 
 output "read_terraform_state_module" {
