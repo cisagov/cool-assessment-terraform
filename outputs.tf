@@ -212,3 +212,8 @@ output "vpc" {
   value       = aws_vpc.assessment
   description = "The VPC for this assessment environment."
 }
+
+output "vpn_server_cidr_block" {
+  value       = local.vpn_server_cidr_block
+  description = "The CIDR block for the COOL VPN."
+}

@@ -476,6 +476,7 @@ the COOL environment.
 | terraformer\_instances | The Terraformer instances. |
 | terraformer\_security\_group | The security group for the Terraformer instances. |
 | vpc | The VPC for this assessment environment. |
+| vpn_server_cidr_block | The CIDR block for the COOL VPN. |
 
 ## Notes ##
 
