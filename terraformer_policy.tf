@@ -53,8 +53,12 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
     ]
     resources = [
       # Subnets.  The ModifyNetworkInterfaceAttribute doesn't care
-      # about this resource, but it doesn't hurt anything being here.
+      # about these resources, but they don't hurt anything being
+      # here.
       aws_subnet.operations.arn,
+      # The private subnet where guacamole and Terraformer instances
+      # currently live.
+      aws_subnet.private[var.private_subnet_cidr_blocks[0]].arn,
       # Security groups
       aws_security_group.assessorportal.arn,
       aws_security_group.cloudwatch_and_ssm_agent.arn,
