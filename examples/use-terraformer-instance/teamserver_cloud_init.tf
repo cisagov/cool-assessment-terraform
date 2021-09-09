@@ -20,7 +20,7 @@ data "cloudinit_config" "teamserver_cloud_init_tasks" {
   # Create an fstab entry for the EFS share
   part {
     content = templatefile(
-      "${path.module}/cloud-init/efs-mount.tpl.yml", {
+      "${path.module}/../../cloud-init/efs-mount.tpl.yml", {
         # Just mount the EFS mount target in the first private subnet
         efs_id      = data.terraform_remote_state.cool_assessment_terraform.outputs.efs_mount_targets[data.terraform_remote_state.cool_assessment_terraform.outputs.private_subnet_cidr_blocks[0]].file_system_id
         mount_point = "/share"
@@ -37,7 +37,7 @@ data "cloudinit_config" "teamserver_cloud_init_tasks" {
   # https://github.com/cisagov/cool-assessment-terraform/issues/85#issuecomment-754052796
   part {
     content = templatefile(
-      "${path.module}/cloud-init/mount-efs-share.tpl.sh", {
+      "${path.module}/../../cloud-init/mount-efs-share.tpl.sh", {
         mount_point = "/share"
     })
     content_type = "text/x-shellscript"
@@ -55,7 +55,7 @@ data "cloudinit_config" "teamserver_cloud_init_tasks" {
   # https://github.com/canonical/cloud-init/blob/master/cloudinit/subp.py#L373
   part {
     content = templatefile(
-      "${path.module}/cloud-init/install-certificates.py", {
+      "${path.module}/../../cloud-init/install-certificates.py", {
         aws_region          = var.aws_region
         cert_bucket_name    = data.terraform_remote_state.cool_assessment_terraform.outputs.certificate_bucket_name
         cert_read_role_arn  = data.terraform_remote_state.cool_assessment_terraform.outputs.email_sending_domain_certreadrole.role.arn
@@ -73,7 +73,7 @@ data "cloudinit_config" "teamserver_cloud_init_tasks" {
   # Add https-certificate section to CobaltStrike profiles
   part {
     content = templatefile(
-      "${path.module}/cloud-init/add-https-certificate-block-to-cs-profiles.tpl.sh", {
+      "${path.module}/../../cloud-init/add-https-certificate-block-to-cs-profiles.tpl.sh", {
         c2_profile_location = "/tools/Malleable-C2-Profiles/normal"
         domain              = var.email_sending_domain
         full_chain_pem      = local.full_chain_pem

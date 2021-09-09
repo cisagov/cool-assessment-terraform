@@ -1,1 +1,0 @@
-../../cloud-init/mount-efs-share.tpl.sh
