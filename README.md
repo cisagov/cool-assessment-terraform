@@ -66,7 +66,7 @@ the COOL environment.
 
 | Name | Version |
 |------|---------|
-| terraform | ~> 0.12.0 |
+| terraform | ~> 0.13.0 |
 | aws | ~> 3.38 |
 | cloudinit | ~> 2.0 |
 | null | ~> 3.0 |
@@ -89,9 +89,9 @@ the COOL environment.
 
 | Name | Source | Version |
 |------|--------|---------|
-| guacamole\_certreadrole | github.com/cisagov/cert-read-role-tf-module |  |
-| run\_shell\_ssm\_document | gazoakley/session-manager-settings/aws |  |
-| teamserver\_certreadrole | github.com/cisagov/cert-read-role-tf-module |  |
+| email\_sending\_domain\_certreadrole | github.com/cisagov/cert-read-role-tf-module | n/a |
+| guacamole\_certreadrole | github.com/cisagov/cert-read-role-tf-module | n/a |
+| run\_shell\_ssm\_document | gazoakley/session-manager-settings/aws | n/a |
 | vpc\_flow\_logs | trussworks/vpc-flow-logs/aws | >=2.0.0, <2.1.0 |
 
 ## Resources ##
