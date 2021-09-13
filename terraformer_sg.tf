@@ -24,21 +24,6 @@ resource "aws_security_group_rule" "terraformer_egress_anywhere_via_ssh" {
   to_port           = 22
 }
 
-# Allow egress anywhere via port 5986 (Windows Remote Manager).
-#
-# For: Terraformer instances must be able to configure Windows-based
-# operations instances via Ansible.
-resource "aws_security_group_rule" "terraformer_egress_to_operations_via_winrm" {
-  provider = aws.provisionassessment
-
-  security_group_id = aws_security_group.terraformer.id
-  type              = "egress"
-  protocol          = "tcp"
-  cidr_blocks       = [aws_subnet.operations.cidr_block]
-  from_port         = 5986
-  to_port           = 5986
-}
-
 # Allow egress anywhere via HTTP
 #
 # For: Terraformer instances must be able to install packages.
@@ -110,4 +95,19 @@ resource "aws_security_group_rule" "terraformer_egress_to_dynamodb_via_https" {
   prefix_list_ids   = [aws_vpc_endpoint.dynamodb.prefix_list_id]
   from_port         = 443
   to_port           = 443
+}
+
+# Allow egress anywhere via port 5986 (Windows Remote Manager).
+#
+# For: Terraformer instances must be able to configure Windows-based
+# operations instances via Ansible.
+resource "aws_security_group_rule" "terraformer_egress_to_operations_via_winrm" {
+  provider = aws.provisionassessment
+
+  security_group_id = aws_security_group.terraformer.id
+  type              = "egress"
+  protocol          = "tcp"
+  cidr_blocks       = [aws_subnet.operations.cidr_block]
+  from_port         = 5986
+  to_port           = 5986
 }
