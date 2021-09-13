@@ -9,7 +9,7 @@ resource "aws_network_acl_rule" "private_ingress_from_cool_vpn_via_https" {
   network_acl_id = aws_network_acl.private[each.value].id
   egress         = false
   protocol       = "tcp"
-  rule_number    = 102 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 100 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = local.vpn_server_cidr_block
   from_port      = 443
@@ -18,8 +18,8 @@ resource "aws_network_acl_rule" "private_ingress_from_cool_vpn_via_https" {
 
 # Allow egress to anywhere via ssh
 #
-# For: Terraformer instances need to be able to configure redirectors
-# via Ansible.
+# For: Terraformer instances need to be able to configure operations
+# instances via Ansible.
 resource "aws_network_acl_rule" "private_egress_to_anywhere_via_ssh" {
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
@@ -27,11 +27,30 @@ resource "aws_network_acl_rule" "private_egress_to_anywhere_via_ssh" {
   network_acl_id = aws_network_acl.private[each.value].id
   egress         = true
   protocol       = "tcp"
-  rule_number    = 104 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 300 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = "0.0.0.0/0"
   from_port      = 22
   to_port        = 22
+}
+
+# Allow egress to the operations subnet via port 5986 (Windows Remote
+# Management).
+#
+# For: Terraformer instances need to be able to configure
+# Windows-based operations instances via Ansible.
+resource "aws_network_acl_rule" "private_egress_to_operations_via_winrm" {
+  provider = aws.provisionassessment
+  for_each = toset(var.private_subnet_cidr_blocks)
+
+  network_acl_id = aws_network_acl.private[each.value].id
+  egress         = true
+  protocol       = "tcp"
+  rule_number    = 310 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_action    = "allow"
+  cidr_block     = aws_subnet.operations.cidr_block
+  from_port      = 5986
+  to_port        = 5986
 }
 
 # Allow egress to anywhere via HTTP
@@ -44,7 +63,7 @@ resource "aws_network_acl_rule" "private_egress_to_anywhere_via_http" {
   network_acl_id = aws_network_acl.private[each.value].id
   egress         = true
   protocol       = "tcp"
-  rule_number    = 106 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 320 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = "0.0.0.0/0"
   from_port      = 80
@@ -67,7 +86,7 @@ resource "aws_network_acl_rule" "private_egress_to_anywhere_via_https" {
   network_acl_id = aws_network_acl.private[each.value].id
   egress         = true
   protocol       = "tcp"
-  rule_number    = 108 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 330 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = "0.0.0.0/0"
   from_port      = 443
@@ -84,7 +103,7 @@ resource "aws_network_acl_rule" "private_egress_to_cool_via_ephemeral_ports" {
   network_acl_id = aws_network_acl.private[each.value].id
   egress         = true
   protocol       = "tcp"
-  rule_number    = 110 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 340 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = local.cool_shared_services_cidr_block
   from_port      = 1024
@@ -100,7 +119,7 @@ resource "aws_network_acl_rule" "private_egress_to_operations_via_ephemeral_port
   network_acl_id = aws_network_acl.private[each.value].id
   egress         = true
   protocol       = "tcp"
-  rule_number    = 112 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 350 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = aws_subnet.operations.cidr_block
   from_port      = 1024
@@ -117,7 +136,7 @@ resource "aws_network_acl_rule" "private_egress_to_operations_via_ssh" {
   network_acl_id = aws_network_acl.private[each.value].id
   egress         = true
   protocol       = "tcp"
-  rule_number    = 114 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 360 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = aws_subnet.operations.cidr_block
   from_port      = 22
@@ -141,7 +160,7 @@ resource "aws_network_acl_rule" "private_ingress_from_operations_via_ephemeral_p
   network_acl_id = aws_network_acl.private[each.value].id
   egress         = false
   protocol       = "tcp"
-  rule_number    = 116 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 110 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = aws_subnet.operations.cidr_block
   from_port      = 1024
@@ -160,7 +179,7 @@ resource "aws_network_acl_rule" "private_ingress_from_anywhere_via_ephemeral_por
   network_acl_id = aws_network_acl.private[each.value].id
   egress         = false
   protocol       = "tcp"
-  rule_number    = 118 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 120 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = "0.0.0.0/0"
   from_port      = 1024
@@ -173,7 +192,7 @@ resource "aws_network_acl_rule" "private_ingress_from_anywhere_via_ephemeral_por
   network_acl_id = aws_network_acl.private[each.value].id
   egress         = false
   protocol       = "tcp"
-  rule_number    = 120 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 130 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = "0.0.0.0/0"
   from_port      = 2050
@@ -189,7 +208,7 @@ resource "aws_network_acl_rule" "private_egress_to_operations_via_vnc" {
   network_acl_id = aws_network_acl.private[each.value].id
   egress         = true
   protocol       = "tcp"
-  rule_number    = 130 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 370 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = aws_subnet.operations.cidr_block
   from_port      = 5901
@@ -209,7 +228,7 @@ resource "aws_network_acl_rule" "private_egress_to_cool_via_ipa_ports" {
   network_acl_id = aws_network_acl.private[var.private_subnet_cidr_blocks[0]].id
   egress         = true
   protocol       = each.value.proto
-  rule_number    = 140 + each.value.index
+  rule_number    = 380 + each.value.index
   rule_action    = "allow"
   cidr_block     = local.cool_shared_services_cidr_block
   from_port      = each.value.port
@@ -235,7 +254,7 @@ resource "aws_network_acl_rule" "private_ingress_to_tg_attachment_via_ipa_ports"
   network_acl_id = aws_network_acl.private[var.private_subnet_cidr_blocks[0]].id
   egress         = false
   protocol       = each.value.proto
-  rule_number    = 150 + each.value.index
+  rule_number    = 140 + each.value.index
   rule_action    = "allow"
   cidr_block     = var.private_subnet_cidr_blocks[0]
   from_port      = each.value.port
@@ -252,7 +271,7 @@ resource "aws_network_acl_rule" "private_ingress_from_operations_via_https" {
   network_acl_id = aws_network_acl.private[each.value].id
   egress         = false
   protocol       = "tcp"
-  rule_number    = 160 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 150 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = aws_subnet.operations.cidr_block
   from_port      = 443
