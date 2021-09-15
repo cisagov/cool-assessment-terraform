@@ -152,6 +152,35 @@ locals {
     "udp",
   ]
 
+  # Ports to be accessed via the VPN in assessment environments
+  # (e.g. for Guacamole, Mattermost, etc.)
+  assessment_env_service_ports = {
+    http = {
+      port     = 80
+      protocol = "tcp"
+    },
+    https = {
+      port     = 443
+      protocol = "tcp"
+    },
+    mm_unknown0 = {
+      port     = 3478
+      protocol = "udp"
+    },
+    mm_unknown1 = {
+      port     = 5379
+      protocol = "tcp"
+    },
+    mm_web = {
+      port     = 8065
+      protocol = "tcp"
+    },
+    mm_unknown2 = {
+      port     = 10000
+      protocol = "udp"
+    },
+  }
+
   # The ID of the Transit Gateway in the Shared Services account.
   transit_gateway_id = data.terraform_remote_state.sharedservices_networking.outputs.transit_gateway.id
   # The ID of the default route table associated with the Transit
