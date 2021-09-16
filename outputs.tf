@@ -13,7 +13,7 @@ output "assessor_portal_instances" {
   description = "The Assessor Portal instances."
 }
 
-output "assessorportal_security_group" {
+output "assessor_portal_security_group" {
   value       = aws_security_group.assessorportal
   description = "The security group for the Assessor Portal instances."
 }

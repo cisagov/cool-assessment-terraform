@@ -436,7 +436,7 @@ the COOL environment.
 | assessment\_private\_zone | The private DNS zone for this assessment. |
 | assessor\_portal\_instance\_profile | The instance profile for the Assessor Portal instances. |
 | assessor\_portal\_instances | The Assessor Portal instances. |
-| assessorportal\_security\_group | The security group for the Assessor Portal instances. |
+| assessor\_portal\_security\_group | The security group for the Assessor Portal instances. |
 | aws\_region | The AWS region where this assessment environment lives. |
 | certificate\_bucket\_name | The name of the S3 bucket where certificate information is stored for this assessment. |
 | cloudwatch\_and\_ssm\_agent\_security\_group | A security group for _all_ instances.  Allows access to the VPC endpoint resources necessary for the AWS CloudWatch agent and the AWS SSM agent. |
