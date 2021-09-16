@@ -21,7 +21,7 @@ data "aws_ami" "teamserver" {
   most_recent = true
 }
 
-# The teamserver EC2 instances
+# The Teamserver EC2 instances
 resource "aws_instance" "teamserver" {
   ami                         = data.aws_ami.teamserver.id
   associate_public_ip_address = true
