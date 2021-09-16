@@ -71,8 +71,8 @@ path=/home/$vnc_username/.aws/credentials
 # for example) to extract the directory from the path, but Terraform's
 # templating engine balks at that; hence, I am using dirname instead.
 d=$(dirname "$path")
-mkdir -p "$d"
-chown -R "$vnc_username:$vnc_username" "$d"
+mkdir --parents "$d"
+chown --recursive "$vnc_username:$vnc_username" "$d"
 
 # Write the AWS config file
 cat > "$path" << EOF
