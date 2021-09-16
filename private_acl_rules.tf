@@ -2,7 +2,7 @@
 # https
 #
 # For: Assessment team access to services hosted in the private subnet
-# (i.e. guacamole, Mattermost, etc.)
+# (i.e. Guacamole, Mattermost, etc.)
 resource "aws_network_acl_rule" "private_ingress_from_cool_vpn" {
   provider = aws.provisionassessment
   for_each = [

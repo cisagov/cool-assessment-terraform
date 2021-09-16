@@ -164,7 +164,7 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_5902
 # Allow ingress from anywhere via ephemeral TCP/UDP ports 5987-50049.
 #
 # For: Assessment team operational use, but we don't want to allow
-# public access to WinRM on port 5986 or Cobalt Strike teamserver on
+# public access to WinRM on port 5986 or Cobalt Strike Teamservers on
 # port 50050.
 resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_5987_thru_50049" {
   provider = aws.provisionassessment
@@ -183,7 +183,7 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_5987
 # Allow ingress from anywhere via ephemeral TCP/UDP ports 50051-65535.
 #
 # For: Assessment team operational use, but we don't want to allow
-# public access to Cobalt Strike teamserver on port 50050.
+# public access to Cobalt Strike Teamservers on port 50050.
 resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_50051_thru_65535" {
   provider = aws.provisionassessment
   for_each = toset(local.tcp_and_udp)

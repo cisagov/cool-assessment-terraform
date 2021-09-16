@@ -63,7 +63,7 @@ resource "aws_instance" "teamserver" {
   })
 }
 
-# The Elastic IP for the teamserver
+# The Elastic IP for the Teamserver
 resource "aws_eip" "teamserver" {
   vpc = true
   tags = {
@@ -72,7 +72,7 @@ resource "aws_eip" "teamserver" {
   }
 }
 
-# The EIP association for the teamserver
+# The EIP association for the Teamserver
 resource "aws_eip_association" "teamserver" {
   instance_id   = aws_instance.teamserver.id
   allocation_id = aws_eip.teamserver.id

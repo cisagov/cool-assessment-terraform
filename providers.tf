@@ -91,7 +91,7 @@ provider "aws" {
 
 # This provider is required by the read_terraform_state module in
 # read_terraform_state_role.tf in order to create the read-only role
-# for this Terraform root module's terraform state.
+# for this Terraform root module's Terraform state.
 provider "aws" {
   alias = "provisionterraform"
   assume_role {
