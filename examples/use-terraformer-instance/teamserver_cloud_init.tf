@@ -70,7 +70,7 @@ data "cloudinit_config" "teamserver_cloud_init_tasks" {
     filename     = "01-install-certificates.py"
   }
 
-  # Add https-certificate section to CobaltStrike profiles
+  # Add https-certificate section to Cobalt Strike profiles
   part {
     content = templatefile(
       "${path.module}/../../cloud-init/add-https-certificate-block-to-cs-profiles.tpl.sh", {
