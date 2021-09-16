@@ -98,10 +98,6 @@ repos:
     rev: v0.910
     hooks:
       - id: mypy
-        # At least one file in this directory is a duplicate of a file
-        # in <root_dir>/cloud-init, which confuses mypy, so let's skip
-        # it.
-        exclude: examples/use-terraformer-instance/cloud-init
   - repo: https://github.com/asottile/pyupgrade
     rev: v2.23.3
     hooks:
