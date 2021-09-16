@@ -1,4 +1,4 @@
-# The teamserver AMI
+# The Teamserver AMI
 data "aws_ami" "teamserver" {
   filter {
     name = "name"
