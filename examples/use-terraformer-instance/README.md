@@ -51,9 +51,9 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| teamserver | The teamserver instance. |
-| teamserver\_a\_record | The teamserver A record. |
-| teamserver\_eip | The teamserver EIP. |
+| teamserver | The Teamserver instance. |
+| teamserver\_a\_record | The Teamserver A record. |
+| teamserver\_eip | The Teamserver EIP. |
 
 ## Notes ##
 
