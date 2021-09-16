@@ -20,7 +20,7 @@ resource "aws_iam_role" "terraformer_instance_role" {
 resource "aws_iam_role_policy" "terraformer_assume_delegated_role_policy" {
   provider = aws.provisionassessment
 
-  name   = "assume_delegated_role_policy"
+  name   = "terraformer_assume_delegated_role_policy"
   role   = aws_iam_role.terraformer_instance_role.id
   policy = data.aws_iam_policy_document.terraformer_assume_delegated_role_policy_doc.json
 }
