@@ -5,6 +5,15 @@
 # (i.e. Guacamole, Mattermost, etc.)
 resource "aws_network_acl_rule" "private_ingress_from_cool_vpn" {
   provider = aws.provisionassessment
+  # This insanity returns a list of
+  # length(local.assessment_env_service_ports) *
+  # length(var.private_subnet_cidr_blocks) maps, where each map is
+  # simply one of the entries from local.assessment_env_service_ports
+  # modified to include:
+  # * One of the entries in var.private_subnet_cidr_blocks under the
+  # key "private_subnet_cidr_block"
+  # * An index into the setproduct result under the key "index".  This
+  # is simply used to provide an offset for the rule number.
   for_each = [
     for index, pair in setproduct(keys(local.assessment_env_service_ports), var.private_subnet_cidr_blocks) :
     merge(local.assessment_env_service_ports[pair[0]], { "private_subnet_cidr_block" = pair[1], "index" = index })
