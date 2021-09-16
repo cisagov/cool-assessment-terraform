@@ -13,7 +13,7 @@ module "read_terraform_state" {
     # to create IAM resources in the account(s) listed in account_ids.
     # In any event, this provider is not used here at all since the
     # module is configured with create_assume_role equal to false.  We
-    # do have to put something there are a placeholder, though.
+    # do have to put something there as a placeholder, though.
     aws.users = aws.provisionassessment
   }
 

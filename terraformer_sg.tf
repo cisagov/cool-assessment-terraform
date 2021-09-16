@@ -40,7 +40,7 @@ resource "aws_security_group_rule" "terraformer_egress_anywhere_via_http" {
 
 # Allow egress anywhere via HTTPS
 #
-# For: Terraformer instances must be able terraform init.
+# For: Terraformer instances must be able to terraform init.
 resource "aws_security_group_rule" "terraformer_egress_anywhere_via_https" {
   provider = aws.provisionassessment
 
