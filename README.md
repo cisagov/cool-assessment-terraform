@@ -459,9 +459,9 @@ the COOL environment.
 | nessus\_security\_group | The security group for the Nessus instances. |
 | operations\_subnet | The operations subnet. |
 | operations\_subnet\_acl | The access control list (ACL) for the operations subnet. |
-| pentestportal\_instance\_profile | The instance profile for the Pentest Portal instances. |
-| pentestportal\_instances | The Pentest Portal instances. |
-| pentestportal\_security\_group | The security group for the Pentest Portal instances. |
+| pentest\_portal\_instance\_profile | The instance profile for the Pentest Portal instances. |
+| pentest\_portal\_instances | The Pentest Portal instances. |
+| pentest\_portal\_security\_group | The security group for the Pentest Portal instances. |
 | private\_subnet\_acls | The access control lists (ACLs) for the private subnets. |
 | private\_subnet\_cidr\_blocks | The private subnet CIDR blocks.  These are used to index into the private\_subnets and efs\_mount\_targets outputs. |
 | private\_subnet\_nat\_gateway | The NAT gateway for the private subnets. |

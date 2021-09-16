@@ -128,17 +128,17 @@ output "operations_subnet_acl" {
   description = "The access control list (ACL) for the operations subnet."
 }
 
-output "pentestportal_instance_profile" {
+output "pentest_portal_instance_profile" {
   value       = aws_iam_instance_profile.pentestportal
   description = "The instance profile for the Pentest Portal instances."
 }
 
-output "pentestportal_instances" {
+output "pentest_portal_instances" {
   value       = aws_instance.pentestportal
   description = "The Pentest Portal instances."
 }
 
-output "pentestportal_security_group" {
+output "pentest_portal_security_group" {
   value       = aws_security_group.pentestportal
   description = "The security group for the Pentest Portal instances."
 }
