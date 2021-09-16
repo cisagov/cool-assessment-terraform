@@ -85,7 +85,7 @@ output "guacamole_accessible_security_group" {
 
 output "guacamole_server" {
   value       = aws_instance.guacamole
-  description = "The AWS EC2 instance hosting guacamole."
+  description = "The AWS EC2 instance hosting Guacamole."
 }
 
 output "kali_instance_profile" {

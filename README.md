@@ -450,7 +450,7 @@ the COOL environment.
 | gophish\_instances | The Gophish instances. |
 | gophish\_security\_group | The security group for the Gophish instances. |
 | guacamole\_accessible\_security\_group | A security group that should be applied to all instances that are to be accessible from Guacamole. |
-| guacamole\_server | The AWS EC2 instance hosting guacamole. |
+| guacamole\_server | The AWS EC2 instance hosting Guacamole. |
 | kali\_instance\_profile | The instance profile for the Kali instances. |
 | kali\_instances | The Kali instances. |
 | kali\_security\_group | The security group for the Kali instances. |
