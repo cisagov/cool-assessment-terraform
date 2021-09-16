@@ -8,15 +8,19 @@ root module.
 
 ## Requirements ##
 
-No requirements.
+| Name | Version |
+|------|---------|
+| terraform | ~> 0.13.0 |
+| aws | ~> 3.38 |
+| cloudinit | ~> 2.0 |
 
 ## Providers ##
 
 | Name | Version |
 |------|---------|
-| aws | n/a |
-| aws.read\_organization\_information | n/a |
-| cloudinit | n/a |
+| aws | ~> 3.38 |
+| aws.read\_organization\_information | ~> 3.38 |
+| cloudinit | ~> 2.0 |
 | terraform | n/a |
 
 ## Modules ##
