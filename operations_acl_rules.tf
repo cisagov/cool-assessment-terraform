@@ -38,7 +38,7 @@ resource "aws_network_acl_rule" "operations_ingress_from_private_via_winrm" {
 
 # Allow ingress from private subnet via VNC
 #
-# For: Assessment team VNC access from private subnet to operations
+# For: Assessment team VNC access from private subnet to operations.
 # subnet
 resource "aws_network_acl_rule" "operations_ingress_from_private_via_vnc" {
   provider = aws.provisionassessment
