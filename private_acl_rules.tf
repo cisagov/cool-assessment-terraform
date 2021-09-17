@@ -149,23 +149,31 @@ resource "aws_network_acl_rule" "private_ingress_from_anywhere_via_ephemeral_por
 #
 # For: Guacamole instance communication with FreeIPA
 #
-# Note that these rules only apply to the private subnet with
-# Guacamole.
-#
 # Full disclosure: We are not totally clear on why this access is
 # needed, but without it, traffic is unable to go from the Guacamole
 # instance to the Transit Gateway attachment (both reside in the same
 # private subnet).
 resource "aws_network_acl_rule" "private_ingress_to_tg_attachment_via_ipa_ports" {
   provider = aws.provisionassessment
-  for_each = local.ipa_ports
+  # This insanity returns a map with length(local.ipa_ports) *
+  # length(var.private_subnet_cidr_blocks) distinct keys, where each
+  # value is a map that is simply one of the entries from
+  # local.assessment_env_service_ports modified to include:
+  # * One of the entries in var.private_subnet_cidr_blocks under the
+  # key "private_subnet_cidr_block"
+  # * An index into the setproduct result under the key "index".  This
+  # is simply used to provide an offset for the rule number.
+  for_each = {
+    for index, pair in setproduct(keys(local.ipa_ports), var.private_subnet_cidr_blocks) :
+    format("%s_%d", pair[0], index) => merge(local.ipa_ports[pair[0]], { "private_subnet_cidr_block" = pair[1], "index" = index })
+  }
 
   network_acl_id = aws_network_acl.private[var.private_subnet_cidr_blocks[0]].id
   egress         = false
   protocol       = each.value.proto
   rule_number    = 180 + each.value.index
   rule_action    = "allow"
-  cidr_block     = var.private_subnet_cidr_blocks[0]
+  cidr_block     = each.value.private_subnet_cidr_block
   from_port      = each.value.port
   to_port        = each.value.port
 }
@@ -180,7 +188,7 @@ resource "aws_network_acl_rule" "private_ingress_from_operations_via_https" {
   network_acl_id = aws_network_acl.private[each.value].id
   egress         = false
   protocol       = "tcp"
-  rule_number    = 190 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 200 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = aws_subnet.operations.cidr_block
   from_port      = 443
