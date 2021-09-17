@@ -65,6 +65,15 @@ locals {
 }
 resource "aws_network_acl_rule" "private_ingress_from_anywhere_else_services" {
   provider = aws.provisionassessment
+  # This insanity returns a map with
+  # length(local.assessment_env_service_ports_gte_1024) *
+  # length(var.private_subnet_cidr_blocks) distinct keys, where each
+  # value is a map that is simply one of the entries from
+  # local.assessment_env_service_ports_gte_1024 modified to include:
+  # * One of the entries in var.private_subnet_cidr_blocks under the
+  # key "private_subnet_cidr_block"
+  # * An index into the setproduct result under the key "index".  This
+  # is simply used to provide an offset for the rule number.
   for_each = {
     for index, pair in setproduct(keys(local.assessment_env_service_ports_gte_1024), var.private_subnet_cidr_blocks) :
     format("%s_%d", pair[0], index) => merge(local.assessment_env_service_ports_gte_1024[pair[0]], { "private_subnet_cidr_block" = pair[1], "index" = index })
