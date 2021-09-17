@@ -114,6 +114,70 @@ resource "aws_network_acl_rule" "private_ingress_from_anywhere_else_efs" {
   to_port        = 2049
 }
 
+# Allow ingress from anywhere via ephemeral ports that are not already
+# explicitly denied.
+#
+# For: Guacamole fetches its SSL certificate via boto3 (which uses
+# HTTPS).  This also allows the return traffic from any requests sent
+# out via the NAT gateway in the operations subnet.
+resource "aws_network_acl_rule" "private_ingress_from_anywhere_via_ephemeral_ports" {
+  provider = aws.provisionassessment
+  for_each = toset(var.private_subnet_cidr_blocks)
+
+  network_acl_id = aws_network_acl.private[each.value].id
+  egress         = false
+  protocol       = "tcp"
+  rule_number    = 170 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_action    = "allow"
+  cidr_block     = "0.0.0.0/0"
+  from_port      = 1024
+  to_port        = 65535
+}
+
+# Allow ingress from private subnet to private subnet via IPA-related
+# ports.  Note that none of these ports are in the ephemeral port
+# range.
+#
+# For: Guacamole instance communication with FreeIPA
+#
+# Note that these rules only apply to the private subnet with
+# Guacamole.
+#
+# Full disclosure: We are not totally clear on why this access is
+# needed, but without it, traffic is unable to go from the Guacamole
+# instance to the Transit Gateway attachment (both reside in the same
+# private subnet).
+resource "aws_network_acl_rule" "private_ingress_to_tg_attachment_via_ipa_ports" {
+  provider = aws.provisionassessment
+  for_each = local.ipa_ports
+
+  network_acl_id = aws_network_acl.private[var.private_subnet_cidr_blocks[0]].id
+  egress         = false
+  protocol       = each.value.proto
+  rule_number    = 180 + each.value.index
+  rule_action    = "allow"
+  cidr_block     = var.private_subnet_cidr_blocks[0]
+  from_port      = each.value.port
+  to_port        = each.value.port
+}
+
+# Allow ingress from the operations subnet via https
+#
+# For: Operations subnet access to VPC endpoints
+resource "aws_network_acl_rule" "private_ingress_from_operations_via_https" {
+  provider = aws.provisionassessment
+  for_each = toset(var.private_subnet_cidr_blocks)
+
+  network_acl_id = aws_network_acl.private[each.value].id
+  egress         = false
+  protocol       = "tcp"
+  rule_number    = 190 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_action    = "allow"
+  cidr_block     = aws_subnet.operations.cidr_block
+  from_port      = 443
+  to_port        = 443
+}
+
 #####
 # Egress rules
 #####
@@ -245,26 +309,6 @@ resource "aws_network_acl_rule" "private_egress_to_operations_via_ssh" {
   to_port        = 22
 }
 
-# Allow ingress from anywhere via ephemeral ports that are not already
-# explicitly denied.
-#
-# For: Guacamole fetches its SSL certificate via boto3 (which uses
-# HTTPS).  This also allows the return traffic from any requests sent
-# out via the NAT gateway in the operations subnet.
-resource "aws_network_acl_rule" "private_ingress_from_anywhere_via_ephemeral_ports" {
-  provider = aws.provisionassessment
-  for_each = toset(var.private_subnet_cidr_blocks)
-
-  network_acl_id = aws_network_acl.private[each.value].id
-  egress         = false
-  protocol       = "tcp"
-  rule_number    = 170 + index(var.private_subnet_cidr_blocks, each.value)
-  rule_action    = "allow"
-  cidr_block     = "0.0.0.0/0"
-  from_port      = 1024
-  to_port        = 65535
-}
-
 # Allow egress to operations subnet via VNC
 # For: Assessment team VNC access from private subnet to operations subnet
 resource "aws_network_acl_rule" "private_egress_to_operations_via_vnc" {
@@ -299,47 +343,4 @@ resource "aws_network_acl_rule" "private_egress_to_cool_via_ipa_ports" {
   cidr_block     = local.cool_shared_services_cidr_block
   from_port      = each.value.port
   to_port        = each.value.port
-}
-
-# Allow ingress from private subnet to private subnet via IPA-related
-# ports.
-#
-# For: Guacamole instance communication with FreeIPA
-#
-# Note that these rules only apply to the private subnet with
-# Guacamole.
-#
-# Full disclosure: We are not totally clear on why this access is
-# needed, but without it, traffic is unable to go from the Guacamole
-# instance to the Transit Gateway attachment (both reside in the same
-# private subnet).
-resource "aws_network_acl_rule" "private_ingress_to_tg_attachment_via_ipa_ports" {
-  provider = aws.provisionassessment
-  for_each = local.ipa_ports
-
-  network_acl_id = aws_network_acl.private[var.private_subnet_cidr_blocks[0]].id
-  egress         = false
-  protocol       = each.value.proto
-  rule_number    = 180 + each.value.index
-  rule_action    = "allow"
-  cidr_block     = var.private_subnet_cidr_blocks[0]
-  from_port      = each.value.port
-  to_port        = each.value.port
-}
-
-# Allow ingress from the operations subnet via https
-#
-# For: Operations subnet access to VPC endpoints
-resource "aws_network_acl_rule" "private_ingress_from_operations_via_https" {
-  provider = aws.provisionassessment
-  for_each = toset(var.private_subnet_cidr_blocks)
-
-  network_acl_id = aws_network_acl.private[each.value].id
-  egress         = false
-  protocol       = "tcp"
-  rule_number    = 190 + index(var.private_subnet_cidr_blocks, each.value)
-  rule_action    = "allow"
-  cidr_block     = aws_subnet.operations.cidr_block
-  from_port      = 443
-  to_port        = 443
 }
