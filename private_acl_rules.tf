@@ -170,7 +170,7 @@ resource "aws_network_acl_rule" "private_ingress_to_tg_attachment_via_ipa_ports"
 
   network_acl_id = aws_network_acl.private[var.private_subnet_cidr_blocks[0]].id
   egress         = false
-  protocol       = each.value.proto
+  protocol       = each.value.protocol
   rule_number    = 180 + each.value.index
   rule_action    = "allow"
   cidr_block     = each.value.private_subnet_cidr_block
@@ -354,7 +354,7 @@ resource "aws_network_acl_rule" "private_egress_to_cool_via_ipa_ports" {
 
   network_acl_id = aws_network_acl.private[var.private_subnet_cidr_blocks[0]].id
   egress         = true
-  protocol       = each.value.proto
+  protocol       = each.value.protocol
   rule_number    = 380 + each.value.index
   rule_action    = "allow"
   cidr_block     = local.cool_shared_services_cidr_block

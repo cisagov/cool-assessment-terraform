@@ -102,44 +102,44 @@ locals {
   # used as a counter in certain ACL rules.
   ipa_ports = {
     http = {
-      proto = "tcp",
-      port  = 80,
-      index = 1,
+      protocol = "tcp",
+      port     = 80,
+      index    = 1,
     },
     kinit_tcp = {
-      proto = "tcp",
-      port  = 88,
-      index = 2,
+      protocol = "tcp",
+      port     = 88,
+      index    = 2,
     },
     kinit_udp = {
-      proto = "udp",
-      port  = 88,
-      index = 3,
+      protocol = "udp",
+      port     = 88,
+      index    = 3,
     },
     https = {
-      proto = "tcp",
-      port  = 443,
-      index = 4,
+      protocol = "tcp",
+      port     = 443,
+      index    = 4,
     },
     kpasswd_tcp = {
-      proto = "tcp",
-      port  = 464,
-      index = 5,
+      protocol = "tcp",
+      port     = 464,
+      index    = 5,
     },
     kpasswd_udp = {
-      proto = "udp",
-      port  = 464,
-      index = 6,
+      protocol = "udp",
+      port     = 464,
+      index    = 6,
     },
     ldap = {
-      proto = "tcp",
-      port  = 389,
-      index = 7,
+      protocol = "tcp",
+      port     = 389,
+      index    = 7,
     },
     ldaps = {
-      proto = "tcp",
-      port  = 636,
-      index = 8,
+      protocol = "tcp",
+      port     = 636,
+      index    = 8,
     }
   }
 

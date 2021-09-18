@@ -90,7 +90,7 @@ resource "aws_security_group_rule" "guacamole_egress_to_cool_via_ipa_ports" {
 
   security_group_id = aws_security_group.guacamole.id
   type              = "egress"
-  protocol          = each.value.proto
+  protocol          = each.value.protocol
   cidr_blocks       = [local.cool_shared_services_cidr_block]
   from_port         = each.value.port
   to_port           = each.value.port
