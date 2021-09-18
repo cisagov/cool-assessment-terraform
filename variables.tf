@@ -30,6 +30,12 @@ variable "vpc_cidr_block" {
 # These parameters have reasonable defaults.
 # ------------------------------------------------------------------------------
 
+variable "assessor_account_role_arn" {
+  type        = string
+  description = "The ARN of an IAM role that can be assumed to create, delete, and modify AWS resources in a separate assessor-owned AWS account."
+  default     = "arn:aws:iam::123456789012:role/Allow_It"
+}
+
 variable "aws_availability_zone" {
   type        = string
   description = "The AWS availability zone to deploy into (e.g. a, b, c, etc.)"
@@ -75,8 +81,8 @@ variable "guac_connection_setup_path" {
 
 variable "inbound_ports_allowed" {
   type        = map(list(object({ protocol = string, from_port = number, to_port = number })))
-  description = "A map specifying the ports allowed inbound (from anywhere) to the various instance types (e.g. {\"kali\": [{\"protocol\": \"tcp\", \"from_port\": 8000, \"to_port\": 8999}]}).  The currently-supported keys are: \"assessorportal\", \"debiandesktop\", \"gophish\", \"kali\", \"nessus\", \"pentestportal\", and \"teamserver\"."
-  default     = { "assessorportal" : [], "debiandesktop" : [], "gophish" : [{ "protocol" : "tcp", "from_port" : 25, "to_port" : 25 }, { "protocol" : "tcp", "from_port" : 80, "to_port" : 80 }, { "protocol" : "tcp", "from_port" : 443, "to_port" : 443 }, { "protocol" : "tcp", "from_port" : 587, "to_port" : 587 }], "kali" : [{ "protocol" : "tcp", "from_port" : 8000, "to_port" : 8999 }], "nessus" : [], "pentestportal" : [], "teamserver" : [{ "protocol" : "tcp", "from_port" : 25, "to_port" : 25 }, { "protocol" : "tcp", "from_port" : 53, "to_port" : 53 }, { "protocol" : "tcp", "from_port" : 80, "to_port" : 80 }, { "protocol" : "tcp", "from_port" : 443, "to_port" : 443 }, { "protocol" : "tcp", "from_port" : 587, "to_port" : 587 }, { "protocol" : "udp", "from_port" : 53, "to_port" : 53 }, { "protocol" : "udp", "from_port" : 8080, "to_port" : 8080 }, { "protocol" : "tcp", "from_port" : 8000, "to_port" : 8999 }] }
+  description = "A map specifying the ports allowed inbound (from anywhere) to the various instance types (e.g. {\"kali\": [{\"protocol\": \"tcp\", \"from_port\": 8000, \"to_port\": 8999}]}).  The currently-supported keys are: \"assessorportal\", \"debiandesktop\", \"gophish\", \"kali\", \"nessus\", \"pentestportal\", \"teamserver\", and \"terraformer\"."
+  default     = { "assessorportal" : [], "debiandesktop" : [], "gophish" : [{ "protocol" : "tcp", "from_port" : 25, "to_port" : 25 }, { "protocol" : "tcp", "from_port" : 80, "to_port" : 80 }, { "protocol" : "tcp", "from_port" : 443, "to_port" : 443 }, { "protocol" : "tcp", "from_port" : 587, "to_port" : 587 }], "kali" : [{ "protocol" : "tcp", "from_port" : 8000, "to_port" : 8999 }], "nessus" : [], "pentestportal" : [], "teamserver" : [{ "protocol" : "tcp", "from_port" : 25, "to_port" : 25 }, { "protocol" : "tcp", "from_port" : 53, "to_port" : 53 }, { "protocol" : "tcp", "from_port" : 80, "to_port" : 80 }, { "protocol" : "tcp", "from_port" : 443, "to_port" : 443 }, { "protocol" : "tcp", "from_port" : 587, "to_port" : 587 }, { "protocol" : "udp", "from_port" : 53, "to_port" : 53 }, { "protocol" : "udp", "from_port" : 8080, "to_port" : 8080 }, { "protocol" : "tcp", "from_port" : 8000, "to_port" : 8999 }], "terraformer" : [] }
 }
 
 variable "nessus_activation_codes" {
@@ -87,7 +93,7 @@ variable "nessus_activation_codes" {
 
 variable "operations_instance_counts" {
   type        = map(number)
-  description = "A map specifying how many instances of each type should be created in the operations subnet (e.g. { \"kali\": 1 }).  The currently-supported instance keys are: [\"assessorportal\", \"debiandesktop\", \"gophish\", \"kali\", \"nessus\", \"pentestportal\", \"teamserver\"]."
+  description = "A map specifying how many instances of each type should be created in the operations subnet (e.g. { \"kali\": 1 }).  The currently-supported instance keys are: [\"assessorportal\", \"debiandesktop\", \"gophish\", \"kali\", \"nessus\", \"pentestportal\", \"teamserver\", \"terraformer\"]."
   default     = { "kali" : 1 }
 }
 
@@ -113,6 +119,12 @@ variable "provisionassessment_policy_name" {
   type        = string
   description = "The name to assign the IAM policy that allows provisioning of the resources required in the assessment account."
   default     = "ProvisionAssessment"
+}
+
+variable "read_terraform_state_role_name" {
+  type        = string
+  description = "The name to assign the IAM role (as well as the corresponding policy) that allows read-only access to the cool-assessment-terraform state in the S3 bucket where Terraform state is stored.  The %s in this name will be replaced by the value of the assessment_account_name variable."
+  default     = "ReadCoolAssessmentTerraformTerraformState-%s"
 }
 
 variable "ssm_key_nessus_admin_password" {
@@ -161,4 +173,16 @@ variable "tags" {
   type        = map(string)
   description = "Tags to apply to all AWS resources created"
   default     = {}
+}
+
+variable "terraformer_role_description" {
+  type        = string
+  description = "The description to associate with the IAM role (and policy) that allows Terraformer instances to create appropriate AWS resources in this account."
+  default     = "Allows Terraformer instances to create appropriate AWS resources in this account."
+}
+
+variable "terraformer_role_name" {
+  type        = string
+  description = "The name to assign the IAM role (and policy) that allows Terraformer instances to create appropriate AWS resources in this account."
+  default     = "Terraformer"
 }

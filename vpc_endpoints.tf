@@ -223,3 +223,12 @@ resource "aws_vpc_endpoint" "s3" {
   vpc_endpoint_type = "Gateway"
   vpc_id            = aws_vpc.assessment.id
 }
+
+# DynamoDB gateway endpoint
+resource "aws_vpc_endpoint" "dynamodb" {
+  provider = aws.provisionassessment
+
+  service_name      = "com.amazonaws.${var.aws_region}.dynamodb"
+  vpc_endpoint_type = "Gateway"
+  vpc_id            = aws_vpc.assessment.id
+}

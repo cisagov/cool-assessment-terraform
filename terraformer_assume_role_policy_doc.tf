@@ -3,17 +3,18 @@
 # roles to assume the role this policy is attached to.
 # ------------------------------------------------------------------------------
 
-data "aws_iam_policy_document" "nessus_assume_role_doc" {
+data "aws_iam_policy_document" "terraformer_assume_role_doc" {
   statement {
     actions = [
       "sts:AssumeRole",
+      "sts:TagSession",
     ]
 
     principals {
-      type = "AWS"
       identifiers = [
-        aws_iam_role.nessus_instance_role.arn
+        aws_iam_role.terraformer_instance_role.arn
       ]
+      type = "AWS"
     }
   }
 }

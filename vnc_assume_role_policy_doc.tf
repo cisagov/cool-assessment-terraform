@@ -12,7 +12,8 @@ data "aws_iam_policy_document" "vnc_assume_role_doc" {
     principals {
       type = "AWS"
       identifiers = [
-        aws_iam_role.guacamole_instance_role.arn
+        aws_iam_role.guacamole_instance_role.arn,
+        aws_iam_role.terraformer_instance_role.arn,
       ]
     }
   }
