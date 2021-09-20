@@ -12,7 +12,8 @@ Note that this example may create resources which cost money. Run
 
 | Name | Version |
 |------|---------|
-| terraform | ~> 0.14.0 |
+| terraform | ~> 1.0 |
+| aws | ~> 3.38 |
 
 ## Providers ##
 
