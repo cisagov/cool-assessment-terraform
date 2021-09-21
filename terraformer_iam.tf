@@ -41,6 +41,15 @@ resource "aws_iam_role_policy_attachment" "ssm_agent_policy_attachment_terraform
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
 
+# Attach a policy that allows the Terraformer instances to mount and
+# write to the EFS
+resource "aws_iam_role_policy_attachment" "efs_mount_policy_attachment_terraformer" {
+  provider = aws.provisionassessment
+
+  role       = aws_iam_role.terraformer_instance_role.id
+  policy_arn = aws_iam_policy.efs_mount_policy.arn
+}
+
 ################################
 # Define the role policies below
 ################################
