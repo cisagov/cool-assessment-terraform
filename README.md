@@ -79,14 +79,14 @@ the COOL environment.
 
 | Name | Version |
 |------|---------|
-| aws | 3.59.0 |
-| aws.dns\_sharedservices | 3.59.0 |
-| aws.organizationsreadonly | 3.59.0 |
-| aws.provisionassessment | 3.59.0 |
-| aws.provisionparameterstorereadrole | 3.59.0 |
-| aws.provisionsharedservices | 3.59.0 |
-| cloudinit | 2.2.0 |
-| null | 3.1.0 |
+| aws | ~> 3.38 |
+| aws.dns\_sharedservices | ~> 3.38 |
+| aws.organizationsreadonly | ~> 3.38 |
+| aws.provisionassessment | ~> 3.38 |
+| aws.provisionparameterstorereadrole | ~> 3.38 |
+| aws.provisionsharedservices | ~> 3.38 |
+| cloudinit | ~> 2.0 |
+| null | ~> 3.0 |
 | terraform | n/a |
 
 ## Modules ##
@@ -483,7 +483,7 @@ the COOL environment.
 | terraformer\_instances | The Terraformer instances. |
 | terraformer\_security\_group | The security group for the Terraformer instances. |
 | vpc | The VPC for this assessment environment. |
-| vpn_server_cidr_block | The CIDR block for the COOL VPN. |
+| vpn\_server\_cidr\_block | The CIDR block for the COOL VPN. |
 
 ## Notes ##
 
