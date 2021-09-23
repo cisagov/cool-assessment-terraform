@@ -37,6 +37,20 @@ resource "aws_security_group_rule" "nessus_ingress_from_kali_via_web_ui" {
   to_port                  = 8834
 }
 
+# Allow ingress from Windows instances via Nessus web GUI
+#
+# For: Assessment team Nessus web access from Windows instances
+resource "aws_security_group_rule" "nessus_ingress_from_windows_via_web_ui" {
+  provider = aws.provisionassessment
+
+  security_group_id        = aws_security_group.nessus.id
+  type                     = "ingress"
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.windows.id
+  from_port                = 8834
+  to_port                  = 8834
+}
+
 # Allow ingress from anywhere via the allowed ports
 resource "aws_security_group_rule" "ingress_from_anywhere_to_nessus_via_allowed_ports" {
   provider = aws.provisionassessment
