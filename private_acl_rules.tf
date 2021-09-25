@@ -90,7 +90,7 @@ resource "aws_network_acl_rule" "private_ingress_from_anywhere_else_services" {
 }
 
 #####
-# Rules associated with EFS
+# Rules associated with file sharing (EFS and SMB)
 #####
 # Allow ingress from operations subnet via port 2049.
 #
@@ -107,6 +107,25 @@ resource "aws_network_acl_rule" "private_ingress_from_operations_efs" {
   cidr_block     = aws_subnet.operations.cidr_block
   from_port      = 2049
   to_port        = 2049
+}
+# Allow ingress from operations subnet via port 445.
+#
+# For: Operations subnet access to SMB server(s).
+#
+# There is no need for an explicit deny for everyone else since SMB
+# does not run on a port in the ephemeral range.
+resource "aws_network_acl_rule" "private_ingress_from_operations_smb" {
+  provider = aws.provisionassessment
+  for_each = toset(var.private_subnet_cidr_blocks)
+
+  network_acl_id = aws_network_acl.private[each.value].id
+  egress         = false
+  protocol       = "tcp"
+  rule_number    = 155
+  rule_action    = "allow"
+  cidr_block     = aws_subnet.operations.cidr_block
+  from_port      = 445
+  to_port        = 445
 }
 # Disallow ingress from anywhere else via port 2049.
 resource "aws_network_acl_rule" "private_ingress_from_anywhere_else_efs" {

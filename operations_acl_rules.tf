@@ -35,6 +35,20 @@ resource "aws_network_acl_rule" "operations_ingress_from_private_via_winrm" {
   from_port      = 5986
   to_port        = 5986
 }
+# Disallow ingress from anywhere else via port 5986 (Windows Remote
+# Management).
+resource "aws_network_acl_rule" "operations_ingress_from_anywhere_else_winrm" {
+  provider = aws.provisionassessment
+
+  network_acl_id = aws_network_acl.operations.id
+  egress         = false
+  protocol       = "tcp"
+  rule_number    = 115
+  rule_action    = "deny"
+  cidr_block     = "0.0.0.0/0"
+  from_port      = 5986
+  to_port        = 5986
+}
 
 # Allow ingress from private subnet via VNC
 #
@@ -50,6 +64,19 @@ resource "aws_network_acl_rule" "operations_ingress_from_private_via_vnc" {
   rule_number    = 120 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = aws_subnet.private[each.value].cidr_block
+  from_port      = 5901
+  to_port        = 5901
+}
+# Disallow ingress from anywhere else via VNC.
+resource "aws_network_acl_rule" "operations_ingress_from_anywhere_else_vnc" {
+  provider = aws.provisionassessment
+
+  network_acl_id = aws_network_acl.operations.id
+  egress         = false
+  protocol       = "tcp"
+  rule_number    = 125
+  rule_action    = "deny"
+  cidr_block     = "0.0.0.0/0"
   from_port      = 5901
   to_port        = 5901
 }
@@ -128,8 +155,10 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_1024
 # Allow ingress from anywhere via ephemeral TCP/UDP ports 3390-5900.
 #
 # For: Assessment team operational use, but we don't want to allow
-# public access to RDP on port 3389 or VNC on port 5901.
-resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_3390_thru_5900" {
+# public access to RDP on port 3389 or Cobalt Strike Teamservers on port 50050.
+#
+# We can skip the VNC and WINRM ports as they are blocked by rules above.
+resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_3390_thru_50049" {
   provider = aws.provisionassessment
   for_each = toset(local.tcp_and_udp)
 
@@ -140,43 +169,6 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_3390
   rule_action    = "allow"
   cidr_block     = "0.0.0.0/0"
   from_port      = 3390
-  to_port        = 5900
-}
-
-# Allow ingress from anywhere via ephemeral TCP/UDP ports 3390-5985.
-#
-# For: Assessment team operational use, but we don't want to allow
-# public access to VNC on port 5901 or WinRM on port 5986.
-resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_5902_thru_5985" {
-  provider = aws.provisionassessment
-  for_each = toset(local.tcp_and_udp)
-
-  network_acl_id = aws_network_acl.operations.id
-  egress         = false
-  protocol       = each.value
-  rule_number    = 180 + index(local.tcp_and_udp, each.value)
-  rule_action    = "allow"
-  cidr_block     = "0.0.0.0/0"
-  from_port      = 5902
-  to_port        = 5985
-}
-
-# Allow ingress from anywhere via ephemeral TCP/UDP ports 5987-50049.
-#
-# For: Assessment team operational use, but we don't want to allow
-# public access to WinRM on port 5986 or Cobalt Strike Teamservers on
-# port 50050.
-resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_5987_thru_50049" {
-  provider = aws.provisionassessment
-  for_each = toset(local.tcp_and_udp)
-
-  network_acl_id = aws_network_acl.operations.id
-  egress         = false
-  protocol       = each.value
-  rule_number    = 190 + index(local.tcp_and_udp, each.value)
-  rule_action    = "allow"
-  cidr_block     = "0.0.0.0/0"
-  from_port      = 5987
   to_port        = 50049
 }
 
@@ -191,7 +183,7 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_5005
   network_acl_id = aws_network_acl.operations.id
   egress         = false
   protocol       = each.value
-  rule_number    = 200 + index(local.tcp_and_udp, each.value)
+  rule_number    = 180 + index(local.tcp_and_udp, each.value)
   rule_action    = "allow"
   cidr_block     = "0.0.0.0/0"
   from_port      = 50051
@@ -207,7 +199,7 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_icmp" {
   network_acl_id = aws_network_acl.operations.id
   egress         = false
   protocol       = "icmp"
-  rule_number    = 210
+  rule_number    = 190
   rule_action    = "allow"
   cidr_block     = "0.0.0.0/0"
   icmp_type      = -1
