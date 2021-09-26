@@ -36,7 +36,7 @@ resource "aws_instance" "samba" {
   ami                  = data.aws_ami.samba.id
   availability_zone    = "${var.aws_region}${var.aws_availability_zone}"
   iam_instance_profile = aws_iam_instance_profile.samba.name
-  instance_type        = "t3.large"
+  instance_type        = "t3.small"
   # TODO: For some reason I can't ssh via SSM to the instance unless I
   # put it in the first private subnet.  I believe this has something
   # to do with the NACLs that are in place for that subnet
