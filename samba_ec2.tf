@@ -34,7 +34,6 @@ resource "aws_instance" "samba" {
   provider = aws.provisionassessment
 
   ami                  = data.aws_ami.samba.id
-  availability_zone    = "${var.aws_region}${var.aws_availability_zone}"
   iam_instance_profile = aws_iam_instance_profile.samba.name
   instance_type        = "t3.small"
   # TODO: For some reason I can't ssh via SSM to the instance unless I

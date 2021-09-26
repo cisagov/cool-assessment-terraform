@@ -29,7 +29,6 @@ resource "aws_instance" "terraformer" {
   provider = aws.provisionassessment
 
   ami                  = data.aws_ami.terraformer.id
-  availability_zone    = "${var.aws_region}${var.aws_availability_zone}"
   iam_instance_profile = aws_iam_instance_profile.terraformer.name
   instance_type        = "t3.medium"
   # TODO: For some reason I can't ssh via SSM to the instance unless I

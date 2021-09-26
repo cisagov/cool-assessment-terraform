@@ -46,7 +46,6 @@ resource "aws_instance" "teamserver" {
 
   ami                         = data.aws_ami.teamserver.id
   associate_public_ip_address = true
-  availability_zone           = "${var.aws_region}${var.aws_availability_zone}"
   iam_instance_profile        = aws_iam_instance_profile.teamserver.name
   instance_type               = "t3.large"
   subnet_id                   = aws_subnet.operations.id

@@ -33,7 +33,6 @@ resource "aws_instance" "kali" {
 
   ami                         = data.aws_ami.kali.id
   associate_public_ip_address = true
-  availability_zone           = "${var.aws_region}${var.aws_availability_zone}"
   iam_instance_profile        = aws_iam_instance_profile.kali.name
   instance_type               = "t3.xlarge"
   subnet_id                   = aws_subnet.operations.id
