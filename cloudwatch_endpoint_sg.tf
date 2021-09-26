@@ -82,6 +82,18 @@ resource "aws_security_group_rule" "ingress_from_pentestportal_to_cloudwatch_via
   to_port                  = 443
 }
 
+# Allow ingress via HTTPS from the Samba security group
+resource "aws_security_group_rule" "ingress_from_samba_to_cloudwatch_via_https" {
+  provider = aws.provisionassessment
+
+  security_group_id        = aws_security_group.cloudwatch.id
+  type                     = "ingress"
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.smb_server.id
+  from_port                = 443
+  to_port                  = 443
+}
+
 # Allow ingress via HTTPS from the teamserver security group
 resource "aws_security_group_rule" "ingress_from_teamserver_to_cloudwatch_via_https" {
   provider = aws.provisionassessment
