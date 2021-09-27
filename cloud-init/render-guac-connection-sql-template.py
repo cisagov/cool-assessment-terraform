@@ -89,6 +89,10 @@ for ssm_key, param_name in (
 # our sql file there
 os.makedirs("${guac_connection_setup_path}", exist_ok=True)
 
+# Read in the SQL template file to use when rendering each connection's file
+with open(SQL_TEMPLATE) as template_file:
+    SQL_TEMPLATE = template_file.read()
+
 # Render template with SSM and hostname data,
 # then write output file for each host
 for host in INSTANCE_HOSTNAMES:
@@ -110,6 +114,5 @@ for host in INSTANCE_HOSTNAMES:
             }
         )
     sql_output_file = f"{SQL_OUTPUT_FILE_PREFIX}_{host}.sql"
-    with open(SQL_TEMPLATE) as infile:
-        with open(sql_output_file, "w") as outfile:
-            outfile.write(pystache.render(infile.read(), data_for_pystache))
+    with open(sql_output_file, "w") as outfile:
+        outfile.write(pystache.render(SQL_TEMPLATE, data_for_pystache))
