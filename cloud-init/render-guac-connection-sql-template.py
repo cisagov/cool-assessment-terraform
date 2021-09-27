@@ -27,6 +27,10 @@ AWS_REGION = "${aws_region}"
 SSM_READ_ROLE_ARN = "${ssm_vnc_read_role_arn}"
 # nosec on following line tells bandit (pre-commit hook) to ignore security
 # warnings; otherwise bandit complains about "Possible hardcoded password"
+SSM_KEY_RDP_PASSWORD = "${ssm_key_rdp_password}"  # nosec
+SSM_KEY_RDP_USER = "${ssm_key_rdp_user}"
+# nosec on following line tells bandit (pre-commit hook) to ignore security
+# warnings; otherwise bandit complains about "Possible hardcoded password"
 SSM_KEY_VNC_PASSWORD = "${ssm_key_vnc_password}"  # nosec
 SSM_KEY_VNC_USER = "${ssm_key_vnc_user}"
 SSM_KEY_VNC_USER_PRIVATE_SSH_KEY = "${ssm_key_vnc_user_private_ssh_key}"
@@ -72,6 +76,8 @@ ssm = boto3.client(
 data_for_pystache = dict()
 # Fetch the required parameters from SSM
 for ssm_key, param_name in (
+    (SSM_KEY_RDP_USER, "rdp_username"),
+    (SSM_KEY_RDP_PASSWORD, "rdp_password"),
     (SSM_KEY_VNC_USER, "vnc_username"),
     (SSM_KEY_VNC_PASSWORD, "vnc_password"),
     (SSM_KEY_VNC_USER_PRIVATE_SSH_KEY, "vnc_user_private_ssh_key"),
@@ -87,6 +93,22 @@ os.makedirs("${guac_connection_setup_path}", exist_ok=True)
 # then write output file for each host
 for host in INSTANCE_HOSTNAMES:
     data_for_pystache["instance_hostname"] = host
+    if host.startswith("windows"):
+        data_for_pystache.update(
+            {
+                "vnc_connection": False,
+                "connection_port": 3389,
+                "connection_protocol": "rdp",
+            }
+        )
+    else:
+        data_for_pystache.update(
+            {
+                "vnc_connection": True,
+                "connection_port": 5901,
+                "connection_protocol": "vnc",
+            }
+        )
     sql_output_file = f"{SQL_OUTPUT_FILE_PREFIX}_{host}.sql"
     with open(SQL_TEMPLATE) as infile:
         with open(sql_output_file, "w") as outfile:

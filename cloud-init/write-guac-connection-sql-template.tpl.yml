@@ -18,7 +18,7 @@ write_files:
         connection_name, protocol, max_connections, max_connections_per_user,
         proxy_port, proxy_hostname, proxy_encryption_method)
       VALUES (
-        '{{ instance_hostname }}', 'vnc', 10, 10, 4822,
+        '{{ instance_hostname }}', '{{ connection_protocol }}', 10, 10, 4822,
         'guacd', 'NONE');
 
       --
@@ -27,47 +27,64 @@ write_files:
 
       INSERT INTO guacamole_connection_parameter (
         connection_id, parameter_name, parameter_value)
-      SELECT connection_id, 'cursor', 'local'
-      FROM guacamole_connection
-      WHERE connection_name = '{{ instance_hostname }}'
-        UNION ALL
-      SELECT
-        connection_id, 'sftp-directory', '/home/{{ vnc_username }}/Documents'
-      FROM guacamole_connection
-      WHERE connection_name = '{{ instance_hostname }}'
-        UNION ALL
-      SELECT connection_id, 'sftp-username', '{{ vnc_username }}'
-      FROM guacamole_connection
-      WHERE connection_name = '{{ instance_hostname }}'
-        UNION ALL
-      SELECT connection_id, 'sftp-private-key', '{{ vnc_user_private_ssh_key }}'
-      FROM guacamole_connection
-      WHERE connection_name = '{{ instance_hostname }}'
-        UNION ALL
-      SELECT connection_id, 'sftp-server-alive-interval', '60'
-      FROM guacamole_connection
-      WHERE connection_name = '{{ instance_hostname }}'
-        UNION ALL
-      SELECT connection_id, 'sftp-root-directory', '/home/{{ vnc_username }}/'
-      FROM guacamole_connection
-      WHERE connection_name = '{{ instance_hostname }}'
-        UNION ALL
-      SELECT connection_id, 'enable-sftp', 'true'
-      FROM guacamole_connection
-      WHERE connection_name = '{{ instance_hostname }}'
-        UNION ALL
-      SELECT connection_id, 'color-depth', '24'
-      FROM guacamole_connection
-      WHERE connection_name = '{{ instance_hostname }}'
-        UNION ALL
+      {{#vnc_connection}}
+        SELECT connection_id, 'cursor', 'local'
+        FROM guacamole_connection
+        WHERE connection_name = '{{ instance_hostname }}'
+          UNION ALL
+        SELECT
+          connection_id, 'sftp-directory', '/home/{{ vnc_username }}/Documents'
+        FROM guacamole_connection
+        WHERE connection_name = '{{ instance_hostname }}'
+          UNION ALL
+        SELECT connection_id, 'sftp-username', '{{ vnc_username }}'
+        FROM guacamole_connection
+        WHERE connection_name = '{{ instance_hostname }}'
+          UNION ALL
+        SELECT connection_id, 'sftp-private-key',
+          '{{ vnc_user_private_ssh_key }}'
+        FROM guacamole_connection
+        WHERE connection_name = '{{ instance_hostname }}'
+          UNION ALL
+        SELECT connection_id, 'sftp-server-alive-interval', '60'
+        FROM guacamole_connection
+        WHERE connection_name = '{{ instance_hostname }}'
+          UNION ALL
+        SELECT connection_id, 'sftp-root-directory', '/home/{{ vnc_username }}/'
+        FROM guacamole_connection
+        WHERE connection_name = '{{ instance_hostname }}'
+          UNION ALL
+        SELECT connection_id, 'enable-sftp', 'true'
+        FROM guacamole_connection
+        WHERE connection_name = '{{ instance_hostname }}'
+          UNION ALL
+        SELECT connection_id, 'color-depth', '24'
+        FROM guacamole_connection
+        WHERE connection_name = '{{ instance_hostname }}'
+          UNION ALL
+        SELECT connection_id, 'password', '{{ vnc_password }}'
+        FROM guacamole_connection
+        WHERE connection_name = '{{ instance_hostname }}'
+          UNION ALL
+      {{/vnc_connection}}
+      {{^vnc_connection}}
+        SELECT connection_id, 'username', '{{ rdp_username }}'
+        FROM guacamole_connection
+        WHERE connection_name = '{{ instance_hostname }}'
+          UNION ALL
+        SELECT connection_id, 'password', '{{ rdp_password }}'
+        FROM guacamole_connection
+        WHERE connection_name = '{{ instance_hostname }}'
+          UNION ALL
+        SELECT connection_id, 'ignore-cert', 'true'
+        FROM guacamole_connection
+        WHERE connection_name = '{{ instance_hostname }}'
+          UNION ALL
+      {{/vnc_connection}}
       SELECT connection_id, 'hostname', '{{ instance_hostname }}'
       FROM guacamole_connection
       WHERE connection_name = '{{ instance_hostname }}'
         UNION ALL
-      SELECT connection_id, 'password', '{{ vnc_password }}'
-      FROM guacamole_connection
-      WHERE connection_name = '{{ instance_hostname }}'
-        UNION ALL
-      SELECT connection_id, 'port', '5901'
+      SELECT connection_id, 'port', '{{ connection_port }}'
       FROM guacamole_connection
       WHERE connection_name = '{{ instance_hostname }}';

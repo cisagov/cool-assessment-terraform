@@ -139,6 +139,18 @@ variable "ssm_key_nessus_admin_username" {
   default     = "/nessus/assessment/admin_username"
 }
 
+variable "ssm_key_rdp_password" {
+  type        = string
+  description = "The AWS SSM Parameter Store parameter that contains the password needed to connect to the TBD instance via RDP (e.g. \"/rdp/password\")"
+  default     = "/rdp/password"
+}
+
+variable "ssm_key_rdp_username" {
+  type        = string
+  description = "The AWS SSM Parameter Store parameter that contains the username needed to connect to the TBD instance via RDP (e.g. \"/rdp/username\")"
+  default     = "/rdp/username"
+}
+
 variable "ssm_key_vnc_password" {
   type        = string
   description = "The AWS SSM Parameter Store parameter that contains the password needed to connect to the TBD instance via VNC (e.g. \"/vnc/password\")"

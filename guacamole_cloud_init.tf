@@ -84,8 +84,10 @@ data "cloudinit_config" "guacamole_cloud_init_tasks" {
         aws_region                       = var.aws_region
         guac_connection_setup_filename   = "01_setup_guac_connections"
         guac_connection_setup_path       = var.guac_connection_setup_path
-        instance_hostnames               = join(",", concat(aws_route53_record.assessorportal_A[*].name, aws_route53_record.debiandesktop_A[*].name, aws_route53_record.gophish_A[*].name, aws_route53_record.kali_A[*].name, aws_route53_record.pentestportal_A[*].name, aws_route53_record.teamserver_A[*].name, aws_route53_record.terraformer_A[*].name))
+        instance_hostnames               = join(",", concat(aws_route53_record.assessorportal_A[*].name, aws_route53_record.debiandesktop_A[*].name, aws_route53_record.gophish_A[*].name, aws_route53_record.kali_A[*].name, aws_route53_record.pentestportal_A[*].name, aws_route53_record.teamserver_A[*].name, aws_route53_record.terraformer_A[*].name, aws_route53_record.windows_A[*].name))
         ssm_vnc_read_role_arn            = aws_iam_role.vnc_parameterstorereadonly_role.arn
+        ssm_key_rdp_password             = var.ssm_key_rdp_password
+        ssm_key_rdp_user                 = var.ssm_key_rdp_username
         ssm_key_vnc_password             = var.ssm_key_vnc_password
         ssm_key_vnc_user                 = var.ssm_key_vnc_username
         ssm_key_vnc_user_private_ssh_key = var.ssm_key_vnc_user_private_ssh_key
