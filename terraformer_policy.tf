@@ -97,6 +97,21 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
       aws_network_acl.operations.arn,
     ]
   }
+
+  # Don't allow Terraformer instances to touch the CloudFormation foo
+  # put in place by ControlTower.  This is not covered by the earlier
+  # statement allowing full access to resources that are not tagged as
+  # belonging to the dev team, since CloudFormation resources do not
+  # accept tags.
+  statement {
+    actions = [
+      "cloudformation:*",
+    ]
+    effect = "Deny"
+    resources = [
+      "arn:aws:cloudformation:*:${local.assessment_account_id}:stack/StackSet-AWSControlTower*/*",
+    ]
+  }
 }
 
 resource "aws_iam_policy" "terraformer_policy" {
