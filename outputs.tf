@@ -173,6 +173,26 @@ output "remote_desktop_url" {
   description = "The URL of the remote desktop gateway (Guacamole) for this assessment."
 }
 
+output "samba_client_security_group" {
+  value       = aws_security_group.smb_client
+  description = "The security group that should be applied to all instance types that wish to mount the Samba file share being served by the Samba file share server instances."
+}
+
+output "samba_instance_profile" {
+  value       = aws_iam_instance_profile.samba
+  description = "The instance profile for the Samba file share server instances."
+}
+
+output "samba_instances" {
+  value       = aws_instance.samba
+  description = "The Samba file share server instances."
+}
+
+output "samba_server_security_group" {
+  value       = aws_security_group.smb_server
+  description = "The security group for the Samba file share server instances."
+}
+
 output "scanner_security_group" {
   value       = aws_security_group.scanner
   description = "A security group that should be applied to all instance types that perform scanning.  This security group allows egress to anywhere as well as ingress from anywhere via ICMP."
