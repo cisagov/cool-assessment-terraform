@@ -157,7 +157,7 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_1024
 # For: Assessment team operational use, but we don't want to allow
 # public access to RDP on port 3389 or Cobalt Strike Teamservers on port 50050.
 #
-# We can skip the VNC and WINRM ports as they are blocked by rules above.
+# We can skip the VNC and WinRM ports as they are blocked by rules above.
 resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_3390_thru_50049" {
   provider = aws.provisionassessment
   for_each = toset(local.tcp_and_udp)
