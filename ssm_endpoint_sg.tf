@@ -82,6 +82,18 @@ resource "aws_security_group_rule" "ingress_from_pentestportal_to_ssm_via_https"
   to_port                  = 443
 }
 
+# Allow ingress via HTTPS from the Samba security group
+resource "aws_security_group_rule" "ingress_from_samba_to_ssm_via_https" {
+  provider = aws.provisionassessment
+
+  security_group_id        = aws_security_group.ssm.id
+  type                     = "ingress"
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.smb_server.id
+  from_port                = 443
+  to_port                  = 443
+}
+
 # Allow ingress via HTTPS from the teamserver security group
 resource "aws_security_group_rule" "ingress_from_teamserver_to_ssm_via_https" {
   provider = aws.provisionassessment

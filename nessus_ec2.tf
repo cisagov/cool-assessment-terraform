@@ -47,7 +47,6 @@ resource "aws_instance" "nessus" {
 
   ami                         = data.aws_ami.nessus.id
   associate_public_ip_address = true
-  availability_zone           = "${var.aws_region}${var.aws_availability_zone}"
   iam_instance_profile        = aws_iam_instance_profile.nessus.name
   instance_type               = "m5.large"
   subnet_id                   = aws_subnet.operations.id

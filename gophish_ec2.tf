@@ -36,7 +36,6 @@ resource "aws_instance" "gophish" {
 
   ami                         = data.aws_ami.gophish.id
   associate_public_ip_address = true
-  availability_zone           = "${var.aws_region}${var.aws_availability_zone}"
   iam_instance_profile        = aws_iam_instance_profile.gophish.name
   instance_type               = "t3.medium"
   subnet_id                   = aws_subnet.operations.id
