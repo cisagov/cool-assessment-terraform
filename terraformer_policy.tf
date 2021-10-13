@@ -28,6 +28,23 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
     ]
   }
 
+  # Deny all IAM access unless it is read-only.  This stops the
+  # Terraformer instance from defeating the Terraformer policy by
+  # creating new users, policies, roles, etc.
+  #
+  # I cribbed this list of actions from the AWS built-in policy
+  # arn:aws:iam::aws:policy/IAMReadOnlyAccess.
+  statement {
+    not_actions = [
+      "iam:Get*",
+      "iam:List*",
+    ]
+    effect = "Deny"
+    resources = [
+      "*",
+    ]
+  }
+
   # Allow use of the KMS key used to encrypt COOL AMIs.
   statement {
     actions = [
