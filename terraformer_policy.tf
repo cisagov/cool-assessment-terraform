@@ -11,11 +11,14 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
 
   # Allow full access to new resources and existing resources that
   # _are not_ tagged as being created by the team that deploys this
-  # root module.
+  # root module, with the exception of IAM.
+  #
+  # We will attach the arn:aws:iam::aws:policy/ReadOnlyAccess policy,
+  # which will cover the IAM case.  We require IAM access to be
+  # read-only (as far as is possible) in order to stop the Terraformer
+  # instance from defeating the Terraformer policy by creating new
+  # users, policies, roles, etc.
   statement {
-    actions = [
-      "*",
-    ]
     condition {
       test = "StringNotEquals"
       values = [
@@ -23,25 +26,41 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
       ]
       variable = "aws:ResourceTag/Team"
     }
+    not_actions = [
+      "iam:*",
+    ]
     resources = [
       "*",
     ]
   }
 
-  # Deny all IAM access unless it is read-only.  This stops the
-  # Terraformer instance from defeating the Terraformer policy by
-  # creating new users, policies, roles, etc.
-  #
-  # I cribbed this list of actions from the AWS built-in policy
-  # arn:aws:iam::aws:policy/IAMReadOnlyAccess.
+  # Add an IAM permission to allow the use of our instance roles when
+  # spinning up instances, with the exception of our guacamole, samba,
+  # and terraformer instance roles.
   statement {
-    not_actions = [
-      "iam:Get*",
-      "iam:List*",
+    actions = [
+      "iam:PassRole",
+    ]
+    condition {
+      test = "StringEquals"
+      values = [
+        "ec2.amazonaws.com",
+      ]
+      variable = "iam:PassedToService"
+    }
+    resources = [
+      "*",
+    ]
+  }
+  statement {
+    actions = [
+      "iam:PassRole",
     ]
     effect = "Deny"
     resources = [
-      "*",
+      aws_iam_role.guacamole_instance_role.arn,
+      aws_iam_role.samba_instance_role.arn,
+      aws_iam_role.terraformer_instance_role.arn,
     ]
   }
 
