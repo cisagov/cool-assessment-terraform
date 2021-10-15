@@ -13,11 +13,12 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
   # _are not_ tagged as being created by the team that deploys this
   # root module, with the exception of IAM.
   #
-  # We will attach the arn:aws:iam::aws:policy/ReadOnlyAccess policy,
-  # which will cover the IAM case.  We require IAM access to be
-  # read-only (as far as is possible) in order to stop the Terraformer
-  # instance from defeating the Terraformer policy by creating new
-  # users, policies, roles, etc.
+  # We will attach the arn:aws:iam::aws:policy/ReadOnlyAccess policy
+  # to the same role to which policy document will be attached, which
+  # will give is read-only access to all IAM resources.  We require
+  # IAM access to be as read-only as possible in order to stop the
+  # Terraformer instance from defeating the Terraformer policy by
+  # creating new users, policies, roles, etc.
   statement {
     condition {
       test = "StringNotEquals"
@@ -36,7 +37,8 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
 
   # Add an IAM permission to allow the use of our instance roles when
   # spinning up instances, with the exception of our guacamole, samba,
-  # and terraformer instance roles.
+  # and terraformer instance roles.  This is one non-read-only IAM
+  # permission that _is_ necessary.
   statement {
     actions = [
       "iam:PassRole",
