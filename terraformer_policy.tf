@@ -14,8 +14,8 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
   # root module, with the exception of IAM.
   #
   # We will attach the arn:aws:iam::aws:policy/ReadOnlyAccess policy
-  # to the same role to which policy document will be attached, which
-  # will give is read-only access to all IAM resources.  We require
+  # to the same role to which the policy document will be attached, which
+  # will give it read-only access to all IAM resources.  We require
   # IAM access to be as read-only as possible in order to stop the
   # Terraformer instance from defeating the Terraformer policy by
   # creating new users, policies, roles, etc.
