@@ -117,3 +117,15 @@ resource "aws_security_group_rule" "ingress_from_terraformer_to_ssm_via_https" {
   from_port                = 443
   to_port                  = 443
 }
+
+# Allow ingress via HTTPS from the operations subnet
+resource "aws_security_group_rule" "ingress_from_operations_subnet_to_ssm_via_https" {
+  provider = aws.provisionassessment
+
+  security_group_id = aws_security_group.ssm.id
+  type              = "ingress"
+  protocol          = "tcp"
+  cidr_blocks       = [var.operations_subnet_cidr_block]
+  from_port         = 443
+  to_port           = 443
+}
