@@ -48,7 +48,10 @@ resource "aws_iam_role_policy_attachment" "ssm_agent_policy_attachment_nessus" {
 # to read the Nessus-related data from the SSM Parameter Store
 data "aws_iam_policy_document" "nessus_assume_delegated_role_policy_doc" {
   statement {
-    actions = ["sts:AssumeRole"]
+    actions = [
+      "sts:AssumeRole",
+      "sts:TagSession",
+    ]
     resources = [
       aws_iam_role.nessus_parameterstorereadonly_role.arn
     ]

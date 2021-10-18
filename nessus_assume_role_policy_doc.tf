@@ -7,6 +7,7 @@ data "aws_iam_policy_document" "nessus_assume_role_doc" {
   statement {
     actions = [
       "sts:AssumeRole",
+      "sts:TagSession",
     ]
 
     principals {
