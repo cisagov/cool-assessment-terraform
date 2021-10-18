@@ -81,8 +81,8 @@ variable "guac_connection_setup_path" {
 
 variable "inbound_ports_allowed" {
   type        = map(list(object({ protocol = string, from_port = number, to_port = number })))
-  description = "A map specifying the ports allowed inbound (from anywhere) to the various instance types (e.g. {\"kali\": [{\"protocol\": \"tcp\", \"from_port\": 8000, \"to_port\": 8999}]}).  The currently-supported keys are: \"assessorportal\", \"debiandesktop\", \"gophish\", \"kali\", \"nessus\", \"pentestportal\", \"samba\", \"teamserver\", and \"terraformer\"."
-  default     = { "assessorportal" : [], "debiandesktop" : [], "gophish" : [{ "protocol" : "tcp", "from_port" : 25, "to_port" : 25 }, { "protocol" : "tcp", "from_port" : 80, "to_port" : 80 }, { "protocol" : "tcp", "from_port" : 443, "to_port" : 443 }, { "protocol" : "tcp", "from_port" : 587, "to_port" : 587 }], "kali" : [{ "protocol" : "tcp", "from_port" : 8000, "to_port" : 8999 }], "nessus" : [], "pentestportal" : [], "samba" : [], "teamserver" : [{ "protocol" : "tcp", "from_port" : 25, "to_port" : 25 }, { "protocol" : "tcp", "from_port" : 53, "to_port" : 53 }, { "protocol" : "tcp", "from_port" : 80, "to_port" : 80 }, { "protocol" : "tcp", "from_port" : 443, "to_port" : 443 }, { "protocol" : "tcp", "from_port" : 587, "to_port" : 587 }, { "protocol" : "udp", "from_port" : 53, "to_port" : 53 }, { "protocol" : "udp", "from_port" : 8080, "to_port" : 8080 }, { "protocol" : "tcp", "from_port" : 8000, "to_port" : 8999 }], "terraformer" : [] }
+  description = "A map specifying the ports allowed inbound (from anywhere) to the various instance types (e.g. {\"kali\": [{\"protocol\": \"tcp\", \"from_port\": 443, \"to_port\": 443}, {\"protocol\": \"tcp\", \"from_port\": 9000, \"to_port\": 9009}]}).  The currently-supported keys are: \"assessorportal\", \"debiandesktop\", \"gophish\", \"kali\", \"nessus\", \"pentestportal\", \"samba\", \"teamserver\", and \"terraformer\"."
+  default     = { "assessorportal" : [], "debiandesktop" : [], "gophish" : [], "kali" : [], "nessus" : [], "pentestportal" : [], "samba" : [], "teamserver" : [], "terraformer" : [] }
 }
 
 variable "nessus_activation_codes" {
