@@ -83,3 +83,24 @@ resource "aws_instance" "nessus" {
     Name = format("Nessus%d", count.index)
   })
 }
+
+# The Elastic IP for each Nessus instance
+resource "aws_eip" "nessus" {
+  count    = lookup(var.operations_instance_counts, "nessus", 0)
+  provider = aws.provisionassessment
+
+  vpc = true
+  tags = {
+    Name             = format("Nessus%d EIP", count.index)
+    "Publish Egress" = "True"
+  }
+}
+
+# The EIP association for each Nessus instance
+resource "aws_eip_association" "nessus" {
+  count    = lookup(var.operations_instance_counts, "nessus", 0)
+  provider = aws.provisionassessment
+
+  instance_id   = aws_instance.nessus[count.index].id
+  allocation_id = aws_eip.nessus[count.index].id
+}
