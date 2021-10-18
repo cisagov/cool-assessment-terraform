@@ -62,7 +62,10 @@ resource "aws_iam_role_policy_attachment" "ssm_agent_policy_attachment_guacamole
 #  - To read the VNC-related data from the SSM Parameter Store
 data "aws_iam_policy_document" "guacamole_assume_delegated_role_policy_doc" {
   statement {
-    actions = ["sts:AssumeRole"]
+    actions = [
+      "sts:AssumeRole",
+      "sts:TagSession",
+    ]
     resources = [
       module.guacamole_certreadrole.role.arn,
       aws_iam_role.vnc_parameterstorereadonly_role.arn
