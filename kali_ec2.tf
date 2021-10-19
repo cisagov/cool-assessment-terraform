@@ -70,3 +70,24 @@ resource "aws_instance" "kali" {
     Name = format("Kali%d", count.index)
   })
 }
+
+# The Elastic IP for each Kali instance
+resource "aws_eip" "kali" {
+  count    = lookup(var.operations_instance_counts, "kali", 0)
+  provider = aws.provisionassessment
+
+  vpc = true
+  tags = {
+    Name             = format("Kali%d EIP", count.index)
+    "Publish Egress" = "True"
+  }
+}
+
+# The EIP association for each Kali instance
+resource "aws_eip_association" "kali" {
+  count    = lookup(var.operations_instance_counts, "kali", 0)
+  provider = aws.provisionassessment
+
+  instance_id   = aws_instance.kali[count.index].id
+  allocation_id = aws_eip.kali[count.index].id
+}
