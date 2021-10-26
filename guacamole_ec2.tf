@@ -57,9 +57,8 @@ resource "aws_instance" "guacamole" {
     http_tokens = "required"
   }
   root_block_device {
-    volume_type           = "gp3"
-    volume_size           = 8
-    delete_on_termination = true
+    volume_type = "gp3"
+    volume_size = 8
   }
   user_data_base64 = data.cloudinit_config.guacamole_cloud_init_tasks.rendered
   vpc_security_group_ids = [
