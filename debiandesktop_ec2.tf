@@ -48,9 +48,8 @@ resource "aws_instance" "debiandesktop" {
     http_tokens = "required"
   }
   root_block_device {
-    volume_type           = "gp2"
-    volume_size           = 128
-    delete_on_termination = true
+    volume_size = 128
+    volume_type = "gp3"
   }
   # We can use the same cloud-init code as the Kali instances, since
   # all it does is set up /etc/fstab to mount the EFS file share.

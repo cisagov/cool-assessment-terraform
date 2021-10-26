@@ -62,9 +62,8 @@ resource "aws_instance" "nessus" {
     http_tokens = "required"
   }
   root_block_device {
-    volume_type           = "gp2"
-    volume_size           = 128
-    delete_on_termination = true
+    volume_size = 128
+    volume_type = "gp3"
   }
   user_data_base64 = data.cloudinit_config.nessus_cloud_init_tasks[count.index].rendered
   vpc_security_group_ids = [
