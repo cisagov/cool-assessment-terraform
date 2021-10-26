@@ -50,7 +50,7 @@ resource "aws_instance" "teamserver" {
   instance_type               = "t3.large"
   subnet_id                   = aws_subnet.operations.id
   root_block_device {
-    volume_type           = "gp2"
+    volume_type           = "gp3"
     volume_size           = 128
     delete_on_termination = true
   }

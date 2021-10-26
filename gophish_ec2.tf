@@ -51,7 +51,7 @@ resource "aws_instance" "gophish" {
     http_tokens = "required"
   }
   root_block_device {
-    volume_type           = "gp2"
+    volume_type           = "gp3"
     volume_size           = 128
     delete_on_termination = true
   }
@@ -107,7 +107,7 @@ resource "aws_ebs_volume" "gophish_docker" {
   availability_zone = "${var.aws_region}${var.aws_availability_zone}"
   encrypted         = true
   size              = 16
-  type              = "gp2"
+  type              = "gp3"
 
   tags = {
     Name = format("Gophish%d Docker", count.index)
