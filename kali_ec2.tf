@@ -48,8 +48,8 @@ resource "aws_instance" "kali" {
     http_tokens = "required"
   }
   root_block_device {
-    volume_type = "gp3"
     volume_size = 128
+    volume_type = "gp3"
   }
   user_data_base64 = data.cloudinit_config.kali_cloud_init_tasks.rendered
   vpc_security_group_ids = [

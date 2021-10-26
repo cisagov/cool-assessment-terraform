@@ -50,8 +50,8 @@ resource "aws_instance" "teamserver" {
   instance_type               = "t3.large"
   subnet_id                   = aws_subnet.operations.id
   root_block_device {
-    volume_type = "gp3"
     volume_size = 128
+    volume_type = "gp3"
   }
   # AWS Instance Meta-Data Service (IMDS) options
   metadata_options {

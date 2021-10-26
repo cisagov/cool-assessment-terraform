@@ -52,8 +52,8 @@ resource "aws_instance" "terraformer" {
     http_tokens = "required"
   }
   root_block_device {
-    volume_type = "gp3"
     volume_size = 20
+    volume_type = "gp3"
   }
   user_data_base64 = data.cloudinit_config.terraformer_cloud_init_tasks.rendered
   vpc_security_group_ids = [
