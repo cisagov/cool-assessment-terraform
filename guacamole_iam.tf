@@ -37,6 +37,16 @@ resource "aws_iam_role_policy" "guacamole_assume_delegated_role_policy" {
   policy = data.aws_iam_policy_document.guacamole_assume_delegated_role_policy_doc.json
 }
 
+# Attach the EC2 read-only policy to this role.  This policy is
+# required by the cisagov/guacamole-connection-scanner Docker image
+# that is part of the Guacamole composition.
+resource "aws_iam_role_policy_attachment" "ec2_read_only_policy_attachment_guacamole" {
+  provider = aws.provisionassessment
+
+  role       = aws_iam_role.guacamole_instance_role.id
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess"
+}
+
 # Attach the CloudWatch Agent policy to this role as well
 resource "aws_iam_role_policy_attachment" "cloudwatch_agent_policy_attachment_guacamole" {
   provider = aws.provisionassessment
