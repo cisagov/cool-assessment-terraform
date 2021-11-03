@@ -53,7 +53,7 @@ resource "aws_instance" "guacamole" {
     # Restrict put responses from IMDS to a single hop (this is the
     # default value).  This effectively disallows the retrieval of an
     # IMDSv2 token via this machine from anywhere else.
-    http_put_response_hop_limit = 1
+    http_put_response_hop_limit = 2
     # Require IMDS tokens AKA require the use of IMDSv2
     http_tokens = "required"
   }
