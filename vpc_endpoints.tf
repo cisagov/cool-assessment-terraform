@@ -40,6 +40,7 @@ resource "aws_vpc_endpoint" "ec2" {
     # endpoint.  You can see this by inspecting the AWS-provided
     # CloudWatchAgentServerPolicyIAM policy.
     aws_security_group.cloudwatch.id,
+    aws_security_group.ec2.id,
     aws_security_group.ssm.id,
   ]
   service_name      = "com.amazonaws.${var.aws_region}.ec2"

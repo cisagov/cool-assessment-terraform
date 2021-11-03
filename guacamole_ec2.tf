@@ -36,6 +36,7 @@ resource "aws_instance" "guacamole" {
   depends_on = [
     aws_security_group_rule.ingress_from_guacamole_to_ssm_via_https,
     aws_security_group_rule.ingress_from_guacamole_to_sts_via_https,
+    aws_vpc_endpoint.ec2,
     aws_vpc_endpoint.s3,
     aws_vpc_endpoint.ssm,
     aws_vpc_endpoint.sts
