@@ -68,7 +68,7 @@ data "aws_iam_policy_document" "guacamole_assume_delegated_role_policy_doc" {
     ]
     resources = [
       module.guacamole_certreadrole.role.arn,
-      aws_iam_role.vnc_parameterstorereadonly_role.arn
+      aws_iam_role.gucamole_parameterstorereadonly_role.arn
     ]
     effect = "Allow"
   }

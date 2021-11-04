@@ -199,9 +199,9 @@ locals {
   # The name and description of the role and policy that allows read-only
   # access to the VNC-related SSM Parameter Store parameters in the
   # Images account.
-  vnc_parameterstorereadonly_role_description = format("Allows read-only access to VNC-related SSM Parameter Store parameters required for the %s assessment.", var.assessment_account_name)
+  gucamole_parameterstorereadonly_role_description = format("Allows read-only access to VNC-related SSM Parameter Store parameters required for the %s assessment.", var.assessment_account_name)
 
-  vnc_parameterstorereadonly_role_name = format("ParameterStoreReadOnly-%s-VNC", local.assessment_workspace_name)
+  gucamole_parameterstorereadonly_role_name = format("ParameterStoreReadOnly-%s-VNC", local.assessment_workspace_name)
 
   # Calculate the VPN server CIDR block using the
   # sharedservices_networking remote state

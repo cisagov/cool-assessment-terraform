@@ -24,7 +24,7 @@ SQL_OUTPUT_FILE_PREFIX = (
 
 # Inputs from terraform
 AWS_REGION = "${aws_region}"
-SSM_READ_ROLE_ARN = "${ssm_vnc_read_role_arn}"
+SSM_READ_ROLE_ARN = "${ssm_guac_read_role_arn}"
 # nosec on following line tells bandit (pre-commit hook) to ignore security
 # warnings; otherwise bandit complains about "Possible hardcoded password"
 SSM_KEY_RDP_PASSWORD = "${ssm_key_rdp_password}"  # nosec

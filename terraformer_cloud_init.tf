@@ -74,7 +74,7 @@ data "cloudinit_config" "terraformer_cloud_init_tasks" {
         read_cool_assessment_terraform_state_role_arn = module.read_terraform_state.role.arn
         organization_read_role_arn                    = data.terraform_remote_state.master.outputs.organizationsreadonly_role.arn
         terraformer_role_arn                          = aws_iam_role.terraformer_role.arn
-        vnc_read_parameter_store_role_arn             = aws_iam_role.vnc_parameterstorereadonly_role.arn
+        vnc_read_parameter_store_role_arn             = aws_iam_role.gucamole_parameterstorereadonly_role.arn
         vnc_username_parameter_name                   = var.ssm_key_vnc_username
     })
     content_type = "text/x-shellscript"
