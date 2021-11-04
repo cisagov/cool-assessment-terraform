@@ -9,7 +9,7 @@ data "aws_iam_policy_document" "vnc_parameterstorereadonly_doc" {
       "ssm:GetParameter",
       "ssm:GetParameters"
     ]
-    resources = formatlist("arn:aws:ssm:*:%s:parameter/vnc/*", local.images_account_id)
+    resources = formatlist("arn:aws:ssm:*:%s:parameter%s", local.images_account_id, ["/vnc/*", "/rdp/*"])
   }
 }
 
