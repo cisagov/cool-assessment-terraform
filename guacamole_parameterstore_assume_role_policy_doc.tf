@@ -3,7 +3,7 @@
 # roles to assume the role this policy is attached to.
 # ------------------------------------------------------------------------------
 
-data "aws_iam_policy_document" "vnc_assume_role_doc" {
+data "aws_iam_policy_document" "guacamole_parameterstore_assume_role_doc" {
   statement {
     actions = [
       "sts:AssumeRole",
