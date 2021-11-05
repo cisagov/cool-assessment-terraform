@@ -1,0 +1,21 @@
+---
+version: 1.0
+tasks:
+  # Set up the Samba share
+  - task: executeScript
+    inputs:
+      - frequency: once
+        type: powershell
+        runAs: localSystem
+        content: |-
+          $samba_server = ("${samba_server_input}" -split ",")[0]
+          if (
+            ($samba_server -ne "") -and
+            (-not (Get-PSDrive "N" -ErrorAction "SilentlyContinue"))
+          )
+          {
+            New-PSDrive -Name "N" `
+              -Root "\\$samba_server\share" `
+              -PSProvider "FileSystem" `
+              -Persist
+          }

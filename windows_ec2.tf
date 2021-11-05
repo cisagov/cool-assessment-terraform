@@ -50,6 +50,7 @@ resource "aws_instance" "windows" {
     volume_size           = 80
     delete_on_termination = true
   }
+  user_data = templatefile("${path.module}/ec2launch/windows-setup.tpl.yml", { samba_server_input = join(",", aws_route53_record.samba_A[*].name) })
   vpc_security_group_ids = [
     aws_security_group.cloudwatch_and_ssm_agent.id,
     aws_security_group.guacamole_accessible.id,
