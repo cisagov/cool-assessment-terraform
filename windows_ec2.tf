@@ -46,9 +46,8 @@ resource "aws_instance" "windows" {
     http_tokens = "required"
   }
   root_block_device {
-    volume_type           = "gp2"
-    volume_size           = 80
-    delete_on_termination = true
+    volume_type = "gp3"
+    volume_size = 80
   }
   user_data = templatefile("${path.module}/ec2launch/windows-setup.tpl.yml", { samba_server_input = join(",", aws_route53_record.samba_A[*].name) })
   vpc_security_group_ids = [
