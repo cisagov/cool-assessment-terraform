@@ -139,22 +139,10 @@ variable "ssm_key_nessus_admin_username" {
   default     = "/nessus/assessment/admin_username"
 }
 
-variable "ssm_key_vnc_password" {
-  type        = string
-  description = "The AWS SSM Parameter Store parameter that contains the password needed to connect to the TBD instance via VNC (e.g. \"/vnc/password\")"
-  default     = "/vnc/password"
-}
-
 variable "ssm_key_vnc_username" {
   type        = string
   description = "The AWS SSM Parameter Store parameter that contains the username of the VNC user on the TBD instance (e.g. \"/vnc/username\")"
   default     = "/vnc/username"
-}
-
-variable "ssm_key_vnc_user_private_ssh_key" {
-  type        = string
-  description = "The AWS SSM Parameter Store parameter that contains the private SSH key of the VNC user on the TBD instance (e.g. \"/vnc/ssh/rsa_private_key\")"
-  default     = "/vnc/ssh/rsa_private_key"
 }
 
 variable "ssmsession_role_description" {

@@ -36,6 +36,7 @@ resource "aws_instance" "guacamole" {
   depends_on = [
     aws_security_group_rule.ingress_from_guacamole_to_ssm_via_https,
     aws_security_group_rule.ingress_from_guacamole_to_sts_via_https,
+    aws_vpc_endpoint.ec2,
     aws_vpc_endpoint.s3,
     aws_vpc_endpoint.ssm,
     aws_vpc_endpoint.sts
@@ -49,10 +50,16 @@ resource "aws_instance" "guacamole" {
   metadata_options {
     # Enable IMDS (this is the default value)
     http_endpoint = "enabled"
-    # Restrict put responses from IMDS to a single hop (this is the
-    # default value).  This effectively disallows the retrieval of an
-    # IMDSv2 token via this machine from anywhere else.
-    http_put_response_hop_limit = 1
+    # Normally we restrict put responses from IMDS to a single hop
+    # (this is the default value).  This effectively disallows the
+    # retrieval of an IMDSv2 token via this machine from anywhere
+    # else.
+    #
+    # In this case we set the hop limit to two, since we want the
+    # cisagov/guacscanner-docker Docker container hosted on this
+    # instance to be able to retrieve from IMDS the ID of the VPC in
+    # which the instance resides.
+    http_put_response_hop_limit = 2
     # Require IMDS tokens AKA require the use of IMDSv2
     http_tokens = "required"
   }
