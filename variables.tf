@@ -177,6 +177,6 @@ variable "terraformer_role_name" {
 
 variable "windows_with_docker" {
   type        = bool
-  description = "A boolean to control the instance type used when creating Windows instances to allow Docker Desktop support."
+  description = "A boolean to control the instance type used when creating Windows instances to allow Docker Desktop support. Windows instances require the `metal` instance type to run Docker Desktop because of nested virtualization, but if Docker Desktop is not needed then other instance types are fine."
   default     = false
 }
