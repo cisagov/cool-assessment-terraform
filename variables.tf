@@ -81,8 +81,8 @@ variable "guac_connection_setup_path" {
 
 variable "inbound_ports_allowed" {
   type        = map(list(object({ protocol = string, from_port = number, to_port = number })))
-  description = "A map specifying the ports allowed inbound (from anywhere) to the various instance types (e.g. {\"kali\": [{\"protocol\": \"tcp\", \"from_port\": 443, \"to_port\": 443}, {\"protocol\": \"tcp\", \"from_port\": 9000, \"to_port\": 9009}]}).  The currently-supported keys are: \"assessorportal\", \"debiandesktop\", \"gophish\", \"kali\", \"nessus\", \"pentestportal\", \"samba\", \"teamserver\", and \"terraformer\"."
-  default     = { "assessorportal" : [], "debiandesktop" : [], "gophish" : [], "kali" : [], "nessus" : [], "pentestportal" : [], "samba" : [], "teamserver" : [], "terraformer" : [] }
+  description = "A map specifying the ports allowed inbound (from anywhere) to the various instance types (e.g. {\"kali\": [{\"protocol\": \"tcp\", \"from_port\": 443, \"to_port\": 443}, {\"protocol\": \"tcp\", \"from_port\": 9000, \"to_port\": 9009}]}).  The currently-supported keys are: \"assessorportal\", \"debiandesktop\", \"gophish\", \"kali\", \"nessus\", \"pentestportal\", \"samba\", \"teamserver\", \"terraformer\", and \"windows\"."
+  default     = { "assessorportal" : [], "debiandesktop" : [], "gophish" : [], "kali" : [], "nessus" : [], "pentestportal" : [], "samba" : [], "teamserver" : [], "terraformer" : [], "windows" : [] }
 }
 
 variable "nessus_activation_codes" {
@@ -173,4 +173,10 @@ variable "terraformer_role_name" {
   type        = string
   description = "The name to assign the IAM role (and policy) that allows Terraformer instances to create appropriate AWS resources in this account."
   default     = "Terraformer"
+}
+
+variable "windows_with_docker" {
+  type        = bool
+  description = "A boolean to control the instance type used when creating Windows instances to allow Docker Desktop support. Windows instances require the `metal` instance type to run Docker Desktop because of nested virtualization, but if Docker Desktop is not needed then other instance types are fine."
+  default     = false
 }

@@ -237,3 +237,18 @@ output "vpn_server_cidr_block" {
   value       = local.vpn_server_cidr_block
   description = "The CIDR block for the COOL VPN."
 }
+
+output "windows_instance_profile" {
+  value       = aws_iam_instance_profile.windows
+  description = "The instance profile for the Windows instances."
+}
+
+output "windows_instances" {
+  value       = aws_instance.windows
+  description = "The Windows instances."
+}
+
+output "windows_security_group" {
+  value       = aws_security_group.windows
+  description = "The security group for the Windows instances."
+}

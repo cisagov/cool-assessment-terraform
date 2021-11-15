@@ -118,6 +118,17 @@ resource "aws_security_group_rule" "ingress_from_terraformer_to_cloudwatch_via_h
   to_port                  = 443
 }
 
+resource "aws_security_group_rule" "ingress_from_windows_to_cloudwatch_via_https" {
+  provider = aws.provisionassessment
+
+  security_group_id        = aws_security_group.cloudwatch.id
+  type                     = "ingress"
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.windows.id
+  from_port                = 443
+  to_port                  = 443
+}
+
 # Allow ingress via HTTPS from the operations subnet
 resource "aws_security_group_rule" "ingress_from_operations_subnet_to_cloudwatch_via_https" {
   provider = aws.provisionassessment
