@@ -50,3 +50,27 @@ resource "aws_security_group_rule" "ingress_from_anywhere_to_windows_via_allowed
   from_port         = each.value["from_port"]
   to_port           = each.value["to_port"]
 }
+
+# Allow unfettered access between Windows and Kali instances
+resource "aws_security_group_rule" "windows_egress_to_kali_instances" {
+  provider = aws.provisionassessment
+  for_each = toset(["tcp", "udp"])
+
+  security_group_id        = aws_security_group.windows.id
+  type                     = "egress"
+  protocol                 = each.key
+  source_security_group_id = aws_security_group.kali.id
+  from_port                = 0
+  to_port                  = 65535
+}
+resource "aws_security_group_rule" "windows_ingress_from_kali_instances" {
+  provider = aws.provisionassessment
+  for_each = toset(["tcp", "udp"])
+
+  security_group_id        = aws_security_group.windows.id
+  type                     = "ingress"
+  protocol                 = each.key
+  source_security_group_id = aws_security_group.kali.id
+  from_port                = 0
+  to_port                  = 65535
+}
