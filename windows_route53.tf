@@ -1,4 +1,4 @@
-# Private DNS A record for Windows instance
+# Private DNS A record for Windows instances
 resource "aws_route53_record" "windows_A" {
   count    = lookup(var.operations_instance_counts, "windows", 0)
   provider = aws.provisionassessment
