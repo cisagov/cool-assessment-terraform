@@ -30,7 +30,7 @@ resource "aws_instance" "terraformer" {
 
   ami                  = data.aws_ami.terraformer.id
   iam_instance_profile = aws_iam_instance_profile.terraformer.name
-  instance_type        = "t3.medium"
+  instance_type        = "t3.xlarge"
   # TODO: For some reason I can't ssh via SSM to the instance unless I
   # put it in the first private subnet.  I believe this has something
   # to do with the NACLs that are in place for that subnet
