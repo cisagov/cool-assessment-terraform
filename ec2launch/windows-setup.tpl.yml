@@ -4,7 +4,7 @@ tasks:
   # Expand the OS partition and set up the Samba share
   - task: executeScript
     inputs:
-      - frequency: once
+      - frequency: always
         type: powershell
         runAs: localSystem
         content: |-
