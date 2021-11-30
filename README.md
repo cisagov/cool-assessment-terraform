@@ -466,7 +466,7 @@ the COOL environment.
 | cert\_bucket\_name | The name of the AWS S3 bucket where certificates are stored. | `string` | `"cisa-cool-certificates"` | no |
 | cool\_domain | The domain where the COOL resources reside (e.g. "cool.cyber.dhs.gov"). | `string` | `"cool.cyber.dhs.gov"` | no |
 | dns\_ttl | The TTL value to use for Route53 DNS records (e.g. 86400).  A smaller value may be useful when the DNS records are changing often, for example when testing. | `number` | `60` | no |
-| email\_sending\_domain | The domain to send emails from within the assessment environment (e.g. "example.com"). | `string` | `"example.com"` | no |
+| email\_sending\_domains | The list of domains to send emails from within the assessment environment (e.g. [ "example.com" ]).  Teamserver and Gophish instances will be deployed with each sequential domain in the list, so teamserver0 and gophish0 will get the first domain, teamserver1 and gophish1 will get the second domain, and so on.  If there are more Teamserver or Gophish instances than email-sending domains, the domains in the list will be reused in a wrap-around fashion. For example, if there are three Teamservers and only two email-sending domains, teamserver0 will get the first domain, teamserver1 will get the second domain, and teamserver2 will wrap-around back to using the first domain. | `list(string)` | ```[ "example.com" ]``` | no |
 | guac\_connection\_setup\_path | The full path to the dbinit directory where initialization files must be stored in order to work properly. (e.g. "/var/guacamole/dbinit") | `string` | `"/var/guacamole/dbinit"` | no |
 | inbound\_ports\_allowed | A map specifying the ports allowed inbound (from anywhere) to the various instance types (e.g. {"kali": [{"protocol": "tcp", "from\_port": 443, "to\_port": 443}, {"protocol": "tcp", "from\_port": 9000, "to\_port": 9009}]}).  The currently-supported keys are: "assessorportal", "debiandesktop", "gophish", "kali", "nessus", "pentestportal", "samba", "teamserver", "terraformer", and "windows". | `map(list(object({ protocol = string, from_port = number, to_port = number })))` | ```{ "assessorportal": [], "debiandesktop": [], "gophish": [], "kali": [], "nessus": [], "pentestportal": [], "samba": [], "teamserver": [], "terraformer": [], "windows": [] }``` | no |
 | nessus\_activation\_codes | The list of Nessus activation codes (e.g. ["AAAA-BBBB-CCCC-DDDD"]). The number of codes in this list should match the number of Nessus instances defined in operations\_instance\_counts. | `list(string)` | `[]` | no |
@@ -505,8 +505,8 @@ the COOL environment.
 | debian\_desktop\_security\_group | The security group for the Debian desktop instances. |
 | efs\_client\_security\_group | A security group that should be applied to all instances that will mount the EFS file share. |
 | efs\_mount\_targets | The mount targets for the EFS file share. |
-| email\_sending\_domain\_certreadrole | The IAM role that allows for reading the certificate for the email-sending domain. |
-| gophish\_instance\_profile | The instance profile for the Gophish instances. |
+| email\_sending\_domain\_certreadrole | The IAM roles that allow for reading the certificate for the email-sending domain. |
+| gophish\_instance\_profile | The instance profiles for the Gophish instances. |
 | gophish\_instances | The Gophish instances. |
 | gophish\_security\_group | The security group for the Gophish instances. |
 | guacamole\_accessible\_security\_group | A security group that should be applied to all instances that are to be accessible from Guacamole. |
@@ -534,7 +534,7 @@ the COOL environment.
 | samba\_server\_security\_group | The security group for the Samba file share server instances. |
 | scanner\_security\_group | A security group that should be applied to all instance types that perform scanning.  This security group allows egress to anywhere as well as ingress from anywhere via ICMP. |
 | ssm\_session\_role | An IAM role that allows creation of SSM SessionManager sessions to any EC2 instance in this account. |
-| teamserver\_instance\_profile | The instance profile for the Teamserver instances. |
+| teamserver\_instance\_profile | The instance profiles for the Teamserver instances. |
 | teamserver\_instances | The Teamserver instances. |
 | teamserver\_security\_group | The security group for the Teamserver instances. |
 | terraformer\_instances | The Terraformer instances. |
