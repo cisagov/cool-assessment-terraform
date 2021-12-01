@@ -8,6 +8,8 @@ locals {
 }
 
 data "cloudinit_config" "teamserver_cloud_init_tasks" {
+  count = lookup(var.operations_instance_counts, "teamserver", 0)
+
   gzip          = true
   base64_encode = true
 
@@ -56,15 +58,21 @@ data "cloudinit_config" "teamserver_cloud_init_tasks" {
   part {
     content = templatefile(
       "${path.module}/cloud-init/install-certificates.py", {
-        aws_region          = var.aws_region
-        cert_bucket_name    = var.cert_bucket_name
-        cert_read_role_arn  = module.email_sending_domain_certreadrole.role.arn
+        aws_region       = var.aws_region
+        cert_bucket_name = var.cert_bucket_name
+        # We use the element() function below instead of the built-in list
+        # index syntax because we want the "wrap-around" behavior provided
+        # by element().  This means that the number of items in
+        # var.email_sending_domains does not have to exactly match the number
+        # of Teamserver instances.  For details, see:
+        # https://www.terraform.io/docs/language/functions/element.html
+        cert_read_role_arn  = module.email_sending_domain_certreadrole[element(var.email_sending_domains, count.index)].role.arn
         create_dest_dirs    = false
         full_chain_pem_dest = local.full_chain_pem
         priv_key_pem_dest   = local.priv_key_pem
         # Certbot stores wildcard certs in a directory with the name
         # of the domain, instead of pre-pending an asterisk.
-        server_fqdn = var.email_sending_domain
+        server_fqdn = element(var.email_sending_domains, count.index)
     })
     content_type = "text/x-shellscript"
     filename     = "01-install-certificates.py"
@@ -75,7 +83,7 @@ data "cloudinit_config" "teamserver_cloud_init_tasks" {
     content = templatefile(
       "${path.module}/cloud-init/add-https-certificate-block-to-cs-profiles.tpl.sh", {
         c2_profile_location = "/tools/Malleable-C2-Profiles/normal"
-        domain              = var.email_sending_domain
+        domain              = element(var.email_sending_domains, count.index)
         full_chain_pem      = local.full_chain_pem
         priv_key_pem        = local.priv_key_pem
     })

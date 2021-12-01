@@ -96,15 +96,21 @@ data "cloudinit_config" "gophish_cloud_init_tasks" {
   part {
     content = templatefile(
       "${path.module}/cloud-init/install-certificates.py", {
-        aws_region          = var.aws_region
-        cert_bucket_name    = var.cert_bucket_name
-        cert_read_role_arn  = module.email_sending_domain_certreadrole.role.arn
+        aws_region       = var.aws_region
+        cert_bucket_name = var.cert_bucket_name
+        # We use the element() function below instead of the built-in list
+        # index syntax because we want the "wrap-around" behavior provided
+        # by element().  This means that the number of items in
+        # var.email_sending_domains does not have to exactly match the number
+        # of Gophish instances.  For details, see:
+        # https://www.terraform.io/docs/language/functions/element.html
+        cert_read_role_arn  = module.email_sending_domain_certreadrole[element(var.email_sending_domains, count.index)].role.arn
         create_dest_dirs    = false
         full_chain_pem_dest = "${local.pca_gophish_composition_dir}/secrets/postfix/fullchain.pem"
         priv_key_pem_dest   = "${local.pca_gophish_composition_dir}/secrets/postfix/privkey.pem"
         # Certbot stores wildcard certs in a directory with the name
         # of the domain, instead of pre-pending an asterisk.
-        server_fqdn = var.email_sending_domain
+        server_fqdn = element(var.email_sending_domains, count.index)
     })
     content_type = "text/x-shellscript"
     filename     = "install-certificates.py"
@@ -114,7 +120,7 @@ data "cloudinit_config" "gophish_cloud_init_tasks" {
   part {
     content = templatefile(
       "${path.module}/cloud-init/postfix-setup.tpl.yml", {
-        email_sending_domain    = var.email_sending_domain
+        email_sending_domain    = element(var.email_sending_domains, count.index)
         pca_docker_compose_file = "${local.pca_gophish_composition_dir}/docker-compose.yml"
     })
     content_type = "text/cloud-config"
@@ -122,12 +128,12 @@ data "cloudinit_config" "gophish_cloud_init_tasks" {
     merge_type   = "list(append)+dict(recurse_array)+str()"
   }
 
-  # Configure Thunderbird to autoconfigure email accounts from this
-  # assessment's email-sending domain.
+  # Configure Thunderbird to autoconfigure email accounts from the
+  # appropriate email-sending domain.
   part {
     content = templatefile(
       "${path.module}/cloud-init/write-thunderbird-email-autoconfig.tpl.yml", {
-        email_sending_domain = var.email_sending_domain
+        email_sending_domain = element(var.email_sending_domains, count.index)
     })
     content_type = "text/cloud-config"
     filename     = "write-thunderbird-email-autoconfig.yml"
@@ -142,7 +148,7 @@ data "cloudinit_config" "gophish_cloud_init_tasks" {
   part {
     content = templatefile(
       "${path.module}/cloud-init/map-hostname-to-localhost.tpl.sh", {
-        hostname   = var.email_sending_domain
+        hostname   = element(var.email_sending_domains, count.index)
         hosts_file = "/etc/hosts"
     })
     content_type = "text/x-shellscript"

@@ -36,7 +36,7 @@ resource "aws_instance" "gophish" {
 
   ami                         = data.aws_ami.gophish.id
   associate_public_ip_address = true
-  iam_instance_profile        = aws_iam_instance_profile.gophish.name
+  iam_instance_profile        = aws_iam_instance_profile.gophish[count.index].name
   instance_type               = "t3.medium"
   subnet_id                   = aws_subnet.operations.id
   # AWS Instance Meta-Data Service (IMDS) options

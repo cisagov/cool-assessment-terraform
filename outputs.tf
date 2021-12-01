@@ -58,14 +58,14 @@ output "efs_mount_targets" {
   description = "The mount targets for the EFS file share."
 }
 
-output "email_sending_domain_certreadrole" {
+output "email_sending_domain_certreadroles" {
   value       = module.email_sending_domain_certreadrole
-  description = "The IAM role that allows for reading the certificate for the email-sending domain."
+  description = "The IAM roles that allow for reading the certificate for each email-sending domain."
 }
 
-output "gophish_instance_profile" {
+output "gophish_instance_profiles" {
   value       = aws_iam_instance_profile.gophish
-  description = "The instance profile for the Gophish instances."
+  description = "The instance profiles for the Gophish instances."
 }
 
 output "gophish_instances" {
@@ -203,9 +203,9 @@ output "ssm_session_role" {
   description = "An IAM role that allows creation of SSM SessionManager sessions to any EC2 instance in this account."
 }
 
-output "teamserver_instance_profile" {
+output "teamserver_instance_profiles" {
   value       = aws_iam_instance_profile.teamserver
-  description = "The instance profile for the Teamserver instances."
+  description = "The instance profiles for the Teamserver instances."
 }
 
 output "teamserver_instances" {

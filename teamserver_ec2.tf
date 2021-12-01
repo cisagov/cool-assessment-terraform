@@ -46,7 +46,7 @@ resource "aws_instance" "teamserver" {
 
   ami                         = data.aws_ami.teamserver.id
   associate_public_ip_address = true
-  iam_instance_profile        = aws_iam_instance_profile.teamserver.name
+  iam_instance_profile        = aws_iam_instance_profile.teamserver[count.index].name
   instance_type               = "t3.large"
   subnet_id                   = aws_subnet.operations.id
   root_block_device {
@@ -64,7 +64,7 @@ resource "aws_instance" "teamserver" {
     # Require IMDS tokens AKA require the use of IMDSv2
     http_tokens = "required"
   }
-  user_data_base64 = data.cloudinit_config.teamserver_cloud_init_tasks.rendered
+  user_data_base64 = data.cloudinit_config.teamserver_cloud_init_tasks[count.index].rendered
   vpc_security_group_ids = [
     aws_security_group.cloudwatch_and_ssm_agent.id,
     aws_security_group.efs_client.id,

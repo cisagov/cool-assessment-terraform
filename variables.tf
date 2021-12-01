@@ -67,10 +67,10 @@ variable "dns_ttl" {
   default     = 60
 }
 
-variable "email_sending_domain" {
-  type        = string
-  description = "The domain to send emails from within the assessment environment (e.g. \"example.com\")."
-  default     = "example.com"
+variable "email_sending_domains" {
+  type        = list(string)
+  description = "The list of domains to send emails from within the assessment environment (e.g. [ \"example.com\" ]).  Teamserver and Gophish instances will be deployed with each sequential domain in the list, so teamserver0 and gophish0 will get the first domain, teamserver1 and gophish1 will get the second domain, and so on.  If there are more Teamserver or Gophish instances than email-sending domains, the domains in the list will be reused in a wrap-around fashion. For example, if there are three Teamservers and only two email-sending domains, teamserver0 will get the first domain, teamserver1 will get the second domain, and teamserver2 will wrap-around back to using the first domain."
+  default     = ["example.com"]
 }
 
 variable "guac_connection_setup_path" {
