@@ -60,7 +60,7 @@ output "efs_mount_targets" {
 
 output "email_sending_domain_certreadroles" {
   value       = module.email_sending_domain_certreadrole
-  description = "The IAM roles that allow for reading the certificate for the email-sending domain."
+  description = "The IAM roles that allow for reading the certificate for each email-sending domain."
 }
 
 output "gophish_instance_profiles" {

@@ -505,7 +505,7 @@ the COOL environment.
 | debian\_desktop\_security\_group | The security group for the Debian desktop instances. |
 | efs\_client\_security\_group | A security group that should be applied to all instances that will mount the EFS file share. |
 | efs\_mount\_targets | The mount targets for the EFS file share. |
-| email\_sending\_domain\_certreadroles | The IAM roles that allow for reading the certificate for the email-sending domain. |
+| email\_sending\_domain\_certreadroles | The IAM roles that allow for reading the certificate for each email-sending domain. |
 | gophish\_instance\_profiles | The instance profiles for the Gophish instances. |
 | gophish\_instances | The Gophish instances. |
 | gophish\_security\_group | The security group for the Gophish instances. |

@@ -1,4 +1,5 @@
-# Create a role that allows an instance to read its certs from S3.
+# Create roles that allow each instance to read its email-sending domain
+# certificate from an S3 bucket.
 module "email_sending_domain_certreadrole" {
   for_each = toset(var.email_sending_domains)
 

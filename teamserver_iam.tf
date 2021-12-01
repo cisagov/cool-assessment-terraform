@@ -1,7 +1,7 @@
 # Create the IAM instance profile for the Teamserver EC2 server
 # instance
 
-# The instance profile to be used
+# The instance profiles to be used
 resource "aws_iam_instance_profile" "teamserver" {
   count = lookup(var.operations_instance_counts, "teamserver", 0)
 
@@ -11,7 +11,7 @@ resource "aws_iam_instance_profile" "teamserver" {
   role = aws_iam_role.teamserver_instance_role[count.index].name
 }
 
-# The instance role
+# The instance roles
 resource "aws_iam_role" "teamserver_instance_role" {
   count = lookup(var.operations_instance_counts, "teamserver", 0)
 
@@ -31,7 +31,7 @@ resource "aws_iam_role_policy" "teamserver_assume_delegated_role_policy" {
   policy = data.aws_iam_policy_document.teamserver_assume_delegated_role_policy_doc[count.index].json
 }
 
-# Attach the CloudWatch Agent policy to this role as well
+# Attach the CloudWatch Agent policy to these roles as well
 resource "aws_iam_role_policy_attachment" "cloudwatch_agent_policy_attachment_teamserver" {
   count = lookup(var.operations_instance_counts, "teamserver", 0)
 
@@ -41,7 +41,7 @@ resource "aws_iam_role_policy_attachment" "cloudwatch_agent_policy_attachment_te
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
 }
 
-# Attach the SSM Agent policy to this role as well
+# Attach the SSM Agent policy to these roles as well
 resource "aws_iam_role_policy_attachment" "ssm_agent_policy_attachment_teamserver" {
   count = lookup(var.operations_instance_counts, "teamserver", 0)
 
@@ -66,7 +66,7 @@ resource "aws_iam_role_policy_attachment" "efs_mount_policy_attachment_teamserve
 # Define the role policies below
 ################################
 
-# Allow the teamserver instance to assume the necessary role to read
+# Allow each Teamserver instance to assume the necessary role to read
 # its email-sending domain certificate from an S3 bucket.
 data "aws_iam_policy_document" "teamserver_assume_delegated_role_policy_doc" {
   count = lookup(var.operations_instance_counts, "teamserver", 0)
