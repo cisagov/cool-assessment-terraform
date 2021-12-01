@@ -505,8 +505,8 @@ the COOL environment.
 | debian\_desktop\_security\_group | The security group for the Debian desktop instances. |
 | efs\_client\_security\_group | A security group that should be applied to all instances that will mount the EFS file share. |
 | efs\_mount\_targets | The mount targets for the EFS file share. |
-| email\_sending\_domain\_certreadrole | The IAM roles that allow for reading the certificate for the email-sending domain. |
-| gophish\_instance\_profile | The instance profiles for the Gophish instances. |
+| email\_sending\_domain\_certreadroles | The IAM roles that allow for reading the certificate for the email-sending domain. |
+| gophish\_instance\_profiles | The instance profiles for the Gophish instances. |
 | gophish\_instances | The Gophish instances. |
 | gophish\_security\_group | The security group for the Gophish instances. |
 | guacamole\_accessible\_security\_group | A security group that should be applied to all instances that are to be accessible from Guacamole. |
@@ -534,7 +534,7 @@ the COOL environment.
 | samba\_server\_security\_group | The security group for the Samba file share server instances. |
 | scanner\_security\_group | A security group that should be applied to all instance types that perform scanning.  This security group allows egress to anywhere as well as ingress from anywhere via ICMP. |
 | ssm\_session\_role | An IAM role that allows creation of SSM SessionManager sessions to any EC2 instance in this account. |
-| teamserver\_instance\_profile | The instance profiles for the Teamserver instances. |
+| teamserver\_instance\_profiles | The instance profiles for the Teamserver instances. |
 | teamserver\_instances | The Teamserver instances. |
 | teamserver\_security\_group | The security group for the Teamserver instances. |
 | terraformer\_instances | The Terraformer instances. |
