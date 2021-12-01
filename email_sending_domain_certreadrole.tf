@@ -12,5 +12,5 @@ module "email_sending_domain_certreadrole" {
   cert_bucket_name = var.cert_bucket_name
   # Certbot stores wildcard certs in a directory with the name of the
   # domain, instead of pre-pending an asterisk.
-  hostname = each.key
+  hostname = each.value
 }
