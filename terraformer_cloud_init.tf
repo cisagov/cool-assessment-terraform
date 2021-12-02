@@ -16,7 +16,7 @@ data "cloudinit_config" "terraformer_cloud_init_tasks" {
       "${path.module}/cloud-init/efs-mount.tpl.yml", {
         # Just mount the EFS mount target in the first private subnet
         efs_id      = aws_efs_mount_target.target[var.private_subnet_cidr_blocks[0]].file_system_id
-        group       = data.aws_ssm_parameter.vnc_username.value
+        group       = var.efs_users_group_name
         mount_point = "/share"
         owner       = data.aws_ssm_parameter.vnc_username.value
     })

@@ -19,7 +19,7 @@ variable "dns_ttl" {
 variable "efs_mount_point_group" {
   type        = string
   description = "The name of the group that should own the EFS share mount point on the deployed instance."
-  default     = "vnc"
+  default     = "efs_users"
 }
 
 variable "efs_mount_point_owner" {
