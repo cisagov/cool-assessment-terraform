@@ -139,6 +139,12 @@ variable "ssm_key_nessus_admin_username" {
   default     = "/nessus/assessment/admin_username"
 }
 
+variable "ssm_key_samba_username" {
+  type        = string
+  description = "The AWS SSM Parameter Store parameter that contains the username of the Samba user (e.g. \"/samba/username\")."
+  default     = "/samba/username"
+}
+
 variable "ssm_key_vnc_username" {
   type        = string
   description = "The AWS SSM Parameter Store parameter that contains the username of the VNC user on the TBD instance (e.g. \"/vnc/username\")"

@@ -16,6 +16,18 @@ variable "dns_ttl" {
   default     = 60
 }
 
+variable "efs_mount_point_group" {
+  type        = string
+  description = "The name of the group that should own the EFS share mount point on the deployed instance."
+  default     = "vnc"
+}
+
+variable "efs_mount_point_owner" {
+  type        = string
+  description = "The name of the user that should own the EFS share mount point on the deployed instance."
+  default     = "vnc"
+}
+
 variable "email_sending_domain" {
   type        = string
   description = "The domain to send emails from within the assessment environment (e.g. \"example.com\")."
