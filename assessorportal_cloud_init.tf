@@ -18,7 +18,9 @@ data "cloudinit_config" "assessorportal_cloud_init_tasks" {
       "${path.module}/cloud-init/efs-mount.tpl.yml", {
         # Just mount the EFS mount target in the first private subnet
         efs_id      = aws_efs_mount_target.target[var.private_subnet_cidr_blocks[0]].file_system_id
+        group       = "vnc"
         mount_point = "/share"
+        owner       = "vnc"
     })
     content_type = "text/cloud-config"
     filename     = "efs_mount.yml"
