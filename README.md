@@ -484,7 +484,7 @@ the COOL environment.
 | ssm\_key\_nessus\_admin\_password | The AWS SSM Parameter Store parameter that contains the password of the Nessus admin user (e.g. "/nessus/assessment/admin\_password"). | `string` | `"/nessus/assessment/admin_password"` | no |
 | ssm\_key\_nessus\_admin\_username | The AWS SSM Parameter Store parameter that contains the username of the Nessus admin user (e.g. "/nessus/assessment/admin\_username"). | `string` | `"/nessus/assessment/admin_username"` | no |
 | ssm\_key\_samba\_username | The AWS SSM Parameter Store parameter that contains the username of the Samba user (e.g. "/samba/username"). | `string` | `"/samba/username"` | no |
-| ssm\_key\_vnc\_username | The AWS SSM Parameter Store parameter that contains the username of the VNC user on the TBD instance (e.g. "/vnc/username") | `string` | `"/vnc/username"` | no |
+| ssm\_key\_vnc\_username | The AWS SSM Parameter Store parameter that contains the username of the VNC user (e.g. "/vnc/username"). | `string` | `"/vnc/username"` | no |
 | ssmsession\_role\_description | The description to associate with the IAM role (and policy) that allows creation of SSM SessionManager sessions to any EC2 instance in this account. | `string` | `"Allows creation of SSM SessionManager sessions to any EC2 instance in this account."` | no |
 | ssmsession\_role\_name | The name to assign the IAM role (and policy) that allows creation of SSM SessionManager sessions to any EC2 instance in this account. | `string` | `"StartStopSSMSession"` | no |
 | tags | Tags to apply to all AWS resources created | `map(string)` | `{}` | no |

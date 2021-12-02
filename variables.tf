@@ -147,7 +147,7 @@ variable "ssm_key_samba_username" {
 
 variable "ssm_key_vnc_username" {
   type        = string
-  description = "The AWS SSM Parameter Store parameter that contains the username of the VNC user on the TBD instance (e.g. \"/vnc/username\")"
+  description = "The AWS SSM Parameter Store parameter that contains the username of the VNC user (e.g. \"/vnc/username\")."
   default     = "/vnc/username"
 }
 
