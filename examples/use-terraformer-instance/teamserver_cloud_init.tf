@@ -23,7 +23,9 @@ data "cloudinit_config" "teamserver_cloud_init_tasks" {
       "${path.module}/../../cloud-init/efs-mount.tpl.yml", {
         # Just mount the EFS mount target in the first private subnet
         efs_id      = data.terraform_remote_state.cool_assessment_terraform.outputs.efs_mount_targets[data.terraform_remote_state.cool_assessment_terraform.outputs.private_subnet_cidr_blocks[0]].file_system_id
+        group       = var.efs_mount_point_group
         mount_point = "/share"
+        owner       = var.efs_mount_point_owner
     })
     content_type = "text/cloud-config"
     filename     = "efs_mount.yml"

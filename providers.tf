@@ -21,6 +21,19 @@ provider "aws" {
   region = var.aws_region # route53 is global, but still required by Terraform
 }
 
+# The provider used to read parameter data from an SSM Parameter Store
+provider "aws" {
+  alias = "parameterstorereadonly"
+  assume_role {
+    role_arn     = data.terraform_remote_state.images_parameterstore.outputs.parameterstorereadonly_role.arn
+    session_name = local.caller_user_name
+  }
+  default_tags {
+    tags = var.tags
+  }
+  region = var.aws_region
+}
+
 # The provider used to create roles that can read certificates from an S3 bucket
 provider "aws" {
   alias = "provisioncertreadrole"

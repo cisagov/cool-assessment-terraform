@@ -48,6 +48,8 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | aws\_region | The AWS region where the non-global resources for this assessment are to be provisioned (e.g. "us-east-1"). | `string` | `"us-east-1"` | no |
 | dns\_ttl | The TTL value to use for Route53 DNS records (e.g. 86400).  A smaller value may be useful when the DNS records are changing often, for example when testing. | `number` | `60` | no |
+| efs\_mount\_point\_group | The name of the group that should own the EFS share mount point on the deployed instance. | `string` | `"vnc"` | no |
+| efs\_mount\_point\_owner | The name of the user that should own the EFS share mount point on the deployed instance. | `string` | `"vnc"` | no |
 | email\_sending\_domain | The domain to send emails from within the assessment environment (e.g. "example.com"). | `string` | `"example.com"` | no |
 | tags | Tags to apply to all AWS resources created. | `map(string)` | `{}` | no |
 

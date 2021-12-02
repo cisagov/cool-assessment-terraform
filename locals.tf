@@ -31,6 +31,23 @@ data "aws_default_tags" "assessment" {
 }
 
 # ------------------------------------------------------------------------------
+# Retrieve SSM Parameter Store parameters.
+# Note: These values are stored in plaintext in the state, but it should be fine
+# because we are using a remote state that we have configured to be encrypted.
+# ------------------------------------------------------------------------------
+data "aws_ssm_parameter" "samba_username" {
+  provider = aws.parameterstorereadonly
+
+  name = var.ssm_key_samba_username
+}
+
+data "aws_ssm_parameter" "vnc_username" {
+  provider = aws.parameterstorereadonly
+
+  name = var.ssm_key_vnc_username
+}
+
+# ------------------------------------------------------------------------------
 # Evaluate expressions for use throughout this configuration.
 # ------------------------------------------------------------------------------
 locals {

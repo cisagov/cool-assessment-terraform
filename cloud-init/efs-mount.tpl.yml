@@ -3,6 +3,7 @@
 # Create a mount point for the EFS
 runcmd:
   - [mkdir, -p, "${mount_point}"]
+  - [chown, "${owner}:${group}", "${mount_point}"]
 
 # Add an fstab entry for the EFS mount
 mounts:
