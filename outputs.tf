@@ -48,6 +48,11 @@ output "debian_desktop_security_group" {
   description = "The security group for the Debian desktop instances."
 }
 
+output "efs_access_points" {
+  value       = aws_efs_access_point.access_point
+  description = "The access points to control file-system access to the EFS file share."
+}
+
 output "efs_client_security_group" {
   value       = aws_security_group.efs_client
   description = "A security group that should be applied to all instances that will mount the EFS file share."
