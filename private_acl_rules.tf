@@ -345,38 +345,6 @@ resource "aws_network_acl_rule" "private_egress_to_operations_via_ssh" {
   to_port        = 22
 }
 
-# Allow egress to operations subnet via RDP (TCP)
-# For: Assessment team RDP access from private subnet to operations subnet
-resource "aws_network_acl_rule" "private_egress_to_operations_via_rdp_over_tcp" {
-  provider = aws.provisionassessment
-  for_each = toset(var.private_subnet_cidr_blocks)
-
-  network_acl_id = aws_network_acl.private[each.value].id
-  egress         = true
-  protocol       = "tcp"
-  rule_number    = 370 + index(var.private_subnet_cidr_blocks, each.value)
-  rule_action    = "allow"
-  cidr_block     = aws_subnet.operations.cidr_block
-  from_port      = 3389
-  to_port        = 3389
-}
-
-# Allow egress to operations subnet via RDP (UDP)
-# For: Assessment team RDP access from private subnet to operations subnet
-resource "aws_network_acl_rule" "private_egress_to_operations_via_rdp_over_udp" {
-  provider = aws.provisionassessment
-  for_each = toset(var.private_subnet_cidr_blocks)
-
-  network_acl_id = aws_network_acl.private[each.value].id
-  egress         = true
-  protocol       = "udp"
-  rule_number    = 380 + index(var.private_subnet_cidr_blocks, each.value)
-  rule_action    = "allow"
-  cidr_block     = aws_subnet.operations.cidr_block
-  from_port      = 3389
-  to_port        = 3389
-}
-
 # Allow egress to operations subnet via VNC
 # For: Assessment team VNC access from private subnet to operations subnet
 resource "aws_network_acl_rule" "private_egress_to_operations_via_vnc" {
@@ -386,10 +354,10 @@ resource "aws_network_acl_rule" "private_egress_to_operations_via_vnc" {
   network_acl_id = aws_network_acl.private[each.value].id
   egress         = true
   protocol       = "tcp"
-  rule_number    = 390 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 370 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = aws_subnet.operations.cidr_block
-  from_port      = 5901
+  from_port      = 5900
   to_port        = 5901
 }
 

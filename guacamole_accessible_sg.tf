@@ -21,19 +21,6 @@ resource "aws_security_group_rule" "ingress_from_guacamole_via_ssh" {
   to_port                  = 22
 }
 
-# Allow ingress from Guacamole instances via RDP
-resource "aws_security_group_rule" "ingress_from_guacamole_via_rdp" {
-  provider = aws.provisionassessment
-  for_each = toset(["tcp", "udp"])
-
-  security_group_id        = aws_security_group.guacamole_accessible.id
-  type                     = "ingress"
-  protocol                 = each.value
-  source_security_group_id = aws_security_group.guacamole.id
-  from_port                = 3389
-  to_port                  = 3389
-}
-
 # Allow ingress from Guacamole instances via VNC
 resource "aws_security_group_rule" "ingress_from_guacamole_via_vnc" {
   provider = aws.provisionassessment
@@ -42,6 +29,6 @@ resource "aws_security_group_rule" "ingress_from_guacamole_via_vnc" {
   type                     = "ingress"
   protocol                 = "tcp"
   source_security_group_id = aws_security_group.guacamole.id
-  from_port                = 5901
+  from_port                = 5900
   to_port                  = 5901
 }
