@@ -12,16 +12,16 @@ tasks:
           if ((Get-Partition -DiskId $DiskPath).Count -gt 2) {
             "select disk 0`nselect partition 2`nextend`n" | diskpart.exe
           }
-          $samba_server = ("${samba_server_input}" -split ",")[0]
+          $SambaServer = ("${samba_server_input}" -split ",")[0]
           if (
-            ($samba_server -ne "") -and
+            ($SambaServer -ne "") -and
             (-not
               (Get-PSDrive "${drive_letter}" -ErrorAction "SilentlyContinue")
             )
           )
           {
             New-PSDrive -Name "${drive_letter}" `
-              -Root "\\$samba_server\share" `
+              -Root "\\$SambaServer\share" `
               -PSProvider "FileSystem" `
               -Persist
           }
