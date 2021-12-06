@@ -8,7 +8,10 @@ tasks:
         type: powershell
         runAs: localSystem
         content: |-
-          "select disk 0`nselect partition 2`nextend`n" | diskpart.exe
+          $DiskPath = (Get-Partition -DriveLetter C).DiskPath
+          if ((Get-Partition -DiskId $DiskPath).Count -gt 2) {
+            "select disk 0`nselect partition 2`nextend`n" | diskpart.exe
+          }
           $samba_server = ("${samba_server_input}" -split ",")[0]
           if (
             ($samba_server -ne "") -and
