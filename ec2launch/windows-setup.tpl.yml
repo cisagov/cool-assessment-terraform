@@ -8,7 +8,7 @@ tasks:
         type: powershell
         runAs: localSystem
         content: |-
-          $DiskPath = (Get-Partition -DriveLetter C).DiskPath
+          $DiskPath = (Get-Partition -DiskNumber 0).DiskPath
           if ((Get-Partition -DiskId $DiskPath).Count -gt 2) {
             "select disk 0`nselect partition 2`nextend`n" | diskpart.exe
           }
