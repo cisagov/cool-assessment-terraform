@@ -50,68 +50,6 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_else_winrm" {
   to_port        = 5986
 }
 
-# Allow ingress from private subnet via RDP (TCP)
-#
-# For: Assessment team RDP access from private subnet to operations.
-# subnet
-resource "aws_network_acl_rule" "operations_ingress_from_private_via_rdp_over_tcp" {
-  provider = aws.provisionassessment
-  for_each = toset(var.private_subnet_cidr_blocks)
-
-  network_acl_id = aws_network_acl.operations.id
-  egress         = false
-  protocol       = "tcp"
-  rule_number    = 120 + index(var.private_subnet_cidr_blocks, each.value)
-  rule_action    = "allow"
-  cidr_block     = aws_subnet.private[each.value].cidr_block
-  from_port      = 3389
-  to_port        = 3389
-}
-# Disallow ingress from anywhere else via port 3389 over TCP (RDP).
-resource "aws_network_acl_rule" "operations_ingress_from_anywhere_else_rdp_tcp" {
-  provider = aws.provisionassessment
-
-  network_acl_id = aws_network_acl.operations.id
-  egress         = false
-  protocol       = "tcp"
-  rule_number    = 125
-  rule_action    = "deny"
-  cidr_block     = "0.0.0.0/0"
-  from_port      = 3389
-  to_port        = 3389
-}
-
-# Allow ingress from private subnet via RDP (UDP)
-#
-# For: Assessment team RDP access from private subnet to operations.
-# subnet
-resource "aws_network_acl_rule" "operations_ingress_from_private_via_rdp_over_udp" {
-  provider = aws.provisionassessment
-  for_each = toset(var.private_subnet_cidr_blocks)
-
-  network_acl_id = aws_network_acl.operations.id
-  egress         = false
-  protocol       = "udp"
-  rule_number    = 130 + index(var.private_subnet_cidr_blocks, each.value)
-  rule_action    = "allow"
-  cidr_block     = aws_subnet.private[each.value].cidr_block
-  from_port      = 3389
-  to_port        = 3389
-}
-# Disallow ingress from anywhere else via port 3389 over UDP (RDP).
-resource "aws_network_acl_rule" "operations_ingress_from_anywhere_else_rdp_udp" {
-  provider = aws.provisionassessment
-
-  network_acl_id = aws_network_acl.operations.id
-  egress         = false
-  protocol       = "udp"
-  rule_number    = 135
-  rule_action    = "deny"
-  cidr_block     = "0.0.0.0/0"
-  from_port      = 3389
-  to_port        = 3389
-}
-
 # Allow ingress from private subnet via VNC
 #
 # For: Assessment team VNC access from private subnet to operations.
@@ -123,7 +61,7 @@ resource "aws_network_acl_rule" "operations_ingress_from_private_via_vnc" {
   network_acl_id = aws_network_acl.operations.id
   egress         = false
   protocol       = "tcp"
-  rule_number    = 140 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 120 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = aws_subnet.private[each.value].cidr_block
   from_port      = 5901
@@ -136,7 +74,7 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_else_vnc" {
   network_acl_id = aws_network_acl.operations.id
   egress         = false
   protocol       = "tcp"
-  rule_number    = 145
+  rule_number    = 125
   rule_action    = "deny"
   cidr_block     = "0.0.0.0/0"
   from_port      = 5901
@@ -153,7 +91,7 @@ resource "aws_network_acl_rule" "operations_ingress_from_private_via_http" {
   network_acl_id = aws_network_acl.operations.id
   egress         = false
   protocol       = "tcp"
-  rule_number    = 150 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 130 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = aws_subnet.private[each.value].cidr_block
   from_port      = 80
@@ -170,7 +108,7 @@ resource "aws_network_acl_rule" "operations_ingress_from_private_via_https" {
   network_acl_id = aws_network_acl.operations.id
   egress         = false
   protocol       = "tcp"
-  rule_number    = 160 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 140 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = aws_subnet.private[each.value].cidr_block
   from_port      = 443
@@ -188,7 +126,7 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_allowed_po
   network_acl_id = aws_network_acl.operations.id
   egress         = false
   protocol       = each.value["protocol"]
-  rule_number    = 170 + each.key
+  rule_number    = 150 + each.key
   rule_action    = "allow"
   cidr_block     = "0.0.0.0/0"
   from_port      = each.value["from_port"]
@@ -207,14 +145,14 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_1024
   network_acl_id = aws_network_acl.operations.id
   egress         = false
   protocol       = each.value
-  rule_number    = 180 + index(local.tcp_and_udp, each.value)
+  rule_number    = 160 + index(local.tcp_and_udp, each.value)
   rule_action    = "allow"
   cidr_block     = "0.0.0.0/0"
   from_port      = 1024
   to_port        = 3388
 }
 
-# Allow ingress from anywhere via ephemeral TCP/UDP ports 3390-5900.
+# Allow ingress from anywhere via ephemeral TCP/UDP ports 3390-50049.
 #
 # For: Assessment team operational use, but we don't want to allow
 # public access to RDP on port 3389 or Cobalt Strike Teamservers on port 50050.
@@ -227,7 +165,7 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_3390
   network_acl_id = aws_network_acl.operations.id
   egress         = false
   protocol       = each.value
-  rule_number    = 190 + index(local.tcp_and_udp, each.value)
+  rule_number    = 170 + index(local.tcp_and_udp, each.value)
   rule_action    = "allow"
   cidr_block     = "0.0.0.0/0"
   from_port      = 3390
