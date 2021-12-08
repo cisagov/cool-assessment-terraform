@@ -152,7 +152,7 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_1024
   to_port        = 3388
 }
 
-# Allow ingress from anywhere via ephemeral TCP/UDP ports 3390-5900.
+# Allow ingress from anywhere via ephemeral TCP/UDP ports 3390-50049.
 #
 # For: Assessment team operational use, but we don't want to allow
 # public access to RDP on port 3389 or Cobalt Strike Teamservers on port 50050.
