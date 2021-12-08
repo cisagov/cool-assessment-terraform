@@ -1,23 +1,37 @@
 ---
 version: 1.0
 tasks:
-  # Set up the Samba share
+  # Extend the OS partition and set up the Samba share as a network drive
   - task: executeScript
     inputs:
-      - frequency: once
+      - frequency: always
         type: powershell
         runAs: localSystem
         content: |-
-          $samba_server = ("${samba_server_input}" -split ",")[0]
+          # The Windows AMIs we currently use have a System Reserve partition
+          # that contains boot information in addition to the primary OS
+          # partition. The automatic AWS partition extension in EC2Launch v2
+          # (what we are using to execute userdata) only works if the primary
+          # OS partition is the first partition (partition 1). Since we cannot
+          # use this functionality we manually extend the OS partition
+          # (partition 2) of the instance to use any free space.
+          $DiskPath = (Get-Partition -DiskNumber 0).DiskPath
+          if ((Get-Partition -DiskId $DiskPath).Count -gt 2) {
+            "select disk 0`nselect partition 2`nextend`n" | diskpart.exe
+          }
+
+          # If a Samba server is provided add it as a new network drive using
+          # the provided drive letter.
+          $SambaServer = ("${samba_server_input}" -split ",")[0]
           if (
-            ($samba_server -ne "") -and
+            ($SambaServer -ne "") -and
             (-not
               (Get-PSDrive "${drive_letter}" -ErrorAction "SilentlyContinue")
             )
           )
           {
             New-PSDrive -Name "${drive_letter}" `
-              -Root "\\$samba_server\share" `
+              -Root "\\$SambaServer\share" `
               -PSProvider "FileSystem" `
               -Persist
           }
