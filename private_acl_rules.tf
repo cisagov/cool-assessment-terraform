@@ -357,7 +357,7 @@ resource "aws_network_acl_rule" "private_egress_to_operations_via_vnc" {
   rule_number    = 370 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = aws_subnet.operations.cidr_block
-  from_port      = 5900
+  from_port      = 5901
   to_port        = 5901
 }
 

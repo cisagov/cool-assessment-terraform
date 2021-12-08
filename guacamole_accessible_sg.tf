@@ -29,6 +29,6 @@ resource "aws_security_group_rule" "ingress_from_guacamole_via_vnc" {
   type                     = "ingress"
   protocol                 = "tcp"
   source_security_group_id = aws_security_group.guacamole.id
-  from_port                = 5900
+  from_port                = 5901
   to_port                  = 5901
 }

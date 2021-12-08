@@ -64,7 +64,7 @@ resource "aws_network_acl_rule" "operations_ingress_from_private_via_vnc" {
   rule_number    = 120 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = aws_subnet.private[each.value].cidr_block
-  from_port      = 5900
+  from_port      = 5901
   to_port        = 5901
 }
 # Disallow ingress from anywhere else via VNC.
@@ -77,7 +77,7 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_else_vnc" {
   rule_number    = 125
   rule_action    = "deny"
   cidr_block     = "0.0.0.0/0"
-  from_port      = 5900
+  from_port      = 5901
   to_port        = 5901
 }
 
