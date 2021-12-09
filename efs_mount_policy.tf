@@ -9,9 +9,10 @@ data "aws_iam_policy_document" "efs_mount_policy_doc" {
     ]
     effect = "Allow"
     resources = [
-      # Allow mounting of the EFS mount target in the first private
-      # subnet
-      aws_efs_mount_target.target[var.private_subnet_cidr_blocks[0]].file_system_arn
+      # Allow mounting of the EFS access point and mount target in the first
+      # private subnet
+      aws_efs_access_point.access_point[var.private_subnet_cidr_blocks[0]].arn,
+      aws_efs_mount_target.target[var.private_subnet_cidr_blocks[0]].file_system_arn,
     ]
   }
 }

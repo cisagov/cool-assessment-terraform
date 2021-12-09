@@ -21,6 +21,8 @@ data "cloudinit_config" "teamserver_cloud_init_tasks" {
   part {
     content = templatefile(
       "${path.module}/../../cloud-init/efs-mount.tpl.yml", {
+        # Use the access point that corresponds with the EFS mount target used
+        efs_ap_id = data.terraform_remote_state.cool_assessment_terraform.outputs.efs_access_points[data.terraform_remote_state.cool_assessment_terraform.outputs.private_subnet_cidr_blocks[0]].id
         # Just mount the EFS mount target in the first private subnet
         efs_id      = data.terraform_remote_state.cool_assessment_terraform.outputs.efs_mount_targets[data.terraform_remote_state.cool_assessment_terraform.outputs.private_subnet_cidr_blocks[0]].file_system_id
         group       = var.efs_mount_point_group
