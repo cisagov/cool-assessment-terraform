@@ -110,6 +110,7 @@ the COOL environment.
 | [aws_ec2_transit_gateway_route.assessment_route](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_transit_gateway_route) | resource |
 | [aws_ec2_transit_gateway_route_table_association.association](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_transit_gateway_route_table_association) | resource |
 | [aws_ec2_transit_gateway_vpc_attachment.assessment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_transit_gateway_vpc_attachment) | resource |
+| [aws_efs_access_point.access_point](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/efs_access_point) | resource |
 | [aws_efs_file_system.persistent_storage](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/efs_file_system) | resource |
 | [aws_efs_mount_target.target](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/efs_mount_target) | resource |
 | [aws_eip.gophish](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip) | resource |
@@ -461,6 +462,8 @@ the COOL environment.
 | cert\_bucket\_name | The name of the AWS S3 bucket where certificates are stored. | `string` | `"cisa-cool-certificates"` | no |
 | cool\_domain | The domain where the COOL resources reside (e.g. "cool.cyber.dhs.gov"). | `string` | `"cool.cyber.dhs.gov"` | no |
 | dns\_ttl | The TTL value to use for Route53 DNS records (e.g. 86400).  A smaller value may be useful when the DNS records are changing often, for example when testing. | `number` | `60` | no |
+| efs\_access\_point\_gid | The group ID that should be used for file-system access to the EFS share (e.g. 2048).  Note that this value should match the GID of any group given ownership of the EFS share mount point. | `number` | `2048` | no |
+| efs\_access\_point\_uid | The user ID that should be used for file-system access to the EFS share (e.g. 2048).  Note that this value should match the UID of any user given ownership of the EFS share mount point. | `number` | `2048` | no |
 | efs\_users\_group\_name | The name of the POSIX group that should have ownership of a mounted EFS share (e.g. "efs\_users"). | `string` | `"efs_users"` | no |
 | email\_sending\_domains | The list of domains to send emails from within the assessment environment (e.g. [ "example.com" ]).  Teamserver and Gophish instances will be deployed with each sequential domain in the list, so teamserver0 and gophish0 will get the first domain, teamserver1 and gophish1 will get the second domain, and so on.  If there are more Teamserver or Gophish instances than email-sending domains, the domains in the list will be reused in a wrap-around fashion. For example, if there are three Teamservers and only two email-sending domains, teamserver0 will get the first domain, teamserver1 will get the second domain, and teamserver2 will wrap-around back to using the first domain. | `list(string)` | ```[ "example.com" ]``` | no |
 | guac\_connection\_setup\_path | The full path to the dbinit directory where initialization files must be stored in order to work properly. (e.g. "/var/guacamole/dbinit") | `string` | `"/var/guacamole/dbinit"` | no |
@@ -500,6 +503,7 @@ the COOL environment.
 | debian\_desktop\_instance\_profile | The instance profile for the Debian desktop instances. |
 | debian\_desktop\_instances | The Debian desktop instances. |
 | debian\_desktop\_security\_group | The security group for the Debian desktop instances. |
+| efs\_access\_points | The access points to control file-system access to the EFS file share. |
 | efs\_client\_security\_group | A security group that should be applied to all instances that will mount the EFS file share. |
 | efs\_mount\_targets | The mount targets for the EFS file share. |
 | email\_sending\_domain\_certreadroles | The IAM roles that allow for reading the certificate for each email-sending domain. |

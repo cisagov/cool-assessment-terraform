@@ -7,4 +7,5 @@ runcmd:
 
 # Add an fstab entry for the EFS mount
 mounts:
-  - ["${efs_id}:/", "${mount_point}", efs, "_netdev,iam,nofail,tls", "0", "0"]
+  # yamllint disable-line rule:line-length
+  - ["${efs_id}:/", "${mount_point}", efs, "_netdev,iam,nofail,tls,accesspoint=${efs_ap_id}", "0", "0"]

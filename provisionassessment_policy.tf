@@ -86,10 +86,13 @@ data "aws_iam_policy_document" "provisionassessment_policy_doc" {
 
   statement {
     actions = [
+      "elasticfilesystem:CreateAccessPoint",
       "elasticfilesystem:CreateFileSystem",
       "elasticfilesystem:CreateMountTarget",
+      "elasticfilesystem:DeleteAccessPoint",
       "elasticfilesystem:DeleteFileSystem",
       "elasticfilesystem:DeleteMountTarget",
+      "elasticfilesystem:DescribeAccessPoints",
       "elasticfilesystem:DescribeFileSystems",
       "elasticfilesystem:DescribeLifecycleConfiguration",
       "elasticfilesystem:DescribeMountTargets",

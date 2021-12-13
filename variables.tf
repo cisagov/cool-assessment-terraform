@@ -67,6 +67,18 @@ variable "dns_ttl" {
   default     = 60
 }
 
+variable "efs_access_point_gid" {
+  type        = number
+  description = "The group ID that should be used for file-system access to the EFS share (e.g. 2048).  Note that this value should match the GID of any group given ownership of the EFS share mount point."
+  default     = 2048
+}
+
+variable "efs_access_point_uid" {
+  type        = number
+  description = "The user ID that should be used for file-system access to the EFS share (e.g. 2048).  Note that this value should match the UID of any user given ownership of the EFS share mount point."
+  default     = 2048
+}
+
 variable "efs_users_group_name" {
   type        = string
   description = "The name of the POSIX group that should have ownership of a mounted EFS share (e.g. \"efs_users\")."
