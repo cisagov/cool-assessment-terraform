@@ -46,7 +46,10 @@ resource "aws_efs_access_point" "access_point" {
 
   # Since we only use an access point to access the EFS share we need to make sure
   # the automatically created root directory (on the EFS share) has the correct
-  # permissions or they will override the local configuration.
+  # permissions. The local mount point's permissions are overridden with those of
+  # the mounted EFS path, so if EFS path permissions do not align with those of
+  # the access point it can cause permission problems when accessing the local
+  # mount point.
   root_directory {
     creation_info {
       owner_gid   = var.efs_access_point_gid
