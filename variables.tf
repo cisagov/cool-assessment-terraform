@@ -73,6 +73,12 @@ variable "efs_access_point_gid" {
   default     = 2048
 }
 
+variable "efs_access_point_root_directory" {
+  type        = string
+  description = "The non-root path to use as the root directory for the AWS EFS access point that controls EFS access for assessment data sharing."
+  default     = "/assessment_share"
+}
+
 variable "efs_access_point_uid" {
   type        = number
   description = "The user ID that should be used for file-system access to the EFS share (e.g. 2048).  Note that this value should match the UID of any user given ownership of the EFS share mount point."
