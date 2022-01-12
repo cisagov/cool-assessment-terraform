@@ -18,6 +18,6 @@ updates:
       interval: "weekly"
 
   - package-ecosystem: "terraform"
-    directory: "/examples/basic_usage"
+    directory: "/examples/use-terraformer-instance"
     schedule:
       interval: "weekly"
