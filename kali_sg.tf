@@ -65,7 +65,9 @@ resource "aws_security_group_rule" "ingress_from_anywhere_to_kali_via_allowed_po
   to_port           = each.value["to_port"]
 }
 
-# Allow unfettered access between Kali and Teamserver instances
+# Allow access between Kali and Teamserver instances on ports
+# 5000-5999 (TCP and UDP).  This port range was requested for use by
+# assessment operators in cisagov/cool-system-internal#79.
 resource "aws_security_group_rule" "kali_egress_to_teamserver_instances" {
   provider = aws.provisionassessment
   for_each = toset(["tcp", "udp"])
