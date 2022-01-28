@@ -93,8 +93,13 @@ variable "efs_users_group_name" {
 
 variable "email_sending_domains" {
   type        = list(string)
-  description = "The list of domains to send emails from within the assessment environment (e.g. [ \"example.com\" ]).  Teamserver and Gophish instances will be deployed with each sequential domain in the list, so teamserver0 and gophish0 will get the first domain, teamserver1 and gophish1 will get the second domain, and so on.  If there are more Teamserver or Gophish instances than email-sending domains, the domains in the list will be reused in a wrap-around fashion. For example, if there are three Teamservers and only two email-sending domains, teamserver0 will get the first domain, teamserver1 will get the second domain, and teamserver2 will wrap-around back to using the first domain."
+  description = "The list of domains to send emails from within the assessment environment (e.g. [ \"example.com\" ]).  Teamserver and Gophish instances will be deployed with each sequential domain in the list, so teamserver0 and gophish0 will get the first domain, teamserver1 and gophish1 will get the second domain, and so on.  If there are more Teamserver or Gophish instances than email-sending domains, the domains in the list will be reused in a wrap-around fashion. For example, if there are three Teamservers and only two email-sending domains, teamserver0 will get the first domain, teamserver1 will get the second domain, and teamserver2 will wrap-around back to using the first domain.  Note that all letters in this variable must be lowercase or else an error will be displayed."
   default     = ["example.com"]
+
+  validation {
+    condition     = var.email_sending_domains == [for d in var.email_sending_domains : lower(d)]
+    error_message = "All of the values in email_sending_domains must be lowercase."
+  }
 }
 
 variable "guac_connection_setup_path" {
