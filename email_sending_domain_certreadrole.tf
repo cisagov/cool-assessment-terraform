@@ -14,4 +14,7 @@ module "email_sending_domain_certreadrole" {
   # Certbot stores wildcard certs in a directory with the name of the
   # domain, instead of pre-pending an asterisk.
   hostname = each.value
+  # Give role a unique name so that it doesn't conflict with roles created
+  # in other workspaces for the same domain.
+  role_name = "CertificateReadOnly-%s-${terraform.workspace}"
 }
