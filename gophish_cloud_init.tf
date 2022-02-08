@@ -99,7 +99,7 @@ data "cloudinit_config" "gophish_cloud_init_tasks" {
   # Install certificate for postfix.
   part {
     content = templatefile(
-      "${path.module}/cloud-init/install-certificates.py", {
+      "${path.module}/cloud-init/install-certificates.tpl.py", {
         aws_region       = var.aws_region
         cert_bucket_name = var.cert_bucket_name
         # We use the element() function below instead of the built-in list
@@ -135,7 +135,7 @@ data "cloudinit_config" "gophish_cloud_init_tasks" {
   # Install certificate for Gophish.
   part {
     content = templatefile(
-      "${path.module}/cloud-init/install-certificates.py", {
+      "${path.module}/cloud-init/install-certificates.tpl.py", {
         aws_region       = var.aws_region
         cert_bucket_name = var.cert_bucket_name
         # We use the element() function below instead of the built-in list
