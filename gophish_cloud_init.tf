@@ -132,7 +132,7 @@ data "cloudinit_config" "gophish_cloud_init_tasks" {
     merge_type   = "list(append)+dict(recurse_array)+str()"
   }
 
-  # Install certificate for postfix.
+  # Install certificate for Gophish.
   part {
     content = templatefile(
       "${path.module}/cloud-init/install-certificates.py", {
