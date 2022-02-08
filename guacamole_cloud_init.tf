@@ -42,7 +42,7 @@ data "cloudinit_config" "guacamole_cloud_init_tasks" {
     filename     = "install-certificates.py"
     content_type = "text/x-shellscript"
     content = templatefile(
-      "${path.module}/cloud-init/install-certificates.py", {
+      "${path.module}/cloud-init/install-certificates.tpl.py", {
         aws_region          = var.aws_region
         cert_bucket_name    = var.cert_bucket_name
         cert_read_role_arn  = module.guacamole_certreadrole.role.arn

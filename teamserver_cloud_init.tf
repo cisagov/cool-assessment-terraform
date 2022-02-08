@@ -61,7 +61,7 @@ data "cloudinit_config" "teamserver_cloud_init_tasks" {
   # https://github.com/canonical/cloud-init/blob/master/cloudinit/subp.py#L373
   part {
     content = templatefile(
-      "${path.module}/cloud-init/install-certificates.py", {
+      "${path.module}/cloud-init/install-certificates.tpl.py", {
         aws_region       = var.aws_region
         cert_bucket_name = var.cert_bucket_name
         # We use the element() function below instead of the built-in list

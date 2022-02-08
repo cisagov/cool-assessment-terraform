@@ -99,7 +99,7 @@ data "cloudinit_config" "gophish_cloud_init_tasks" {
   # Install certificate for postfix.
   part {
     content = templatefile(
-      "${path.module}/cloud-init/install-certificates.py", {
+      "${path.module}/cloud-init/install-certificates.tpl.py", {
         aws_region       = var.aws_region
         cert_bucket_name = var.cert_bucket_name
         # We use the element() function below instead of the built-in list
@@ -117,7 +117,7 @@ data "cloudinit_config" "gophish_cloud_init_tasks" {
         server_fqdn = element(var.email_sending_domains, count.index)
     })
     content_type = "text/x-shellscript"
-    filename     = "install-certificates.py"
+    filename     = "install-certificates-postfix.py"
   }
 
   # Configure postfix in the pca-gophish Docker composition.
@@ -130,6 +130,30 @@ data "cloudinit_config" "gophish_cloud_init_tasks" {
     content_type = "text/cloud-config"
     filename     = "postfix-setup.yml"
     merge_type   = "list(append)+dict(recurse_array)+str()"
+  }
+
+  # Install certificate for Gophish.
+  part {
+    content = templatefile(
+      "${path.module}/cloud-init/install-certificates.tpl.py", {
+        aws_region       = var.aws_region
+        cert_bucket_name = var.cert_bucket_name
+        # We use the element() function below instead of the built-in list
+        # index syntax because we want the "wrap-around" behavior provided
+        # by element().  This means that the number of items in
+        # var.email_sending_domains does not have to exactly match the number
+        # of Gophish instances.  For details, see:
+        # https://www.terraform.io/docs/language/functions/element.html
+        cert_read_role_arn  = module.email_sending_domain_certreadrole[element(var.email_sending_domains, count.index)].role.arn
+        create_dest_dirs    = false
+        full_chain_pem_dest = "${local.pca_gophish_composition_dir}/secrets/gophish/phish_fullchain.pem"
+        priv_key_pem_dest   = "${local.pca_gophish_composition_dir}/secrets/gophish/phish_privkey.pem"
+        # Certbot stores wildcard certs in a directory with the name
+        # of the domain, instead of pre-pending an asterisk.
+        server_fqdn = element(var.email_sending_domains, count.index)
+    })
+    content_type = "text/x-shellscript"
+    filename     = "install-certificates-gophish.py"
   }
 
   # Configure Thunderbird to autoconfigure email accounts from the
