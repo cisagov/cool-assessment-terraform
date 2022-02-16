@@ -55,6 +55,7 @@ data "aws_iam_policy_document" "provisionassessment_policy_doc" {
       "ec2:DisassociateVpcCidrBlock",
       "ec2:GetTransitGatewayRouteTableAssociations",
       "ec2:GetTransitGatewayRouteTablePropagations",
+      "ec2:ModifyAddressAttribute",
       "ec2:ModifyInstanceAttribute",
       "ec2:ModifyInstanceMetadataOptions",
       "ec2:ModifyNetworkInterfaceAttribute",
