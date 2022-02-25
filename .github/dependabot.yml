@@ -21,8 +21,12 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    # ignore:
+    #   - dependency-name: "hashicorp/aws"
 
   - package-ecosystem: "terraform"
     directory: "/examples/basic_usage"
     schedule:
       interval: "weekly"
+    # ignore:
+    #   - dependency-name: "hashicorp/aws"
