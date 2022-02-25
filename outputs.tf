@@ -30,7 +30,7 @@ output "certificate_bucket_name" {
 
 output "cloudwatch_and_ssm_agent_security_group" {
   value       = aws_security_group.cloudwatch_and_ssm_agent
-  description = "A security group for _all_ instances.  Allows access to the VPC endpoint resources necessary for the AWS CloudWatch agent and the AWS SSM agent."
+  description = "A security group for *all* instances.  Allows access to the VPC endpoint resources necessary for the AWS CloudWatch agent and the AWS SSM agent."
 }
 
 output "debian_desktop_instance_profile" {
