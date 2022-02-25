@@ -345,8 +345,10 @@ the COOL environment.
 | [aws_security_group_rule.ingress_from_windows_to_ssm_via_https](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.kali_egress_to_nessus_via_web_ui](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.kali_egress_to_pentestportal_via_web](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.kali_egress_to_teamserver_instances_via_5000_to_5999](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.kali_egress_to_teamserver_via_imaps_and_cs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.kali_egress_to_windows_instances](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.kali_ingress_from_teamserver_instances_via_5000_to_5999](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.kali_ingress_from_windows_instances](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.nessus_ingress_from_debiandesktop_via_web_ui](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.nessus_ingress_from_kali_via_web_ui](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
@@ -359,8 +361,10 @@ the COOL environment.
 | [aws_security_group_rule.smb_client_egress_to_smb_server](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.smb_server_ingress_from_smb_client](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.teamserver_egress_to_gophish_via_587](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.teamserver_egress_to_kali_instances_via_5000_to_5999](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.teamserver_egress_to_s3_via_https](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.teamserver_egress_to_sts_via_https](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.teamserver_ingress_from_kali_instances_via_5000_to_5999](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.teamserver_ingress_from_kali_via_imaps_and_cs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.terraformer_egress_anywhere_via_http](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.terraformer_egress_anywhere_via_https](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
@@ -500,7 +504,7 @@ the COOL environment.
 | assessor\_portal\_security\_group | The security group for the Assessor Portal instances. |
 | aws\_region | The AWS region where this assessment environment lives. |
 | certificate\_bucket\_name | The name of the S3 bucket where certificate information is stored for this assessment. |
-| cloudwatch\_and\_ssm\_agent\_security\_group | A security group for _all_ instances.  Allows access to the VPC endpoint resources necessary for the AWS CloudWatch agent and the AWS SSM agent. |
+| cloudwatch\_and\_ssm\_agent\_security\_group | A security group for *all* instances.  Allows access to the VPC endpoint resources necessary for the AWS CloudWatch agent and the AWS SSM agent. |
 | debian\_desktop\_instance\_profile | The instance profile for the Debian desktop instances. |
 | debian\_desktop\_instances | The Debian desktop instances. |
 | debian\_desktop\_security\_group | The security group for the Debian desktop instances. |
