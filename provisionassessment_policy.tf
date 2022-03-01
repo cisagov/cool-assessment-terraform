@@ -70,6 +70,7 @@ data "aws_iam_policy_document" "provisionassessment_policy_doc" {
       "ec2:ReplaceRoute",
       "ec2:ReplaceRouteTableAssociation",
       "ec2:ReportInstanceStatus",
+      "ec2:ResetAddressAttribute",
       "ec2:RevokeSecurityGroupEgress",
       "ec2:RevokeSecurityGroupIngress",
       "ec2:RunInstances",
