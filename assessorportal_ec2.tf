@@ -97,3 +97,16 @@ resource "aws_volume_attachment" "assessorportal_docker" {
   instance_id = aws_instance.assessorportal[count.index].id
   volume_id   = aws_ebs_volume.assessorportal_docker[count.index].id
 }
+
+# CloudWatch alarms for the Assessor Portal instances
+module "cw_alarms_assessor_portal" {
+  providers = {
+    aws = aws.provisionassessment
+  }
+  source = "github.com/cisagov/instance-cw-alarms-tf-module?ref=first-commits"
+
+  alarm_actions             = [data.terraform_remote_state.dynamic_assessment.outputs.cw_alarm_sns_topic.arn]
+  instance_ids              = [for instance in aws_instance.assessorportal : instance.id]
+  insufficient_data_actions = [data.terraform_remote_state.dynamic_assessment.outputs.cw_alarm_sns_topic.arn]
+  ok_actions                = [data.terraform_remote_state.dynamic_assessment.outputs.cw_alarm_sns_topic.arn]
+}

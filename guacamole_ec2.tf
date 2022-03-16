@@ -82,3 +82,16 @@ resource "aws_instance" "guacamole" {
     Name = "Guacamole"
   })
 }
+
+# CloudWatch alarms for the Guacamole instances
+module "cw_alarms_guacamole" {
+  providers = {
+    aws = aws.provisionassessment
+  }
+  source = "github.com/cisagov/instance-cw-alarms-tf-module?ref=first-commits"
+
+  alarm_actions             = [data.terraform_remote_state.dynamic_assessment.outputs.cw_alarm_sns_topic.arn]
+  instance_ids              = [aws_instance.guacamole.id]
+  insufficient_data_actions = [data.terraform_remote_state.dynamic_assessment.outputs.cw_alarm_sns_topic.arn]
+  ok_actions                = [data.terraform_remote_state.dynamic_assessment.outputs.cw_alarm_sns_topic.arn]
+}
