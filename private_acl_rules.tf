@@ -25,7 +25,7 @@ resource "aws_network_acl_rule" "private_ingress_from_cool_vpn_services" {
   # is simply used to provide an offset for the rule number.
   for_each = {
     for index, pair in setproduct(keys(local.assessment_env_service_ports), var.private_subnet_cidr_blocks) :
-    format("%s_%d", pair[0], index) => merge(local.assessment_env_service_ports[pair[0]], { "private_subnet_cidr_block" = pair[1], "index" = index })
+    format("%s_%s", pair[0], pair[1]) => merge(local.assessment_env_service_ports[pair[0]], { "private_subnet_cidr_block" = pair[1], "index" = index })
   }
 
   network_acl_id = aws_network_acl.private[each.value.private_subnet_cidr_block].id
@@ -76,7 +76,7 @@ resource "aws_network_acl_rule" "private_ingress_from_anywhere_else_services" {
   # is simply used to provide an offset for the rule number.
   for_each = {
     for index, pair in setproduct(keys(local.assessment_env_service_ports_gte_1024), var.private_subnet_cidr_blocks) :
-    format("%s_%d", pair[0], index) => merge(local.assessment_env_service_ports_gte_1024[pair[0]], { "private_subnet_cidr_block" = pair[1], "index" = index })
+    format("%s_%s", pair[0], pair[1]) => merge(local.assessment_env_service_ports_gte_1024[pair[0]], { "private_subnet_cidr_block" = pair[1], "index" = index })
   }
 
   network_acl_id = aws_network_acl.private[each.value.private_subnet_cidr_block].id
@@ -184,7 +184,7 @@ resource "aws_network_acl_rule" "private_ingress_to_tg_attachment_via_ipa_ports"
   # is simply used to provide an offset for the rule number.
   for_each = {
     for index, pair in setproduct(keys(local.ipa_ports), var.private_subnet_cidr_blocks) :
-    format("%s_%d", pair[0], index) => merge(local.ipa_ports[pair[0]], { "private_subnet_cidr_block" = pair[1], "index" = index })
+    format("%s_%s", pair[0], pair[1]) => merge(local.ipa_ports[pair[0]], { "private_subnet_cidr_block" = pair[1], "index" = index })
   }
 
   network_acl_id = aws_network_acl.private[var.private_subnet_cidr_blocks[0]].id
