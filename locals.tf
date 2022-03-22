@@ -104,10 +104,9 @@ locals {
 
   # Return a map containing the union of all ports to be opened for
   # instance types that will actually be instantiated in the
-  # operations subnet.  We use the index as the key for the resulting
-  # map so that we can number the corresponding ACL rules
-  # consecutively.
-  union_of_inbound_ports_allowed = { for index, d in distinct(flatten([for k, v in var.inbound_ports_allowed : v if var.operations_instance_counts[k] > 0])) : index => d }
+  # operations subnet.  We merge the index into the map so that we can
+  # number the corresponding ACL rules consecutively.
+  union_of_inbound_ports_allowed = { for index, d in distinct(flatten([for k, v in var.inbound_ports_allowed : v if var.operations_instance_counts[k] > 0])) : format("%s_%d_%d", d.protocol, d.from_port, d.to_port) => merge(d, { "index" = index }) }
 
   # If var.private_domain is provided, use it.  Otherwise, default to
   # local.assessment_account_name_base
