@@ -115,8 +115,10 @@ locals {
 
   # Helpful lists for defining ACL and security group rules
 
-  # The ports used to communicate with IPA servers.  The "index" value is
-  # used as a counter in certain ACL rules.
+  # The ports used to communicate with IPA servers.  The "index" value
+  # is used as a counter in certain ACL rules
+  # (aws_network_acl_rule.private_egress_to_cool_via_ipa_ports in
+  # private_acl_rules.tf).
   ipa_ports = {
     http = {
       protocol = "tcp",
