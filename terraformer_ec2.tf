@@ -78,7 +78,7 @@ module "cw_alarms_terraformer" {
   providers = {
     aws = aws.provisionassessment
   }
-  source = "github.com/cisagov/instance-cw-alarms-tf-module?ref=first-commits"
+  source = "github.com/cisagov/instance-cw-alarms-tf-module"
 
   alarm_actions             = [data.terraform_remote_state.dynamic_assessment.outputs.cw_alarm_sns_topic.arn]
   instance_ids              = [for instance in aws_instance.terraformer : instance.id]
