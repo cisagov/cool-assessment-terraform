@@ -39,7 +39,7 @@ resource "aws_vpc_endpoint" "ec2" {
     # The CloudWatch agent reads a few pieces of data from the ec2
     # endpoint.  You can see this by inspecting the AWS-provided
     # CloudWatchAgentServerPolicyIAM policy.
-    aws_security_group.cloudwatch.id,
+    aws_security_group.cloudwatch_endpoint.id,
     aws_security_group.ec2_endpoint.id,
     aws_security_group.ssm_endpoint.id,
   ]
@@ -87,7 +87,7 @@ resource "aws_vpc_endpoint" "logs" {
 
   private_dns_enabled = true
   security_group_ids = [
-    aws_security_group.cloudwatch.id,
+    aws_security_group.cloudwatch_endpoint.id,
   ]
   service_name      = "com.amazonaws.${var.aws_region}.logs"
   vpc_endpoint_type = "Interface"
@@ -98,7 +98,7 @@ resource "aws_vpc_endpoint" "monitoring" {
 
   private_dns_enabled = true
   security_group_ids = [
-    aws_security_group.cloudwatch.id,
+    aws_security_group.cloudwatch_endpoint.id,
   ]
   service_name      = "com.amazonaws.${var.aws_region}.monitoring"
   vpc_endpoint_type = "Interface"

@@ -1,6 +1,6 @@
 # Security group for the CloudWatch interface endpoints in the private
 # subnet
-resource "aws_security_group" "cloudwatch" {
+resource "aws_security_group" "cloudwatch_endpoint" {
   provider = aws.provisionassessment
 
   vpc_id = aws_vpc.assessment.id
@@ -10,133 +10,15 @@ resource "aws_security_group" "cloudwatch" {
   }
 }
 
-# Allow ingress via HTTPS from the Debian Desktop security group
-resource "aws_security_group_rule" "ingress_from_debiandesktop_to_cloudwatch_via_https" {
+# Allow ingress via HTTPS from the CloudWatch endpoint client security
+# group
+resource "aws_security_group_rule" "ingress_from_cloudwatch_endpoint_client_to_cloudwatch_endpoint_via_https" {
   provider = aws.provisionassessment
 
-  security_group_id        = aws_security_group.cloudwatch.id
+  security_group_id        = aws_security_group.cloudwatch_endpoint.id
   type                     = "ingress"
   protocol                 = "tcp"
-  source_security_group_id = aws_security_group.debiandesktop.id
+  source_security_group_id = aws_security_group.cloudwatch_endpoint_client.id
   from_port                = 443
   to_port                  = 443
-}
-
-# Allow ingress via HTTPS from the Gophish security group
-resource "aws_security_group_rule" "ingress_from_gophish_to_cloudwatch_via_https" {
-  provider = aws.provisionassessment
-
-  security_group_id        = aws_security_group.cloudwatch.id
-  type                     = "ingress"
-  protocol                 = "tcp"
-  source_security_group_id = aws_security_group.gophish.id
-  from_port                = 443
-  to_port                  = 443
-}
-
-# Allow ingress via HTTPS from the Guacamole security group
-resource "aws_security_group_rule" "ingress_from_guacamole_to_cloudwatch_via_https" {
-  provider = aws.provisionassessment
-
-  security_group_id        = aws_security_group.cloudwatch.id
-  type                     = "ingress"
-  protocol                 = "tcp"
-  source_security_group_id = aws_security_group.guacamole.id
-  from_port                = 443
-  to_port                  = 443
-}
-
-# Allow ingress via HTTPS from the Kali security group
-resource "aws_security_group_rule" "ingress_from_kali_to_cloudwatch_via_https" {
-  provider = aws.provisionassessment
-
-  security_group_id        = aws_security_group.cloudwatch.id
-  type                     = "ingress"
-  protocol                 = "tcp"
-  source_security_group_id = aws_security_group.kali.id
-  from_port                = 443
-  to_port                  = 443
-}
-
-# Allow ingress via HTTPS from the Nessus security group
-resource "aws_security_group_rule" "ingress_from_nessus_to_cloudwatch_via_https" {
-  provider = aws.provisionassessment
-
-  security_group_id        = aws_security_group.cloudwatch.id
-  type                     = "ingress"
-  protocol                 = "tcp"
-  source_security_group_id = aws_security_group.nessus.id
-  from_port                = 443
-  to_port                  = 443
-}
-
-# Allow ingress via HTTPS from the PenTest Portal security group
-resource "aws_security_group_rule" "ingress_from_pentestportal_to_cloudwatch_via_https" {
-  provider = aws.provisionassessment
-
-  security_group_id        = aws_security_group.cloudwatch.id
-  type                     = "ingress"
-  protocol                 = "tcp"
-  source_security_group_id = aws_security_group.pentestportal.id
-  from_port                = 443
-  to_port                  = 443
-}
-
-# Allow ingress via HTTPS from the Samba security group
-resource "aws_security_group_rule" "ingress_from_samba_to_cloudwatch_via_https" {
-  provider = aws.provisionassessment
-
-  security_group_id        = aws_security_group.cloudwatch.id
-  type                     = "ingress"
-  protocol                 = "tcp"
-  source_security_group_id = aws_security_group.smb_server.id
-  from_port                = 443
-  to_port                  = 443
-}
-
-# Allow ingress via HTTPS from the teamserver security group
-resource "aws_security_group_rule" "ingress_from_teamserver_to_cloudwatch_via_https" {
-  provider = aws.provisionassessment
-
-  security_group_id        = aws_security_group.cloudwatch.id
-  type                     = "ingress"
-  protocol                 = "tcp"
-  source_security_group_id = aws_security_group.teamserver.id
-  from_port                = 443
-  to_port                  = 443
-}
-
-# Allow ingress via HTTPS from the terraformer security group
-resource "aws_security_group_rule" "ingress_from_terraformer_to_cloudwatch_via_https" {
-  provider = aws.provisionassessment
-
-  security_group_id        = aws_security_group.cloudwatch.id
-  type                     = "ingress"
-  protocol                 = "tcp"
-  source_security_group_id = aws_security_group.terraformer.id
-  from_port                = 443
-  to_port                  = 443
-}
-
-resource "aws_security_group_rule" "ingress_from_windows_to_cloudwatch_via_https" {
-  provider = aws.provisionassessment
-
-  security_group_id        = aws_security_group.cloudwatch.id
-  type                     = "ingress"
-  protocol                 = "tcp"
-  source_security_group_id = aws_security_group.windows.id
-  from_port                = 443
-  to_port                  = 443
-}
-
-# Allow ingress via HTTPS from the operations subnet
-resource "aws_security_group_rule" "ingress_from_operations_subnet_to_cloudwatch_via_https" {
-  provider = aws.provisionassessment
-
-  security_group_id = aws_security_group.cloudwatch.id
-  type              = "ingress"
-  protocol          = "tcp"
-  cidr_blocks       = [var.operations_subnet_cidr_block]
-  from_port         = 443
-  to_port           = 443
 }
