@@ -34,8 +34,9 @@ resource "aws_instance" "guacamole" {
   # themselves.  Note that there is no security group rule for S3 because
   # it's a _gateway_ endpoint, while SSM and STS are _interface_ endpoints.
   depends_on = [
+    aws_security_group_rule.ingress_from_ec2_endpoint_client_to_ec2_endpoint_via_https,
     aws_security_group_rule.ingress_from_guacamole_to_ssm_via_https,
-    aws_security_group_rule.ingress_from_guacamole_to_sts_via_https,
+    aws_security_group_rule.ingress_from_sts_endpoint_client_to_sts_endpoint_via_https,
     aws_vpc_endpoint.ec2,
     aws_vpc_endpoint.s3,
     aws_vpc_endpoint.ssm,
@@ -72,6 +73,7 @@ resource "aws_instance" "guacamole" {
     aws_security_group.cloudwatch_and_ssm_agent.id,
     aws_security_group.ec2_endpoint_client.id,
     aws_security_group.guacamole.id,
+    aws_security_group.sts_endpoint_client.id,
   ]
   tags = {
     Name = "Guacamole"

@@ -12,7 +12,7 @@ resource "aws_vpc_endpoint" "sts" {
 
   private_dns_enabled = true
   security_group_ids = [
-    aws_security_group.sts.id,
+    aws_security_group.sts_endpoint.id,
   ]
   service_name      = "com.amazonaws.${var.aws_region}.sts"
   vpc_endpoint_type = "Interface"

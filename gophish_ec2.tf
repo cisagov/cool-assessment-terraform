@@ -61,6 +61,7 @@ resource "aws_instance" "gophish" {
     aws_security_group.gophish.id,
     aws_security_group.guacamole_accessible.id,
     aws_security_group.scanner.id,
+    aws_security_group.sts_endpoint_client.id,
   ]
   tags = {
     Name = format("Gophish%d", count.index)

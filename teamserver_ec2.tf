@@ -38,7 +38,7 @@ resource "aws_instance" "teamserver" {
   # endpoint, while STS is an _interface_ endpoint.
   depends_on = [
     aws_efs_mount_target.target,
-    aws_security_group_rule.ingress_from_teamserver_to_sts_via_https,
+    aws_security_group_rule.ingress_from_sts_endpoint_client_to_sts_endpoint_via_https,
     aws_vpc_endpoint.s3,
     aws_vpc_endpoint.sts,
   ]
@@ -70,6 +70,7 @@ resource "aws_instance" "teamserver" {
     aws_security_group.efs_client.id,
     aws_security_group.guacamole_accessible.id,
     aws_security_group.scanner.id,
+    aws_security_group.sts_endpoint_client.id,
     aws_security_group.teamserver.id,
   ]
   tags = {
