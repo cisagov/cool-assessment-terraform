@@ -55,6 +55,7 @@ resource "aws_instance" "windows" {
     aws_security_group.guacamole_accessible.id,
     aws_security_group.scanner.id,
     aws_security_group.smb_client.id,
+    aws_security_group.ssm_endpoint_client.id,
     aws_security_group.windows.id,
   ]
   tags = {

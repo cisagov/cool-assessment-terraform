@@ -70,6 +70,7 @@ resource "aws_instance" "teamserver" {
     aws_security_group.efs_client.id,
     aws_security_group.guacamole_accessible.id,
     aws_security_group.scanner.id,
+    aws_security_group.ssm_endpoint_client.id,
     aws_security_group.sts_endpoint_client.id,
     aws_security_group.teamserver.id,
   ]

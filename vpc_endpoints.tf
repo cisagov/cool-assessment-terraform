@@ -25,7 +25,7 @@ resource "aws_vpc_endpoint" "ssm" {
 
   private_dns_enabled = true
   security_group_ids = [
-    aws_security_group.ssm.id,
+    aws_security_group.ssm_endpoint.id,
   ]
   service_name      = "com.amazonaws.${var.aws_region}.ssm"
   vpc_endpoint_type = "Interface"
@@ -41,7 +41,7 @@ resource "aws_vpc_endpoint" "ec2" {
     # CloudWatchAgentServerPolicyIAM policy.
     aws_security_group.cloudwatch.id,
     aws_security_group.ec2_endpoint.id,
-    aws_security_group.ssm.id,
+    aws_security_group.ssm_endpoint.id,
   ]
   service_name      = "com.amazonaws.${var.aws_region}.ec2"
   vpc_endpoint_type = "Interface"
@@ -52,7 +52,7 @@ resource "aws_vpc_endpoint" "ec2messages" {
 
   private_dns_enabled = true
   security_group_ids = [
-    aws_security_group.ssm.id,
+    aws_security_group.ssm_endpoint.id,
   ]
   service_name      = "com.amazonaws.${var.aws_region}.ec2messages"
   vpc_endpoint_type = "Interface"
@@ -63,7 +63,7 @@ resource "aws_vpc_endpoint" "kms" {
 
   private_dns_enabled = true
   security_group_ids = [
-    aws_security_group.ssm.id,
+    aws_security_group.ssm_endpoint.id,
   ]
   service_name      = "com.amazonaws.${var.aws_region}.kms"
   vpc_endpoint_type = "Interface"
@@ -74,7 +74,7 @@ resource "aws_vpc_endpoint" "ssmmessages" {
 
   private_dns_enabled = true
   security_group_ids = [
-    aws_security_group.ssm.id,
+    aws_security_group.ssm_endpoint.id,
   ]
   service_name      = "com.amazonaws.${var.aws_region}.ssmmessages"
   vpc_endpoint_type = "Interface"

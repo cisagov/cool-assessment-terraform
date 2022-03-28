@@ -65,6 +65,7 @@ resource "aws_instance" "samba" {
     aws_security_group.cloudwatch_and_ssm_agent.id,
     aws_security_group.efs_client.id,
     aws_security_group.smb_server.id,
+    aws_security_group.ssm_endpoint_client.id,
   ]
   tags = {
     Name = format("Samba%d", count.index)
