@@ -30,6 +30,8 @@ resource "aws_instance" "samba" {
   # order to mount the EFS volume at boot time.
   depends_on = [
     aws_efs_mount_target.target,
+    aws_security_group_rule.allow_nfs_inbound,
+    aws_security_group_rule.allow_nfs_outbound,
   ]
   provider = aws.provisionassessment
 

@@ -36,6 +36,8 @@ resource "aws_instance" "teamserver" {
   # Teamserver, as well as the endpoints themselves.
   depends_on = [
     aws_efs_mount_target.target,
+    aws_security_group_rule.allow_nfs_inbound,
+    aws_security_group_rule.allow_nfs_outbound,
     aws_security_group_rule.egress_from_sts_endpoint_client_to_sts_endpoint_via_https,
     aws_security_group_rule.egress_to_s3_endpoint_via_https,
     aws_security_group_rule.ingress_from_sts_endpoint_client_to_sts_endpoint_via_https,

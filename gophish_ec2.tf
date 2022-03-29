@@ -30,7 +30,9 @@ resource "aws_instance" "gophish" {
   # present so that both volumes can be mounted at boot time.
   depends_on = [
     aws_ebs_volume.gophish_docker,
-    aws_efs_mount_target.target
+    aws_efs_mount_target.target,
+    aws_security_group_rule.allow_nfs_inbound,
+    aws_security_group_rule.allow_nfs_outbound,
   ]
   provider = aws.provisionassessment
 
