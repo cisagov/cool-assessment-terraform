@@ -33,6 +33,9 @@ resource "aws_instance" "guacamole" {
   # allow SSM and STS endpoint access from Guacamole, as well as the endpoints
   # themselves.
   depends_on = [
+    aws_security_group_rule.egress_from_ec2_endpoint_client_to_ec2_endpoint_via_https,
+    aws_security_group_rule.egress_from_ssm_endpoint_client_to_ssm_endpoint_via_https,
+    aws_security_group_rule.egress_from_sts_endpoint_client_to_sts_endpoint_via_https,
     aws_security_group_rule.egress_to_s3_endpoint_via_https,
     aws_security_group_rule.ingress_from_ec2_endpoint_client_to_ec2_endpoint_via_https,
     aws_security_group_rule.ingress_from_ssm_endpoint_client_to_ssm_endpoint_via_https,

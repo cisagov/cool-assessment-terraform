@@ -39,6 +39,8 @@ resource "aws_instance" "nessus" {
   # allow SSM and STS endpoint access from Nessus, as well as the endpoints
   # themselves.
   depends_on = [
+    aws_security_group_rule.egress_from_ssm_endpoint_client_to_ssm_endpoint_via_https,
+    aws_security_group_rule.egress_from_sts_endpoint_client_to_sts_endpoint_via_https,
     aws_security_group_rule.ingress_from_ssm_endpoint_client_to_ssm_endpoint_via_https,
     aws_security_group_rule.ingress_from_sts_endpoint_client_to_sts_endpoint_via_https,
     aws_vpc_endpoint.ssm,
