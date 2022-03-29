@@ -57,13 +57,12 @@ resource "aws_instance" "kali" {
   }
   user_data_base64 = data.cloudinit_config.kali_cloud_init_tasks.rendered
   vpc_security_group_ids = [
-    aws_security_group.cloudwatch_and_ssm_agent.id,
     aws_security_group.cloudwatch_agent_endpoint_client.id,
     aws_security_group.efs_client.id,
     aws_security_group.guacamole_accessible.id,
     aws_security_group.kali.id,
     aws_security_group.scanner.id,
-    aws_security_group.ssm_endpoint_client.id,
+    aws_security_group.ssm_agent_endpoint_client.id,
   ]
   tags = {
     Name = format("Kali%d", count.index)

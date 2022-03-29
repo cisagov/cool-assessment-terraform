@@ -58,12 +58,11 @@ resource "aws_instance" "windows" {
   }
   user_data = templatefile("${path.module}/ec2launch/windows-setup.tpl.yml", { drive_letter = "N", samba_server_input = join(",", aws_route53_record.samba_A[*].name) })
   vpc_security_group_ids = [
-    aws_security_group.cloudwatch_and_ssm_agent.id,
     aws_security_group.cloudwatch_agent_endpoint_client.id,
     aws_security_group.guacamole_accessible.id,
     aws_security_group.scanner.id,
     aws_security_group.smb_client.id,
-    aws_security_group.ssm_endpoint_client.id,
+    aws_security_group.ssm_agent_endpoint_client.id,
     aws_security_group.windows.id,
   ]
   tags = {

@@ -223,9 +223,14 @@ output "scanner_security_group" {
   description = "A security group that should be applied to all instance types that perform scanning.  This security group allows egress to anywhere as well as ingress from anywhere via ICMP."
 }
 
+output "ssm_agent_endpoint_client_security_group" {
+  value       = aws_security_group.ssm_agent_endpoint_client
+  description = "A security group for any instances that run the AWS SSM agent.  This security groups allows such instances to communicate with the VPC endpoints that are required by the AWS SSM agent."
+}
+
 output "ssm_endpoint_client_security_group" {
   value       = aws_security_group.ssm_endpoint_client
-  description = "A security group for any instances that wish to communicate with the SSM VPC endpoints."
+  description = "A security group for any instances that wish to communicate with the SSM VPC endpoint."
 }
 
 output "ssm_session_role" {

@@ -57,10 +57,11 @@ resource "aws_instance" "assessorportal" {
   }
   user_data_base64 = data.cloudinit_config.assessorportal_cloud_init_tasks[count.index].rendered
   vpc_security_group_ids = [
-    aws_security_group.cloudwatch_and_ssm_agent.id,
+    aws_security_group.cloudwatch_agent_endpoint_client.id,
     aws_security_group.assessorportal.id,
     aws_security_group.efs_client.id,
     aws_security_group.guacamole_accessible.id,
+    aws_security_group.ssm_agent_endpoint_client.id,
   ]
   tags = {
     Name = format("AssessorPortal%d", count.index)

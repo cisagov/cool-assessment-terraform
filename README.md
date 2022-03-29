@@ -297,6 +297,8 @@ the COOL environment.
 | [aws_security_group.scanner](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group.smb_client](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group.smb_server](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
+| [aws_security_group.ssm_agent_endpoint](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
+| [aws_security_group.ssm_agent_endpoint_client](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group.ssm_endpoint](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group.ssm_endpoint_client](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group.sts_endpoint](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
@@ -313,6 +315,7 @@ the COOL environment.
 | [aws_security_group_rule.debiandesktop_egress_to_nessus_via_web_ui](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.egress_from_cloudwatch_agent_endpoint_client_to_cloudwatch_agent_endpoint_via_https](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.egress_from_ec2_endpoint_client_to_ec2_endpoint_via_https](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.egress_from_ssm_agent_endpoint_client_to_ssm_agent_endpoint_via_https](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.egress_from_ssm_endpoint_client_to_ssm_endpoint_via_https](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.egress_from_sts_endpoint_client_to_sts_endpoint_via_https](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.egress_to_dynamodb_endpoint_via_https](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
@@ -333,6 +336,7 @@ the COOL environment.
 | [aws_security_group_rule.ingress_from_ec2_endpoint_client_to_ec2_endpoint_via_https](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.ingress_from_guacamole_via_ssh](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.ingress_from_guacamole_via_vnc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.ingress_from_ssm_agent_endpoint_client_to_ssm_agent_endpoint_via_https](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.ingress_from_ssm_endpoint_client_to_ssm_endpoint_via_https](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.ingress_from_sts_endpoint_client_to_sts_endpoint_via_https](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.ingress_from_teamserver_to_gophish_via_smtp](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
@@ -531,7 +535,8 @@ the COOL environment.
 | samba\_instances | The Samba file share server instances. |
 | samba\_server\_security\_group | The security group for the Samba file share server instances. |
 | scanner\_security\_group | A security group that should be applied to all instance types that perform scanning.  This security group allows egress to anywhere as well as ingress from anywhere via ICMP. |
-| ssm\_endpoint\_client\_security\_group | A security group for any instances that wish to communicate with the SSM VPC endpoints. |
+| ssm\_agent\_endpoint\_client\_security\_group | A security group for any instances that run the AWS SSM agent.  This security groups allows such instances to communicate with the VPC endpoints that are required by the AWS SSM agent. |
+| ssm\_endpoint\_client\_security\_group | A security group for any instances that wish to communicate with the SSM VPC endpoint. |
 | ssm\_session\_role | An IAM role that allows creation of SSM SessionManager sessions to any EC2 instance in this account. |
 | sts\_endpoint\_client\_security\_group | A security group for any instances that wish to communicate with the STS VPC endpoint. |
 | teamserver\_instance\_profiles | The instance profiles for the Teamserver instances. |
