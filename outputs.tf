@@ -33,6 +33,11 @@ output "cloudwatch_and_ssm_agent_security_group" {
   description = "A security group for *all* instances.  Allows access to the VPC endpoint resources necessary for the AWS CloudWatch agent and the AWS SSM agent."
 }
 
+output "cloudwatch_endpoint_client_security_group" {
+  value       = aws_security_group.cloudwatch_endpoint_client
+  description = "A security group for any instances that wish to communicate with the CloudWatch VPC endpoints."
+}
+
 output "debian_desktop_instance_profile" {
   value       = aws_iam_instance_profile.debiandesktop
   description = "The instance profile for the Debian desktop instances."
@@ -46,6 +51,16 @@ output "debian_desktop_instances" {
 output "debian_desktop_security_group" {
   value       = aws_security_group.debiandesktop
   description = "The security group for the Debian desktop instances."
+}
+
+output "dynamodb_endpoint_client_security_group" {
+  value       = aws_security_group.dynamodb_endpoint_client
+  description = "A security group for any instances that wish to communicate with the DynamoDB VPC endpoint."
+}
+
+output "ec2_endpoint_client_security_group" {
+  value       = aws_security_group.ec2_endpoint_client
+  description = "A security group for any instances that wish to communicate with the EC2 VPC endpoint."
 }
 
 output "efs_access_points" {
@@ -178,6 +193,11 @@ output "remote_desktop_url" {
   description = "The URL of the remote desktop gateway (Guacamole) for this assessment."
 }
 
+output "s3_endpoint_client_security_group" {
+  value       = aws_security_group.s3_endpoint_client
+  description = "A security group for any instances that wish to communicate with the S3 VPC endpoint."
+}
+
 output "samba_client_security_group" {
   value       = aws_security_group.smb_client
   description = "The security group that should be applied to all instance types that wish to mount the Samba file share being served by the Samba file share server instances."
@@ -203,9 +223,19 @@ output "scanner_security_group" {
   description = "A security group that should be applied to all instance types that perform scanning.  This security group allows egress to anywhere as well as ingress from anywhere via ICMP."
 }
 
+output "ssm_endpoint_client_security_group" {
+  value       = aws_security_group.ssm_endpoint_client
+  description = "A security group for any instances that wish to communicate with the SSM VPC endpoints."
+}
+
 output "ssm_session_role" {
   value       = aws_iam_role.ssmsession_role
   description = "An IAM role that allows creation of SSM SessionManager sessions to any EC2 instance in this account."
+}
+
+output "sts_endpoint_client_security_group" {
+  value       = aws_security_group.sts_endpoint_client
+  description = "A security group for any instances that wish to communicate with the STS VPC endpoint."
 }
 
 output "teamserver_instance_profiles" {

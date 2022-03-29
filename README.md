@@ -493,9 +493,12 @@ the COOL environment.
 | aws\_region | The AWS region where this assessment environment lives. |
 | certificate\_bucket\_name | The name of the S3 bucket where certificate information is stored for this assessment. |
 | cloudwatch\_and\_ssm\_agent\_security\_group | A security group for *all* instances.  Allows access to the VPC endpoint resources necessary for the AWS CloudWatch agent and the AWS SSM agent. |
+| cloudwatch\_endpoint\_client\_security\_group | A security group for any instances that wish to communicate with the CloudWatch VPC endpoints. |
 | debian\_desktop\_instance\_profile | The instance profile for the Debian desktop instances. |
 | debian\_desktop\_instances | The Debian desktop instances. |
 | debian\_desktop\_security\_group | The security group for the Debian desktop instances. |
+| dynamodb\_endpoint\_client\_security\_group | A security group for any instances that wish to communicate with the DynamoDB VPC endpoint. |
+| ec2\_endpoint\_client\_security\_group | A security group for any instances that wish to communicate with the EC2 VPC endpoint. |
 | efs\_access\_points | The access points to control file-system access to the EFS file share. |
 | efs\_client\_security\_group | A security group that should be applied to all instances that will mount the EFS file share. |
 | efs\_mount\_targets | The mount targets for the EFS file share. |
@@ -522,12 +525,15 @@ the COOL environment.
 | private\_subnets | The private subnets. |
 | read\_terraform\_state\_module | The IAM policies and role that allow read-only access to the cool-assessment-terraform workspace-specific state in the Terraform state bucket. |
 | remote\_desktop\_url | The URL of the remote desktop gateway (Guacamole) for this assessment. |
+| s3\_endpoint\_client\_security\_group | A security group for any instances that wish to communicate with the S3 VPC endpoint. |
 | samba\_client\_security\_group | The security group that should be applied to all instance types that wish to mount the Samba file share being served by the Samba file share server instances. |
 | samba\_instance\_profile | The instance profile for the Samba file share server instances. |
 | samba\_instances | The Samba file share server instances. |
 | samba\_server\_security\_group | The security group for the Samba file share server instances. |
 | scanner\_security\_group | A security group that should be applied to all instance types that perform scanning.  This security group allows egress to anywhere as well as ingress from anywhere via ICMP. |
+| ssm\_endpoint\_client\_security\_group | A security group for any instances that wish to communicate with the SSM VPC endpoints. |
 | ssm\_session\_role | An IAM role that allows creation of SSM SessionManager sessions to any EC2 instance in this account. |
+| sts\_endpoint\_client\_security\_group | A security group for any instances that wish to communicate with the STS VPC endpoint. |
 | teamserver\_instance\_profiles | The instance profiles for the Teamserver instances. |
 | teamserver\_instances | The Teamserver instances. |
 | teamserver\_security\_group | The security group for the Teamserver instances. |
