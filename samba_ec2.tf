@@ -65,7 +65,7 @@ resource "aws_instance" "samba" {
   user_data_base64 = data.cloudinit_config.samba_cloud_init_tasks.rendered
   vpc_security_group_ids = [
     aws_security_group.cloudwatch_and_ssm_agent.id,
-    aws_security_group.cloudwatch_endpoint_client.id,
+    aws_security_group.cloudwatch_agent_endpoint_client.id,
     aws_security_group.efs_client.id,
     aws_security_group.smb_server.id,
     aws_security_group.ssm_endpoint_client.id,
