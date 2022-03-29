@@ -25,7 +25,14 @@ data "aws_ami" "windows" {
 
 # The Windows EC2 instances
 resource "aws_instance" "windows" {
-  count    = lookup(var.operations_instance_counts, "windows", 0)
+  count = lookup(var.operations_instance_counts, "windows", 0)
+  # These instances require a Samba instance to be present in order to
+  # mount the SMB volume at boot time.
+  depends_on = [
+    aws_instance.samba,
+    aws_security_group_rule.smb_client_egress_to_smb_server,
+    aws_security_group_rule.smb_server_ingress_from_smb_client,
+  ]
   provider = aws.provisionassessment
 
   ami                         = data.aws_ami.windows.id
