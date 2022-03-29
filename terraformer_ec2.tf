@@ -25,7 +25,14 @@ data "aws_ami" "terraformer" {
 
 # The Terraformer EC2 instances
 resource "aws_instance" "terraformer" {
-  count    = lookup(var.operations_instance_counts, "terraformer", 0)
+  count = lookup(var.operations_instance_counts, "terraformer", 0)
+  # These instances require the EFS mount target to be present in
+  # order to mount the EFS volume at boot time.
+  depends_on = [
+    aws_efs_mount_target.target,
+    aws_security_group_rule.allow_nfs_inbound,
+    aws_security_group_rule.allow_nfs_outbound,
+  ]
   provider = aws.provisionassessment
 
   ami                  = data.aws_ami.terraformer.id
