@@ -61,6 +61,7 @@ resource "aws_instance" "terraformer" {
     aws_security_group.cloudwatch_endpoint_client.id,
     aws_security_group.efs_client.id,
     aws_security_group.guacamole_accessible.id,
+    aws_security_group.s3_endpoint_client.id,
     aws_security_group.ssm_endpoint_client.id,
     aws_security_group.sts_endpoint_client.id,
     aws_security_group.terraformer.id,
