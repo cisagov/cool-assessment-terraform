@@ -59,6 +59,7 @@ resource "aws_instance" "terraformer" {
   vpc_security_group_ids = [
     aws_security_group.cloudwatch_and_ssm_agent.id,
     aws_security_group.cloudwatch_endpoint_client.id,
+    aws_security_group.dynamodb_endpoint_client.id,
     aws_security_group.efs_client.id,
     aws_security_group.guacamole_accessible.id,
     aws_security_group.s3_endpoint_client.id,
