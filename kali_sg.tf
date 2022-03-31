@@ -55,7 +55,7 @@ resource "aws_security_group_rule" "ingress_from_anywhere_to_kali_via_allowed_po
   # for_each will only accept a map or a list of strings, so we have
   # to do a little finagling to get the list of port objects into an
   # acceptable form.
-  for_each = { for index, d in var.inbound_ports_allowed["kali"] : index => d }
+  for_each = { for d in var.inbound_ports_allowed["kali"] : format("%s_%d_%d", d.protocol, d.from_port, d.to_port) => d }
 
   security_group_id = aws_security_group.kali.id
   type              = "ingress"

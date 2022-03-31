@@ -125,12 +125,12 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_allowed_po
 
   network_acl_id = aws_network_acl.operations.id
   egress         = false
-  protocol       = each.value["protocol"]
-  rule_number    = 150 + each.key
+  protocol       = each.value.protocol
+  rule_number    = 150 + each.value.index
   rule_action    = "allow"
   cidr_block     = "0.0.0.0/0"
-  from_port      = each.value["from_port"]
-  to_port        = each.value["to_port"]
+  from_port      = each.value.from_port
+  to_port        = each.value.to_port
 }
 
 # Allow ingress from anywhere via ephemeral TCP/UDP ports below 3389
