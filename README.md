@@ -94,6 +94,17 @@ the COOL environment.
 
 | Name | Source | Version |
 |------|--------|---------|
+| cw\_alarms\_assessor\_portal | github.com/cisagov/instance-cw-alarms-tf-module | n/a |
+| cw\_alarms\_debiandesktop | github.com/cisagov/instance-cw-alarms-tf-module | n/a |
+| cw\_alarms\_gophish | github.com/cisagov/instance-cw-alarms-tf-module | n/a |
+| cw\_alarms\_guacamole | github.com/cisagov/instance-cw-alarms-tf-module | n/a |
+| cw\_alarms\_kali | github.com/cisagov/instance-cw-alarms-tf-module | n/a |
+| cw\_alarms\_nessus | github.com/cisagov/instance-cw-alarms-tf-module | n/a |
+| cw\_alarms\_pentestportal | github.com/cisagov/instance-cw-alarms-tf-module | n/a |
+| cw\_alarms\_samba | github.com/cisagov/instance-cw-alarms-tf-module | n/a |
+| cw\_alarms\_teamserver | github.com/cisagov/instance-cw-alarms-tf-module | n/a |
+| cw\_alarms\_terraformer | github.com/cisagov/instance-cw-alarms-tf-module | n/a |
+| cw\_alarms\_windows | github.com/cisagov/instance-cw-alarms-tf-module | n/a |
 | email\_sending\_domain\_certreadrole | github.com/cisagov/cert-read-role-tf-module | n/a |
 | guacamole\_certreadrole | github.com/cisagov/cert-read-role-tf-module | n/a |
 | read\_terraform\_state | github.com/cisagov/terraform-state-read-role-tf-module | n/a |

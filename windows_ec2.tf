@@ -67,3 +67,21 @@ resource "aws_instance" "windows" {
     Name = format("Windows%d", count.index)
   })
 }
+
+# CloudWatch alarms for the Windows instances
+module "cw_alarms_windows" {
+  providers = {
+    aws = aws.provisionassessment
+  }
+  source = "github.com/cisagov/instance-cw-alarms-tf-module"
+
+  alarm_actions = [data.terraform_remote_state.dynamic_assessment.outputs.cw_alarm_sns_topic.arn]
+  # The metrics written by the CloudWatch Agent have completely
+  # different names in the case of Windows, so it doesn't make sense
+  # to create alarms based on these metrics until we have a standard
+  # set of Windows metrics.
+  create_cloudwatch_agent_alarms = false
+  instance_ids                   = [for instance in aws_instance.windows : instance.id]
+  insufficient_data_actions      = [data.terraform_remote_state.dynamic_assessment.outputs.cw_alarm_sns_topic.arn]
+  ok_actions                     = [data.terraform_remote_state.dynamic_assessment.outputs.cw_alarm_sns_topic.arn]
+}

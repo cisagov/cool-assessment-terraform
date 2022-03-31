@@ -90,3 +90,16 @@ resource "aws_eip_association" "kali" {
   instance_id   = aws_instance.kali[count.index].id
   allocation_id = aws_eip.kali[count.index].id
 }
+
+# CloudWatch alarms for the Kali instances
+module "cw_alarms_kali" {
+  providers = {
+    aws = aws.provisionassessment
+  }
+  source = "github.com/cisagov/instance-cw-alarms-tf-module"
+
+  alarm_actions             = [data.terraform_remote_state.dynamic_assessment.outputs.cw_alarm_sns_topic.arn]
+  instance_ids              = [for instance in aws_instance.kali : instance.id]
+  insufficient_data_actions = [data.terraform_remote_state.dynamic_assessment.outputs.cw_alarm_sns_topic.arn]
+  ok_actions                = [data.terraform_remote_state.dynamic_assessment.outputs.cw_alarm_sns_topic.arn]
+}

@@ -122,3 +122,16 @@ resource "aws_volume_attachment" "gophish_docker" {
   instance_id = aws_instance.gophish[count.index].id
   volume_id   = aws_ebs_volume.gophish_docker[count.index].id
 }
+
+# CloudWatch alarms for the Gophish instances
+module "cw_alarms_gophish" {
+  providers = {
+    aws = aws.provisionassessment
+  }
+  source = "github.com/cisagov/instance-cw-alarms-tf-module"
+
+  alarm_actions             = [data.terraform_remote_state.dynamic_assessment.outputs.cw_alarm_sns_topic.arn]
+  instance_ids              = [for instance in aws_instance.gophish : instance.id]
+  insufficient_data_actions = [data.terraform_remote_state.dynamic_assessment.outputs.cw_alarm_sns_topic.arn]
+  ok_actions                = [data.terraform_remote_state.dynamic_assessment.outputs.cw_alarm_sns_topic.arn]
+}

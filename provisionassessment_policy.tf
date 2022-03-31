@@ -6,6 +6,18 @@
 data "aws_iam_policy_document" "provisionassessment_policy_doc" {
   statement {
     actions = [
+      "cloudwatch:DeleteAlarms",
+      "cloudwatch:ListTagsForResource",
+      "cloudwatch:PutMetricAlarm",
+    ]
+
+    resources = [
+      "*",
+    ]
+  }
+
+  statement {
+    actions = [
       "ec2:AllocateAddress",
       "ec2:AssociateAddress",
       "ec2:AssociateDhcpOptions",
