@@ -5,7 +5,7 @@ set -o errexit
 set -o pipefail
 
 # A script for creating assessment environments using
-# cisagov/cooll-assessment-terraform.
+# cisagov/cool-assessment-terraform.
 #
 # This is necessary because the CloudWatch alarm resources associated
 # with the EC2 instances are created using for_each expressions that
@@ -25,7 +25,7 @@ export AWS_DEFAULT_REGION
 
 # Perform a targeted apply to create the EC2 instances, then create
 # everything else.  This is a workaround for the dynamic-ish for_each
-# expressions mentinoed above.
+# expressions mentioned above.
 terraform apply "${@}" \
   -target=aws_iam_role_policy_attachment.provisionassessment_policy_attachment \
   && terraform apply "${@}" \

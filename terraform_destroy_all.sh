@@ -5,7 +5,7 @@ set -o errexit
 set -o pipefail
 
 # A script for destroying assessment environments created using
-# cisagov/cooll-assessment-terraform.
+# cisagov/cool-assessment-terraform.
 #
 # This is necessary because the CloudWatch alarm resources associated
 # with the EC2 instances are created using for_each expressions that
