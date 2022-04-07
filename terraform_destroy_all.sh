@@ -13,7 +13,7 @@ set -o pipefail
 # verifies that each for_each attribute is computable without any
 # resources needing to be instantiated.  That isn't possible in this
 # case, since Terraform must instantiate the EC2 instances before it
-# can get determine their IDs.  A targeted destroy avoids this check,
+# can determine their IDs.  A targeted destroy avoids this check,
 # which in this case is unnecessary.
 #
 # Examples:

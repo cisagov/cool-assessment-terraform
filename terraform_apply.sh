@@ -12,7 +12,7 @@ set -o pipefail
 # are dynamic-ish.  When an untargeted apply is run, Terraform
 # verifies that each for_each attribute is computable without any
 # resources being instantiated.  That isn't possible in this case,
-# since Terraform must instantiate the EC2 instances before it can get
+# since Terraform must instantiate the EC2 instances before it can
 # determine their IDs.  A targeted apply avoids this check, which in
 # this case is unnecessary.
 #
