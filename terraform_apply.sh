@@ -9,7 +9,16 @@ set -o pipefail
 #
 # This is necessary because the CloudWatch alarm resources associated
 # with the EC2 instances are created using for_each expressions that
-# are dynamic-ish.
+# are dynamic-ish.  When an untargeted apply is run, Terraform
+# verifies that each for_each attribute is computable without any
+# resources being instantiated.  That isn't possible in this case,
+# since Terraform must instantiate the EC2 instances before it can get
+# determine their IDs.  A targeted apply avoids this check, which in
+# this case is unnecessary.
+#
+# Note that instantiating the EC2 instances with a targeted apply and
+# then instantiating everything else is equivalent to laying down a
+# separate "layer" a la cool-sharedservices-networking.
 #
 # Examples:
 # - See what would be created:

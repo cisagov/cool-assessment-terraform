@@ -9,7 +9,12 @@ set -o pipefail
 #
 # This is necessary because the CloudWatch alarm resources associated
 # with the EC2 instances are created using for_each expressions that
-# are dynamic-ish.
+# are dynamic-ish.  When an untargeted destroy is run, Terraform
+# verifies that each for_each attribute is computable without any
+# resources needing to be instantiated.  That isn't possible in this
+# case, since Terraform must instantiate the EC2 instances before it
+# can get determine their IDs.  A targeted destroy avoids this check,
+# which in this case is unnecessary.
 #
 # Examples:
 # - See what would be destroyed:
