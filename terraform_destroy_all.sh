@@ -20,7 +20,7 @@ set -o pipefail
 # - See what would be destroyed:
 #   $ AWS_PROFILE=cool-user AWS_SHARED_CREDENTIALS_FILE=~/.aws/production_credentials AWS_DEFAULT_REGION=us-east-1 ./terraform_destroy_all.sh -var-file=envX-production.tfvars
 # - Destroy it!  (You will not be prompted.)
-#   $ AWS_PROFILE=cool-user AWS_SHARED_CREDENTIALS_FILE=~/.aws/production_credentials AWS_DEFAULT_REGION=us-east-1 ./terraform_destroy_all.sh -auto-apply -var-file=envX-production.tfvars
+#   $ AWS_PROFILE=cool-user AWS_SHARED_CREDENTIALS_FILE=~/.aws/production_credentials AWS_DEFAULT_REGION=us-east-1 ./terraform_destroy_all.sh -auto-approve -var-file=envX-production.tfvars
 
 # Export some environment variables that we want the terraform child
 # processes to inherit.
