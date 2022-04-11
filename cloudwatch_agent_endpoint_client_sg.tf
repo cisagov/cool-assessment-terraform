@@ -1,4 +1,4 @@
-# Security group for instances that use the CloudWatch
+# Security group for instances that use CloudWatch
 resource "aws_security_group" "cloudwatch_agent_endpoint_client" {
   provider = aws.provisionassessment
 

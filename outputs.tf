@@ -220,7 +220,7 @@ output "scanner_security_group" {
 
 output "ssm_agent_endpoint_client_security_group" {
   value       = aws_security_group.ssm_agent_endpoint_client
-  description = "A security group for any instances that run the AWS SSM agent.  This security groups allows such instances to communicate with the VPC endpoints that are required by the AWS SSM agent."
+  description = "A security group for any instances that run the AWS SSM agent.  This security group allows such instances to communicate with the VPC endpoints that are required by the AWS SSM agent."
 }
 
 output "ssm_endpoint_client_security_group" {
