@@ -163,21 +163,6 @@ data "aws_iam_policy_document" "provisionassessment_policy_doc" {
 
   statement {
     actions = [
-      "ssm:AddTagsToResource",
-      "ssm:CreateDocument",
-      "ssm:DeleteDocument",
-      "ssm:DescribeDocument*",
-      "ssm:GetDocument",
-      "ssm:UpdateDocument*",
-    ]
-
-    resources = [
-      "arn:aws:ssm:${var.aws_region}:${local.assessment_account_id}:document/SSM-SessionManagerRunShell",
-    ]
-  }
-
-  statement {
-    actions = [
       "logs:CreateLogGroup",
       "logs:DescribeLogGroups",
     ]

@@ -229,7 +229,7 @@ output "ssm_endpoint_client_security_group" {
 }
 
 output "ssm_session_role" {
-  value       = aws_iam_role.ssmsession_role
+  value       = module.session_manager.ssm_session_role
   description = "An IAM role that allows creation of SSM SessionManager sessions to any EC2 instance in this account."
 }
 
