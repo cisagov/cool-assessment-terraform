@@ -108,7 +108,7 @@ the COOL environment.
 | email\_sending\_domain\_certreadrole | github.com/cisagov/cert-read-role-tf-module | n/a |
 | guacamole\_certreadrole | github.com/cisagov/cert-read-role-tf-module | n/a |
 | read\_terraform\_state | github.com/cisagov/terraform-state-read-role-tf-module | n/a |
-| run\_shell\_ssm\_document | gazoakley/session-manager-settings/aws | n/a |
+| session\_manager | github.com/cisagov/session-manager-tf-module | first-commits |
 | vpc\_flow\_logs | trussworks/vpc-flow-logs/aws | ~>2.0 |
 
 ## Resources ##
@@ -150,7 +150,7 @@ the COOL environment.
 | [aws_iam_policy.gucamole_parameterstorereadonly_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.nessus_parameterstorereadonly_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.provisionassessment_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
-| [aws_iam_policy.ssmsession_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.provisionssmsessionmanager_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.terraformer_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_role.assessorportal_instance_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role.debiandesktop_instance_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
@@ -162,7 +162,6 @@ the COOL environment.
 | [aws_iam_role.nessus_parameterstorereadonly_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role.pentestportal_instance_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role.samba_instance_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
-| [aws_iam_role.ssmsession_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role.teamserver_instance_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role.terraformer_instance_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role.terraformer_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
@@ -195,6 +194,7 @@ the COOL environment.
 | [aws_iam_role_policy_attachment.gucamole_parameterstorereadonly_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.nessus_parameterstorereadonly_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.provisionassessment_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_iam_role_policy_attachment.provisionssmsessionmanager_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.read_only_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.ssm_agent_policy_attachment_assessorportal](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.ssm_agent_policy_attachment_debiandesktop](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
@@ -207,7 +207,6 @@ the COOL environment.
 | [aws_iam_role_policy_attachment.ssm_agent_policy_attachment_teamserver](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.ssm_agent_policy_attachment_terraformer](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.ssm_agent_policy_attachment_windows](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
-| [aws_iam_role_policy_attachment.ssmsession_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.terraformer_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_instance.assessorportal](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance) | resource |
 | [aws_instance.debiandesktop](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance) | resource |
@@ -418,7 +417,7 @@ the COOL environment.
 | [aws_iam_policy_document.nessus_assume_role_doc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.nessus_parameterstorereadonly_doc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.provisionassessment_policy_doc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
-| [aws_iam_policy_document.ssmsession_doc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.provisionssmsessionmanager_policy_doc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.teamserver_assume_delegated_role_policy_doc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.terraformer_assume_delegated_role_policy_doc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.terraformer_assume_role_doc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
@@ -472,13 +471,13 @@ the COOL environment.
 | provisionaccount\_role\_name | The name of the IAM role that allows sufficient permissions to provision all AWS resources in the assessment account. | `string` | `"ProvisionAccount"` | no |
 | provisionassessment\_policy\_description | The description to associate with the IAM policy that allows provisioning of the resources required in the assessment account. | `string` | `"Allows provisioning of the resources required in the assessment account."` | no |
 | provisionassessment\_policy\_name | The name to assign the IAM policy that allows provisioning of the resources required in the assessment account. | `string` | `"ProvisionAssessment"` | no |
+| provisionssmsessionmanager\_policy\_description | The description to associate with the IAM policy that allows sufficient permissions to provision the SSM Document resource and set up SSM session logging in the Shared Services account. | `string` | `"Allows sufficient permissions to provision the SSM Document resource and set up SSM session logging in the Shared Services account."` | no |
+| provisionssmsessionmanager\_policy\_name | The name to assign the IAM policy that allows sufficient permissions to provision the SSM Document resource and set up SSM session logging in the Shared Services account. | `string` | `"ProvisionSSMSessionManager"` | no |
 | read\_terraform\_state\_role\_name | The name to assign the IAM role (as well as the corresponding policy) that allows read-only access to the cool-assessment-terraform state in the S3 bucket where Terraform state is stored.  The %s in this name will be replaced by the value of the assessment\_account\_name variable. | `string` | `"ReadCoolAssessmentTerraformTerraformState-%s"` | no |
 | ssm\_key\_nessus\_admin\_password | The AWS SSM Parameter Store parameter that contains the password of the Nessus admin user (e.g. "/nessus/assessment/admin\_password"). | `string` | `"/nessus/assessment/admin_password"` | no |
 | ssm\_key\_nessus\_admin\_username | The AWS SSM Parameter Store parameter that contains the username of the Nessus admin user (e.g. "/nessus/assessment/admin\_username"). | `string` | `"/nessus/assessment/admin_username"` | no |
 | ssm\_key\_samba\_username | The AWS SSM Parameter Store parameter that contains the username of the Samba user (e.g. "/samba/username"). | `string` | `"/samba/username"` | no |
 | ssm\_key\_vnc\_username | The AWS SSM Parameter Store parameter that contains the username of the VNC user (e.g. "/vnc/username"). | `string` | `"/vnc/username"` | no |
-| ssmsession\_role\_description | The description to associate with the IAM role (and policy) that allows creation of SSM SessionManager sessions to any EC2 instance in this account. | `string` | `"Allows creation of SSM SessionManager sessions to any EC2 instance in this account."` | no |
-| ssmsession\_role\_name | The name to assign the IAM role (and policy) that allows creation of SSM SessionManager sessions to any EC2 instance in this account. | `string` | `"StartStopSSMSession"` | no |
 | tags | Tags to apply to all AWS resources created | `map(string)` | `{}` | no |
 | terraformer\_role\_description | The description to associate with the IAM role (and policy) that allows Terraformer instances to create appropriate AWS resources in this account. | `string` | `"Allows Terraformer instances to create appropriate AWS resources in this account."` | no |
 | terraformer\_role\_name | The name to assign the IAM role (and policy) that allows Terraformer instances to create appropriate AWS resources in this account. | `string` | `"Terraformer"` | no |
