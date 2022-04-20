@@ -188,7 +188,7 @@ resource "aws_vpc_endpoint_subnet_association" "ssmmessages" {
 }
 
 # Associate the CloudWatch agent interface endpoints with the private
-# subnets
+# subnets.
 resource "aws_vpc_endpoint_subnet_association" "logs" {
   provider = aws.provisionassessment
 

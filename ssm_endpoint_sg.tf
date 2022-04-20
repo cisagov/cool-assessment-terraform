@@ -10,7 +10,7 @@ resource "aws_security_group" "ssm_endpoint" {
   }
 }
 
-# Allow ingress via HTTPS from the SSM endpoint client security group
+# Allow ingress via HTTPS from the SSM endpoint client security group.
 resource "aws_security_group_rule" "ingress_from_ssm_endpoint_client_to_ssm_endpoint_via_https" {
   provider = aws.provisionassessment
 

@@ -11,7 +11,7 @@ resource "aws_security_group" "cloudwatch_agent_endpoint" {
 }
 
 # Allow ingress via HTTPS from the CloudWatch agent endpoint client
-# security group
+# security group.
 resource "aws_security_group_rule" "ingress_from_cloudwatch_agent_endpoint_client_to_cloudwatch_agent_endpoint_via_https" {
   provider = aws.provisionassessment
 

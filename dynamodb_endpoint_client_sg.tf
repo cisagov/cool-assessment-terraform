@@ -1,4 +1,4 @@
-# Security group for instances that use the DynamoDB VPC endpoint
+# Security group for instances that use the DynamoDB VPC endpoint.
 resource "aws_security_group" "dynamodb_endpoint_client" {
   provider = aws.provisionassessment
 
