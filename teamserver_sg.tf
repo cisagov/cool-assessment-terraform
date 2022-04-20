@@ -22,36 +22,6 @@ resource "aws_security_group_rule" "teamserver_egress_to_gophish_via_587" {
   to_port                  = 587
 }
 
-# Allow egress via HTTPS to any STS interface endpoint
-#
-# For: Teamserver instances assume a role via STS.  This role allows
-# Teamserver instances to then fetch their SSL certificates from S3.
-resource "aws_security_group_rule" "teamserver_egress_to_sts_via_https" {
-  provider = aws.provisionassessment
-
-  security_group_id        = aws_security_group.teamserver.id
-  type                     = "egress"
-  protocol                 = "tcp"
-  source_security_group_id = aws_security_group.sts.id
-  from_port                = 443
-  to_port                  = 443
-}
-
-# Allow egress via HTTPS to the S3 gateway endpoint
-#
-# For: Teamserver instances require access to S3 in order to download
-# their certificates.
-resource "aws_security_group_rule" "teamserver_egress_to_s3_via_https" {
-  provider = aws.provisionassessment
-
-  security_group_id = aws_security_group.teamserver.id
-  type              = "egress"
-  protocol          = "tcp"
-  prefix_list_ids   = [aws_vpc_endpoint.s3.prefix_list_id]
-  from_port         = 443
-  to_port           = 443
-}
-
 # Allow ingress from Kali instances via ports 993 and 50050 (IMAP over
 # TLS/SSL and Cobalt Strike, respectively)
 resource "aws_security_group_rule" "teamserver_ingress_from_kali_via_imaps_and_cs" {

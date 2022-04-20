@@ -30,7 +30,9 @@ resource "aws_instance" "gophish" {
   # present so that both volumes can be mounted at boot time.
   depends_on = [
     aws_ebs_volume.gophish_docker,
-    aws_efs_mount_target.target
+    aws_efs_mount_target.target,
+    aws_security_group_rule.allow_nfs_inbound,
+    aws_security_group_rule.allow_nfs_outbound,
   ]
   provider = aws.provisionassessment
 
@@ -56,11 +58,14 @@ resource "aws_instance" "gophish" {
   }
   user_data_base64 = data.cloudinit_config.gophish_cloud_init_tasks[count.index].rendered
   vpc_security_group_ids = [
-    aws_security_group.cloudwatch_and_ssm_agent.id,
+    aws_security_group.cloudwatch_agent_endpoint_client.id,
     aws_security_group.efs_client.id,
     aws_security_group.gophish.id,
     aws_security_group.guacamole_accessible.id,
+    aws_security_group.s3_endpoint_client.id,
     aws_security_group.scanner.id,
+    aws_security_group.ssm_agent_endpoint_client.id,
+    aws_security_group.sts_endpoint_client.id,
   ]
   tags = {
     Name = format("Gophish%d", count.index)

@@ -12,25 +12,14 @@ resource "aws_vpc_endpoint" "sts" {
 
   private_dns_enabled = true
   security_group_ids = [
-    aws_security_group.sts.id,
+    aws_security_group.sts_endpoint.id,
   ]
   service_name      = "com.amazonaws.${var.aws_region}.sts"
   vpc_endpoint_type = "Interface"
   vpc_id            = aws_vpc.assessment.id
 }
 
-# SSM interface endpoints
-resource "aws_vpc_endpoint" "ssm" {
-  provider = aws.provisionassessment
-
-  private_dns_enabled = true
-  security_group_ids = [
-    aws_security_group.ssm.id,
-  ]
-  service_name      = "com.amazonaws.${var.aws_region}.ssm"
-  vpc_endpoint_type = "Interface"
-  vpc_id            = aws_vpc.assessment.id
-}
+# Interface endpoints associated with the SSM agent
 resource "aws_vpc_endpoint" "ec2" {
   provider = aws.provisionassessment
 
@@ -39,9 +28,9 @@ resource "aws_vpc_endpoint" "ec2" {
     # The CloudWatch agent reads a few pieces of data from the ec2
     # endpoint.  You can see this by inspecting the AWS-provided
     # CloudWatchAgentServerPolicyIAM policy.
-    aws_security_group.cloudwatch.id,
-    aws_security_group.ec2.id,
-    aws_security_group.ssm.id,
+    aws_security_group.cloudwatch_agent_endpoint.id,
+    aws_security_group.ec2_endpoint.id,
+    aws_security_group.ssm_agent_endpoint.id,
   ]
   service_name      = "com.amazonaws.${var.aws_region}.ec2"
   vpc_endpoint_type = "Interface"
@@ -52,7 +41,7 @@ resource "aws_vpc_endpoint" "ec2messages" {
 
   private_dns_enabled = true
   security_group_ids = [
-    aws_security_group.ssm.id,
+    aws_security_group.ssm_agent_endpoint.id,
   ]
   service_name      = "com.amazonaws.${var.aws_region}.ec2messages"
   vpc_endpoint_type = "Interface"
@@ -63,9 +52,21 @@ resource "aws_vpc_endpoint" "kms" {
 
   private_dns_enabled = true
   security_group_ids = [
-    aws_security_group.ssm.id,
+    aws_security_group.ssm_agent_endpoint.id,
   ]
   service_name      = "com.amazonaws.${var.aws_region}.kms"
+  vpc_endpoint_type = "Interface"
+  vpc_id            = aws_vpc.assessment.id
+}
+resource "aws_vpc_endpoint" "ssm" {
+  provider = aws.provisionassessment
+
+  private_dns_enabled = true
+  security_group_ids = [
+    aws_security_group.ssm_agent_endpoint.id,
+    aws_security_group.ssm_endpoint.id,
+  ]
+  service_name      = "com.amazonaws.${var.aws_region}.ssm"
   vpc_endpoint_type = "Interface"
   vpc_id            = aws_vpc.assessment.id
 }
@@ -74,20 +75,21 @@ resource "aws_vpc_endpoint" "ssmmessages" {
 
   private_dns_enabled = true
   security_group_ids = [
-    aws_security_group.ssm.id,
+    aws_security_group.ssm_agent_endpoint.id,
+    aws_security_group.ssm_endpoint.id,
   ]
   service_name      = "com.amazonaws.${var.aws_region}.ssmmessages"
   vpc_endpoint_type = "Interface"
   vpc_id            = aws_vpc.assessment.id
 }
 
-# CloudWatch interface endpoints
+# Interface endpoints associated with the CloudWatch agent
 resource "aws_vpc_endpoint" "logs" {
   provider = aws.provisionassessment
 
   private_dns_enabled = true
   security_group_ids = [
-    aws_security_group.cloudwatch.id,
+    aws_security_group.cloudwatch_agent_endpoint.id,
   ]
   service_name      = "com.amazonaws.${var.aws_region}.logs"
   vpc_endpoint_type = "Interface"
@@ -98,7 +100,7 @@ resource "aws_vpc_endpoint" "monitoring" {
 
   private_dns_enabled = true
   security_group_ids = [
-    aws_security_group.cloudwatch.id,
+    aws_security_group.cloudwatch_agent_endpoint.id,
   ]
   service_name      = "com.amazonaws.${var.aws_region}.monitoring"
   vpc_endpoint_type = "Interface"
@@ -185,8 +187,8 @@ resource "aws_vpc_endpoint_subnet_association" "ssmmessages" {
   vpc_endpoint_id = aws_vpc_endpoint.ssmmessages.id
 }
 
-# Associate the CloudWatch interface endpoints with the private
-# subnets
+# Associate the CloudWatch agent interface endpoints with the private
+# subnets.
 resource "aws_vpc_endpoint_subnet_association" "logs" {
   provider = aws.provisionassessment
 

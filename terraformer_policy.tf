@@ -99,16 +99,24 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
       aws_subnet.private[var.private_subnet_cidr_blocks[0]].arn,
       # Security groups
       aws_security_group.assessorportal.arn,
-      aws_security_group.cloudwatch_and_ssm_agent.arn,
+      aws_security_group.cloudwatch_agent_endpoint_client.arn,
       aws_security_group.debiandesktop.arn,
+      aws_security_group.dynamodb_endpoint_client.arn,
+      aws_security_group.ec2_endpoint_client.arn,
       aws_security_group.efs_client.arn,
       aws_security_group.gophish.arn,
       aws_security_group.guacamole_accessible.arn,
       aws_security_group.kali.arn,
       aws_security_group.nessus.arn,
       aws_security_group.pentestportal.arn,
+      aws_security_group.s3_endpoint_client.arn,
       aws_security_group.scanner.arn,
+      aws_security_group.smb_client.arn,
+      aws_security_group.ssm_agent_endpoint_client.arn,
+      aws_security_group.ssm_endpoint_client.arn,
+      aws_security_group.sts_endpoint_client.arn,
       aws_security_group.teamserver.arn,
+      aws_security_group.windows.arn,
     ]
   }
 

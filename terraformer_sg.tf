@@ -52,51 +52,6 @@ resource "aws_security_group_rule" "terraformer_egress_anywhere_via_https" {
   to_port           = 443
 }
 
-# Allow egress via HTTPS to any STS interface endpoint
-#
-# For: Terraformer instances assume a role via STS.  This role allows
-# Terraformer instances to create/destroy/modify AWS resources.
-resource "aws_security_group_rule" "terraformer_egress_to_sts_via_https" {
-  provider = aws.provisionassessment
-
-  security_group_id        = aws_security_group.terraformer.id
-  type                     = "egress"
-  protocol                 = "tcp"
-  source_security_group_id = aws_security_group.sts.id
-  from_port                = 443
-  to_port                  = 443
-}
-
-# Allow egress via HTTPS to the S3 gateway endpoint
-#
-# For: Terraformer instances require access to S3 in order to read and
-# write their remote state.
-resource "aws_security_group_rule" "terraformer_egress_to_s3_via_https" {
-  provider = aws.provisionassessment
-
-  security_group_id = aws_security_group.terraformer.id
-  type              = "egress"
-  protocol          = "tcp"
-  prefix_list_ids   = [aws_vpc_endpoint.s3.prefix_list_id]
-  from_port         = 443
-  to_port           = 443
-}
-
-# Allow egress via HTTPS to the DynamoDB gateway endpoint
-#
-# For: Terraformer instances require access to DynamoDB in order to
-# acquire a lock before writing their remote state.
-resource "aws_security_group_rule" "terraformer_egress_to_dynamodb_via_https" {
-  provider = aws.provisionassessment
-
-  security_group_id = aws_security_group.terraformer.id
-  type              = "egress"
-  protocol          = "tcp"
-  prefix_list_ids   = [aws_vpc_endpoint.dynamodb.prefix_list_id]
-  from_port         = 443
-  to_port           = 443
-}
-
 # Allow egress anywhere via port 5986 (Windows Remote Manager).
 #
 # For: Terraformer instances must be able to configure Windows-based

@@ -31,11 +31,15 @@ resource "aws_instance" "guacamole" {
   # which require access to the S3, SSM, and STS endpoints.  To ensure that
   # access is available, we force dependencies on the security group rules that
   # allow SSM and STS endpoint access from Guacamole, as well as the endpoints
-  # themselves.  Note that there is no security group rule for S3 because
-  # it's a _gateway_ endpoint, while SSM and STS are _interface_ endpoints.
+  # themselves.
   depends_on = [
-    aws_security_group_rule.ingress_from_guacamole_to_ssm_via_https,
-    aws_security_group_rule.ingress_from_guacamole_to_sts_via_https,
+    aws_security_group_rule.egress_from_ec2_endpoint_client_to_ec2_endpoint_via_https,
+    aws_security_group_rule.egress_from_ssm_endpoint_client_to_ssm_endpoint_via_https,
+    aws_security_group_rule.egress_from_sts_endpoint_client_to_sts_endpoint_via_https,
+    aws_security_group_rule.egress_to_s3_endpoint_via_https,
+    aws_security_group_rule.ingress_from_ec2_endpoint_client_to_ec2_endpoint_via_https,
+    aws_security_group_rule.ingress_from_ssm_endpoint_client_to_ssm_endpoint_via_https,
+    aws_security_group_rule.ingress_from_sts_endpoint_client_to_sts_endpoint_via_https,
     aws_vpc_endpoint.ec2,
     aws_vpc_endpoint.s3,
     aws_vpc_endpoint.ssm,
@@ -69,8 +73,13 @@ resource "aws_instance" "guacamole" {
   }
   user_data_base64 = data.cloudinit_config.guacamole_cloud_init_tasks.rendered
   vpc_security_group_ids = [
-    aws_security_group.cloudwatch_and_ssm_agent.id,
+    aws_security_group.cloudwatch_agent_endpoint_client.id,
+    aws_security_group.ec2_endpoint_client.id,
     aws_security_group.guacamole.id,
+    aws_security_group.s3_endpoint_client.id,
+    aws_security_group.ssm_agent_endpoint_client.id,
+    aws_security_group.ssm_endpoint_client.id,
+    aws_security_group.sts_endpoint_client.id,
   ]
   tags = {
     Name = "Guacamole"

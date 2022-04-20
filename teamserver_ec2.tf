@@ -33,12 +33,14 @@ resource "aws_instance" "teamserver" {
   # scripts which require access to the S3 and STS endpoints.  To
   # ensure that access is available, we force dependencies on the
   # security group rules that allow STS endpoint access from the
-  # Teamserver, as well as the endpoints themselves.  Note that there
-  # is no security group rule for S3 because it's a _gateway_
-  # endpoint, while STS is an _interface_ endpoint.
+  # Teamserver, as well as the endpoints themselves.
   depends_on = [
     aws_efs_mount_target.target,
-    aws_security_group_rule.ingress_from_teamserver_to_sts_via_https,
+    aws_security_group_rule.allow_nfs_inbound,
+    aws_security_group_rule.allow_nfs_outbound,
+    aws_security_group_rule.egress_from_sts_endpoint_client_to_sts_endpoint_via_https,
+    aws_security_group_rule.egress_to_s3_endpoint_via_https,
+    aws_security_group_rule.ingress_from_sts_endpoint_client_to_sts_endpoint_via_https,
     aws_vpc_endpoint.s3,
     aws_vpc_endpoint.sts,
   ]
@@ -66,10 +68,13 @@ resource "aws_instance" "teamserver" {
   }
   user_data_base64 = data.cloudinit_config.teamserver_cloud_init_tasks[count.index].rendered
   vpc_security_group_ids = [
-    aws_security_group.cloudwatch_and_ssm_agent.id,
+    aws_security_group.cloudwatch_agent_endpoint_client.id,
     aws_security_group.efs_client.id,
     aws_security_group.guacamole_accessible.id,
+    aws_security_group.s3_endpoint_client.id,
     aws_security_group.scanner.id,
+    aws_security_group.ssm_agent_endpoint_client.id,
+    aws_security_group.sts_endpoint_client.id,
     aws_security_group.teamserver.id,
   ]
   tags = {

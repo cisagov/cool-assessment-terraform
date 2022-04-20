@@ -22,36 +22,6 @@ resource "aws_security_group_rule" "ingress_from_teamserver_to_gophish_via_smtp"
   to_port                  = 587
 }
 
-# Allow egress via HTTPS to any STS interface endpoint
-#
-# For: Gophish instances assume a role via STS.  This role allows
-# Gophish instances to then fetch their SSL certificates from S3.
-resource "aws_security_group_rule" "gophish_egress_to_sts_via_https" {
-  provider = aws.provisionassessment
-
-  security_group_id        = aws_security_group.gophish.id
-  type                     = "egress"
-  protocol                 = "tcp"
-  source_security_group_id = aws_security_group.sts.id
-  from_port                = 443
-  to_port                  = 443
-}
-
-# Allow egress via HTTPS to the S3 gateway endpoint
-#
-# For: Gophish instances require access to S3 in order to download
-# their certificates.
-resource "aws_security_group_rule" "gophish_egress_to_s3_via_https" {
-  provider = aws.provisionassessment
-
-  security_group_id = aws_security_group.gophish.id
-  type              = "egress"
-  protocol          = "tcp"
-  prefix_list_ids   = [aws_vpc_endpoint.s3.prefix_list_id]
-  from_port         = 443
-  to_port           = 443
-}
-
 # Allow ingress from anywhere via the allowed ports
 resource "aws_security_group_rule" "ingress_from_anywhere_to_gophish_via_allowed_ports" {
   provider = aws.provisionassessment

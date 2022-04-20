@@ -25,7 +25,14 @@ data "aws_ami" "windows" {
 
 # The Windows EC2 instances
 resource "aws_instance" "windows" {
-  count    = lookup(var.operations_instance_counts, "windows", 0)
+  count = lookup(var.operations_instance_counts, "windows", 0)
+  # These instances require a Samba instance to be present in order to
+  # mount the SMB volume at boot time.
+  depends_on = [
+    aws_instance.samba,
+    aws_security_group_rule.smb_client_egress_to_smb_server,
+    aws_security_group_rule.smb_server_ingress_from_smb_client,
+  ]
   provider = aws.provisionassessment
 
   ami                         = data.aws_ami.windows.id
@@ -51,10 +58,11 @@ resource "aws_instance" "windows" {
   }
   user_data = templatefile("${path.module}/ec2launch/windows-setup.tpl.yml", { drive_letter = "N", samba_server_input = join(",", aws_route53_record.samba_A[*].name) })
   vpc_security_group_ids = [
-    aws_security_group.cloudwatch_and_ssm_agent.id,
+    aws_security_group.cloudwatch_agent_endpoint_client.id,
     aws_security_group.guacamole_accessible.id,
     aws_security_group.scanner.id,
     aws_security_group.smb_client.id,
+    aws_security_group.ssm_agent_endpoint_client.id,
     aws_security_group.windows.id,
   ]
   tags = {

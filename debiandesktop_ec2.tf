@@ -28,8 +28,12 @@ resource "aws_instance" "debiandesktop" {
   count = lookup(var.operations_instance_counts, "debiandesktop", 0)
   # These instances require the EFS mount target to be present in
   # order to mount the EFS volume at boot time.
-  depends_on = [aws_efs_mount_target.target]
-  provider   = aws.provisionassessment
+  depends_on = [
+    aws_efs_mount_target.target,
+    aws_security_group_rule.allow_nfs_inbound,
+    aws_security_group_rule.allow_nfs_outbound,
+  ]
+  provider = aws.provisionassessment
 
   ami                         = data.aws_ami.debiandesktop.id
   associate_public_ip_address = true
@@ -55,10 +59,11 @@ resource "aws_instance" "debiandesktop" {
   # all it does is set up /etc/fstab to mount the EFS file share.
   user_data_base64 = data.cloudinit_config.kali_cloud_init_tasks.rendered
   vpc_security_group_ids = [
-    aws_security_group.cloudwatch_and_ssm_agent.id,
+    aws_security_group.cloudwatch_agent_endpoint_client.id,
     aws_security_group.debiandesktop.id,
     aws_security_group.efs_client.id,
     aws_security_group.guacamole_accessible.id,
+    aws_security_group.ssm_agent_endpoint_client.id,
   ]
   tags = {
     Name = format("DebianDesktop%d", count.index)
