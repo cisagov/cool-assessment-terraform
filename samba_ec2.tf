@@ -62,7 +62,7 @@ resource "aws_instance" "samba" {
     volume_size = 16
     volume_type = "gp3"
   }
-  user_data_base64 = data.cloudinit_config.samba_cloud_init_tasks.rendered
+  user_data_base64 = data.cloudinit_config.samba_cloud_init_tasks[count.index].rendered
   vpc_security_group_ids = [
     aws_security_group.cloudwatch_agent_endpoint_client.id,
     aws_security_group.efs_client.id,
