@@ -111,6 +111,8 @@ data "aws_iam_policy_document" "provisionassessment_policy_doc" {
       "elasticfilesystem:DescribeLifecycleConfiguration",
       "elasticfilesystem:DescribeMountTargets",
       "elasticfilesystem:DescribeMountTargetSecurityGroups",
+      "elasticfilesystem:TagResource",
+      "elasticfilesystem:UntagResource",
     ]
 
     resources = [
