@@ -26,8 +26,8 @@ data "aws_ami" "gophish" {
 # The Gophish EC2 instances
 resource "aws_instance" "gophish" {
   count = lookup(var.operations_instance_counts, "gophish", 0)
-  # These instances require the EBS Docker volume and EFS mount target to be
-  # present so that both volumes can be mounted at boot time.
+  # These instances require the EBS Docker volume and EFS mount target
+  # to be present so that both volumes can be mounted at boot time.
   depends_on = [
     aws_ebs_volume.gophish_docker,
     aws_efs_mount_target.target,
@@ -123,9 +123,10 @@ resource "aws_volume_attachment" "gophish_docker" {
   count    = lookup(var.operations_instance_counts, "gophish", 0)
   provider = aws.provisionassessment
 
-  device_name = local.docker_ebs_device_name
-  instance_id = aws_instance.gophish[count.index].id
-  volume_id   = aws_ebs_volume.gophish_docker[count.index].id
+  device_name                    = local.docker_ebs_device_name
+  instance_id                    = aws_instance.gophish[count.index].id
+  stop_instance_before_detaching = true
+  volume_id                      = aws_ebs_volume.gophish_docker[count.index].id
 }
 
 # CloudWatch alarms for the Gophish instances

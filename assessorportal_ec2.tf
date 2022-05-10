@@ -26,9 +26,10 @@ data "aws_ami" "assessorportal" {
 # The Assessor Portal EC2 instances
 resource "aws_instance" "assessorportal" {
   count = lookup(var.operations_instance_counts, "assessorportal", 0)
-  # These instances require the EFS mount target to be present in
-  # order to mount the EFS volume at boot time.
+  # These instances require the EBS Docker volume and EFS mount target
+  # to be present so that both volumes can be mounted at boot time.
   depends_on = [
+    aws_ebs_volume.assessorportal_docker,
     aws_efs_mount_target.target,
     aws_security_group_rule.allow_nfs_inbound,
     aws_security_group_rule.allow_nfs_outbound,
@@ -98,9 +99,10 @@ resource "aws_volume_attachment" "assessorportal_docker" {
   count    = lookup(var.operations_instance_counts, "assessorportal", 0)
   provider = aws.provisionassessment
 
-  device_name = local.docker_ebs_device_name
-  instance_id = aws_instance.assessorportal[count.index].id
-  volume_id   = aws_ebs_volume.assessorportal_docker[count.index].id
+  device_name                    = local.docker_ebs_device_name
+  instance_id                    = aws_instance.assessorportal[count.index].id
+  stop_instance_before_detaching = true
+  volume_id                      = aws_ebs_volume.assessorportal_docker[count.index].id
 }
 
 # CloudWatch alarms for the Assessor Portal instances
