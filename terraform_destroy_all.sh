@@ -28,6 +28,6 @@ export AWS_PROFILE
 export AWS_SHARED_CREDENTIALS_FILE
 export AWS_DEFAULT_REGION
 
-# Create a list of resources to target from the terraform state and
+# Create a list of resources to target from the Terraform state and
 # then pass them to terraform destroy.
 terraform state list | sed "s/^/-target='/;s/$/'/" | xargs terraform destroy "$@"
