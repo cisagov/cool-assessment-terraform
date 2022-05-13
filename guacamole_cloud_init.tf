@@ -17,6 +17,25 @@ data "cloudinit_config" "guacamole_cloud_init_tasks" {
   # mime-parts of the user-data.  It does not affect the final name for the
   # templates.
 
+  # Set the local hostname.
+  #
+  # We need to go ahead and set the local hostname to the correct
+  # value that will eventually be obtained from DHCP, since we make
+  # liberal use of the "{local_hostname}" placeholder in our AWS
+  # CloudWatch Agent configuration.
+  part {
+    content = templatefile(
+      "${path.module}/cloud-init/set-hostname.tpl.yml", {
+        # Note that the hostname here is identical to what is set in
+        # the corresponding DNS A record.
+        fqdn     = "guac.${aws_route53_zone.assessment_private.name}"
+        hostname = "guac"
+    })
+    content_type = "text/cloud-config"
+    filename     = "set-hostname.yml"
+    merge_type   = "list(append)+dict(recurse_array)+str()"
+  }
+
   # Set environment variables required to enroll in the FreeIPA
   # domain.
   part {
