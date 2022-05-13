@@ -79,8 +79,8 @@ terraform apply "${@}" \
     -target=aws_route.cool_private \
     -target=aws_route.external_operations \
     -target=aws_route.external_private \
-    -target=aws_route53_vpc_association_authorization.assessment_private \
     -target=aws_route_table_association.private_route_table_associations \
+    -target=aws_route53_vpc_association_authorization.assessment_private \
     -target=aws_security_group_rule.allow_nfs_inbound \
     -target=aws_security_group_rule.allow_nfs_outbound \
     -target=aws_security_group_rule.egress_from_cloudwatch_agent_endpoint_client_to_cloudwatch_agent_endpoint_via_https \
