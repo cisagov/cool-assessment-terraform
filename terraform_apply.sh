@@ -16,10 +16,6 @@ set -o pipefail
 # determine their IDs.  A targeted apply avoids this check, which in
 # this case is unnecessary.
 #
-# Note that instantiating the EC2 instances with a targeted apply and
-# then instantiating everything else is equivalent to laying down a
-# separate "layer" a la cool-sharedservices-networking.
-#
 # Examples:
 # - See what would be created:
 #   $ AWS_PROFILE=cool-user AWS_SHARED_CREDENTIALS_FILE=~/.aws/production_credentials AWS_DEFAULT_REGION=us-east-1 ./terraform_apply.sh -var-file=envX-production.tfvars
@@ -32,9 +28,18 @@ export AWS_PROFILE
 export AWS_SHARED_CREDENTIALS_FILE
 export AWS_DEFAULT_REGION
 
-# Perform a targeted apply to create the EC2 instances, then create
-# everything else.  This is a workaround for the dynamic-ish for_each
-# expressions mentioned above.
+# This is the workaround for the dynamic-ish for_each expressions
+# mentioned above.  Note that doing multiple targeted applies is
+# equivalent to laying down separate "layers" a la
+# cool-sharedservices-networking, which is probably the correct
+# long-term solution here.
+#
+# 1. Perform a targeted apply to attach a policy that gives the
+# permissions necessary to create the other resources.
+# 2. Perform a targeted apply to create the networking-related
+# resources that the EC2 instances will need when they start up.
+# 3. Perform a targeted apply to create the EC2 instances.
+# 4. Perform an untargeted apply to create everything else.
 terraform apply "${@}" \
   -target=aws_iam_role_policy_attachment.provisionassessment_policy_attachment \
   && terraform apply "${@}" \
