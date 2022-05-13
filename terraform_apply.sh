@@ -114,13 +114,12 @@ terraform apply "${@}" \
     -target=aws_vpc_endpoint_subnet_association.ssm \
     -target=aws_vpc_endpoint_subnet_association.ssmmessages \
     -target=aws_vpc_endpoint_subnet_association.sts \
-    -target=null_resource.break_association_with_default_route_table \
     -target=module.email_sending_domain_certreadrole \
     -target=module.guacamole_certreadrole \
     -target=module.read_terraform_state \
     -target=module.run_shell_ssm_document \
     -target=module.vpc_flow_logs \
-    -target=module.read_terraform_state \
+    -target=null_resource.break_association_with_default_route_table \
   && terraform apply "${@}" \
     -target=aws_instance.assessorportal \
     -target=aws_instance.debiandesktop \
