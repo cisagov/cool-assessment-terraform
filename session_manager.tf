@@ -1,11 +1,14 @@
 # ------------------------------------------------------------------------------
-# Create an SSM Document that allows creation of SSM SessionManager
-# sessions in this account.
+# Provision SSM Session Manager and configure it for session logging.
 # ------------------------------------------------------------------------------
-module "run_shell_ssm_document" {
-  source = "gazoakley/session-manager-settings/aws"
 
+module "session_manager" {
   providers = {
     aws = aws.provisionassessment
   }
+  source = "github.com/cisagov/session-manager-tf-module"
+
+  other_accounts = [
+    local.users_account_id,
+  ]
 }

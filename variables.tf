@@ -194,6 +194,18 @@ variable "provisionassessment_policy_name" {
   default     = "ProvisionAssessment"
 }
 
+variable "provisionssmsessionmanager_policy_description" {
+  type        = string
+  description = "The description to associate with the IAM policy that allows sufficient permissions to provision the SSM Document resource and set up SSM session logging in this assessment account."
+  default     = "Allows sufficient permissions to provision the SSM Document resource and set up SSM session logging in this assessment account."
+}
+
+variable "provisionssmsessionmanager_policy_name" {
+  type        = string
+  description = "The name to assign the IAM policy that allows sufficient permissions to provision the SSM Document resource and set up SSM session logging in this assessment account."
+  default     = "ProvisionSSMSessionManager"
+}
+
 variable "read_terraform_state_role_name" {
   type        = string
   description = "The name to assign the IAM role (as well as the corresponding policy) that allows read-only access to the cool-assessment-terraform state in the S3 bucket where Terraform state is stored.  The %s in this name will be replaced by the value of the assessment_account_name variable."
@@ -222,18 +234,6 @@ variable "ssm_key_vnc_username" {
   type        = string
   description = "The AWS SSM Parameter Store parameter that contains the username of the VNC user (e.g. \"/vnc/username\")."
   default     = "/vnc/username"
-}
-
-variable "ssmsession_role_description" {
-  type        = string
-  description = "The description to associate with the IAM role (and policy) that allows creation of SSM SessionManager sessions to any EC2 instance in this account."
-  default     = "Allows creation of SSM SessionManager sessions to any EC2 instance in this account."
-}
-
-variable "ssmsession_role_name" {
-  type        = string
-  description = "The name to assign the IAM role (and policy) that allows creation of SSM SessionManager sessions to any EC2 instance in this account."
-  default     = "StartStopSSMSession"
 }
 
 variable "tags" {
