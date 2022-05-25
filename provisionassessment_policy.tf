@@ -182,6 +182,7 @@ data "aws_iam_policy_document" "provisionassessment_policy_doc" {
 
     resources = [
       "arn:aws:logs:${var.aws_region}:${local.assessment_account_id}:log-group:vpc-flow-logs-*",
+      "${module.session_manager.ssm_session_log_group.arn}:*",
     ]
   }
 }
