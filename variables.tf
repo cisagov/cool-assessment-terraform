@@ -97,7 +97,14 @@ variable "email_sending_domains" {
   default     = ["example.com"]
 
   validation {
-    condition     = var.email_sending_domains == [for d in var.email_sending_domains : lower(d)]
+    # Note that [] actually creates a tuple, which will always compare
+    # to false against a list because a list and a tuple are different
+    # types.  Therefore the tolist() on the right-hand side is
+    # necessary.
+    #
+    # See here for a brief warning related to this very situation:
+    # https://www.terraform.io/language/expressions/operators#equality-operators
+    condition     = var.email_sending_domains == tolist([for d in var.email_sending_domains : lower(d)])
     error_message = "All of the values in email_sending_domains must be lowercase."
   }
 }
