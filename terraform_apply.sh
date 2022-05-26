@@ -42,6 +42,7 @@ export AWS_DEFAULT_REGION
 # 4. Perform an untargeted apply to create everything else.
 terraform apply "${@}" \
   -target=aws_iam_role_policy_attachment.provisionassessment_policy_attachment \
+  -target=aws_iam_role_policy_attachment.provisionssmsessionmanager_policy_attachment \
   && terraform apply "${@}" \
     -target=aws_default_route_table.operations \
     -target=aws_efs_access_point.access_point \
