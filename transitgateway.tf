@@ -43,7 +43,7 @@ resource "null_resource" "break_association_with_default_route_table" {
     # This command asks AWS to disassociate the default route table
     # from our transit gateway attachment, then loops until the
     # disassociation is complete.
-    command = "aws --profile cool-sharedservices-provisionaccount --region ${var.aws_region} ec2 disassociate-transit-gateway-route-table --transit-gateway-route-table-id ${local.transit_gateway_default_route_table_id} --transit-gateway-attachment-id ${aws_ec2_transit_gateway_vpc_attachment.assessment.id} && while aws --profile cool-sharedservices-provisionaccount --region ${var.aws_region} ec2 get-transit-gateway-route-table-associations --transit-gateway-route-table-id ${local.transit_gateway_default_route_table_id} | grep --quiet ${aws_vpc.assessment.id}; do sleep 5s; done"
+    command = "aws --profile cool-sharedservices-provisionaccount --region ${var.aws_region} ec2 disassociate-transit-gateway-route-table --transit-gateway-route-table-id ${local.transit_gateway_default_route_table_id} --transit-gateway-attachment-id ${aws_ec2_transit_gateway_vpc_attachment.assessment.id} && while aws --profile cool-sharedservices-provisionaccount --region ${var.aws_region} ec2 get-transit-gateway-route-table-associations --transit-gateway-route-table-id ${local.transit_gateway_default_route_table_id} | grep --quiet ${aws_vpc.assessment.id}; do sleep 5; done"
   }
 
   triggers = {
