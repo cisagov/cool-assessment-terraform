@@ -41,7 +41,7 @@ data "aws_iam_policy_document" "provisionssmsessionmanager_policy_doc" {
     ]
 
     resources = [
-      "arn:aws:logs:${var.aws_region}:${local.assessment_account_id}:log-group:${module.session_manager.ssm_session_log_group.name}:*",
+      "arn:aws:logs:${var.aws_region}:${local.assessment_account_id}:log-group:${var.session_cloudwatch_log_group_name}:*",
     ]
   }
 }
