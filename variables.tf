@@ -104,7 +104,10 @@ variable "email_sending_domains" {
     #
     # See here for a brief warning related to this very situation:
     # https://www.terraform.io/language/expressions/operators#equality-operators
-    condition     = var.email_sending_domains == tolist([for d in var.email_sending_domains : lower(d)])
+    #
+    # The sort() calls are necessary, since tolist(["a", "b", "c"]) !=
+    # tolist(["c", "b", "a"]) in Terraform.
+    condition     = sort(var.email_sending_domains) == sort(tolist([for d in var.email_sending_domains : lower(d)]))
     error_message = "All of the values in email_sending_domains must be lowercase."
   }
 }
