@@ -220,8 +220,8 @@ variable "read_terraform_state_role_name" {
 }
 
 # This variable is copied over from cisagov/session-manager-tf-module
-# so that it its value can be specified outside of that module.  This
-# allows is to impose a dependency of the module on the policy that
+# so that its value can be specified outside of that module.  This
+# allows us to impose a dependency of the module on the policy that
 # allows for the creation of its resources; otherwise, this dependency
 # will be cyclical.
 variable "session_cloudwatch_log_group_name" {
