@@ -219,6 +219,17 @@ variable "read_terraform_state_role_name" {
   default     = "ReadCoolAssessmentTerraformTerraformState-%s"
 }
 
+# This variable is copied over from cisagov/session-manager-tf-module
+# so that its value can be specified outside of that module.  This
+# allows us to impose a dependency of the module on the policy that
+# allows for the creation of its resources; otherwise, this dependency
+# will be cyclical.
+variable "session_cloudwatch_log_group_name" {
+  default     = "/ssm/session-logs"
+  description = "The name of the log group into which session logs are to be uploaded."
+  type        = string
+}
+
 variable "ssm_key_nessus_admin_password" {
   type        = string
   description = "The AWS SSM Parameter Store parameter that contains the password of the Nessus admin user (e.g. \"/nessus/assessment/admin_password\")."
