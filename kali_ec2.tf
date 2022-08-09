@@ -61,6 +61,7 @@ resource "aws_instance" "kali" {
     aws_security_group.efs_client.id,
     aws_security_group.guacamole_accessible.id,
     aws_security_group.kali.id,
+    aws_security_group.nomachine_accessible.id,
     aws_security_group.scanner.id,
     aws_security_group.ssm_agent_endpoint_client.id,
   ]
