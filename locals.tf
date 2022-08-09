@@ -244,4 +244,24 @@ locals {
   lowest_third_octet = min(flatten([local.cool_public_subnet_third_octets])...)
 
   vpn_server_cidr_block = format("%d.%d.%d.0/24", local.cool_public_subnet_first_octet, local.cool_public_subnet_second_octet, local.lowest_third_octet)
+
+  # Ports to be accessed via the VPN in assessment environments'
+  # operations subnets (e.g. for direct NoMachine access)
+  #
+  # The "index" value is used as a counter in certain ACL rules
+  # (aws_network_acl_rule.operations_ingress_from_cool_vpn and
+  # aws_network_acl_rule.operations_ingress_from_anywhere_else in
+  # operations_acl_rules.tf).
+  nomachine_ports = {
+    tcp = {
+      index    = 1
+      port     = 4000
+      protocol = "tcp"
+    },
+    udp = {
+      index    = 2
+      port     = 4012
+      protocol = "udp"
+    },
+  }
 }
