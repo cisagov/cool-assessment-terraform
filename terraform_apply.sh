@@ -41,6 +41,8 @@ export AWS_DEFAULT_REGION
 # 3. Perform a targeted apply to create the EC2 instances.
 # 4. Perform an untargeted apply to create everything else.
 terraform apply "${@}" \
+  -target=aws_iam_policy.provisionassessment_policy \
+  -target=aws_iam_policy.provisionssmsessionmanager_policy \
   -target=aws_iam_role_policy_attachment.provisionassessment_policy_attachment \
   -target=aws_iam_role_policy_attachment.provisionssmsessionmanager_policy_attachment \
   && terraform apply "${@}" \
