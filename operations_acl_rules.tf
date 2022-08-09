@@ -115,6 +115,39 @@ resource "aws_network_acl_rule" "operations_ingress_from_private_via_https" {
   to_port        = 443
 }
 
+# Allow ingress from COOL Shared Services VPN server CIDR block via
+# ports used by internal services hosted in the operations subnet.
+#
+# For: Assessment team access to services hosted in the operations
+# subnet (i.e. NoMachine)
+resource "aws_network_acl_rule" "operations_ingress_from_cool_vpn" {
+  provider = aws.provisionassessment
+  for_each = local.nomachine_ports
+
+  network_acl_id = aws_network_acl.operations.id
+  egress         = false
+  protocol       = each.value.protocol
+  rule_number    = 150 + each.value.index
+  rule_action    = "allow"
+  cidr_block     = local.vpn_server_cidr_block
+  from_port      = each.value.port
+  to_port        = each.value.port
+}
+# Disallow ingress from anywhere else via these ports.
+resource "aws_network_acl_rule" "operations_ingress_from_anywhere_else" {
+  provider = aws.provisionassessment
+  for_each = local.nomachine_ports
+
+  network_acl_id = aws_network_acl.operations.id
+  egress         = false
+  protocol       = each.value.protocol
+  rule_number    = 155 + each.value.index
+  rule_action    = "deny"
+  cidr_block     = "0.0.0.0/0"
+  from_port      = each.value.port
+  to_port        = each.value.port
+}
+
 # Allow ingress from anywhere via the ports specified in
 # var.inbound_ports_allowed
 #
@@ -126,7 +159,7 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_allowed_po
   network_acl_id = aws_network_acl.operations.id
   egress         = false
   protocol       = each.value.protocol
-  rule_number    = 150 + each.value.index
+  rule_number    = 160 + each.value.index
   rule_action    = "allow"
   cidr_block     = "0.0.0.0/0"
   from_port      = each.value.from_port
@@ -145,7 +178,7 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_1024
   network_acl_id = aws_network_acl.operations.id
   egress         = false
   protocol       = each.value
-  rule_number    = 160 + index(local.tcp_and_udp, each.value)
+  rule_number    = 170 + index(local.tcp_and_udp, each.value)
   rule_action    = "allow"
   cidr_block     = "0.0.0.0/0"
   from_port      = 1024
@@ -157,7 +190,7 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_1024
 # For: Assessment team operational use, but we don't want to allow
 # public access to RDP on port 3389 or Cobalt Strike Teamservers on port 50050.
 #
-# We can skip the VNC and WinRM ports as they are blocked by rules above.
+# We can skip the VNC, WinRM, and NX ports as they are blocked by rules above.
 resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_3390_thru_50049" {
   provider = aws.provisionassessment
   for_each = toset(local.tcp_and_udp)
@@ -165,7 +198,7 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_3390
   network_acl_id = aws_network_acl.operations.id
   egress         = false
   protocol       = each.value
-  rule_number    = 170 + index(local.tcp_and_udp, each.value)
+  rule_number    = 180 + index(local.tcp_and_udp, each.value)
   rule_action    = "allow"
   cidr_block     = "0.0.0.0/0"
   from_port      = 3390
