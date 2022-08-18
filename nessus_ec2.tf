@@ -72,6 +72,7 @@ resource "aws_instance" "nessus" {
     aws_security_group.cloudwatch_agent_endpoint_client.id,
     aws_security_group.guacamole_accessible.id,
     aws_security_group.nessus.id,
+    aws_security_group.nomachine_accessible.id,
     aws_security_group.scanner.id,
     aws_security_group.ssm_agent_endpoint_client.id,
     aws_security_group.ssm_endpoint_client.id,

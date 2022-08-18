@@ -62,6 +62,7 @@ resource "aws_instance" "assessorportal" {
     aws_security_group.assessorportal.id,
     aws_security_group.efs_client.id,
     aws_security_group.guacamole_accessible.id,
+    aws_security_group.nomachine_accessible.id,
     aws_security_group.ssm_agent_endpoint_client.id,
   ]
   tags = {
