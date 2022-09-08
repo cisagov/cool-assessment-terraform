@@ -224,6 +224,7 @@ the COOL environment.
 | [aws_network_acl.operations](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl) | resource |
 | [aws_network_acl.private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl) | resource |
 | [aws_network_acl_rule.operations_egress_to_anywhere_via_any_port](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl_rule) | resource |
+| [aws_network_acl_rule.operations_ingress_from_anywhere_else](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl_rule) | resource |
 | [aws_network_acl_rule.operations_ingress_from_anywhere_else_vnc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl_rule) | resource |
 | [aws_network_acl_rule.operations_ingress_from_anywhere_else_winrm](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl_rule) | resource |
 | [aws_network_acl_rule.operations_ingress_from_anywhere_via_allowed_ports](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl_rule) | resource |
@@ -231,6 +232,7 @@ the COOL environment.
 | [aws_network_acl_rule.operations_ingress_from_anywhere_via_ports_1024_thru_3388](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl_rule) | resource |
 | [aws_network_acl_rule.operations_ingress_from_anywhere_via_ports_3390_thru_50049](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl_rule) | resource |
 | [aws_network_acl_rule.operations_ingress_from_anywhere_via_ports_50051_thru_65535](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl_rule) | resource |
+| [aws_network_acl_rule.operations_ingress_from_cool_vpn](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl_rule) | resource |
 | [aws_network_acl_rule.operations_ingress_from_private_via_http](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl_rule) | resource |
 | [aws_network_acl_rule.operations_ingress_from_private_via_https](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl_rule) | resource |
 | [aws_network_acl_rule.operations_ingress_from_private_via_ssh](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl_rule) | resource |
@@ -290,6 +292,7 @@ the COOL environment.
 | [aws_security_group.guacamole_accessible](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group.kali](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group.nessus](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
+| [aws_security_group.nomachine_accessible](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group.pentestportal](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group.s3_endpoint_client](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group.scanner](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
@@ -346,6 +349,7 @@ the COOL environment.
 | [aws_security_group_rule.nessus_ingress_from_debiandesktop_via_web_ui](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.nessus_ingress_from_kali_via_web_ui](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.nessus_ingress_from_windows_via_web_ui](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.nomachine_ingress_from_trusted_via_nx](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.pentestportal_egress_to_anywhere_via_http_and_https](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.pentestportal_ingress_from_kali_via_web](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.pentestportal_ingress_from_windows_via_web](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
@@ -474,6 +478,7 @@ the COOL environment.
 | provisionssmsessionmanager\_policy\_description | The description to associate with the IAM policy that allows sufficient permissions to provision the SSM Document resource and set up SSM session logging in this assessment account. | `string` | `"Allows sufficient permissions to provision the SSM Document resource and set up SSM session logging in this assessment account."` | no |
 | provisionssmsessionmanager\_policy\_name | The name to assign the IAM policy that allows sufficient permissions to provision the SSM Document resource and set up SSM session logging in this assessment account. | `string` | `"ProvisionSSMSessionManager"` | no |
 | read\_terraform\_state\_role\_name | The name to assign the IAM role (as well as the corresponding policy) that allows read-only access to the cool-assessment-terraform state in the S3 bucket where Terraform state is stored.  The %s in this name will be replaced by the value of the assessment\_account\_name variable. | `string` | `"ReadCoolAssessmentTerraformTerraformState-%s"` | no |
+| session\_cloudwatch\_log\_group\_name | The name of the log group into which session logs are to be uploaded. | `string` | `"/ssm/session-logs"` | no |
 | ssm\_key\_nessus\_admin\_password | The AWS SSM Parameter Store parameter that contains the password of the Nessus admin user (e.g. "/nessus/assessment/admin\_password"). | `string` | `"/nessus/assessment/admin_password"` | no |
 | ssm\_key\_nessus\_admin\_username | The AWS SSM Parameter Store parameter that contains the username of the Nessus admin user (e.g. "/nessus/assessment/admin\_username"). | `string` | `"/nessus/assessment/admin_username"` | no |
 | ssm\_key\_samba\_username | The AWS SSM Parameter Store parameter that contains the username of the Samba user (e.g. "/samba/username"). | `string` | `"/samba/username"` | no |
