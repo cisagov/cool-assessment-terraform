@@ -515,6 +515,7 @@ the COOL environment.
 | nessus\_instance\_profile | The instance profile for the Nessus instances. |
 | nessus\_instances | The Nessus instances. |
 | nessus\_security\_group | The security group for the Nessus instances. |
+| nomachine\_accessible\_security\_group | The security group for the instances that are accessible via NoMachine. |
 | operations\_subnet | The operations subnet. |
 | operations\_subnet\_acl | The access control list (ACL) for the operations subnet. |
 | pentest\_portal\_instance\_profile | The instance profile for the Pentest Portal instances. |

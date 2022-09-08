@@ -133,6 +133,11 @@ output "nessus_security_group" {
   description = "The security group for the Nessus instances."
 }
 
+output "nomachine_accessible_security_group" {
+  value       = aws_security_group.nomachine_accessible
+  description = "The security group for the instances that are accessible via NoMachine."
+}
+
 output "operations_subnet" {
   value       = aws_subnet.operations
   description = "The operations subnet."
