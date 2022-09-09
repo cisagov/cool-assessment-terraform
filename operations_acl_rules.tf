@@ -130,8 +130,8 @@ resource "aws_network_acl_rule" "operations_ingress_from_cool_vpn" {
   rule_number    = 150 + each.value.index
   rule_action    = "allow"
   cidr_block     = local.vpn_server_cidr_block
-  from_port      = each.value.port
-  to_port        = each.value.port
+  from_port      = each.value.from_port
+  to_port        = each.value.to_port
 }
 # Disallow ingress from anywhere else via these ports.
 resource "aws_network_acl_rule" "operations_ingress_from_anywhere_else" {
@@ -144,8 +144,8 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_else" {
   rule_number    = 155 + each.value.index
   rule_action    = "deny"
   cidr_block     = "0.0.0.0/0"
-  from_port      = each.value.port
-  to_port        = each.value.port
+  from_port      = each.value.from_port
+  to_port        = each.value.to_port
 }
 
 # Allow ingress from anywhere via the ports specified in

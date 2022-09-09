@@ -22,6 +22,6 @@ resource "aws_security_group_rule" "nomachine_ingress_from_trusted_via_nx" {
   protocol          = each.value.protocol
   cidr_blocks       = [local.vpn_server_cidr_block]
   # ipv6_cidr_blocks  = TBD
-  from_port = each.value.port
-  to_port   = each.value.port
+  from_port = each.value.from_port
+  to_port   = each.value.to_port
 }

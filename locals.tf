@@ -254,14 +254,18 @@ locals {
   # operations_acl_rules.tf).
   nomachine_ports = {
     tcp = {
-      index    = 1
-      port     = 4000
-      protocol = "tcp"
+      from_port = 4000
+      index     = 1
+      to_port   = 4000
+      protocol  = "tcp"
     },
     udp = {
-      index    = 2
-      port     = 4012
-      protocol = "udp"
+      # 4011-4999 is the default range specified in the NoMachine
+      # config file /usr/NX/etc/server.cfg.
+      from_port = 4011
+      index     = 2
+      to_port   = 4999
+      protocol  = "udp"
     },
   }
 }
