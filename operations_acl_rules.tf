@@ -115,26 +115,36 @@ resource "aws_network_acl_rule" "operations_ingress_from_private_via_https" {
   to_port        = 443
 }
 
-# Allow ingress from COOL Shared Services VPN server CIDR block via
-# ports used by internal services hosted in the operations subnet.
+# Allow ingress from the private subnets via NoMachine.
 #
 # For: Assessment team access to services hosted in the operations
 # subnet (i.e. NoMachine)
-resource "aws_network_acl_rule" "operations_ingress_from_cool_vpn" {
+resource "aws_network_acl_rule" "operations_ingress_from_private_via_nx" {
   provider = aws.provisionassessment
-  for_each = local.nomachine_ports
+  # This insanity returns a map with length(local.nomachine_ports) *
+  # length(var.private_subnet_cidr_blocks) distinct keys, where each
+  # value is a map that is simply one of the entries from
+  # local.nomachine_ports modified to include: * One of the entries in
+  # var.private_subnet_cidr_blocks under the key
+  # "private_subnet_cidr_block" * An index into the setproduct result
+  # under the key "index".  This is simply used to provide an offset
+  # for the rule number.
+  for_each = {
+    for index, pair in setproduct(keys(local.nomachine_ports), var.private_subnet_cidr_blocks) :
+    format("%s_%s", pair[0], pair[1]) => merge(local.nomachine_ports[pair[0]], { "private_subnet_cidr_block" = pair[1], "index" = index })
+  }
 
   network_acl_id = aws_network_acl.operations.id
   egress         = false
   protocol       = each.value.protocol
   rule_number    = 150 + each.value.index
   rule_action    = "allow"
-  cidr_block     = local.vpn_server_cidr_block
+  cidr_block     = each.value.private_subnet_cidr_block
   from_port      = each.value.from_port
   to_port        = each.value.to_port
 }
 # Disallow ingress from anywhere else via these ports.
-resource "aws_network_acl_rule" "operations_ingress_from_anywhere_else" {
+resource "aws_network_acl_rule" "operations_ingress_from_anywhere_else_via_nx" {
   provider = aws.provisionassessment
   for_each = local.nomachine_ports
 

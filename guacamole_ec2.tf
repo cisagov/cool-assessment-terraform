@@ -76,6 +76,7 @@ resource "aws_instance" "guacamole" {
     aws_security_group.cloudwatch_agent_endpoint_client.id,
     aws_security_group.ec2_endpoint_client.id,
     aws_security_group.guacamole.id,
+    aws_security_group.nomachine.id,
     aws_security_group.s3_endpoint_client.id,
     aws_security_group.ssm_agent_endpoint_client.id,
     aws_security_group.ssm_endpoint_client.id,

@@ -34,8 +34,8 @@ resource "aws_network_acl_rule" "private_ingress_from_cool_vpn_services" {
   rule_number    = 100 + each.value.index
   rule_action    = "allow"
   cidr_block     = local.vpn_server_cidr_block
-  from_port      = each.value.port
-  to_port        = each.value.port
+  from_port      = each.value.from_port
+  to_port        = each.value.to_port
 }
 # Allow ingress from operations subnet via port 8065.
 #
@@ -60,7 +60,7 @@ locals {
   assessment_env_service_ports_gte_1024 = {
     for key, value in local.assessment_env_service_ports :
     key => value
-    if value.port >= 1024
+    if value.to_port >= 1024
   }
 }
 resource "aws_network_acl_rule" "private_ingress_from_anywhere_else_services" {
@@ -85,8 +85,8 @@ resource "aws_network_acl_rule" "private_ingress_from_anywhere_else_services" {
   rule_number    = 130 + each.value.index
   rule_action    = "deny"
   cidr_block     = "0.0.0.0/0"
-  from_port      = each.value.port
-  to_port        = each.value.port
+  from_port      = each.value.from_port
+  to_port        = each.value.to_port
 }
 
 #####
@@ -253,6 +253,23 @@ resource "aws_network_acl_rule" "private_egress_to_operations_via_winrm" {
   cidr_block     = aws_subnet.operations.cidr_block
   from_port      = 5986
   to_port        = 5986
+}
+
+# Allow egress to the operations subnet via NX (NoMachine).
+#
+# For: NoMachine Cloud Server access to operations instances.
+resource "aws_network_acl_rule" "private_egress_to_operations_via_nx" {
+  provider = aws.provisionassessment
+  for_each = toset(var.private_subnet_cidr_blocks)
+
+  network_acl_id = aws_network_acl.private[each.value].id
+  egress         = true
+  protocol       = "tcp"
+  rule_number    = 315 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_action    = "allow"
+  cidr_block     = aws_subnet.operations.cidr_block
+  from_port      = 4000
+  to_port        = 4000
 }
 
 # Allow egress to anywhere via HTTP

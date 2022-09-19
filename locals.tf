@@ -174,28 +174,44 @@ locals {
   # (e.g. for Guacamole, Mattermost, etc.)
   assessment_env_service_ports = {
     http = {
-      port     = 80
-      protocol = "tcp"
+      from_port = 80
+      protocol  = "tcp"
+      to_port   = 80
     },
     https = {
-      port     = 443
-      protocol = "tcp"
+      from_port = 443
+      protocol  = "tcp"
+      to_port   = 443
     },
     mm_unknown0 = {
-      port     = 3478
-      protocol = "udp"
+      from_port = 3478
+      protocol  = "udp"
+      to_port   = 3478
     },
+    no_machine_tcp = {
+      from_port = 4000
+      protocol  = "tcp"
+      to_port   = 4000
+    }
+    no_machine_udp0 = {
+      from_port = 4011
+      protocol  = "udp"
+      to_port   = 4999
+    }
     mm_unknown1 = {
-      port     = 5349
-      protocol = "tcp"
+      from_port = 5349
+      protocol  = "tcp"
+      to_port   = 5349
     },
     mm_web = {
-      port     = 8065
-      protocol = "tcp"
+      from_port = 8065
+      protocol  = "tcp"
+      to_port   = 8065
     },
     mm_unknown2 = {
-      port     = 10000
-      protocol = "udp"
+      from_port = 10000
+      protocol  = "udp"
+      to_port   = 10000
     },
   }
 
