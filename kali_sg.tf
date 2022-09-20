@@ -114,3 +114,18 @@ resource "aws_security_group_rule" "kali_ingress_from_windows_instances" {
   from_port                = 0
   to_port                  = 65535
 }
+
+# Allow egress to COOL Shared Services via IPA-related ports
+#
+# For: Kali instance communication with FreeIPA
+resource "aws_security_group_rule" "kali_egress_to_cool_via_ipa_ports" {
+  provider = aws.provisionassessment
+  for_each = local.ipa_ports
+
+  security_group_id = aws_security_group.kali.id
+  type              = "egress"
+  protocol          = each.value.protocol
+  cidr_blocks       = [local.cool_shared_services_cidr_block]
+  from_port         = each.value.port
+  to_port           = each.value.port
+}

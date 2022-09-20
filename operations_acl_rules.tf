@@ -268,3 +268,20 @@ resource "aws_network_acl_rule" "operations_egress_to_anywhere_via_any_port" {
   from_port      = 0
   to_port        = 0
 }
+
+# Allow egress to COOL Shared Services via IPA-related ports
+#
+# For: Kali instance communication with FreeIPA
+resource "aws_network_acl_rule" "egress_to_cool_shared_services_via_ipa_ports" {
+  provider = aws.provisionassessment
+  for_each = local.ipa_ports
+
+  network_acl_id = aws_network_acl.operations.id
+  egress         = true
+  protocol       = each.value.protocol
+  rule_number    = 400 + each.value.index
+  rule_action    = "allow"
+  cidr_block     = local.cool_shared_services_cidr_block
+  from_port      = each.value.port
+  to_port        = each.value.port
+}

@@ -397,3 +397,28 @@ resource "aws_network_acl_rule" "private_egress_to_cool_via_ipa_ports" {
   from_port      = each.value.port
   to_port        = each.value.port
 }
+
+# Allow ingress from the operations subnet for traffic that is to be
+# relayed to COOL Shared Services via IPA-related ports
+#
+# For: Operations instance communication with FreeIPA
+#
+# Note that these rules only apply to the private subnet with
+# Guacamole.
+resource "aws_network_acl_rule" "private_ingress_from_operations_subnet_via_ipa_ports" {
+  provider = aws.provisionassessment
+  # for_each = local.ipa_ports
+
+  network_acl_id = aws_network_acl.private[var.private_subnet_cidr_blocks[0]].id
+  egress         = false
+  # protocol       = each.value.protocol
+  protocol = -1
+  # rule_number    = 500 + each.value.index
+  rule_number = 500
+  rule_action = "allow"
+  cidr_block  = var.operations_subnet_cidr_block
+  # from_port      = each.value.port
+  from_port = 0
+  # to_port        = each.value.port
+  to_port = 65535
+}
