@@ -37,11 +37,17 @@ resource "aws_network_acl_rule" "private_ingress_from_cool_vpn_services" {
   from_port      = each.value.from_port
   to_port        = each.value.to_port
 }
-# Allow ingress from operations subnet via port 8065.
+# Allow ingress from operations subnet via any port.  The security
+# groups will narrow down the supported ports.  This is necessary
+# because only 40 ACL rules are allowed for ingress or egress.
 #
-# For: Operations subnet access to Mattermost web service hosted in
+# For:
+# - Operations subnet access to Mattermost web service hosted in
 # the private subnet.
-resource "aws_network_acl_rule" "private_ingress_from_operations_mattermost_web" {
+# - Operations subnet access to EFS mountpoints.
+# - Operations subnet access to SMB server(s).
+# - Operations subnet access to VPC endpoints.
+resource "aws_network_acl_rule" "private_ingress_from_operations" {
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
 
@@ -51,8 +57,8 @@ resource "aws_network_acl_rule" "private_ingress_from_operations_mattermost_web"
   rule_number    = 120
   rule_action    = "allow"
   cidr_block     = aws_subnet.operations.cidr_block
-  from_port      = 8065
-  to_port        = 8065
+  from_port      = 0
+  to_port        = 65535
 }
 # Disallow ingress from anywhere else via ports used by services
 # hosted in the private subnet.
@@ -92,42 +98,9 @@ resource "aws_network_acl_rule" "private_ingress_from_anywhere_else_services" {
 #####
 # Rules associated with file sharing (EFS and SMB)
 #####
-# Allow ingress from operations subnet via port 2049.
-#
-# For: Operations subnet access to EFS mountpoints.
-resource "aws_network_acl_rule" "private_ingress_from_operations_efs" {
-  provider = aws.provisionassessment
-  for_each = toset(var.private_subnet_cidr_blocks)
-
-  network_acl_id = aws_network_acl.private[each.value].id
-  egress         = false
-  protocol       = "tcp"
-  rule_number    = 150
-  rule_action    = "allow"
-  cidr_block     = aws_subnet.operations.cidr_block
-  from_port      = 2049
-  to_port        = 2049
-}
-# Allow ingress from operations subnet via port 445.
-#
-# For: Operations subnet access to SMB server(s).
-#
-# There is no need for an explicit deny for everyone else since SMB
-# does not run on a port in the ephemeral range.
-resource "aws_network_acl_rule" "private_ingress_from_operations_smb" {
-  provider = aws.provisionassessment
-  for_each = toset(var.private_subnet_cidr_blocks)
-
-  network_acl_id = aws_network_acl.private[each.value].id
-  egress         = false
-  protocol       = "tcp"
-  rule_number    = 155
-  rule_action    = "allow"
-  cidr_block     = aws_subnet.operations.cidr_block
-  from_port      = 445
-  to_port        = 445
-}
-# Disallow ingress from anywhere else via port 2049.
+# Disallow ingress from anywhere else via port 2049.  There is no need
+# for an explicit deny for port 445 else since it is not in the
+# ephemeral range.
 resource "aws_network_acl_rule" "private_ingress_from_anywhere_else_efs" {
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
@@ -197,23 +170,6 @@ resource "aws_network_acl_rule" "private_ingress_to_tg_attachment_via_ipa_ports"
   to_port        = each.value.port
 }
 
-# Allow ingress from the operations subnet via https
-#
-# For: Operations subnet access to VPC endpoints
-resource "aws_network_acl_rule" "private_ingress_from_operations_via_https" {
-  provider = aws.provisionassessment
-  for_each = toset(var.private_subnet_cidr_blocks)
-
-  network_acl_id = aws_network_acl.private[each.value].id
-  egress         = false
-  protocol       = "tcp"
-  rule_number    = 200 + index(var.private_subnet_cidr_blocks, each.value)
-  rule_action    = "allow"
-  cidr_block     = aws_subnet.operations.cidr_block
-  from_port      = 443
-  to_port        = 443
-}
-
 #####
 # Egress rules
 #####
@@ -221,7 +177,8 @@ resource "aws_network_acl_rule" "private_ingress_from_operations_via_https" {
 # Allow egress to anywhere via ssh
 #
 # For: Terraformer instances need to be able to configure operations
-# instances and redirectors via Ansible.
+# instances and redirectors via Ansible.  Also allows for DevOps ssh
+# access from private subnet to operations subnet.
 resource "aws_network_acl_rule" "private_egress_to_anywhere_via_ssh" {
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
@@ -343,23 +300,6 @@ resource "aws_network_acl_rule" "private_egress_to_operations_via_ephemeral_port
   cidr_block     = aws_subnet.operations.cidr_block
   from_port      = 1024
   to_port        = 65535
-}
-
-# Allow egress to operations subnet via ssh
-#
-# For: DevOps ssh access from private subnet to operations subnet
-resource "aws_network_acl_rule" "private_egress_to_operations_via_ssh" {
-  provider = aws.provisionassessment
-  for_each = toset(var.private_subnet_cidr_blocks)
-
-  network_acl_id = aws_network_acl.private[each.value].id
-  egress         = true
-  protocol       = "tcp"
-  rule_number    = 360 + index(var.private_subnet_cidr_blocks, each.value)
-  rule_action    = "allow"
-  cidr_block     = aws_subnet.operations.cidr_block
-  from_port      = 22
-  to_port        = 22
 }
 
 # Allow egress to operations subnet via VNC

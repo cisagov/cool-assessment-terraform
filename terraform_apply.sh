@@ -75,8 +75,7 @@ terraform apply "${@}" \
     -target=aws_network_acl_rule.private_egress_to_anywhere_via_https \
     -target=aws_network_acl_rule.private_egress_to_operations_via_ephemeral_ports \
     -target=aws_network_acl_rule.private_ingress_from_anywhere_else_efs \
-    -target=aws_network_acl_rule.private_ingress_from_operations_efs \
-    -target=aws_network_acl_rule.private_ingress_from_operations_smb \
+    -target=aws_network_acl_rule.private_ingress_from_operations \
     -target=aws_network_acl_rule.private_ingress_to_tg_attachment_via_ipa_ports \
     -target=aws_route.cool_operations \
     -target=aws_route.cool_private \
