@@ -178,6 +178,7 @@ data "aws_iam_policy_document" "provisionassessment_policy_doc" {
       "logs:ListTagsLogGroup",
       "logs:PutRetentionPolicy",
       "logs:TagLogGroup",
+      "logs:UntagLogGroup",
     ]
 
     resources = [
