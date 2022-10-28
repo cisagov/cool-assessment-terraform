@@ -68,7 +68,7 @@ resource "aws_instance" "guacamole" {
     http_tokens = "required"
   }
   root_block_device {
-    volume_size = 8
+    volume_size = 32
     volume_type = "gp3"
   }
   user_data_base64 = data.cloudinit_config.guacamole_cloud_init_tasks.rendered
