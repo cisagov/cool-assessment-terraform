@@ -231,6 +231,21 @@ resource "aws_network_acl_rule" "private_ingress_from_operations_via_https" {
   to_port        = 443
 }
 
+# Allow ingress from private IPs via all ports and protocols
+#
+# For: Advanced Operations communication with local virtual machines
+resource "aws_network_acl_rule" "private_ingress_from_private_ips_via_all_ports" {
+  provider = aws.provisionassessment
+  for_each = toset(var.private_subnet_cidr_blocks)
+
+  network_acl_id = aws_network_acl.private[each.value].id
+  egress         = false
+  protocol       = "all"
+  rule_number    = 210 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_action    = "allow"
+  cidr_block     = "172.16.0.0/12"
+}
+
 #####
 # Egress rules
 #####
@@ -413,4 +428,19 @@ resource "aws_network_acl_rule" "private_egress_to_cool_via_ipa_ports" {
   cidr_block     = local.cool_shared_services_cidr_block
   from_port      = each.value.port
   to_port        = each.value.port
+}
+
+# Allow egress to private IPs via all ports and protocols
+#
+# For: Advanced Operations communication with local virtual machines
+resource "aws_network_acl_rule" "private_egress_to_private_ips_via_all_ports" {
+  provider = aws.provisionassessment
+  for_each = toset(var.private_subnet_cidr_blocks)
+
+  network_acl_id = aws_network_acl.private[each.value].id
+  egress         = true
+  protocol       = "all"
+  rule_number    = 410 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_action    = "allow"
+  cidr_block     = "172.16.0.0/12"
 }
