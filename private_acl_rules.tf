@@ -54,6 +54,23 @@ resource "aws_network_acl_rule" "private_ingress_from_operations_mattermost_web"
   from_port      = 8065
   to_port        = 8065
 }
+# Allow ingress from first private subnet via UDP ephemeral ports.
+#
+# For: Advanced Operations VPN endpoint communications through Transit Gateway
+# (TGW attachment is in first private subnet).
+resource "aws_network_acl_rule" "private_ingress_from_private_via_udp_ephemeral_ports" {
+  provider = aws.provisionassessment
+  for_each = toset(var.private_subnet_cidr_blocks)
+
+  network_acl_id = aws_network_acl.private[each.value].id
+  egress         = false
+  protocol       = "udp"
+  rule_number    = 125
+  rule_action    = "allow"
+  cidr_block     = var.private_subnet_cidr_blocks[0]
+  from_port      = 1024
+  to_port        = 65535
+}
 # Disallow ingress from anywhere else via ports used by services
 # hosted in the private subnet.
 locals {
