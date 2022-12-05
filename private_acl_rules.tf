@@ -233,9 +233,13 @@ resource "aws_network_acl_rule" "private_ingress_from_operations_via_https" {
   to_port        = 443
 }
 
-# Allow ingress from 172.16.0.0/12 via all ports and protocols
+# Allow ingress from 172.16.0.0/12 via all ports and protocols.  172.16.0.0/12
+# is the private network block that has been chosen by the Advanced Operations
+# team where they will run their mission-related virtual machines on their
+# VPN-connected laptops.
 #
-# For: Advanced Operations communication with local virtual machines
+# For: Advanced Operations communications with virtual machines running on an
+# operator's VPN-connected laptop.
 resource "aws_network_acl_rule" "private_ingress_from_local_vm_ips_via_all_ports" {
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
@@ -432,9 +436,13 @@ resource "aws_network_acl_rule" "private_egress_to_cool_via_ipa_ports" {
   to_port        = each.value.port
 }
 
-# Allow egress to 172.16.0.0/12 via all ports and protocols
+# Allow egress to 172.16.0.0/12 via all ports and protocols.  172.16.0.0/12
+# is the private network block that has been chosen by the Advanced Operations
+# team where they will run their mission-related virtual machines on their
+# VPN-connected laptops.
 #
-# For: Advanced Operations communication with local virtual machines
+# For: Advanced Operations communications with virtual machines running on an
+# operator's VPN-connected laptop.
 resource "aws_network_acl_rule" "private_egress_to_local_vm_ips_via_all_ports" {
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
