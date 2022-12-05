@@ -54,20 +54,22 @@ resource "aws_network_acl_rule" "private_ingress_from_operations_mattermost_web"
   from_port      = 8065
   to_port        = 8065
 }
-# Allow ingress from first private subnet via UDP ephemeral ports.
+# Allow ingress to first private subnet (where Transit Gateway attachment
+# resides) from private subnets via UDP ephemeral ports.
 #
-# For: Advanced Operations VPN endpoint communications through Transit Gateway
-# (TGW attachment is in first private subnet).
-resource "aws_network_acl_rule" "private_ingress_from_private_via_udp_ephemeral_ports" {
+# For: Advanced Operations VPN endpoint communications that must flow through
+# the Transit Gateway.  For reference, see:
+# https://docs.aws.amazon.com/vpc/latest/tgw/tgw-nacls.html
+resource "aws_network_acl_rule" "private_ingress_to_tg_attachment_via_udp_ephemeral_ports" {
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
 
-  network_acl_id = aws_network_acl.private[each.value].id
+  network_acl_id = aws_network_acl.private[var.private_subnet_cidr_blocks[0]].id
   egress         = false
   protocol       = "udp"
-  rule_number    = 125
+  rule_number    = 125 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
-  cidr_block     = var.private_subnet_cidr_blocks[0]
+  cidr_block     = each.value
   from_port      = 1024
   to_port        = 65535
 }
