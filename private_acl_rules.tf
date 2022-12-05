@@ -161,13 +161,13 @@ resource "aws_network_acl_rule" "private_ingress_from_anywhere_else_efs" {
   to_port        = 2049
 }
 
-# Allow ingress from anywhere via ephemeral ports that are not already
+# Allow ingress from anywhere via TCP ephemeral ports that are not already
 # explicitly denied.
 #
 # For: Guacamole fetches its SSL certificate via boto3 (which uses
-# HTTPS).  This also allows the return traffic from any requests sent
+# HTTPS).  This also allows the return traffic from TCP requests sent
 # out via the NAT gateway in the operations subnet.
-resource "aws_network_acl_rule" "private_ingress_from_anywhere_via_ephemeral_ports" {
+resource "aws_network_acl_rule" "private_ingress_from_anywhere_via_tcp_ephemeral_ports" {
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
 
