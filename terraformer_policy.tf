@@ -120,11 +120,16 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
     ]
   }
 
-  # Allow Terraformer instances to create new security groups in the
-  # assessment VPC.
+  # Allow Terraformer instances to create new security groups and routing tables
+  # and manage VPC peering connections in the assessment VPC.
   statement {
     actions = [
+      "ec2:AcceptVpcPeeringConnection",
+      "ec2:CreateRouteTable",
       "ec2:CreateSecurityGroup",
+      "ec2:CreateVpcPeeringConnection",
+      "ec2:DeleteVpcPeeringConnection",
+      "ec2:DescribeVpcPeeringConnections",
     ]
     resources = [
       aws_vpc.assessment.arn,
@@ -141,6 +146,35 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
     ]
     resources = [
       aws_network_acl.operations.arn,
+    ]
+  }
+
+  # Allow Terraformer instances to disassociate the default operations and
+  # private routing tables and associate additional routing tables with the
+  # first private subnet.  This is needed so that custom routing tables can
+  # be used.
+  statement {
+    actions = [
+      "ec2:AssociateRouteTable",
+      "ec2:DisassociateRouteTable",
+    ]
+    effect = "Allow"
+    resources = [
+      aws_default_route_table.operations.arn,
+      aws_route_table.private_route_table.arn,
+      aws_subnet.private[var.private_subnet_cidr_blocks[0]].arn,
+    ]
+  }
+
+  # Allow Terraformer instances to modify the S3 VPC gateway endpoint.  This
+  # is needed so that the endpoint can be added to a new, custom route table.
+  statement {
+    actions = [
+      "ec2:ModifyVpcEndpoint",
+    ]
+    effect = "Allow"
+    resources = [
+      aws_vpc_endpoint.s3.arn,
     ]
   }
 
