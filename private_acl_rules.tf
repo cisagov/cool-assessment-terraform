@@ -54,6 +54,25 @@ resource "aws_network_acl_rule" "private_ingress_from_operations_mattermost_web"
   from_port      = 8065
   to_port        = 8065
 }
+# Allow ingress to first private subnet (where Transit Gateway attachment
+# resides) from private subnets via UDP ephemeral ports.
+#
+# For: Advanced Operations VPN endpoint communications that must flow through
+# the Transit Gateway.  For reference, see:
+# https://docs.aws.amazon.com/vpc/latest/tgw/tgw-nacls.html
+resource "aws_network_acl_rule" "private_ingress_to_tg_attachment_via_udp_ephemeral_ports" {
+  provider = aws.provisionassessment
+  for_each = toset(var.private_subnet_cidr_blocks)
+
+  network_acl_id = aws_network_acl.private[var.private_subnet_cidr_blocks[0]].id
+  egress         = false
+  protocol       = "udp"
+  rule_number    = 125 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_action    = "allow"
+  cidr_block     = each.value
+  from_port      = 1024
+  to_port        = 65535
+}
 # Disallow ingress from anywhere else via ports used by services
 # hosted in the private subnet.
 locals {
@@ -142,13 +161,13 @@ resource "aws_network_acl_rule" "private_ingress_from_anywhere_else_efs" {
   to_port        = 2049
 }
 
-# Allow ingress from anywhere via ephemeral ports that are not already
+# Allow ingress from anywhere via TCP ephemeral ports that are not already
 # explicitly denied.
 #
 # For: Guacamole fetches its SSL certificate via boto3 (which uses
-# HTTPS).  This also allows the return traffic from any requests sent
+# HTTPS).  This also allows the return traffic from TCP requests sent
 # out via the NAT gateway in the operations subnet.
-resource "aws_network_acl_rule" "private_ingress_from_anywhere_via_ephemeral_ports" {
+resource "aws_network_acl_rule" "private_ingress_from_anywhere_via_tcp_ephemeral_ports" {
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
 
@@ -212,6 +231,25 @@ resource "aws_network_acl_rule" "private_ingress_from_operations_via_https" {
   cidr_block     = aws_subnet.operations.cidr_block
   from_port      = 443
   to_port        = 443
+}
+
+# Allow ingress from 172.16.0.0/12 via all ports and protocols.  172.16.0.0/12
+# is the private network block that has been chosen by the Advanced Operations
+# team where they will run their mission-related virtual machines on their
+# VPN-connected laptops.
+#
+# For: Advanced Operations communications with virtual machines running on an
+# operator's VPN-connected laptop.
+resource "aws_network_acl_rule" "private_ingress_from_local_vm_ips_via_all_ports" {
+  provider = aws.provisionassessment
+  for_each = toset(var.private_subnet_cidr_blocks)
+
+  network_acl_id = aws_network_acl.private[each.value].id
+  egress         = false
+  protocol       = "all"
+  rule_number    = 210 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_action    = "allow"
+  cidr_block     = "172.16.0.0/12"
 }
 
 #####
@@ -295,10 +333,10 @@ resource "aws_network_acl_rule" "private_egress_to_anywhere_via_https" {
   to_port        = 443
 }
 
-# Allow egress to COOL Shared Services via ephemeral ports
+# Allow egress to COOL Shared Services via TCP ephemeral ports
 #
 # For: Assessment team access to guacamole web client
-resource "aws_network_acl_rule" "private_egress_to_cool_via_ephemeral_ports" {
+resource "aws_network_acl_rule" "private_egress_to_cool_via_tcp_ephemeral_ports" {
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
 
@@ -306,6 +344,23 @@ resource "aws_network_acl_rule" "private_egress_to_cool_via_ephemeral_ports" {
   egress         = true
   protocol       = "tcp"
   rule_number    = 340 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_action    = "allow"
+  cidr_block     = local.cool_shared_services_cidr_block
+  from_port      = 1024
+  to_port        = 65535
+}
+
+# Allow egress to COOL Shared Services via UDP ephemeral ports
+#
+# For: Assessment team access to Advanced Operations VPN endpoints
+resource "aws_network_acl_rule" "private_egress_to_cool_via_udp_ephemeral_ports" {
+  provider = aws.provisionassessment
+  for_each = toset(var.private_subnet_cidr_blocks)
+
+  network_acl_id = aws_network_acl.private[each.value].id
+  egress         = true
+  protocol       = "udp"
+  rule_number    = 350 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = local.cool_shared_services_cidr_block
   from_port      = 1024
@@ -321,7 +376,7 @@ resource "aws_network_acl_rule" "private_egress_to_operations_via_ephemeral_port
   network_acl_id = aws_network_acl.private[each.value].id
   egress         = true
   protocol       = "tcp"
-  rule_number    = 350 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 360 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = aws_subnet.operations.cidr_block
   from_port      = 1024
@@ -338,7 +393,7 @@ resource "aws_network_acl_rule" "private_egress_to_operations_via_ssh" {
   network_acl_id = aws_network_acl.private[each.value].id
   egress         = true
   protocol       = "tcp"
-  rule_number    = 360 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 370 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = aws_subnet.operations.cidr_block
   from_port      = 22
@@ -354,7 +409,7 @@ resource "aws_network_acl_rule" "private_egress_to_operations_via_vnc" {
   network_acl_id = aws_network_acl.private[each.value].id
   egress         = true
   protocol       = "tcp"
-  rule_number    = 370 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 380 + index(var.private_subnet_cidr_blocks, each.value)
   rule_action    = "allow"
   cidr_block     = aws_subnet.operations.cidr_block
   from_port      = 5901
@@ -379,4 +434,23 @@ resource "aws_network_acl_rule" "private_egress_to_cool_via_ipa_ports" {
   cidr_block     = local.cool_shared_services_cidr_block
   from_port      = each.value.port
   to_port        = each.value.port
+}
+
+# Allow egress to 172.16.0.0/12 via all ports and protocols.  172.16.0.0/12
+# is the private network block that has been chosen by the Advanced Operations
+# team where they will run their mission-related virtual machines on their
+# VPN-connected laptops.
+#
+# For: Advanced Operations communications with virtual machines running on an
+# operator's VPN-connected laptop.
+resource "aws_network_acl_rule" "private_egress_to_local_vm_ips_via_all_ports" {
+  provider = aws.provisionassessment
+  for_each = toset(var.private_subnet_cidr_blocks)
+
+  network_acl_id = aws_network_acl.private[each.value].id
+  egress         = true
+  protocol       = "all"
+  rule_number    = 410 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_action    = "allow"
+  cidr_block     = "172.16.0.0/12"
 }
