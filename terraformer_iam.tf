@@ -54,8 +54,8 @@ resource "aws_iam_role_policy_attachment" "efs_mount_policy_attachment_terraform
 # Define the role policies below
 ################################
 
-# Allow the Terraformer instance to assume the necessary role to
-# create/destroy/modify AWS resources.
+# Allow the Terraformer instance to assume the necessary roles to
+# perform its function.
 data "aws_iam_policy_document" "terraformer_assume_delegated_role_policy_doc" {
   statement {
     actions = [
