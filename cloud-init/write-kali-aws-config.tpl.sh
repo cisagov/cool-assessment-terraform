@@ -4,7 +4,7 @@
 #
 # shellcheck disable=SC2154
 
-# This script is used write out an AWS configuration to the home
+# This script is used to write out an AWS configuration to the home
 # directory of a specified user.  The AWS configuration gives the user
 # access to the role that allows writing to the findings data S3
 # bucket.
