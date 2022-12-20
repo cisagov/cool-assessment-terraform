@@ -40,3 +40,12 @@ resource "aws_iam_role_policy_attachment" "efs_mount_policy_attachment_kali" {
   role       = aws_iam_role.kali_instance_role.id
   policy_arn = aws_iam_policy.efs_mount_policy.arn
 }
+
+# Attach the policy that allows the Kali instances to assume the role in the
+# Shared Services account that allows writing to the assessment findings bucket
+resource "aws_iam_role_policy_attachment" "assessmentfindingsbucketwrite_attachment_kali" {
+  provider = aws.provisionassessment
+
+  role       = aws_iam_role.kali_instance_role.id
+  policy_arn = aws_iam_policy.assume_assessmentfindingsbucketwrite_sharedservices_policy.arn
+}
