@@ -85,7 +85,7 @@ data "cloudinit_config" "kali_cloud_init_tasks" {
         aws_region                          = var.aws_region
         findings_data_bucket_write_role_arn = data.terraform_remote_state.sharedservices.outputs.assessment_findings_write_role.arn
         permissions                         = "0400"
-        vnc_read_parameter_store_role_arn   = aws_iam_role.gucamole_parameterstorereadonly_role.arn
+        vnc_read_parameter_store_role_arn   = aws_iam_role.guacamole_parameterstorereadonly_role.arn
         vnc_username_parameter_name         = var.ssm_key_vnc_username
     })
     content_type = "text/x-shellscript"
@@ -112,7 +112,7 @@ data "cloudinit_config" "kali_cloud_init_tasks" {
         aws_region                        = var.aws_region
         findings_data_bucket_name         = var.findings_data_bucket_name
         permissions                       = "0500"
-        vnc_read_parameter_store_role_arn = aws_iam_role.gucamole_parameterstorereadonly_role.arn
+        vnc_read_parameter_store_role_arn = aws_iam_role.guacamole_parameterstorereadonly_role.arn
         vnc_username_parameter_name       = var.ssm_key_vnc_username
     })
     content_type = "text/x-shellscript"
