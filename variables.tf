@@ -36,6 +36,18 @@ variable "assessor_account_role_arn" {
   default     = "arn:aws:iam::123456789012:role/Allow_It"
 }
 
+variable "assessmentfindingsbucketwrite_sharedservices_policy_description" {
+  type        = string
+  description = "The description to associate with the IAM policy that allows assumption of the role in the Shared Services account that is allowed to write to the assessment findings bucket."
+  default     = "Allows assumption of the role in the Shared Services account that is allowed to write to the assessment findings bucket."
+}
+
+variable "assessmentfindingsbucketwrite_sharedservices_policy_name" {
+  type        = string
+  description = "The name to assign the IAM policy that allows assumption of the role in the Shared Services account that is allowed to write to the assessment findings bucket."
+  default     = "SharedServices-AssumeAssessmentFindingsBucketWrite"
+}
+
 variable "aws_availability_zone" {
   type        = string
   description = "The AWS availability zone to deploy into (e.g. a, b, c, etc.)"
