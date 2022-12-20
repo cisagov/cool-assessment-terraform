@@ -50,8 +50,9 @@ vnc_username=$(sed --quiet \
 
 path=/home/$vnc_username/copy-findings-data-to-bucket.sh
 
-# Write the script
-cat > "$path" << EOF
+# Write the script.  Note that we wrap the delimited in quotes to
+# prevent shell variable substitution.
+cat > "$path" << "EOF"
 #!/usr/bin/env bash
 
 # This script copies a file containing findings data to the
@@ -73,7 +74,7 @@ set -o pipefail
 
 filename_only=$(basename "$1")
 
-aws s3 cp "$1" "arn:aws:s3:::${findings_data_bucket_name}/$filename_only"
+aws s3 cp "$1" "s3://${findings_data_bucket_name}/$filename_only"
 EOF
 
 # Set the ownership and permissions of the script appropriately.
