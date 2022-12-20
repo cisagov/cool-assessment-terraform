@@ -14,6 +14,7 @@ data "aws_iam_policy_document" "guacamole_parameterstore_assume_role_doc" {
       type = "AWS"
       identifiers = [
         aws_iam_role.guacamole_instance_role.arn,
+        aws_iam_role.kali_instance_role.arn,
         aws_iam_role.terraformer_instance_role.arn,
       ]
     }
