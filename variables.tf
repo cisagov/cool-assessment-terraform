@@ -109,6 +109,12 @@ variable "email_sending_domains" {
   }
 }
 
+variable "findings_data_bucket_name" {
+  type        = string
+  description = "The name of the AWS S3 bucket where findings data is to be written."
+  default     = "slade-rocks"
+}
+
 variable "guac_connection_setup_path" {
   type        = string
   description = "The full path to the dbinit directory where initialization files must be stored in order to work properly. (e.g. \"/var/guacamole/dbinit\")"
