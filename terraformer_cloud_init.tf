@@ -92,7 +92,7 @@ data "cloudinit_config" "terraformer_cloud_init_tasks" {
   #   parameter containing the VNC user's username
   part {
     content = templatefile(
-      "${path.module}/cloud-init/write-aws-config.tpl.sh", {
+      "${path.module}/cloud-init/write-terraformer-aws-config.tpl.sh", {
         assessor_account_role_arn                     = var.assessor_account_role_arn
         aws_region                                    = var.aws_region
         permissions                                   = "0400"
@@ -103,7 +103,7 @@ data "cloudinit_config" "terraformer_cloud_init_tasks" {
         vnc_username_parameter_name                   = var.ssm_key_vnc_username
     })
     content_type = "text/x-shellscript"
-    filename     = "write-aws-config.sh"
+    filename     = "write-terraformer-aws-config.sh"
     merge_type   = "list(append)+dict(recurse_array)+str()"
   }
 }
