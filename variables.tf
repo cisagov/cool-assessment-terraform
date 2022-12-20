@@ -123,8 +123,8 @@ variable "email_sending_domains" {
 
 variable "findings_data_bucket_name" {
   type        = string
-  description = "The name of the AWS S3 bucket where findings data is to be written."
-  default     = "slade-rocks"
+  description = "The name of the AWS S3 bucket where findings data is to be written.  The default value is not a valid string for a bucket name, so findings data cannot be written to any bucket unless a value is specified."
+  default     = ""
 }
 
 variable "guac_connection_setup_path" {
