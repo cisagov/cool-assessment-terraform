@@ -75,17 +75,23 @@ data "cloudinit_config" "kali_cloud_init_tasks" {
   # * permissions - the octal permissions to assign the AWS
   #   configuration
   # * vnc_username - the username associated with the VNC user
-  part {
-    content = templatefile(
-      "${path.module}/cloud-init/write-kali-aws-config.tpl.sh", {
-        aws_region                          = var.aws_region
-        findings_data_bucket_write_role_arn = data.terraform_remote_state.sharedservices.outputs.assessment_findings_write_role.arn
-        permissions                         = "0400"
-        vnc_username                        = data.aws_ssm_parameter.vnc_username.value
-    })
-    content_type = "text/x-shellscript"
-    filename     = "write-kali-aws-config.sh"
-    merge_type   = "list(append)+dict(recurse_array)+str()"
+  dynamic "part" {
+    # Only include this block if var.findings_data_bucket_name is not
+    # equal to the default value of an empty string.
+    for_each = var.findings_data_bucket_name != "" ? [0] : []
+
+    content {
+      content = templatefile(
+        "${path.module}/cloud-init/write-kali-aws-config.tpl.sh", {
+          aws_region                          = var.aws_region
+          findings_data_bucket_write_role_arn = data.terraform_remote_state.sharedservices.outputs.assessment_findings_write_role.arn
+          permissions                         = "0400"
+          vnc_username                        = data.aws_ssm_parameter.vnc_username.value
+      })
+      content_type = "text/x-shellscript"
+      filename     = "write-kali-aws-config.sh"
+      merge_type   = "list(append)+dict(recurse_array)+str()"
+    }
   }
 
   # Create a script for the VNC user that can be used to copy findings
@@ -97,16 +103,22 @@ data "cloudinit_config" "kali_cloud_init_tasks" {
   #   bucket
   # * permissions - the octal permissions to assign the script
   # * vnc_username - the username associated with the VNC user
-  part {
-    content = templatefile(
-      "${path.module}/cloud-init/write-copy-findings-data-to-bucket.tpl.sh", {
-        aws_region                = var.aws_region
-        findings_data_bucket_name = var.findings_data_bucket_name
-        permissions               = "0500"
-        vnc_username              = data.aws_ssm_parameter.vnc_username.value
-    })
-    content_type = "text/x-shellscript"
-    filename     = "write-copy-findings-data-to-bucket.sh"
-    merge_type   = "list(append)+dict(recurse_array)+str()"
+  dynamic "part" {
+    # Only include this block if var.findings_data_bucket_name is not
+    # equal to the default value of an empty string.
+    for_each = var.findings_data_bucket_name != "" ? [0] : []
+
+    content {
+      content = templatefile(
+        "${path.module}/cloud-init/write-copy-findings-data-to-bucket.tpl.sh", {
+          aws_region                = var.aws_region
+          findings_data_bucket_name = var.findings_data_bucket_name
+          permissions               = "0500"
+          vnc_username              = data.aws_ssm_parameter.vnc_username.value
+      })
+      content_type = "text/x-shellscript"
+      filename     = "write-copy-findings-data-to-bucket.sh"
+      merge_type   = "list(append)+dict(recurse_array)+str()"
+    }
   }
 }
