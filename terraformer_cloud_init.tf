@@ -85,11 +85,7 @@ data "cloudinit_config" "terraformer_cloud_init_tasks" {
   # * terraformer_role_arn - the ARN of the Terraformer role, which can
   #   be assumed to create certain resources in the assessment
   #   environment
-  # * vnc_read_parameter_store_role_arn - the ARN of the role that
-  #   grants read-only access to certain VNC-related SSM Parameter Store
-  #   parameters, including the VNC username
-  # * vnc_username_parameter_name - the name of the SSM Parameter Store
-  #   parameter containing the VNC user's username
+  # * vnc_username - the username associated with the VNC user
   part {
     content = templatefile(
       "${path.module}/cloud-init/write-terraformer-aws-config.tpl.sh", {
@@ -99,8 +95,7 @@ data "cloudinit_config" "terraformer_cloud_init_tasks" {
         read_cool_assessment_terraform_state_role_arn = module.read_terraform_state.role.arn
         organization_read_role_arn                    = data.terraform_remote_state.master.outputs.organizationsreadonly_role.arn
         terraformer_role_arn                          = aws_iam_role.terraformer_role.arn
-        vnc_read_parameter_store_role_arn             = aws_iam_role.guacamole_parameterstorereadonly_role.arn
-        vnc_username_parameter_name                   = var.ssm_key_vnc_username
+        vnc_username                                  = data.aws_ssm_parameter.vnc_username.value
     })
     content_type = "text/x-shellscript"
     filename     = "write-terraformer-aws-config.sh"
