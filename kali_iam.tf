@@ -63,7 +63,6 @@ data "aws_iam_policy_document" "kali_assume_delegated_role_policy_doc" {
     ]
     effect = "Allow"
     resources = [
-      aws_iam_role.guacamole_parameterstorereadonly_role.arn,
       data.terraform_remote_state.sharedservices.outputs.assessment_findings_write_role.arn,
     ]
   }

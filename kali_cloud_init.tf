@@ -74,19 +74,14 @@ data "cloudinit_config" "kali_cloud_init_tasks" {
   #   that can be assumed to write to the findings data S3 bucket
   # * permissions - the octal permissions to assign the AWS
   #   configuration
-  # * vnc_read_parameter_store_role_arn - the ARN of the role that
-  #   grants read-only access to certain VNC-related SSM Parameter Store
-  #   parameters, including the VNC username
-  # * vnc_username_parameter_name - the name of the SSM Parameter Store
-  #   parameter containing the VNC user's username
+  # * vnc_username - the username associated with the VNC user
   part {
     content = templatefile(
       "${path.module}/cloud-init/write-kali-aws-config.tpl.sh", {
         aws_region                          = var.aws_region
         findings_data_bucket_write_role_arn = data.terraform_remote_state.sharedservices.outputs.assessment_findings_write_role.arn
         permissions                         = "0400"
-        vnc_read_parameter_store_role_arn   = aws_iam_role.guacamole_parameterstorereadonly_role.arn
-        vnc_username_parameter_name         = var.ssm_key_vnc_username
+        vnc_username                        = data.aws_ssm_parameter.vnc_username.value
     })
     content_type = "text/x-shellscript"
     filename     = "write-kali-aws-config.sh"
@@ -101,19 +96,14 @@ data "cloudinit_config" "kali_cloud_init_tasks" {
   # * findings_data_bucket_name - the name of the findings data S3
   #   bucket
   # * permissions - the octal permissions to assign the script
-  # * vnc_read_parameter_store_role_arn - the ARN of the role that
-  #   grants read-only access to certain VNC-related SSM Parameter Store
-  #   parameters, including the VNC username
-  # * vnc_username_parameter_name - the name of the SSM Parameter Store
-  #   parameter containing the VNC user's username
+  # * vnc_username - the username associated with the VNC user
   part {
     content = templatefile(
       "${path.module}/cloud-init/write-copy-findings-data-to-bucket.tpl.sh", {
-        aws_region                        = var.aws_region
-        findings_data_bucket_name         = var.findings_data_bucket_name
-        permissions                       = "0500"
-        vnc_read_parameter_store_role_arn = aws_iam_role.guacamole_parameterstorereadonly_role.arn
-        vnc_username_parameter_name       = var.ssm_key_vnc_username
+        aws_region                = var.aws_region
+        findings_data_bucket_name = var.findings_data_bucket_name
+        permissions               = "0500"
+        vnc_username              = data.aws_ssm_parameter.vnc_username.value
     })
     content_type = "text/x-shellscript"
     filename     = "write-copy-findings-data-to-bucket.sh"
