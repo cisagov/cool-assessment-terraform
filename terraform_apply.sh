@@ -131,6 +131,7 @@ terraform apply "${@}" \
   && terraform apply "${@}" \
     -target=aws_instance.assessorportal \
     -target=aws_instance.debiandesktop \
+    -target=aws_instance.egressassess \
     -target=aws_instance.gophish \
     -target=aws_instance.guacamole \
     -target=aws_instance.kali \
