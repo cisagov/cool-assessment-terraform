@@ -62,4 +62,63 @@ data "cloudinit_config" "kali_cloud_init_tasks" {
     filename     = "mount-efs-share.sh"
     merge_type   = "list(append)+dict(recurse_array)+str()"
   }
+
+  # Create a credentials file for the VNC user that can be used to
+  # configure the AWS CLI to assume the findings data bucket write
+  # role.  For details, see
+  # https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html#using-a-configuration-file
+  #
+  # Input variables are:
+  # * aws_region - the AWS region where the roles are to be assumed
+  # * findings_data_bucket_write_role_arn - the ARN of the IAM role
+  #   that can be assumed to write to the findings data S3 bucket
+  # * permissions - the octal permissions to assign the AWS
+  #   configuration
+  # * vnc_username - the username associated with the VNC user
+  dynamic "part" {
+    # Only include this block if var.findings_data_bucket_name is not
+    # equal to the default value of an empty string.
+    for_each = var.findings_data_bucket_name != "" ? [0] : []
+
+    content {
+      content = templatefile(
+        "${path.module}/cloud-init/write-kali-aws-config.tpl.sh", {
+          aws_region                          = var.aws_region
+          findings_data_bucket_write_role_arn = data.terraform_remote_state.sharedservices.outputs.assessment_findings_write_role.arn
+          permissions                         = "0400"
+          vnc_username                        = data.aws_ssm_parameter.vnc_username.value
+      })
+      content_type = "text/x-shellscript"
+      filename     = "write-kali-aws-config.sh"
+      merge_type   = "list(append)+dict(recurse_array)+str()"
+    }
+  }
+
+  # Create a script for the VNC user that can be used to copy findings
+  # data to the appropriate S3 bucket.
+  #
+  # Input variables are:
+  # * aws_region - the AWS region where the roles are to be assumed
+  # * findings_data_bucket_name - the name of the findings data S3
+  #   bucket
+  # * permissions - the octal permissions to assign the script
+  # * vnc_username - the username associated with the VNC user
+  dynamic "part" {
+    # Only include this block if var.findings_data_bucket_name is not
+    # equal to the default value of an empty string.
+    for_each = var.findings_data_bucket_name != "" ? [0] : []
+
+    content {
+      content = templatefile(
+        "${path.module}/cloud-init/write-copy-findings-data-to-bucket.tpl.sh", {
+          aws_region                = var.aws_region
+          findings_data_bucket_name = var.findings_data_bucket_name
+          permissions               = "0500"
+          vnc_username              = data.aws_ssm_parameter.vnc_username.value
+      })
+      content_type = "text/x-shellscript"
+      filename     = "write-copy-findings-data-to-bucket.sh"
+      merge_type   = "list(append)+dict(recurse_array)+str()"
+    }
+  }
 }

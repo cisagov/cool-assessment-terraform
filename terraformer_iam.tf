@@ -54,8 +54,8 @@ resource "aws_iam_role_policy_attachment" "efs_mount_policy_attachment_terraform
 # Define the role policies below
 ################################
 
-# Allow the Terraformer instance to assume the necessary role to
-# create/destroy/modify AWS resources.
+# Allow the Terraformer instance to assume the necessary roles to
+# perform its function.
 data "aws_iam_policy_document" "terraformer_assume_delegated_role_policy_doc" {
   statement {
     actions = [
@@ -67,7 +67,6 @@ data "aws_iam_policy_document" "terraformer_assume_delegated_role_policy_doc" {
       aws_iam_role.terraformer_role.arn,
       module.read_terraform_state.role.arn,
       data.terraform_remote_state.master.outputs.organizationsreadonly_role.arn,
-      aws_iam_role.gucamole_parameterstorereadonly_role.arn,
       var.assessor_account_role_arn,
     ]
   }

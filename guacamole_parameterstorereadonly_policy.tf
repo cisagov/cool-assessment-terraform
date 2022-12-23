@@ -3,7 +3,7 @@
 # SSM Parameter Store parameters in the Images account.
 # ------------------------------------------------------------------------------
 
-data "aws_iam_policy_document" "gucamole_parameterstorereadonly_doc" {
+data "aws_iam_policy_document" "guacamole_parameterstorereadonly_doc" {
   statement {
     actions = [
       "ssm:GetParameter",
@@ -13,10 +13,10 @@ data "aws_iam_policy_document" "gucamole_parameterstorereadonly_doc" {
   }
 }
 
-resource "aws_iam_policy" "gucamole_parameterstorereadonly_policy" {
+resource "aws_iam_policy" "guacamole_parameterstorereadonly_policy" {
   provider = aws.provisionparameterstorereadrole
 
-  description = local.gucamole_parameterstorereadonly_role_description
-  name        = local.gucamole_parameterstorereadonly_role_name
-  policy      = data.aws_iam_policy_document.gucamole_parameterstorereadonly_doc.json
+  description = local.guacamole_parameterstorereadonly_role_description
+  name        = local.guacamole_parameterstorereadonly_role_name
+  policy      = data.aws_iam_policy_document.guacamole_parameterstorereadonly_doc.json
 }

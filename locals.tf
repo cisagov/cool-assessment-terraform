@@ -217,9 +217,9 @@ locals {
   # The name and description of the role and policy that allows read-only
   # access to the VNC-related and RDP-related SSM Parameter Store
   # parameters in the Images account.
-  gucamole_parameterstorereadonly_role_description = format("Allows read-only access to VNC-related and RDP-related SSM Parameter Store parameters required for the %s assessment.", var.assessment_account_name)
+  guacamole_parameterstorereadonly_role_description = format("Allows read-only access to VNC-related and RDP-related SSM Parameter Store parameters required for the %s assessment.", var.assessment_account_name)
 
-  gucamole_parameterstorereadonly_role_name = format("ParameterStoreReadOnly-%s-VNC-RDP", local.assessment_workspace_name)
+  guacamole_parameterstorereadonly_role_name = format("ParameterStoreReadOnly-%s-VNC-RDP", local.assessment_workspace_name)
 
   # Calculate the VPN server CIDR block using the
   # sharedservices_networking remote state

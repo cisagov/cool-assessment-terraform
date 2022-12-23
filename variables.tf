@@ -36,6 +36,18 @@ variable "assessor_account_role_arn" {
   default     = "arn:aws:iam::123456789012:role/Allow_It"
 }
 
+variable "assessmentfindingsbucketwrite_sharedservices_policy_description" {
+  type        = string
+  description = "The description to associate with the IAM policy that allows assumption of the role in the Shared Services account that is allowed to write to the assessment findings bucket."
+  default     = "Allows assumption of the role in the Shared Services account that is allowed to write to the assessment findings bucket."
+}
+
+variable "assessmentfindingsbucketwrite_sharedservices_policy_name" {
+  type        = string
+  description = "The name to assign the IAM policy that allows assumption of the role in the Shared Services account that is allowed to write to the assessment findings bucket."
+  default     = "SharedServices-AssumeAssessmentFindingsBucketWrite"
+}
+
 variable "aws_availability_zone" {
   type        = string
   description = "The AWS availability zone to deploy into (e.g. a, b, c, etc.)"
@@ -107,6 +119,12 @@ variable "email_sending_domains" {
     condition     = var.email_sending_domains == tolist([for d in var.email_sending_domains : lower(d)])
     error_message = "All of the values in email_sending_domains must be lowercase."
   }
+}
+
+variable "findings_data_bucket_name" {
+  type        = string
+  description = "The name of the AWS S3 bucket where findings data is to be written.  The default value is not a valid string for a bucket name, so findings data cannot be written to any bucket unless a value is specified."
+  default     = ""
 }
 
 variable "guac_connection_setup_path" {
