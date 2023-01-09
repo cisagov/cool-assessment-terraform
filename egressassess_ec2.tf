@@ -67,6 +67,27 @@ resource "aws_instance" "egressassess" {
   })
 }
 
+# The Elastic IP for each Egress-Assess instance
+resource "aws_eip" "egressassess" {
+  count    = lookup(var.operations_instance_counts, "egressassess", 0)
+  provider = aws.provisionassessment
+
+  vpc = true
+  tags = {
+    Name             = format("EgressAssess%d EIP", count.index)
+    "Publish Egress" = "True"
+  }
+}
+
+# The EIP association for each Egress-Assess instance
+resource "aws_eip_association" "egressassess" {
+  count    = lookup(var.operations_instance_counts, "egressassess", 0)
+  provider = aws.provisionassessment
+
+  instance_id   = aws_instance.egressassess[count.index].id
+  allocation_id = aws_eip.egressassess[count.index].id
+}
+
 # CloudWatch alarms for the Egress-Assess instances
 module "cw_alarms_egressassess" {
   providers = {
