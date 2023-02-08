@@ -73,6 +73,21 @@ output "efs_mount_targets" {
   description = "The mount targets for the EFS file share."
 }
 
+output "egressassess_instance_profile" {
+  value       = aws_iam_instance_profile.egressassess
+  description = "The instance profile for the Egress-Assess instances."
+}
+
+output "egressassess_instances" {
+  value       = aws_instance.egressassess
+  description = "The Egress-Assess instances."
+}
+
+output "egressassess_security_group" {
+  value       = aws_security_group.egressassess
+  description = "The security group for the Egress-Assess instances."
+}
+
 output "email_sending_domain_certreadroles" {
   value       = module.email_sending_domain_certreadrole
   description = "The IAM roles that allow for reading the certificate for each email-sending domain."

@@ -137,6 +137,7 @@ variable "inbound_ports_allowed" {
   type = object({
     assessorportal = list(object({ protocol = string, from_port = number, to_port = number })),
     debiandesktop  = list(object({ protocol = string, from_port = number, to_port = number })),
+    egressassess   = list(object({ protocol = string, from_port = number, to_port = number })),
     gophish        = list(object({ protocol = string, from_port = number, to_port = number })),
     kali           = list(object({ protocol = string, from_port = number, to_port = number })),
     nessus         = list(object({ protocol = string, from_port = number, to_port = number })),
@@ -146,10 +147,11 @@ variable "inbound_ports_allowed" {
     terraformer    = list(object({ protocol = string, from_port = number, to_port = number })),
     windows        = list(object({ protocol = string, from_port = number, to_port = number })),
   })
-  description = "An object specifying the ports allowed inbound (from anywhere) to the various instance types (e.g. {\"assessorportal\" : [], \"debiandesktop\" : [], \"gophish\" : [], \"kali\": [{\"protocol\": \"tcp\", \"from_port\": 443, \"to_port\": 443}, {\"protocol\": \"tcp\", \"from_port\": 9000, \"to_port\": 9009}], \"nessus\" : [], \"pentestportal\" : [], \"samba\" : [], \"teamserver\" : [], \"terraformer\" : [], \"windows\" : [], })."
+  description = "An object specifying the ports allowed inbound (from anywhere) to the various instance types (e.g. {\"assessorportal\" : [], \"debiandesktop\" : [], \"egressassess\" : [], \"gophish\" : [], \"kali\": [{\"protocol\": \"tcp\", \"from_port\": 443, \"to_port\": 443}, {\"protocol\": \"tcp\", \"from_port\": 9000, \"to_port\": 9009}], \"nessus\" : [], \"pentestportal\" : [], \"samba\" : [], \"teamserver\" : [], \"terraformer\" : [], \"windows\" : [], })."
   default = {
     "assessorportal" : [],
     "debiandesktop" : [],
+    "egressassess" : [],
     "gophish" : [],
     "kali" : [],
     "nessus" : [],
@@ -171,6 +173,7 @@ variable "operations_instance_counts" {
   type = object({
     assessorportal = number,
     debiandesktop  = number,
+    egressassess   = number,
     gophish        = number,
     kali           = number,
     nessus         = number,
@@ -180,10 +183,11 @@ variable "operations_instance_counts" {
     terraformer    = number,
     windows        = number
   })
-  description = "A map specifying how many instances of each type should be created in the operations subnet (e.g. { \"assessorportal\" : 0, \"debiandesktop\" : 0, \"gophish\" : 0, \"kali\": 1, \"nessus\" : 0, \"pentestportal\" : 0, \"samba\" : 0, \"teamserver\" : 0, \"terraformer\" : 0, \"windows\" : 1, })."
+  description = "A map specifying how many instances of each type should be created in the operations subnet (e.g. { \"assessorportal\" : 0, \"debiandesktop\" : 0, \"egressassess\" : 0,\"gophish\" : 0, \"kali\": 1, \"nessus\" : 0, \"pentestportal\" : 0, \"samba\" : 0, \"teamserver\" : 0, \"terraformer\" : 0, \"windows\" : 1, })."
   default = {
     "assessorportal" : 0,
     "debiandesktop" : 0,
+    "egressassess" : 0,
     "gophish" : 0,
     "kali" : 1,
     "nessus" : 0,

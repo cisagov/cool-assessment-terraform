@@ -145,7 +145,7 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_1024
   network_acl_id = aws_network_acl.operations.id
   egress         = false
   protocol       = each.value
-  rule_number    = 160 + index(local.tcp_and_udp, each.value)
+  rule_number    = 170 + index(local.tcp_and_udp, each.value)
   rule_action    = "allow"
   cidr_block     = "0.0.0.0/0"
   from_port      = 1024
@@ -165,7 +165,7 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_3390
   network_acl_id = aws_network_acl.operations.id
   egress         = false
   protocol       = each.value
-  rule_number    = 170 + index(local.tcp_and_udp, each.value)
+  rule_number    = 180 + index(local.tcp_and_udp, each.value)
   rule_action    = "allow"
   cidr_block     = "0.0.0.0/0"
   from_port      = 3390
