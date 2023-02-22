@@ -314,8 +314,11 @@ variable "valid_assessment_id_regex" {
 
 variable "valid_assessment_types" {
   type        = list(string)
-  description = "A list of valid assessment types (e.g. [\"PenTest\", \"Phishing\", \"RedTeam\"])."
-  default     = [""]
+  description = "A list of valid assessment types (e.g. [\"PenTest\", \"Phishing\", \"RedTeam\"]).  If this list is empty (i.e. []), then any value used for assessment_type will trigger a validation error."
+  # Set the default value to [""] instead of [] to match the default value of
+  # var.assessment_type, which is "".  This is done to avoid a validation error
+  # when the default values of both variables are used.
+  default = [""]
 }
 
 variable "windows_with_docker" {

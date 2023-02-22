@@ -511,7 +511,7 @@ the COOL environment.
 | terraformer\_role\_description | The description to associate with the IAM role (and policy) that allows Terraformer instances to create appropriate AWS resources in this account. | `string` | `"Allows Terraformer instances to create appropriate AWS resources in this account."` | no |
 | terraformer\_role\_name | The name to assign the IAM role (and policy) that allows Terraformer instances to create appropriate AWS resources in this account. | `string` | `"Terraformer"` | no |
 | valid\_assessment\_id\_regex | A regular expression that specifies valid assessment identifiers (e.g. "^ASMT[[:digit:]]{4}$"). | `string` | `""` | no |
-| valid\_assessment\_types | A list of valid assessment types (e.g. ["PenTest", "Phishing", "RedTeam"]). | `list(string)` | ```[ "" ]``` | no |
+| valid\_assessment\_types | A list of valid assessment types (e.g. ["PenTest", "Phishing", "RedTeam"]).  If this list is empty (i.e. []), then any value used for assessment\_type will trigger a validation error. | `list(string)` | ```[ "" ]``` | no |
 | vpc\_cidr\_block | The CIDR block to use this assessment's VPC (e.g. "10.224.0.0/21"). | `string` | n/a | yes |
 | windows\_with\_docker | A boolean to control the instance type used when creating Windows instances to allow Docker Desktop support. Windows instances require the `metal` instance type to run Docker Desktop because of nested virtualization, but if Docker Desktop is not needed then other instance types are fine. | `bool` | `false` | no |
 
