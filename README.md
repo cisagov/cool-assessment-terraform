@@ -411,6 +411,8 @@ the COOL environment.
 | [aws_vpc_endpoint_subnet_association.ssmmessages](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint_subnet_association) | resource |
 | [aws_vpc_endpoint_subnet_association.sts](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint_subnet_association) | resource |
 | [null_resource.break_association_with_default_route_table](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [null_resource.validate_assessment_id](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [null_resource.validate_assessment_type](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [aws_ami.assessorportal](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
 | [aws_ami.debiandesktop](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
 | [aws_ami.docker](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
@@ -471,6 +473,8 @@ the COOL environment.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | assessment\_account\_name | The name of the AWS account for this assessment (e.g. "env0"). | `string` | n/a | yes |
+| assessment\_id | The identifier for this assessment (e.g. "ASMT1234"). | `string` | `""` | no |
+| assessment\_type | The type of this assessment (e.g. "PenTest"). | `string` | `""` | no |
 | assessmentfindingsbucketwrite\_sharedservices\_policy\_description | The description to associate with the IAM policy that allows assumption of the role in the Shared Services account that is allowed to write to the assessment findings bucket. | `string` | `"Allows assumption of the role in the Shared Services account that is allowed to write to the assessment findings bucket."` | no |
 | assessmentfindingsbucketwrite\_sharedservices\_policy\_name | The name to assign the IAM policy that allows assumption of the role in the Shared Services account that is allowed to write to the assessment findings bucket. | `string` | `"SharedServices-AssumeAssessmentFindingsBucketWrite"` | no |
 | assessor\_account\_role\_arn | The ARN of an IAM role that can be assumed to create, delete, and modify AWS resources in a separate assessor-owned AWS account. | `string` | `"arn:aws:iam::123456789012:role/Allow_It"` | no |
@@ -506,6 +510,8 @@ the COOL environment.
 | tags | Tags to apply to all AWS resources created | `map(string)` | `{}` | no |
 | terraformer\_role\_description | The description to associate with the IAM role (and policy) that allows Terraformer instances to create appropriate AWS resources in this account. | `string` | `"Allows Terraformer instances to create appropriate AWS resources in this account."` | no |
 | terraformer\_role\_name | The name to assign the IAM role (and policy) that allows Terraformer instances to create appropriate AWS resources in this account. | `string` | `"Terraformer"` | no |
+| valid\_assessment\_id\_regex | A regular expression that specifies valid assessment identifiers (e.g. "^ASMT[[:digit:]]{4}$"). | `string` | `""` | no |
+| valid\_assessment\_types | A list of valid assessment types (e.g. ["PenTest", "Phishing", "RedTeam"]).  If this list is empty (i.e. []), then any value used for assessment\_type will trigger a validation error. | `list(string)` | ```[ "" ]``` | no |
 | vpc\_cidr\_block | The CIDR block to use this assessment's VPC (e.g. "10.224.0.0/21"). | `string` | n/a | yes |
 | windows\_with\_docker | A boolean to control the instance type used when creating Windows instances to allow Docker Desktop support. Windows instances require the `metal` instance type to run Docker Desktop because of nested virtualization, but if Docker Desktop is not needed then other instance types are fine. | `bool` | `false` | no |
 

@@ -48,6 +48,18 @@ variable "assessmentfindingsbucketwrite_sharedservices_policy_name" {
   default     = "SharedServices-AssumeAssessmentFindingsBucketWrite"
 }
 
+variable "assessment_id" {
+  type        = string
+  description = "The identifier for this assessment (e.g. \"ASMT1234\")."
+  default     = ""
+}
+
+variable "assessment_type" {
+  type        = string
+  description = "The type of this assessment (e.g. \"PenTest\")."
+  default     = ""
+}
+
 variable "aws_availability_zone" {
   type        = string
   description = "The AWS availability zone to deploy into (e.g. a, b, c, etc.)"
@@ -292,6 +304,21 @@ variable "terraformer_role_name" {
   type        = string
   description = "The name to assign the IAM role (and policy) that allows Terraformer instances to create appropriate AWS resources in this account."
   default     = "Terraformer"
+}
+
+variable "valid_assessment_id_regex" {
+  type        = string
+  description = "A regular expression that specifies valid assessment identifiers (e.g. \"^ASMT[[:digit:]]{4}$\")."
+  default     = ""
+}
+
+variable "valid_assessment_types" {
+  type        = list(string)
+  description = "A list of valid assessment types (e.g. [\"PenTest\", \"Phishing\", \"RedTeam\"]).  If this list is empty (i.e. []), then any value used for assessment_type will trigger a validation error."
+  # Set the default value to [""] instead of [] to match the default value of
+  # var.assessment_type, which is "".  This is done to avoid a validation error
+  # when the default values of both variables are used.
+  default = [""]
 }
 
 variable "windows_with_docker" {
