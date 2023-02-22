@@ -48,6 +48,18 @@ variable "assessmentfindingsbucketwrite_sharedservices_policy_name" {
   default     = "SharedServices-AssumeAssessmentFindingsBucketWrite"
 }
 
+variable "assessment_id" {
+  type        = string
+  description = "The identifier for this assessment (e.g. \"ASMT1234\")."
+  default     = ""
+}
+
+variable "assessment_type" {
+  type        = string
+  description = "The type of this assessment (e.g. \"PenTest\")."
+  default     = ""
+}
+
 variable "aws_availability_zone" {
   type        = string
   description = "The AWS availability zone to deploy into (e.g. a, b, c, etc.)"
@@ -292,6 +304,18 @@ variable "terraformer_role_name" {
   type        = string
   description = "The name to assign the IAM role (and policy) that allows Terraformer instances to create appropriate AWS resources in this account."
   default     = "Terraformer"
+}
+
+variable "valid_assessment_id_regex" {
+  type        = string
+  description = "A regular expression that specifies valid assessment identifiers (e.g. \"^ASMT[[:digit:]]{4}$\")."
+  default     = ""
+}
+
+variable "valid_assessment_types" {
+  type        = list(string)
+  description = "A list of valid assessment types (e.g. [\"PenTest\", \"Phishing\", \"RedTeam\"])."
+  default     = [""]
 }
 
 variable "windows_with_docker" {
