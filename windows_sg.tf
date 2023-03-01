@@ -75,9 +75,9 @@ resource "aws_security_group_rule" "windows_ingress_from_kali_instances" {
   to_port                  = 65535
 }
 
-# Allow egress from Windows to Teamserver instances on ports 5000-5999
-# (TCP only).  This port range was requested for use by assessment
-# operators in cisagov/cool-system-internal#127.
+# Allow egress from Windows instances to Teamserver instances on
+# ports 5000-5999 (TCP only).  This port range was requested for use
+# by assessment operators in cisagov/cool-system-internal#127.
 resource "aws_security_group_rule" "windows_egress_to_teamserver_instances_via_5000_to_5999_tcp" {
   provider = aws.provisionassessment
 
