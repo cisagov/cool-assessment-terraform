@@ -413,6 +413,7 @@ the COOL environment.
 | [aws_vpc_endpoint_subnet_association.ssmmessages](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint_subnet_association) | resource |
 | [aws_vpc_endpoint_subnet_association.sts](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint_subnet_association) | resource |
 | [null_resource.break_association_with_default_route_table](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [null_resource.validate_assessment_artifact_export_map](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.validate_assessment_id](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.validate_assessment_type](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [aws_ami.assessorportal](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
@@ -448,6 +449,10 @@ the COOL environment.
 | [aws_iam_policy_document.terraformer_policy_doc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.users_account_assume_role_doc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_organizations_organization.cool](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/organizations_organization) | data source |
+| [aws_ssm_parameter.artifact_export_access_key_id](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
+| [aws_ssm_parameter.artifact_export_bucket_name](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
+| [aws_ssm_parameter.artifact_export_bucket_region](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
+| [aws_ssm_parameter.artifact_export_secret_access_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
 | [aws_ssm_parameter.samba_username](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
 | [aws_ssm_parameter.vnc_username](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
 | [cloudinit_config.assessorportal_cloud_init_tasks](https://registry.terraform.io/providers/hashicorp/cloudinit/latest/docs/data-sources/config) | data source |
@@ -475,6 +480,8 @@ the COOL environment.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | assessment\_account\_name | The name of the AWS account for this assessment (e.g. "env0"). | `string` | n/a | yes |
+| assessment\_artifact\_export\_enabled | Whether or not to enable the export of assessment artifacts to an S3 bucket.  If this is set to true, then the following variables should also be configured appropriately: assessment\_artifact\_export\_map, ssm\_key\_artifact\_export\_access\_key\_id, ssm\_key\_artifact\_export\_secret\_access\_key, ssm\_key\_artifact\_export\_bucket\_name, and ssm\_key\_artifact\_export\_bucket\_region. | `bool` | `false` | no |
+| assessment\_artifact\_export\_map | A map whose keys are assessment types and whose values are the prefixes for what an assessment artifact will be named when it is exported to the S3 bucket contained in the SSM parameter specified by the ssm\_key\_artifact\_export\_bucket\_name variable (e.g. { "PenTest" : "pentest/PT", "Phishing" : "phishing/PH", "RedTeam" : "redteam/RT" }). Note that prefixes can include a path within the bucket.  For example, if the prefix is "pentest/PT" and the assessment ID is "ASMT1234", then the corresponding artifact will be exported to "bucket-name/pentest/PT-ASMT1234" when the copy-artifact-data-to-bucket.sh script is run. | `map(string)` | `{}` | no |
 | assessment\_id | The identifier for this assessment (e.g. "ASMT1234"). | `string` | `""` | no |
 | assessment\_type | The type of this assessment (e.g. "PenTest"). | `string` | `""` | no |
 | assessmentfindingsbucketwrite\_sharedservices\_policy\_description | The description to associate with the IAM policy that allows assumption of the role in the Shared Services account that is allowed to write to the assessment findings bucket. | `string` | `"Allows assumption of the role in the Shared Services account that is allowed to write to the assessment findings bucket."` | no |
@@ -505,6 +512,10 @@ the COOL environment.
 | provisionssmsessionmanager\_policy\_name | The name to assign the IAM policy that allows sufficient permissions to provision the SSM Document resource and set up SSM session logging in this assessment account. | `string` | `"ProvisionSSMSessionManager"` | no |
 | read\_terraform\_state\_role\_name | The name to assign the IAM role (as well as the corresponding policy) that allows read-only access to the cool-assessment-terraform state in the S3 bucket where Terraform state is stored.  The %s in this name will be replaced by the value of the assessment\_account\_name variable. | `string` | `"ReadCoolAssessmentTerraformTerraformState-%s"` | no |
 | session\_cloudwatch\_log\_group\_name | The name of the log group into which session logs are to be uploaded. | `string` | `"/ssm/session-logs"` | no |
+| ssm\_key\_artifact\_export\_access\_key\_id | The AWS SSM Parameter Store parameter that contains the AWS access key of the user that can write to the assessment artifact export bucket (e.g. "/assessment\_artifact\_export/access\_key\_id"). | `string` | `"/assessment_artifact_export/access_key_id"` | no |
+| ssm\_key\_artifact\_export\_bucket\_name | The AWS SSM Parameter Store parameter that contains the name of the assessment artifact export bucket (e.g. "/assessment\_artifact\_export/bucket"). | `string` | `"/assessment_artifact_export/bucket"` | no |
+| ssm\_key\_artifact\_export\_bucket\_region | The AWS SSM Parameter Store parameter that contains the region of the assessment artifact export bucket (e.g. "/assessment\_artifact\_export/region"). | `string` | `"/assessment_artifact_export/region"` | no |
+| ssm\_key\_artifact\_export\_secret\_access\_key | The AWS SSM Parameter Store parameter that contains the AWS secret access key of the user that can write to the assessment artifact export bucket (e.g. "/assessment\_artifact\_export/secret\_access\_key"). | `string` | `"/assessment_artifact_export/secret_access_key"` | no |
 | ssm\_key\_nessus\_admin\_password | The AWS SSM Parameter Store parameter that contains the password of the Nessus admin user (e.g. "/nessus/assessment/admin\_password"). | `string` | `"/nessus/assessment/admin_password"` | no |
 | ssm\_key\_nessus\_admin\_username | The AWS SSM Parameter Store parameter that contains the username of the Nessus admin user (e.g. "/nessus/assessment/admin\_username"). | `string` | `"/nessus/assessment/admin_username"` | no |
 | ssm\_key\_samba\_username | The AWS SSM Parameter Store parameter that contains the username of the Samba user (e.g. "/samba/username"). | `string` | `"/samba/username"` | no |
