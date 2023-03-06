@@ -35,6 +35,34 @@ data "aws_default_tags" "assessment" {
 # Note: These values are stored in plaintext in the state, but it should be fine
 # because we are using a remote state that we have configured to be encrypted.
 # ------------------------------------------------------------------------------
+data "aws_ssm_parameter" "artifact_export_access_key_id" {
+  count    = var.assessment_artifact_export_enabled ? 1 : 0
+  provider = aws.parameterstorereadonly
+
+  name = var.ssm_key_artifact_export_access_key_id
+}
+
+data "aws_ssm_parameter" "artifact_export_bucket_name" {
+  count    = var.assessment_artifact_export_enabled ? 1 : 0
+  provider = aws.parameterstorereadonly
+
+  name = var.ssm_key_artifact_export_bucket_name
+}
+
+data "aws_ssm_parameter" "artifact_export_bucket_region" {
+  count    = var.assessment_artifact_export_enabled ? 1 : 0
+  provider = aws.parameterstorereadonly
+
+  name = var.ssm_key_artifact_export_bucket_region
+}
+
+data "aws_ssm_parameter" "artifact_export_secret_access_key" {
+  count    = var.assessment_artifact_export_enabled ? 1 : 0
+  provider = aws.parameterstorereadonly
+
+  name = var.ssm_key_artifact_export_secret_access_key
+}
+
 data "aws_ssm_parameter" "samba_username" {
   provider = aws.parameterstorereadonly
 
