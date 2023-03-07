@@ -30,14 +30,14 @@ cat > "$path" << "EOF"
 # assessment artifacts and then copies that archive to the appropriate S3
 # bucket.
 #
-# Usage:  copy-artifact-data-to-bucket.sh /path/to/artifacts_directory
+# Usage: archive-artifact-data-to-bucket.sh /path/to/artifacts_directory
 
 set -o nounset
 set -o errexit
 set -o pipefail
 
 if [ $# -ne 1 ]; then
-  echo "Usage:  copy-artifact-data-to-bucket.sh /path/to/artifacts_directory"
+  echo "Usage: archive-artifact-data-to-bucket.sh /path/to/artifacts_directory"
   exit 1
 fi
 
