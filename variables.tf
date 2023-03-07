@@ -50,7 +50,7 @@ variable "assessmentfindingsbucketwrite_sharedservices_policy_name" {
 
 variable "assessment_artifact_export_enabled" {
   type        = bool
-  description = "Whether or not to enable the export of assessment artifacts to an S3 bucket.  If this is set to true, then the following variables should also be configured appropriately: assessment_artifact_export_map, ssm_key_artifact_export_access_key_id, ssm_key_artifact_export_secret_access_key, ssm_key_artifact_export_bucket_name, and ssm_key_artifact_export_bucket_region."
+  description = "Whether or not to enable the export of assessment artifacts to an S3 bucket.  If this is set to true, then the following variables should also be configured appropriately: assessment_artifact_export_map, ssm_key_artifact_export_access_key_id, ssm_key_artifact_export_secret_access_key, ssm_key_artifact_export_bucket_name, and ssm_key_artifact_export_region."
   default     = false
 }
 
@@ -288,9 +288,9 @@ variable "ssm_key_artifact_export_bucket_name" {
   default     = "/assessment_artifact_export/bucket"
 }
 
-variable "ssm_key_artifact_export_bucket_region" {
+variable "ssm_key_artifact_export_region" {
   type        = string
-  description = "The AWS SSM Parameter Store parameter that contains the region of the assessment artifact export bucket (e.g. \"/assessment_artifact_export/region\")."
+  description = "The AWS SSM Parameter Store parameter that contains the region of the IAM user (specified via ssm_key_artifact_export_access_key_id) that can write to the assessment artifact export bucket (e.g. \"/assessment_artifact_export/region\")."
   default     = "/assessment_artifact_export/region"
 }
 

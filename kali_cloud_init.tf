@@ -129,7 +129,7 @@ data "cloudinit_config" "kali_cloud_init_tasks" {
   #
   # Input variables are:
   # * aws_access_key_id - the AWS access key ID
-  # * aws_region - the AWS region of the S3 bucket
+  # * aws_region - the AWS region of the access key
   # * aws_secret_access_key - the AWS secret access key
   # * permissions - the octal permissions to assign the AWS configuration
   # * vnc_username - the username associated with the VNC user
@@ -141,7 +141,7 @@ data "cloudinit_config" "kali_cloud_init_tasks" {
       content = templatefile(
         "${path.module}/cloud-init/write-kali-aws-config-artifact-export.tpl.sh", {
           aws_access_key_id     = data.aws_ssm_parameter.artifact_export_access_key_id[0].value
-          aws_region            = data.aws_ssm_parameter.artifact_export_bucket_region[0].value
+          aws_region            = data.aws_ssm_parameter.artifact_export_region[0].value
           aws_secret_access_key = data.aws_ssm_parameter.artifact_export_secret_access_key[0].value
           permissions           = "0400"
           vnc_username          = data.aws_ssm_parameter.vnc_username.value

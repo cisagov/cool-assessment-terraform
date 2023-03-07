@@ -49,11 +49,11 @@ data "aws_ssm_parameter" "artifact_export_bucket_name" {
   name = var.ssm_key_artifact_export_bucket_name
 }
 
-data "aws_ssm_parameter" "artifact_export_bucket_region" {
+data "aws_ssm_parameter" "artifact_export_region" {
   count    = var.assessment_artifact_export_enabled ? 1 : 0
   provider = aws.parameterstorereadonly
 
-  name = var.ssm_key_artifact_export_bucket_region
+  name = var.ssm_key_artifact_export_region
 }
 
 data "aws_ssm_parameter" "artifact_export_secret_access_key" {

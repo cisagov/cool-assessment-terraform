@@ -10,7 +10,7 @@
 
 # Input variables are:
 # * aws_access_key_id - the AWS access key ID
-# * aws_region - the AWS region of the S3 bucket
+# * aws_region - the AWS region of the access key
 # * aws_secret_access_key - the AWS secret access key
 # * permissions - the octal permissions to assign the AWS
 #   configuration
