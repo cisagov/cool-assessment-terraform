@@ -12,8 +12,8 @@
 # * aws_access_key_id - the AWS access key ID
 # * aws_region - the AWS region of the access key
 # * aws_secret_access_key - the AWS secret access key
-# * permissions - the octal permissions to assign the AWS
-#   configuration
+# * permissions - the permissions to assign the AWS configuration, specified
+#   in either the octal or symbolic formats understood by chmod
 # * vnc_username - the username associated with the VNC user
 
 set -o nounset

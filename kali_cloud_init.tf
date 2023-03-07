@@ -72,8 +72,8 @@ data "cloudinit_config" "kali_cloud_init_tasks" {
   # * aws_region - the AWS region where the roles are to be assumed
   # * findings_data_bucket_write_role_arn - the ARN of the IAM role
   #   that can be assumed to write to the findings data S3 bucket
-  # * permissions - the octal permissions to assign the AWS
-  #   configuration
+  # * permissions - the permissions to assign the AWS configuration, specified
+  #   in either the octal or symbolic formats understood by chmod
   # * vnc_username - the username associated with the VNC user
   dynamic "part" {
     # Only include this block if var.findings_data_bucket_name is not
@@ -101,7 +101,8 @@ data "cloudinit_config" "kali_cloud_init_tasks" {
   # * aws_region - the AWS region where the roles are to be assumed
   # * findings_data_bucket_name - the name of the findings data S3
   #   bucket
-  # * permissions - the octal permissions to assign the script
+  # * permissions - the permissions to assign the script, specified in either
+  #   the octal or symbolic formats understood by chmod
   # * vnc_username - the username associated with the VNC user
   dynamic "part" {
     # Only include this block if var.findings_data_bucket_name is not
@@ -131,7 +132,8 @@ data "cloudinit_config" "kali_cloud_init_tasks" {
   # * aws_access_key_id - the AWS access key ID
   # * aws_region - the AWS region of the access key
   # * aws_secret_access_key - the AWS secret access key
-  # * permissions - the octal permissions to assign the AWS configuration
+  # * permissions - the permissions to assign the AWS configuration, specified
+  #   in either the octal or symbolic formats understood by chmod
   # * vnc_username - the username associated with the VNC user
   dynamic "part" {
     # Only include this block if var.assessment_artifact_export_enabled is true.
@@ -161,7 +163,8 @@ data "cloudinit_config" "kali_cloud_init_tasks" {
   #   bucket
   # * artifact_export_path - the path to copy the artifact to in the S3 bucket
   # * assessment_id - the identifier for the assessment
-  # * permissions - the octal permissions to assign the script
+  # * permissions - the permissions to assign the script, specified in either
+  #   the octal or symbolic formats understood by chmod
   # * vnc_username - the username associated with the VNC user
   dynamic "part" {
     # Only include this block if var.assessment_artifact_export_enabled is true.
