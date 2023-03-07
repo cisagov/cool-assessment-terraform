@@ -58,10 +58,12 @@ cd "$(dirname "$1")"
 # Create the archive
 echo "Creating archive..."
 # Since we are in the parent directory of the artifacts directory, we don't
-# expect to run into any issues related to disk space (in our typical use case,
-# this directory resides on the EFS volume, which should not run out of space).
-# If disk space does become a problem for some reason, this script can be
-# modified to create the archive in a temporary directory.
+# expect to run into any issues related to disk space.  (In our typical use 
+# case, this directory resides on the EFS volume, which is huge.)
+#
+# The important thing is to avoid filling up the root disk, so in the event
+# that an EFS volume _is not_ being used it probably makes sense to create 
+# the archive in /tmp.
 tar --create --file ${assessment_id}.tgz --gzip --verbose "$(basename "$1")"
 
 # Copy the archive to the S3 bucket
