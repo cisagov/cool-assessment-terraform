@@ -20,7 +20,7 @@ set -o pipefail
 
 path=/home/${vnc_username}/copy-findings-data-to-bucket.sh
 
-# Write the script.  Note that we wrap the delimited in quotes to
+# Write the script.  Note that we wrap the delimiter in quotes to
 # prevent shell variable substitution.
 cat > "$path" << "EOF"
 #!/usr/bin/env bash
