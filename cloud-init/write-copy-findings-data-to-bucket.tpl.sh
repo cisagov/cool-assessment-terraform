@@ -11,7 +11,8 @@
 # * aws_region - the AWS region where the roles are to be assumed
 # * findings_data_bucket_name - the name of the findings data S3
 #   bucket
-# * permissions - the octal permissions to assign the script
+# * permissions - the permissions to assign the script, specified in either the
+#   octal or symbolic formats understood by chmod
 # * vnc_username - the username associated with the VNC user
 
 set -o nounset

@@ -12,7 +12,8 @@
 #   bucket
 # * artifact_export_path - the path to copy the artifact to in the S3 bucket
 # * assessment_id - the identifier for the assessment
-# * permissions - the octal permissions to assign the script
+# * permissions - the permissions to assign the script, specified in either the
+#   octal or symbolic formats understood by chmod
 # * vnc_username - the username associated with the VNC user
 
 set -o nounset
