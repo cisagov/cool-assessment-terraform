@@ -278,7 +278,7 @@ variable "session_cloudwatch_log_group_name" {
 
 variable "ssm_key_artifact_export_access_key_id" {
   type        = string
-  description = "The AWS SSM Parameter Store parameter that contains the AWS access key of the user that can write to the assessment artifact export bucket (e.g. \"/assessment_artifact_export/access_key_id\")."
+  description = "The AWS SSM Parameter Store parameter that contains the AWS access key of the IAM user that can write to the assessment artifact export bucket (e.g. \"/assessment_artifact_export/access_key_id\")."
   default     = "/assessment_artifact_export/access_key_id"
 }
 
@@ -296,7 +296,7 @@ variable "ssm_key_artifact_export_region" {
 
 variable "ssm_key_artifact_export_secret_access_key" {
   type        = string
-  description = "The AWS SSM Parameter Store parameter that contains the AWS secret access key of the user that can write to the assessment artifact export bucket (e.g. \"/assessment_artifact_export/secret_access_key\")."
+  description = "The AWS SSM Parameter Store parameter that contains the AWS secret access key of the IAM user that can write to the assessment artifact export bucket (e.g. \"/assessment_artifact_export/secret_access_key\")."
   default     = "/assessment_artifact_export/secret_access_key"
 }
 
