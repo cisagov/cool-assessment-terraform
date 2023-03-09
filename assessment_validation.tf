@@ -9,6 +9,15 @@
 # that contains a precondition.  The precondition is evaluated at plan time, and
 # if it fails, the plan will fail with the error message provided.
 
+resource "null_resource" "validate_assessment_artifact_export_map" {
+  lifecycle {
+    precondition {
+      condition     = length([for k in keys(var.assessment_artifact_export_map) : k if !contains(var.valid_assessment_types, k)]) == 0
+      error_message = "Invalid assessment type(s) provided in assessment_artifact_export_map: ${join(", ", [for k in keys(var.assessment_artifact_export_map) : k if !contains(var.valid_assessment_types, k)])}.  Valid types are: ${join(", ", var.valid_assessment_types)}"
+    }
+  }
+}
+
 resource "null_resource" "validate_assessment_id" {
   lifecycle {
     precondition {

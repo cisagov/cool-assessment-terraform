@@ -48,6 +48,18 @@ variable "assessmentfindingsbucketwrite_sharedservices_policy_name" {
   default     = "SharedServices-AssumeAssessmentFindingsBucketWrite"
 }
 
+variable "assessment_artifact_export_enabled" {
+  type        = bool
+  description = "Whether or not to enable the export of assessment artifacts to an S3 bucket.  If this is set to true, then the following variables should also be configured appropriately: assessment_artifact_export_map, ssm_key_artifact_export_access_key_id, ssm_key_artifact_export_secret_access_key, ssm_key_artifact_export_bucket_name, and ssm_key_artifact_export_region."
+  default     = false
+}
+
+variable "assessment_artifact_export_map" {
+  type        = map(string)
+  description = "A map whose keys are assessment types and whose values are the prefixes for what an assessment artifact will be named when it is exported to the S3 bucket contained in the SSM parameter specified by the ssm_key_artifact_export_bucket_name variable (e.g. { \"PenTest\" : \"pentest/PT\", \"Phishing\" : \"phishing/PH\", \"RedTeam\" : \"redteam/RT\" }). Note that prefixes can include a path within the bucket.  For example, if the prefix is \"pentest/PT\" and the assessment ID is \"ASMT1234\", then the corresponding artifact will be exported to \"bucket-name/pentest/PT-ASMT1234.tgz\" when the archive-artifact-data-to-bucket.sh script is run."
+  default     = {}
+}
+
 variable "assessment_id" {
   type        = string
   description = "The identifier for this assessment (e.g. \"ASMT1234\")."
@@ -262,6 +274,30 @@ variable "session_cloudwatch_log_group_name" {
   default     = "/ssm/session-logs"
   description = "The name of the log group into which session logs are to be uploaded."
   type        = string
+}
+
+variable "ssm_key_artifact_export_access_key_id" {
+  type        = string
+  description = "The AWS SSM Parameter Store parameter that contains the AWS access key of the IAM user that can write to the assessment artifact export bucket (e.g. \"/assessment_artifact_export/access_key_id\")."
+  default     = "/assessment_artifact_export/access_key_id"
+}
+
+variable "ssm_key_artifact_export_bucket_name" {
+  type        = string
+  description = "The AWS SSM Parameter Store parameter that contains the name of the assessment artifact export bucket (e.g. \"/assessment_artifact_export/bucket\")."
+  default     = "/assessment_artifact_export/bucket"
+}
+
+variable "ssm_key_artifact_export_region" {
+  type        = string
+  description = "The AWS SSM Parameter Store parameter that contains the region of the IAM user (specified via ssm_key_artifact_export_access_key_id) that can write to the assessment artifact export bucket (e.g. \"/assessment_artifact_export/region\")."
+  default     = "/assessment_artifact_export/region"
+}
+
+variable "ssm_key_artifact_export_secret_access_key" {
+  type        = string
+  description = "The AWS SSM Parameter Store parameter that contains the AWS secret access key of the IAM user that can write to the assessment artifact export bucket (e.g. \"/assessment_artifact_export/secret_access_key\")."
+  default     = "/assessment_artifact_export/secret_access_key"
 }
 
 variable "ssm_key_nessus_admin_password" {

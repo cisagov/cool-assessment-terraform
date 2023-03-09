@@ -6,13 +6,12 @@
 
 # This script is used to write out an AWS configuration to the home
 # directory of a specified user.  The AWS configuration gives the user
-# access to the role that allows writing to the findings data S3
-# bucket.
+# credentials that allow writing to the assessment artifact export S3 bucket.
 
 # Input variables are:
-# * aws_region - the AWS region where the roles are to be assumed
-# * findings_data_bucket_write_role_arn - the ARN of the IAM role that
-#   can be assumed to write to the findings data S3 bucket
+# * aws_access_key_id - the AWS access key ID
+# * aws_region - the AWS region of the access key
+# * aws_secret_access_key - the AWS secret access key
 # * permissions - the permissions to assign the AWS configuration, specified
 #   in either the octal or symbolic formats understood by chmod
 # * vnc_username - the username associated with the VNC user
@@ -21,7 +20,7 @@ set -o nounset
 set -o errexit
 set -o pipefail
 
-path=/home/${vnc_username}/.aws/credentials
+path=/home/${vnc_username}/.aws/artifact_export_credentials
 
 # Create the path where the AWS config file will be created, and set
 # its ownership appropriately.
@@ -37,10 +36,9 @@ chown --recursive "${vnc_username}:${vnc_username}" "$d"
 # Write the AWS config file
 cat > "$path" << EOF
 [default]
-credential_source = Ec2InstanceMetadata
+aws_access_key_id = ${aws_access_key_id}
+aws_secret_access_key = ${aws_secret_access_key}
 region = ${aws_region}
-role_arn = ${findings_data_bucket_write_role_arn}
-sts_regional_endpoints = regional
 EOF
 
 # Set the ownership and permissions of the AWS config file
