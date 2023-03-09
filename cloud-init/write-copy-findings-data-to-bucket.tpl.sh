@@ -45,7 +45,7 @@ set -o pipefail
 
 filename_only=$(basename "$1")
 
-aws s3 cp "$1" "s3://${findings_data_bucket_name}/$filename_only"
+AWS_SHARED_CREDENTIALS_FILE=/home/${vnc_username}/.aws/findings_export_credentials aws s3 cp "$1" "s3://${findings_data_bucket_name}/$filename_only"
 EOF
 
 # Set the ownership and permissions of the script appropriately.
