@@ -82,7 +82,7 @@ data "cloudinit_config" "kali_cloud_init_tasks" {
 
     content {
       content = templatefile(
-        "${path.module}/cloud-init/write-kali-aws-config.tpl.sh", {
+        "${path.module}/cloud-init/write-kali-aws-config-findings-export.tpl.sh", {
           aws_region                          = var.aws_region
           findings_data_bucket_write_role_arn = data.terraform_remote_state.sharedservices.outputs.assessment_findings_write_role.arn
           permissions                         = "0400"
