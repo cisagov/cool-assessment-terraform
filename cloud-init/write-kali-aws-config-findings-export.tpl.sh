@@ -21,7 +21,7 @@ set -o nounset
 set -o errexit
 set -o pipefail
 
-path=/home/${vnc_username}/.aws/credentials
+path=/home/${vnc_username}/.aws/findings_export_credentials
 
 # Create the path where the AWS config file will be created, and set
 # its ownership appropriately.
