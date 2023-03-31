@@ -330,6 +330,18 @@ variable "tags" {
   default     = {}
 }
 
+variable "terraformer_permissions_boundary_policy_description" {
+  type        = string
+  description = "The description to associate with the IAM permissions boundary policy attached to the Terraformer instance role in order to protect the foundational resources deployed in this account."
+  default     = "Defines the IAM permissions boundary for Terraformer instances in order to protect the foundational resources deployed in this account."
+}
+
+variable "terraformer_permissions_boundary_policy_name" {
+  type        = string
+  description = "The name to assign the IAM permissions boundary policy attached to the Terraformer instance role in order to protect the foundational resources deployed in this account."
+  default     = "TerraformerPermissionsBoundary"
+}
+
 variable "terraformer_role_description" {
   type        = string
   description = "The description to associate with the IAM role (and policy) that allows Terraformer instances to create appropriate AWS resources in this account."
