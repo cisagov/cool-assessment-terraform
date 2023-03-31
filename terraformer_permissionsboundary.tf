@@ -3,6 +3,7 @@
 # * Deny modification of any resources tagged by the team that deploys this
 #   root module, with some exceptions (detailed below).
 # * Deny use of the Guacamole, Samba, and Terraformer instance roles.
+# * Deny modification of CloudFormation resources created by Control Tower.
 # * Deny modification or deletion of this permissions boundary policy.
 # * Deny removal of this permissions boundary policy from users and roles.
 # * Deny creation of users or roles that do not have this permissions boundary.
@@ -170,7 +171,7 @@ data "aws_iam_policy_document" "terraformer_permissions_boundary_policy_doc" {
   }
 
   # Don't allow Terraformer instances to touch the CloudFormation foo
-  # put in place by ControlTower.  This is not covered by the earlier
+  # put in place by Control Tower.  This is not covered by the earlier
   # statement allowing full access to resources that are not tagged as
   # belonging to the team that deploys this root module, since CloudFormation
   # resources do not accept tags.
