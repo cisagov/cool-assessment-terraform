@@ -28,7 +28,8 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
     ]
   }
 
-  # Allow use of the KMS key used to encrypt COOL AMIs.
+  # Allow use of the KMS key used to encrypt COOL AMIs.  This explicit "allow"
+  # is necessary because the key is tagged with the "Team" tag.
   statement {
     actions = [
       "kms:Decrypt",
@@ -46,6 +47,9 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
   # existing security groups are involved.  This is necessary when the
   # Terraformer instance is used to add or remove security groups from
   # an instance.
+  #
+  # This explicit "allow" is necessary because the resources below are tagged
+  # with the "Team" tag.
   statement {
     actions = [
       "ec2:RunInstances",
@@ -83,7 +87,8 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
   }
 
   # Allow Terraformer instances to create new security groups and routing tables
-  # and manage VPC peering connections in the assessment VPC.
+  # and manage VPC peering connections in the assessment VPC.  This explicit
+  # "allow" is necessary because the VPC is tagged with the "Team" tag.
   statement {
     actions = [
       "ec2:AcceptVpcPeeringConnection",
@@ -99,7 +104,8 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
   }
 
   # Allow Terraformer instances to create, modify, and delete network
-  # ACLs for the operations subnet.
+  # ACLs for the operations subnet.  This explicit "allow" is necessary
+  # because the Operations NACL is tagged with the "Team" tag.
   statement {
     actions = [
       "ec2:CreateNetworkAclEntry",
@@ -114,7 +120,8 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
   # Allow Terraformer instances to disassociate the default operations and
   # private routing tables and associate additional routing tables with the
   # first private subnet.  This is needed so that custom routing tables can
-  # be used.
+  # be used.  This explicit "allow" is necessary because the resources below
+  # are tagged with the "Team" tag.
   statement {
     actions = [
       "ec2:AssociateRouteTable",
@@ -129,6 +136,8 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
 
   # Allow Terraformer instances to modify the S3 VPC gateway endpoint.  This
   # is needed so that the endpoint can be added to a new, custom route table.
+  # This explicit "allow" is necessary because the S3 endpoint is tagged with
+  # the "Team" tag.
   statement {
     actions = [
       "ec2:ModifyVpcEndpoint",
