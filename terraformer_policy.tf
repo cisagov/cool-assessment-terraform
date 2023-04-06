@@ -96,7 +96,6 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
       "ec2:CreateSecurityGroup",
       "ec2:CreateVpcPeeringConnection",
       "ec2:DeleteVpcPeeringConnection",
-      "ec2:DescribeVpcPeeringConnections",
     ]
     resources = [
       aws_vpc.assessment.arn,

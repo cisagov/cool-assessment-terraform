@@ -11,6 +11,16 @@ resource "aws_iam_role" "terraformer_role" {
   permissions_boundary = aws_iam_policy.terraformer_permissions_boundary_policy.arn
 }
 
+# Grant read-only access to everything.  This is specifically to allow
+# read access to existing resources that _are_ tagged as being created by
+# the team that deploys this root module.
+resource "aws_iam_role_policy_attachment" "read_only_policy_attachment" {
+  provider = aws.provisionassessment
+
+  policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
+  role       = aws_iam_role.terraformer_role.name
+}
+
 # Allow full access to new resources and existing resources that _are
 # not_ tagged as being created by the team that deploys this root
 # module (with a few exceptions; see policy for details).
