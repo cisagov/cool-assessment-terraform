@@ -12,6 +12,27 @@
 data "aws_iam_policy_document" "terraformer_permissions_boundary_policy_doc" {
   provider = aws.provisionassessment
 
+  # Allow read-only access to EC2 resources tagged by the team that deploys
+  # this root module.
+  statement {
+    actions = [
+      "ec2:Describe*",
+      "ec2:Get*",
+      "ec2:List*",
+    ]
+    condition {
+      test = "StringEquals"
+      values = [
+        var.tags["Team"],
+      ]
+      variable = "aws:ResourceTag/Team"
+    }
+    resources = [
+      "*",
+    ]
+    sid = "AllowReadingEC2ResourcesTaggedByTeam"
+  }
+
   # Deny modification of any resources tagged by the team that deploys this
   # root module, but allow anything else.
   statement {
@@ -115,7 +136,6 @@ data "aws_iam_policy_document" "terraformer_permissions_boundary_policy_doc" {
       "ec2:CreateSecurityGroup",
       "ec2:CreateVpcPeeringConnection",
       "ec2:DeleteVpcPeeringConnection",
-      "ec2:DescribeVpcPeeringConnections",
     ]
     resources = [
       aws_vpc.assessment.arn,
