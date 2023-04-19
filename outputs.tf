@@ -4,18 +4,18 @@ output "assessment_private_zone" {
 }
 
 output "assessor_portal_instance_profile" {
-  value       = aws_iam_instance_profile.assessorportal
-  description = "The instance profile for the Assessor Portal instances."
+  value       = aws_iam_instance_profile.assessorworkbench
+  description = "The instance profile for the Assessor Workbench instances."
 }
 
 output "assessor_portal_instances" {
-  value       = aws_instance.assessorportal
-  description = "The Assessor Portal instances."
+  value       = aws_instance.assessorworkbench
+  description = "The Assessor Workbench instances."
 }
 
 output "assessor_portal_security_group" {
-  value       = aws_security_group.assessorportal
-  description = "The security group for the Assessor Portal instances."
+  value       = aws_security_group.assessorworkbench
+  description = "The security group for the Assessor Workbench instances."
 }
 
 output "aws_region" {
