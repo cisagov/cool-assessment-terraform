@@ -537,9 +537,9 @@ the COOL environment.
 | Name | Description |
 |------|-------------|
 | assessment\_private\_zone | The private DNS zone for this assessment. |
-| assessor\_portal\_instance\_profile | The instance profile for the Assessor Workbench instances. |
-| assessor\_portal\_instances | The Assessor Workbench instances. |
-| assessor\_portal\_security\_group | The security group for the Assessor Workbench instances. |
+| assessor\_workbench\_instance\_profile | The instance profile for the Assessor Workbench instances. |
+| assessor\_workbench\_instances | The Assessor Workbench instances. |
+| assessor\_workbench\_security\_group | The security group for the Assessor Workbench instances. |
 | aws\_region | The AWS region where this assessment environment lives. |
 | certificate\_bucket\_name | The name of the S3 bucket where certificate information is stored for this assessment. |
 | cloudwatch\_agent\_endpoint\_client\_security\_group | A security group for any instances that run the AWS CloudWatch agent.  This security groups allows such instances to communicate with the VPC endpoints that are required by the AWS CloudWatch agent. |
