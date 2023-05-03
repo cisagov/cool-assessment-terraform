@@ -589,6 +589,7 @@ the COOL environment.
 | sts\_endpoint\_client\_security\_group | A security group for any instances that wish to communicate with the STS VPC endpoint. |
 | teamserver\_instance\_profiles | The instance profiles for the Teamserver instances. |
 | teamserver\_instances | The Teamserver instances. |
+| terraformer\_permissions\_boundary\_policy | The permissions boundary policy for the Terraformer instances. |
 | teamserver\_security\_group | The security group for the Teamserver instances. |
 | terraformer\_instances | The Terraformer instances. |
 | terraformer\_security\_group | The security group for the Terraformer instances. |
