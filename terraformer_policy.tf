@@ -19,7 +19,7 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
     condition {
       test = "StringNotEquals"
       values = [
-        var.tags["Team"],
+        lookup(var.tags, "Team", "Undefined Team tag value"),
       ]
       variable = "aws:ResourceTag/Team"
     }
