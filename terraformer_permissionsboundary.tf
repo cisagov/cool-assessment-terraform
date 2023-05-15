@@ -33,8 +33,8 @@ data "aws_iam_policy_document" "terraformer_permissions_boundary_policy_doc" {
     sid = "AllowReadingEC2ResourcesTaggedByTeam"
   }
 
-  # Deny modification of any resources tagged by the team that deploys this
-  # root module, but allow anything else.
+  # Allow modification of any resources, except those tagged by the team that
+  # deploys this root module.
   statement {
     actions = [
       "*",

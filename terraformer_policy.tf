@@ -10,8 +10,8 @@
 data "aws_iam_policy_document" "terraformer_policy_doc" {
   provider = aws.provisionassessment
 
-  # Deny modification of any resources tagged by the team that deploys this
-  # root module, but allow anything else.
+  # Allow modification of any resources, except those tagged by the team that
+  # deploys this root module.
   statement {
     actions = [
       "*",
