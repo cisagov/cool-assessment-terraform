@@ -190,11 +190,11 @@ data "aws_iam_policy_document" "terraformer_permissions_boundary_policy_doc" {
     sid = "AllowModifyingS3Endpoint"
   }
 
-  # Don't allow Terraformer instances to touch the CloudFormation foo
-  # put in place by Control Tower.  This is not covered by the earlier
-  # statement allowing full access to resources that are not tagged as
-  # belonging to the team that deploys this root module, since CloudFormation
-  # resources do not accept tags.
+  # Don't allow Terraformer instances to touch the CloudFormation foo put in
+  # place by Control Tower.  CloudFormation resources do not accept tags and
+  # thus cannot be tagged with a team tag, which is why this statement is needed
+  # (an earlier statement prevents modification of any resources tagged by the
+  # team that deploys this root module).
   statement {
     actions = [
       "cloudformation:*",
