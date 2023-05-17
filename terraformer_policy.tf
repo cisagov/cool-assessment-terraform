@@ -40,8 +40,8 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
     ]
   }
 
-  # Allow the launching of new instances in the operations subnet,
-  # using the existing security groups.
+  # Allow the launching of new instances in the operations subnet and the
+  # first private subnet, using the existing security groups.
   #
   # Also allow the ModifyNetworkInterfaceAttribute permission when our
   # existing security groups are involved.  This is necessary when the
