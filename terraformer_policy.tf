@@ -1,7 +1,8 @@
 # Create the IAM policy for the Terraformer EC2 server instances that
 # allows full access to create/destroy new resources in this account
 # and create/modify/destroy existing resources that _are not_ tagged
-# as being created by the team that deploys this root module.
+# as being created by the team that deploys this root module (there are
+# some exceptions to this rule, see below for details).
 #
 # Also allow sufficient permissions to launch instances in the
 # operations subnet and use the existing security groups.
@@ -9,64 +10,26 @@
 data "aws_iam_policy_document" "terraformer_policy_doc" {
   provider = aws.provisionassessment
 
-  # Allow full access to new resources and existing resources that
-  # _are not_ tagged as being created by the team that deploys this
-  # root module, with the exception of IAM.
-  #
-  # We will attach the arn:aws:iam::aws:policy/ReadOnlyAccess policy
-  # to the same role to which the policy document will be attached, which
-  # will give it read-only access to all IAM resources.  We require
-  # IAM access to be as read-only as possible in order to stop the
-  # Terraformer instance from defeating the Terraformer policy by
-  # creating new users, policies, roles, etc.
+  # Allow modification of any resources, except those tagged by the team that
+  # deploys this root module.
   statement {
+    actions = [
+      "*",
+    ]
     condition {
       test = "StringNotEquals"
       values = [
-        var.tags["Team"],
+        lookup(var.tags, "Team", "Undefined Team tag value"),
       ]
       variable = "aws:ResourceTag/Team"
     }
-    not_actions = [
-      "iam:*",
-    ]
     resources = [
       "*",
     ]
   }
 
-  # Add an IAM permission to allow the use of our instance roles when
-  # spinning up instances, with the exception of our guacamole, samba,
-  # and terraformer instance roles.  This is one non-read-only IAM
-  # permission that _is_ necessary.
-  statement {
-    actions = [
-      "iam:PassRole",
-    ]
-    condition {
-      test = "StringEquals"
-      values = [
-        "ec2.amazonaws.com",
-      ]
-      variable = "iam:PassedToService"
-    }
-    resources = [
-      "*",
-    ]
-  }
-  statement {
-    actions = [
-      "iam:PassRole",
-    ]
-    effect = "Deny"
-    resources = [
-      aws_iam_role.guacamole_instance_role.arn,
-      aws_iam_role.samba_instance_role.arn,
-      aws_iam_role.terraformer_instance_role.arn,
-    ]
-  }
-
-  # Allow use of the KMS key used to encrypt COOL AMIs.
+  # Allow use of the KMS key used to encrypt COOL AMIs.  This explicit "allow"
+  # is necessary because the key is tagged with the "Team" tag.
   statement {
     actions = [
       "kms:Decrypt",
@@ -77,13 +40,16 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
     ]
   }
 
-  # Allow the launching of new instances in the operations subnet,
-  # using the existing security groups.
+  # Allow the launching of new instances in the operations subnet and the
+  # first private subnet, using the existing security groups.
   #
   # Also allow the ModifyNetworkInterfaceAttribute permission when our
   # existing security groups are involved.  This is necessary when the
   # Terraformer instance is used to add or remove security groups from
   # an instance.
+  #
+  # This explicit "allow" is necessary because the resources below are tagged
+  # with the "Team" tag.
   statement {
     actions = [
       "ec2:RunInstances",
@@ -121,7 +87,8 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
   }
 
   # Allow Terraformer instances to create new security groups and routing tables
-  # and manage VPC peering connections in the assessment VPC.
+  # and manage VPC peering connections in the assessment VPC.  This explicit
+  # "allow" is necessary because the VPC is tagged with the "Team" tag.
   statement {
     actions = [
       "ec2:AcceptVpcPeeringConnection",
@@ -129,7 +96,6 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
       "ec2:CreateSecurityGroup",
       "ec2:CreateVpcPeeringConnection",
       "ec2:DeleteVpcPeeringConnection",
-      "ec2:DescribeVpcPeeringConnections",
     ]
     resources = [
       aws_vpc.assessment.arn,
@@ -137,7 +103,8 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
   }
 
   # Allow Terraformer instances to create, modify, and delete network
-  # ACLs for the operations subnet.
+  # ACLs for the operations subnet.  This explicit "allow" is necessary
+  # because the Operations NACL is tagged with the "Team" tag.
   statement {
     actions = [
       "ec2:CreateNetworkAclEntry",
@@ -152,13 +119,13 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
   # Allow Terraformer instances to disassociate the default operations and
   # private routing tables and associate additional routing tables with the
   # first private subnet.  This is needed so that custom routing tables can
-  # be used.
+  # be used.  This explicit "allow" is necessary because the resources below
+  # are tagged with the "Team" tag.
   statement {
     actions = [
       "ec2:AssociateRouteTable",
       "ec2:DisassociateRouteTable",
     ]
-    effect = "Allow"
     resources = [
       aws_default_route_table.operations.arn,
       aws_route_table.private_route_table.arn,
@@ -168,28 +135,14 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
 
   # Allow Terraformer instances to modify the S3 VPC gateway endpoint.  This
   # is needed so that the endpoint can be added to a new, custom route table.
+  # This explicit "allow" is necessary because the S3 endpoint is tagged with
+  # the "Team" tag.
   statement {
     actions = [
       "ec2:ModifyVpcEndpoint",
     ]
-    effect = "Allow"
     resources = [
       aws_vpc_endpoint.s3.arn,
-    ]
-  }
-
-  # Don't allow Terraformer instances to touch the CloudFormation foo
-  # put in place by ControlTower.  This is not covered by the earlier
-  # statement allowing full access to resources that are not tagged as
-  # belonging to the dev team, since CloudFormation resources do not
-  # accept tags.
-  statement {
-    actions = [
-      "cloudformation:*",
-    ]
-    effect = "Deny"
-    resources = [
-      "arn:aws:cloudformation:*:${local.assessment_account_id}:stack/StackSet-AWSControlTower*/*",
     ]
   }
 }

@@ -273,6 +273,11 @@ output "terraformer_instances" {
   description = "The Terraformer instances."
 }
 
+output "terraformer_permissions_boundary_policy" {
+  value       = aws_iam_policy.terraformer_permissions_boundary_policy
+  description = "The permissions boundary policy for the Terraformer instances."
+}
+
 output "terraformer_security_group" {
   value       = aws_security_group.terraformer
   description = "The security group for the Terraformer instances."
