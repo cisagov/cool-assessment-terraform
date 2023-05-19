@@ -103,7 +103,7 @@ data "aws_iam_policy_document" "terraformer_permissions_boundary_policy_doc" {
       # currently live.
       aws_subnet.private[var.private_subnet_cidr_blocks[0]].arn,
       # Security groups
-      aws_security_group.assessorportal.arn,
+      aws_security_group.assessorworkbench.arn,
       aws_security_group.cloudwatch_agent_endpoint_client.arn,
       aws_security_group.debiandesktop.arn,
       aws_security_group.dynamodb_endpoint_client.arn,

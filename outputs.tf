@@ -3,19 +3,19 @@ output "assessment_private_zone" {
   description = "The private DNS zone for this assessment."
 }
 
-output "assessor_portal_instance_profile" {
-  value       = aws_iam_instance_profile.assessorportal
-  description = "The instance profile for the Assessor Portal instances."
+output "assessor_workbench_instance_profile" {
+  value       = aws_iam_instance_profile.assessorworkbench
+  description = "The instance profile for the Assessor Workbench instances."
 }
 
-output "assessor_portal_instances" {
-  value       = aws_instance.assessorportal
-  description = "The Assessor Portal instances."
+output "assessor_workbench_instances" {
+  value       = aws_instance.assessorworkbench
+  description = "The Assessor Workbench instances."
 }
 
-output "assessor_portal_security_group" {
-  value       = aws_security_group.assessorportal
-  description = "The security group for the Assessor Portal instances."
+output "assessor_workbench_security_group" {
+  value       = aws_security_group.assessorworkbench
+  description = "The security group for the Assessor Workbench instances."
 }
 
 output "aws_region" {

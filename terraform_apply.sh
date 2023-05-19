@@ -55,7 +55,7 @@ terraform apply "${@}" \
     -target=aws_iam_role_policy.nessus_assume_delegated_role_policy \
     -target=aws_iam_role_policy.teamserver_assume_delegated_role_policy \
     -target=aws_iam_role_policy.terraformer_assume_delegated_role_policy \
-    -target=aws_iam_role_policy_attachment.efs_mount_policy_attachment_assessorportal \
+    -target=aws_iam_role_policy_attachment.efs_mount_policy_attachment_assessorworkbench \
     -target=aws_iam_role_policy_attachment.efs_mount_policy_attachment_debiandesktop \
     -target=aws_iam_role_policy_attachment.efs_mount_policy_attachment_gophish \
     -target=aws_iam_role_policy_attachment.efs_mount_policy_attachment_kali \
@@ -129,7 +129,7 @@ terraform apply "${@}" \
     -target=module.vpc_flow_logs \
     -target=null_resource.break_association_with_default_route_table \
   && terraform apply "${@}" \
-    -target=aws_instance.assessorportal \
+    -target=aws_instance.assessorworkbench \
     -target=aws_instance.debiandesktop \
     -target=aws_instance.egressassess \
     -target=aws_instance.gophish \
@@ -141,6 +141,6 @@ terraform apply "${@}" \
     -target=aws_instance.teamserver \
     -target=aws_instance.terraformer \
     -target=aws_instance.windows \
-    -target=aws_volume_attachment.assessorportal_docker \
+    -target=aws_volume_attachment.assessorworkbench_docker \
     -target=aws_volume_attachment.gophish_docker \
   && terraform apply "${@}"

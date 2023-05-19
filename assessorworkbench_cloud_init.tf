@@ -1,7 +1,7 @@
-# cloud-init commands for configuring Assessor Portal instances
+# cloud-init commands for configuring Assessor Workbench instances
 
-data "cloudinit_config" "assessorportal_cloud_init_tasks" {
-  count = lookup(var.operations_instance_counts, "assessorportal", 0)
+data "cloudinit_config" "assessorworkbench_cloud_init_tasks" {
+  count = lookup(var.operations_instance_counts, "assessorworkbench", 0)
 
   gzip          = true
   base64_encode = true
@@ -23,8 +23,8 @@ data "cloudinit_config" "assessorportal_cloud_init_tasks" {
       "${path.module}/cloud-init/set-hostname.tpl.yml", {
         # Note that the hostname here is identical to what is set in
         # the corresponding DNS A record.
-        fqdn     = "assessorportal${count.index}.${aws_route53_zone.assessment_private.name}"
-        hostname = "assessorportal${count.index}"
+        fqdn     = "assessorworkbench${count.index}.${aws_route53_zone.assessment_private.name}"
+        hostname = "assessorworkbench${count.index}"
     })
     content_type = "text/cloud-config"
     filename     = "set-hostname.yml"
