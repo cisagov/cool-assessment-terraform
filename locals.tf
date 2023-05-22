@@ -236,10 +236,10 @@ locals {
   # Gateway attachment for this account.
   transit_gateway_route_table_id = data.terraform_remote_state.sharedservices_networking.outputs.transit_gateway_attachment_route_tables[local.assessment_account_id].id
 
-  # Find the new Users account by name and email.
+  # Find the Users account by name.
   users_account_id = [
     for x in data.aws_organizations_organization.cool.accounts :
-    x.id if x.name == "Users" && length(regexall("2020", x.email)) > 0
+    x.id if x.name == "Users"
   ][0]
 
   # The name and description of the role and policy that allows read-only
