@@ -61,6 +61,9 @@ resource "aws_instance" "windows" {
     {
       drive_letter       = "N",
       samba_server_input = join(",", aws_route53_record.samba_A[*].name),
+      # This should be removed once Windows AMIs are being built with the
+      # correct public SSH key(s) preloaded. Please see #218 for more
+      # information.
       vnc_public_ssh_key = data.aws_ssm_parameter.vnc_public_ssh_key.value,
     }
   )

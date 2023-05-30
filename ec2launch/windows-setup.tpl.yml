@@ -2,7 +2,9 @@
 version: 1.0
 tasks:
   # Overwrite the authorized_keys file for the rvauser account to use the
-  # current public SSH key deployed to Linux-based instances.
+  # current public SSH key deployed to Linux-based instances. This should
+  # be removed once Windows AMIs are being built with the correct public
+  # SSH key(s) preloaded. Please see #218 for more information.
   - task: writeFile
     inputs:
       - frequency: once
