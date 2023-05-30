@@ -318,6 +318,12 @@ variable "ssm_key_samba_username" {
   default     = "/samba/username"
 }
 
+variable "ssm_key_vnc_ssh_public_key" {
+  type        = string
+  description = "The AWS SSM Parameter Store parameter that contains the SSH public key that corresponds to the private SSH key of the VNC user (e.g. \"/vnc/ssh/ed25519_public_key\")."
+  default     = "/vnc/ssh/ed25519_public_key"
+}
+
 variable "ssm_key_vnc_username" {
   type        = string
   description = "The AWS SSM Parameter Store parameter that contains the username of the VNC user (e.g. \"/vnc/username\")."

@@ -1,6 +1,14 @@
 ---
 version: 1.0
 tasks:
+  # Overwrite the authorized_keys file for the rvauser account to use the
+  # current public SSH key deployed to Linux-based instances.
+  - task: writeFile
+    inputs:
+      - frequency: once
+        destination: C:\Users\rvauser\.ssh\authorized_keys
+        content: |
+          ${vnc_public_ssh_key}
   # Extend the OS partition and set up the Samba share as a network drive
   - task: executeScript
     inputs:

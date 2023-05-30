@@ -56,7 +56,14 @@ resource "aws_instance" "windows" {
     volume_type = "gp3"
     volume_size = 200
   }
-  user_data = templatefile("${path.module}/ec2launch/windows-setup.tpl.yml", { drive_letter = "N", samba_server_input = join(",", aws_route53_record.samba_A[*].name) })
+  user_data = templatefile(
+    "${path.module}/ec2launch/windows-setup.tpl.yml",
+    {
+      drive_letter       = "N",
+      samba_server_input = join(",", aws_route53_record.samba_A[*].name),
+      vnc_public_ssh_key = data.aws_ssm_parameter.vnc_public_ssh_key.value,
+    }
+  )
   vpc_security_group_ids = [
     aws_security_group.cloudwatch_agent_endpoint_client.id,
     aws_security_group.guacamole_accessible.id,
