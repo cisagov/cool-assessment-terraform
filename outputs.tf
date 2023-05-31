@@ -301,6 +301,11 @@ output "windows_instance_profile" {
 output "windows_instances" {
   value       = aws_instance.windows
   description = "The Windows instances."
+  # We are putting a decrypted SSM value in the Terraform state (see
+  # aws_ssm_parameter.vnc_public_ssh_key in locals.tf), so Terraform requires
+  # us to mark this output as sensitive.  However, since it's just the public
+  # SSH key used by Guacamole, we are fine with this.
+  sensitive = true
 }
 
 output "windows_security_group" {

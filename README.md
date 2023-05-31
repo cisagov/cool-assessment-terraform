@@ -456,6 +456,7 @@ the COOL environment.
 | [aws_ssm_parameter.artifact_export_region](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
 | [aws_ssm_parameter.artifact_export_secret_access_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
 | [aws_ssm_parameter.samba_username](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
+| [aws_ssm_parameter.vnc_public_ssh_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
 | [aws_ssm_parameter.vnc_username](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
 | [cloudinit_config.assessorworkbench_cloud_init_tasks](https://registry.terraform.io/providers/hashicorp/cloudinit/latest/docs/data-sources/config) | data source |
 | [cloudinit_config.debiandesktop_cloud_init_tasks](https://registry.terraform.io/providers/hashicorp/cloudinit/latest/docs/data-sources/config) | data source |
@@ -521,9 +522,10 @@ the COOL environment.
 | ssm\_key\_nessus\_admin\_password | The AWS SSM Parameter Store parameter that contains the password of the Nessus admin user (e.g. "/nessus/assessment/admin\_password"). | `string` | `"/nessus/assessment/admin_password"` | no |
 | ssm\_key\_nessus\_admin\_username | The AWS SSM Parameter Store parameter that contains the username of the Nessus admin user (e.g. "/nessus/assessment/admin\_username"). | `string` | `"/nessus/assessment/admin_username"` | no |
 | ssm\_key\_samba\_username | The AWS SSM Parameter Store parameter that contains the username of the Samba user (e.g. "/samba/username"). | `string` | `"/samba/username"` | no |
+| ssm\_key\_vnc\_ssh\_public\_key | The AWS SSM Parameter Store parameter that contains the SSH public key that corresponds to the private SSH key of the VNC user (e.g. "/vnc/ssh/ed25519\_public\_key"). | `string` | `"/vnc/ssh/ed25519_public_key"` | no |
 | ssm\_key\_vnc\_username | The AWS SSM Parameter Store parameter that contains the username of the VNC user (e.g. "/vnc/username"). | `string` | `"/vnc/username"` | no |
 | tags | Tags to apply to all AWS resources created | `map(string)` | `{}` | no |
-| terraformer\_permissions\_boundary\_policy\_description | The description to associate with the IAM permissions boundary policy attached to the Terraformer instance role in order to protect the foundational resources deployed in this account. | `string` | `"Defines the IAM permissions boundary for Terraformer instances in order to protect the foundational resources deployed in this account."` | no |
+| terraformer\_permissions\_boundary\_policy\_description | The description to associate with the IAM permissions boundary policy attached to the Terraformer instance role in order to protect the foundational resources deployed in this account. | `string` | `"The IAM permissions boundary policy attached to the Terraformer instance role in order to protect the foundational resources deployed in this account."` | no |
 | terraformer\_permissions\_boundary\_policy\_name | The name to assign the IAM permissions boundary policy attached to the Terraformer instance role in order to protect the foundational resources deployed in this account. | `string` | `"TerraformerPermissionsBoundary"` | no |
 | terraformer\_role\_description | The description to associate with the IAM role (and policy) that allows Terraformer instances to create appropriate AWS resources in this account. | `string` | `"Allows Terraformer instances to create appropriate AWS resources in this account."` | no |
 | terraformer\_role\_name | The name to assign the IAM role (and policy) that allows Terraformer instances to create appropriate AWS resources in this account. | `string` | `"Terraformer"` | no |
@@ -589,9 +591,9 @@ the COOL environment.
 | sts\_endpoint\_client\_security\_group | A security group for any instances that wish to communicate with the STS VPC endpoint. |
 | teamserver\_instance\_profiles | The instance profiles for the Teamserver instances. |
 | teamserver\_instances | The Teamserver instances. |
-| terraformer\_permissions\_boundary\_policy | The permissions boundary policy for the Terraformer instances. |
 | teamserver\_security\_group | The security group for the Teamserver instances. |
 | terraformer\_instances | The Terraformer instances. |
+| terraformer\_permissions\_boundary\_policy | The permissions boundary policy for the Terraformer instances. |
 | terraformer\_security\_group | The security group for the Terraformer instances. |
 | vpc | The VPC for this assessment environment. |
 | vpn\_server\_cidr\_block | The CIDR block for the COOL VPN. |

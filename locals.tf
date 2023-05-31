@@ -69,6 +69,14 @@ data "aws_ssm_parameter" "samba_username" {
   name = var.ssm_key_samba_username
 }
 
+# This should be removed once Windows AMIs are being built with the correct
+# public SSH key(s) preloaded. Please see #218 for more information.
+data "aws_ssm_parameter" "vnc_public_ssh_key" {
+  provider = aws.parameterstorereadonly
+
+  name = var.ssm_key_vnc_ssh_public_key
+}
+
 data "aws_ssm_parameter" "vnc_username" {
   provider = aws.parameterstorereadonly
 
