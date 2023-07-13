@@ -33,6 +33,25 @@ data "aws_iam_policy_document" "terraformer_permissions_boundary_policy_doc" {
     sid = "AllowReadingEC2ResourcesTaggedByTeam"
   }
 
+  # Allow getting information about IAM roles tagged by the team that
+  # deploys this root module.
+  statement {
+    actions = [
+      "iam:GetRole",
+    ]
+    condition {
+      test = "StringEquals"
+      values = [
+        lookup(var.tags, "Team", "Undefined Team tag value"),
+      ]
+      variable = "aws:ResourceTag/Team"
+    }
+    resources = [
+      "*",
+    ]
+    sid = "AllowGettingInfoAboutRolesTaggedByTeam"
+  }
+
   # Allow modification of any resources, except those tagged by the team that
   # deploys this root module.
   statement {
