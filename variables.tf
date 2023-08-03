@@ -193,6 +193,12 @@ variable "nessus_activation_codes" {
   default     = []
 }
 
+variable "nessus_web_server_port" {
+  type        = number
+  description = "The port on which the Nessus web server should listen (e.g. 8834)."
+  default     = 8834
+}
+
 variable "operations_instance_counts" {
   type = object({
     assessorworkbench = number,
