@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# nessus-setup.sh - Performs initial nessus setup, including:
+# nessus-setup.sh - Performs initial Nessus setup, including:
 #  - Registration with activation code
 #  - Creation of admin user (optional)
 #  - Update plugins
