@@ -78,7 +78,7 @@ fi
 
 # Set web server port
 # shellcheck disable=SC2154
-echo "Setting web server port to ${nessus_web_server_port}..."
+echo "Setting Nessus web server port to ${nessus_web_server_port}..."
 $nessus_sbin_path/nessuscli fix --set xmlrpc_listen_port="${nessus_web_server_port}"
 xmlrpc_listen_port_rc="$?"
 
