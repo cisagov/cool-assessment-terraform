@@ -197,6 +197,11 @@ variable "nessus_web_server_port" {
   type        = number
   description = "The port on which the Nessus web server should listen (e.g. 8834)."
   default     = 8834
+
+  validation {
+    condition     = !strcontains(var.nessus_web_server_port, ".") && var.nessus_web_server_port > 0 && var.nessus_web_server_port < 65536
+    error_message = "nessus_web_server_port must be an integer between 1 and 65535."
+  }
 }
 
 variable "operations_instance_counts" {
