@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
-# nessus-setup.sh - Performs initial nessus setup, including:
+# nessus-setup.sh - Performs initial Nessus setup, including:
 #  - Registration with activation code
 #  - Creation of admin user (optional)
 #  - Update plugins
 #  - Rebuild plugin database
+#  - Set web server port
 #
 # NOTES:
 #  - The "expect" and "jq" packages are REQUIRED by this script.
@@ -25,8 +26,8 @@ nessus_sbin_path="/opt/nessus/sbin"
 # that call this script.
 #
 # Similar cases below for ssm_nessus_read_role_arn, aws_region,
-# ssm_key_nessus_admin_username, ssm_key_nessus_admin_password, and
-# nessus_activation_code are also ignored.
+# ssm_key_nessus_admin_username, ssm_key_nessus_admin_password,
+# nessus_activation_code, and nessus_web_server_port are also ignored.
 # shellcheck disable=SC2154
 activation_code_to_apply="${nessus_activation_code}"
 
@@ -73,6 +74,18 @@ if [ "$password_rc" -eq 0 ]; then
 else
   echo "WARNING: Could not read admin password from SSM!"
   nessus_admin_password=""
+fi
+
+# Set web server port
+# shellcheck disable=SC2154
+echo "Setting Nessus web server port to ${nessus_web_server_port}..."
+$nessus_sbin_path/nessuscli fix --set xmlrpc_listen_port="${nessus_web_server_port}"
+xmlrpc_listen_port_rc="$?"
+
+# No need to echo anything if successful since nessuscli will do it for us
+if [ "$xmlrpc_listen_port_rc" -ne 0 ]; then
+  echo "ERROR: Setting Nessus web server port was unsuccessful"
+  exit $xmlrpc_listen_port_rc
 fi
 
 register_nessus() {
