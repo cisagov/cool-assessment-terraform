@@ -144,8 +144,8 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
     resources = [
       aws_default_route_table.operations.arn,
       aws_route_table.private_route_table.arn,
+      aws_subnet.operations.arn,
       aws_subnet.private[var.private_subnet_cidr_blocks[0]].arn,
-      aws_subnet.operations.arn
     ]
   }
 
