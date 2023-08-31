@@ -116,11 +116,26 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
     ]
   }
 
+  # Allow Terraformer instances to modify the default routing table for the
+  # operations subnet.  This is needed so that additional routes can be added
+  # to peered VPCs.  This explicit "allow" is necessary because the resource
+  # below is tagged with the "Team" tag.
+  statement {
+    actions = [
+      "ec2:CreateRoute",
+      "ec2:DeleteRoute",
+      "ec2:ReplaceRoute",
+    ]
+    resources = [
+      aws_default_route_table.operations.arn,
+    ]
+  }
+
   # Allow Terraformer instances to disassociate the default operations and
   # private routing tables and associate additional routing tables with the
-  # first private subnet.  This is needed so that custom routing tables can
-  # be used.  This explicit "allow" is necessary because the resources below
-  # are tagged with the "Team" tag.
+  # operations and first private subnets.  This is needed so that custom routing
+  # tables can be used.  This explicit "allow" is necessary because the
+  # resources below are tagged with the "Team" tag.
   statement {
     actions = [
       "ec2:AssociateRouteTable",
@@ -129,6 +144,7 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
     resources = [
       aws_default_route_table.operations.arn,
       aws_route_table.private_route_table.arn,
+      aws_subnet.operations.arn,
       aws_subnet.private[var.private_subnet_cidr_blocks[0]].arn,
     ]
   }
