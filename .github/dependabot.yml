@@ -29,16 +29,16 @@ updates:
       interval: weekly
 
   - directory: /
-    # # Managed by cisagov/skeleton-tf-module
     # ignore:
+    #   # Managed by cisagov/skeleton-tf-module
     #   - dependency-name: hashicorp/aws
     package-ecosystem: terraform
     schedule:
       interval: weekly
 
   - directory: /examples/basic_usage
-    # # Managed by cisagov/skeleton-tf-module
     # ignore:
+    #   # Managed by cisagov/skeleton-tf-module
     #   - dependency-name: hashicorp/aws
     package-ecosystem: terraform
     schedule:
