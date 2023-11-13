@@ -30,6 +30,7 @@ module "example" {
 
 - [Basic usage](https://github.com/cisagov/skeleton-tf-module/tree/develop/examples/basic_usage)
 
+<!-- BEGIN_TF_DOCS -->
 ## Requirements ##
 
 | Name | Version |
@@ -73,6 +74,7 @@ No modules.
 | id | The EC2 instance ID. |
 | private\_ip | The private IP of the EC2 instance. |
 | subnet\_id | The ID of the subnet where the EC2 instance is deployed. |
+<!-- END_TF_DOCS -->
 
 ## Notes ##
 
