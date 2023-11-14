@@ -101,4 +101,72 @@ data "cloudinit_config" "terraformer_cloud_init_tasks" {
     filename     = "write-terraformer-aws-config.sh"
     merge_type   = "list(append)+dict(recurse_array)+str()"
   }
+
+  # Create a credentials file for the VNC user that can be used to configure
+  # the AWS CLI to write to the assessment artifact export S3 bucket.
+  # For details, see
+  # https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html#using-a-configuration-file
+  #
+  # Input variables are:
+  # * aws_access_key_id - the AWS access key ID
+  # * aws_region - the AWS region of the access key
+  # * aws_secret_access_key - the AWS secret access key
+  # * permissions - the permissions to assign the AWS configuration, specified
+  #   in either the octal or symbolic formats understood by chmod
+  # * vnc_username - the username associated with the VNC user
+  dynamic "part" {
+    # Only include this block if var.assessment_artifact_export_enabled is true
+    # and there are no Kali instances in this environment.  If there is at least
+    # one Kali instance, it should be used for assessment artifact export
+    # instead of a Terraformer instance.
+    for_each = var.assessment_artifact_export_enabled && lookup(var.operations_instance_counts, "kali", 0) == 0 ? [0] : []
+
+    content {
+      content = templatefile(
+        "${path.module}/cloud-init/write-aws-config-artifact-export.tpl.sh", {
+          aws_access_key_id     = data.aws_ssm_parameter.artifact_export_access_key_id[0].value
+          aws_region            = data.aws_ssm_parameter.artifact_export_region[0].value
+          aws_secret_access_key = data.aws_ssm_parameter.artifact_export_secret_access_key[0].value
+          permissions           = "0400"
+          vnc_username          = data.aws_ssm_parameter.vnc_username.value
+      })
+      content_type = "text/x-shellscript"
+      filename     = "write-aws-config-artifact-export.sh"
+      merge_type   = "list(append)+dict(recurse_array)+str()"
+    }
+  }
+
+  # Create a script for the VNC user that can be used to create an archive
+  # of the assessment artifacts and copy it to the assessment artifact export
+  # S3 bucket.
+  #
+  # Input variables are:
+  # * artifact_export_bucket_name - the name of the assessment artifact export S3
+  #   bucket
+  # * artifact_export_path - the path to copy the artifact to in the S3 bucket
+  # * assessment_id - the identifier for the assessment
+  # * permissions - the permissions to assign the script, specified in either
+  #   the octal or symbolic formats understood by chmod
+  # * vnc_username - the username associated with the VNC user
+  dynamic "part" {
+    # Only include this block if var.assessment_artifact_export_enabled is true
+    # and there are no Kali instances in this environment.  If there is at least
+    # one Kali instance, it should be used for assessment artifact export
+    # instead of a Terraformer instance.
+    for_each = var.assessment_artifact_export_enabled && lookup(var.operations_instance_counts, "kali", 0) == 0 ? [0] : []
+
+    content {
+      content = templatefile(
+        "${path.module}/cloud-init/write-archive-artifact-data-to-bucket.tpl.sh", {
+          artifact_export_bucket_name = data.aws_ssm_parameter.artifact_export_bucket_name[0].value
+          artifact_export_path        = var.assessment_artifact_export_map[var.assessment_type]
+          assessment_id               = var.assessment_id
+          permissions                 = "0500"
+          vnc_username                = data.aws_ssm_parameter.vnc_username.value
+      })
+      content_type = "text/x-shellscript"
+      filename     = "write-archive-artifact-data-to-bucket.sh"
+      merge_type   = "list(append)+dict(recurse_array)+str()"
+    }
+  }
 }

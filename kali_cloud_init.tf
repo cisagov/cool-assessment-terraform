@@ -82,14 +82,14 @@ data "cloudinit_config" "kali_cloud_init_tasks" {
 
     content {
       content = templatefile(
-        "${path.module}/cloud-init/write-kali-aws-config-findings-export.tpl.sh", {
+        "${path.module}/cloud-init/write-aws-config-findings-export.tpl.sh", {
           aws_region                          = var.aws_region
           findings_data_bucket_write_role_arn = data.terraform_remote_state.sharedservices.outputs.assessment_findings_write_role.arn
           permissions                         = "0400"
           vnc_username                        = data.aws_ssm_parameter.vnc_username.value
       })
       content_type = "text/x-shellscript"
-      filename     = "write-kali-aws-config.sh"
+      filename     = "write-aws-config-findings-export.sh"
       merge_type   = "list(append)+dict(recurse_array)+str()"
     }
   }
@@ -141,7 +141,7 @@ data "cloudinit_config" "kali_cloud_init_tasks" {
 
     content {
       content = templatefile(
-        "${path.module}/cloud-init/write-kali-aws-config-artifact-export.tpl.sh", {
+        "${path.module}/cloud-init/write-aws-config-artifact-export.tpl.sh", {
           aws_access_key_id     = data.aws_ssm_parameter.artifact_export_access_key_id[0].value
           aws_region            = data.aws_ssm_parameter.artifact_export_region[0].value
           aws_secret_access_key = data.aws_ssm_parameter.artifact_export_secret_access_key[0].value
@@ -149,7 +149,7 @@ data "cloudinit_config" "kali_cloud_init_tasks" {
           vnc_username          = data.aws_ssm_parameter.vnc_username.value
       })
       content_type = "text/x-shellscript"
-      filename     = "write-kali-aws-config-artifact-export.sh"
+      filename     = "write-aws-config-artifact-export.sh"
       merge_type   = "list(append)+dict(recurse_array)+str()"
     }
   }
