@@ -113,6 +113,7 @@ data "aws_iam_policy_document" "provisionassessment_policy_doc" {
       "elasticfilesystem:DescribeMountTargetSecurityGroups",
       "elasticfilesystem:TagResource",
       "elasticfilesystem:UntagResource",
+      "elasticfilesystem:UpdateFileSystem",
     ]
 
     resources = [
