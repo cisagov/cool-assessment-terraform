@@ -22,8 +22,8 @@ resource "aws_efs_mount_target" "target" {
   for_each = toset([var.private_subnet_cidr_blocks[0]])
 
   file_system_id  = aws_efs_file_system.persistent_storage.id
-  subnet_id       = aws_subnet.private[each.value].id
   security_groups = [aws_security_group.efs_mount_target.id]
+  subnet_id       = aws_subnet.private[each.value].id
 }
 
 # EFS access points for EFS mount targets
@@ -73,12 +73,12 @@ resource "aws_security_group" "efs_mount_target" {
 resource "aws_security_group_rule" "allow_nfs_inbound" {
   provider = aws.provisionassessment
 
-  type                     = "ingress"
   from_port                = 2049
-  to_port                  = 2049
   protocol                 = "tcp"
   security_group_id        = aws_security_group.efs_mount_target.id
   source_security_group_id = aws_security_group.efs_client.id
+  to_port                  = 2049
+  type                     = "ingress"
 }
 
 # EFS client security group
@@ -93,10 +93,10 @@ resource "aws_security_group" "efs_client" {
 resource "aws_security_group_rule" "allow_nfs_outbound" {
   provider = aws.provisionassessment
 
-  type                     = "egress"
   from_port                = 2049
-  to_port                  = 2049
   protocol                 = "tcp"
   security_group_id        = aws_security_group.efs_client.id
   source_security_group_id = aws_security_group.efs_mount_target.id
+  to_port                  = 2049
+  type                     = "egress"
 }
