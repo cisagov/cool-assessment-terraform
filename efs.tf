@@ -6,6 +6,7 @@ resource "aws_efs_file_system" "persistent_storage" {
   tags = {
     Name = "Persistent Storage"
   }
+  throughput_mode = "elastic"
 }
 
 # Mount targets for EFS
