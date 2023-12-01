@@ -11,15 +11,15 @@ root module.
 | Name | Version |
 |------|---------|
 | terraform | ~> 1.0 |
-| aws | ~> 3.38 |
+| aws | ~> 4.9 |
 | cloudinit | ~> 2.0 |
 
 ## Providers ##
 
 | Name | Version |
 |------|---------|
-| aws | ~> 3.38 |
-| aws.read\_organization\_information | ~> 3.38 |
+| aws | ~> 4.9 |
+| aws.read\_organization\_information | ~> 4.9 |
 | cloudinit | ~> 2.0 |
 | terraform | n/a |
 
