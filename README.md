@@ -66,12 +66,13 @@ the COOL environment.
 
 - [Using the Terraformer instance type](https://github.com/cisagov/cool-assessment-terraform/tree/develop/examples/use-terraformer-instance)
 
+<!-- BEGIN_TF_DOCS -->
 ## Requirements ##
 
 | Name | Version |
 |------|---------|
 | terraform | ~> 1.0 |
-| aws | ~> 3.38 |
+| aws | ~> 4.9 |
 | cloudinit | ~> 2.0 |
 | null | ~> 3.0 |
 
@@ -79,13 +80,13 @@ the COOL environment.
 
 | Name | Version |
 |------|---------|
-| aws | ~> 3.38 |
-| aws.dns\_sharedservices | ~> 3.38 |
-| aws.organizationsreadonly | ~> 3.38 |
-| aws.parameterstorereadonly | ~> 3.38 |
-| aws.provisionassessment | ~> 3.38 |
-| aws.provisionparameterstorereadrole | ~> 3.38 |
-| aws.provisionsharedservices | ~> 3.38 |
+| aws | ~> 4.9 |
+| aws.dns\_sharedservices | ~> 4.9 |
+| aws.organizationsreadonly | ~> 4.9 |
+| aws.parameterstorereadonly | ~> 4.9 |
+| aws.provisionassessment | ~> 4.9 |
+| aws.provisionparameterstorereadrole | ~> 4.9 |
+| aws.provisionsharedservices | ~> 4.9 |
 | cloudinit | ~> 2.0 |
 | null | ~> 3.0 |
 | terraform | n/a |
@@ -601,6 +602,7 @@ the COOL environment.
 | windows\_instance\_profile | The instance profile for the Windows instances. |
 | windows\_instances | The Windows instances. |
 | windows\_security\_group | The security group for the Windows instances. |
+<!-- END_TF_DOCS -->
 
 ## Notes ##
 
