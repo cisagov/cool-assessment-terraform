@@ -31,6 +31,9 @@ data "cloudinit_config" "samba_cloud_init_tasks" {
     merge_type   = "list(append)+dict(recurse_array)+str()"
   }
 
+  # TODO: Remove the following two parts when and if that becomes
+  # possible.  See #234 for more details.
+
   # Fix the DHCP options in the Canonical Netplan configuration
   # created by cloud-init.
   #
