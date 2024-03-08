@@ -71,7 +71,7 @@ the COOL environment.
 
 | Name | Version |
 |------|---------|
-| terraform | ~> 1.0 |
+| terraform | ~> 1.5 |
 | aws | ~> 4.9 |
 | cloudinit | ~> 2.0 |
 | null | ~> 3.0 |
@@ -375,6 +375,7 @@ the COOL environment.
 | [aws_security_group_rule.smb_server_ingress_from_smb_client](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.teamserver_egress_to_gophish_via_587](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.teamserver_egress_to_kali_instances_via_5000_to_5999](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.teamserver_egress_to_windows_instances_via_5000_to_5999_tcp](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.teamserver_ingress_from_kali_instances_via_5000_to_5999](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.teamserver_ingress_from_kali_via_imaps_and_cs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.teamserver_ingress_from_windows_instances_via_5000_to_5999_tcp](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
@@ -387,6 +388,7 @@ the COOL environment.
 | [aws_security_group_rule.windows_egress_to_pentestportal_via_web](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.windows_egress_to_teamserver_instances_via_5000_to_5999_tcp](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.windows_ingress_from_kali_instances](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.windows_ingress_from_teamserver_instances_via_5000_to_5999_tcp](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_subnet.operations](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
 | [aws_subnet.private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
 | [aws_volume_attachment.assessorworkbench_docker](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/volume_attachment) | resource |
