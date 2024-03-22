@@ -31,6 +31,47 @@ data "cloudinit_config" "terraformer_cloud_init_tasks" {
     merge_type   = "list(append)+dict(recurse_array)+str()"
   }
 
+  # TODO: Remove the following two parts when and if that becomes
+  # possible.  See #234 for more details.
+
+  # Fix the DHCP options in the Canonical Netplan configuration
+  # created by cloud-init.
+  #
+  # The issue is that Netplan uses a default of false for
+  # dhcp4-overrides.use-domains, and cloud-init does not explicitly
+  # set this key or provide any way to do so.
+  #
+  # See these issues for more details:
+  # - cisagov/skeleton-packer#300
+  # - canonical/cloud-init#4764
+  part {
+    content = templatefile(
+      "${path.module}/cloud-init/fix-dhcp.tpl.py", {
+        netplan_config = "/etc/netplan/50-cloud-init.yaml"
+    })
+    content_type = "text/x-shellscript"
+    filename     = "fix-dhcp.py"
+    merge_type   = "list(append)+dict(recurse_array)+str()"
+  }
+
+  # Now that the DHCP options in the Canonical Netplan configuration
+  # created by cloud-init have been fixed, reapply the Netplan
+  # configuration.
+  #
+  # The issue is that Netplan uses a default of false for
+  # dhcp4-overrides.use-domains, and cloud-init does not explicitly
+  # set this key or provide any way to do so.
+  #
+  # See these issues for more details:
+  # - cisagov/skeleton-packer#300
+  # - canonical/cloud-init#4764
+  part {
+    content      = file("${path.module}/cloud-init/fix-dhcp.yml")
+    content_type = "text/cloud-config"
+    filename     = "fix-dhcp.yml"
+    merge_type   = "list(append)+dict(recurse_array)+str()"
+  }
+
   # Create an fstab entry for the EFS share
   part {
     content = templatefile(
