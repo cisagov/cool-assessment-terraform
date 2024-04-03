@@ -79,7 +79,7 @@ module "cw_alarms_debiandesktop" {
   providers = {
     aws = aws.provisionassessment
   }
-  source = "github.com/cisagov/instance-cw-alarms-tf-module"
+  source = "github.com/cisagov/instance-cw-alarms-tf-module?ref=testing%2Fterraform-aws-provider_v5"
 
   alarm_actions             = [data.terraform_remote_state.dynamic_assessment.outputs.cw_alarm_sns_topic.arn]
   instance_ids              = [for instance in aws_instance.debiandesktop : instance.id]
