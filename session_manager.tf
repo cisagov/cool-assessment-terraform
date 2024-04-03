@@ -9,7 +9,7 @@ module "session_manager" {
   providers = {
     aws = aws.provisionassessment
   }
-  source = "github.com/cisagov/session-manager-tf-module"
+  source = "github.com/cisagov/session-manager-tf-module?ref=testing%2Fterraform-aws-provider_v5"
 
   cloudwatch_log_group_name = var.session_cloudwatch_log_group_name
   other_accounts = [
