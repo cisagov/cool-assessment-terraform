@@ -15,6 +15,6 @@ resource "aws_vpc" "example" {
 resource "aws_subnet" "example" {
   availability_zone = "${var.aws_region}${var.aws_availability_zone}"
   cidr_block        = "10.230.0.0/28"
-  vpc_id            = aws_vpc.example.id
   tags              = { "Name" : "Example" }
+  vpc_id            = aws_vpc.example.id
 }

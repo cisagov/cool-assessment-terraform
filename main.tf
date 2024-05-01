@@ -28,10 +28,10 @@ data "aws_ami" "example" {
     values = ["ebs"]
   }
 
+  most_recent = true
   owners = [
     var.ami_owner_account_id
   ]
-  most_recent = true
 }
 
 # The default tags configured for the default provider
@@ -40,8 +40,8 @@ data "aws_default_tags" "default" {}
 # The example EC2 instance
 resource "aws_instance" "example" {
   ami               = data.aws_ami.example.id
-  instance_type     = "t3.micro"
   availability_zone = "${var.aws_region}${var.aws_availability_zone}"
+  instance_type     = "t3.micro"
   subnet_id         = var.subnet_id
 
   # The tag or tags specified here will be merged with the provider's
