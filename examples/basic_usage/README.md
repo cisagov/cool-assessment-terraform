@@ -8,6 +8,7 @@ followed by the `terraform apply` command.
 Note that this example may create resources which cost money. Run
 `terraform destroy` when you no longer need these resources.
 
+<!-- BEGIN_TF_DOCS -->
 ## Requirements ##
 
 | Name | Version |
@@ -53,3 +54,4 @@ Note that this example may create resources which cost money. Run
 | id | The EC2 instance ID. |
 | private\_ip | The private IP of the EC2 instance. |
 | subnet\_id | The ID of the subnet where the EC2 instance is deployed. |
+<!-- END_TF_DOCS -->
