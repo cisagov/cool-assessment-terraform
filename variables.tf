@@ -73,9 +73,9 @@ variable "assessment_type" {
 }
 
 variable "aws_availability_zone" {
-  type        = string
-  description = "The AWS availability zone to deploy into (e.g. a, b, c, etc.)"
   default     = "a"
+  description = "The AWS availability zone to deploy into (e.g. a, b, c, etc.)."
+  type        = string
 }
 
 variable "aws_region" {
