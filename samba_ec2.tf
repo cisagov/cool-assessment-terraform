@@ -19,8 +19,8 @@ data "aws_ami" "samba" {
     values = ["ebs"]
   }
 
-  owners      = [local.images_account_id]
   most_recent = true
+  owners      = [local.images_account_id]
 }
 
 # The Samba EC2 instances
@@ -38,15 +38,6 @@ resource "aws_instance" "samba" {
   ami                  = data.aws_ami.samba.id
   iam_instance_profile = aws_iam_instance_profile.samba.name
   instance_type        = "t3.small"
-  # TODO: For some reason I can't ssh via SSM to the instance unless I
-  # put it in the first private subnet.  I believe this has something
-  # to do with the NACLs that are in place for that subnet
-  # specifically.  I will figure this out later.  I'd definitely
-  # prefer to put this instance in a different subnet than the
-  # Guacamole instance.
-  #
-  # See cisagov/cool-assessment-terraform#135 for more details.
-  subnet_id = aws_subnet.private[var.private_subnet_cidr_blocks[0]].id
   # AWS Instance Meta-Data Service (IMDS) options
   metadata_options {
     # Enable IMDS (this is the default value)
@@ -62,22 +53,31 @@ resource "aws_instance" "samba" {
     volume_size = 16
     volume_type = "gp3"
   }
-  user_data_base64 = data.cloudinit_config.samba_cloud_init_tasks[count.index].rendered
-  vpc_security_group_ids = [
-    aws_security_group.cloudwatch_agent_endpoint_client.id,
-    aws_security_group.efs_client.id,
-    aws_security_group.smb_server.id,
-    aws_security_group.ssm_agent_endpoint_client.id,
-  ]
+  # TODO: For some reason I can't ssh via SSM to the instance unless I
+  # put it in the first private subnet.  I believe this has something
+  # to do with the NACLs that are in place for that subnet
+  # specifically.  I will figure this out later.  I'd definitely
+  # prefer to put this instance in a different subnet than the
+  # Guacamole instance.
+  #
+  # See cisagov/cool-assessment-terraform#135 for more details.
+  subnet_id = aws_subnet.private[var.private_subnet_cidr_blocks[0]].id
   tags = {
     Name = format("Samba%d", count.index)
   }
+  user_data_base64 = data.cloudinit_config.samba_cloud_init_tasks[count.index].rendered
   # volume_tags does not yet inherit the default tags from the
   # provider.  See hashicorp/terraform-provider-aws#19188 for more
   # details.
   volume_tags = merge(data.aws_default_tags.assessment.tags, {
     Name = format("Samba%d", count.index)
   })
+  vpc_security_group_ids = [
+    aws_security_group.cloudwatch_agent_endpoint_client.id,
+    aws_security_group.efs_client.id,
+    aws_security_group.smb_server.id,
+    aws_security_group.ssm_agent_endpoint_client.id,
+  ]
 }
 
 # CloudWatch alarms for the Samba instances

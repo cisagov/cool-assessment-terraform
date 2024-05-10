@@ -19,8 +19,8 @@ data "aws_ami" "debiandesktop" {
     values = ["ebs"]
   }
 
-  owners      = [local.images_account_id]
   most_recent = true
+  owners      = [local.images_account_id]
 }
 
 # The "Debian desktop" EC2 instances
@@ -39,7 +39,6 @@ resource "aws_instance" "debiandesktop" {
   associate_public_ip_address = true
   iam_instance_profile        = aws_iam_instance_profile.debiandesktop.name
   instance_type               = "t3.medium"
-  subnet_id                   = aws_subnet.operations.id
   # AWS Instance Meta-Data Service (IMDS) options
   metadata_options {
     # Enable IMDS (this is the default value)
@@ -55,7 +54,17 @@ resource "aws_instance" "debiandesktop" {
     volume_size = 128
     volume_type = "gp3"
   }
+  subnet_id = aws_subnet.operations.id
+  tags = {
+    Name = format("DebianDesktop%d", count.index)
+  }
   user_data_base64 = data.cloudinit_config.debiandesktop_cloud_init_tasks[count.index].rendered
+  # volume_tags does not yet inherit the default tags from the
+  # provider.  See hashicorp/terraform-provider-aws#19188 for more
+  # details.
+  volume_tags = merge(data.aws_default_tags.assessment.tags, {
+    Name = format("DebianDesktop%d", count.index)
+  })
   vpc_security_group_ids = [
     aws_security_group.cloudwatch_agent_endpoint_client.id,
     aws_security_group.debiandesktop.id,
@@ -63,15 +72,6 @@ resource "aws_instance" "debiandesktop" {
     aws_security_group.guacamole_accessible.id,
     aws_security_group.ssm_agent_endpoint_client.id,
   ]
-  tags = {
-    Name = format("DebianDesktop%d", count.index)
-  }
-  # volume_tags does not yet inherit the default tags from the
-  # provider.  See hashicorp/terraform-provider-aws#19188 for more
-  # details.
-  volume_tags = merge(data.aws_default_tags.assessment.tags, {
-    Name = format("DebianDesktop%d", count.index)
-  })
 }
 
 # CloudWatch alarms for the Debian Desktop instances

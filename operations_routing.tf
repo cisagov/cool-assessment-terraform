@@ -17,8 +17,8 @@ resource "aws_default_route_table" "operations" {
 resource "aws_route" "cool_operations" {
   provider = aws.provisionassessment
 
-  route_table_id         = aws_default_route_table.operations.id
   destination_cidr_block = local.cool_shared_services_cidr_block
+  route_table_id         = aws_default_route_table.operations.id
   transit_gateway_id     = local.transit_gateway_id
 }
 
@@ -35,7 +35,7 @@ resource "aws_vpc_endpoint_route_table_association" "s3_operations" {
 resource "aws_route" "external_operations" {
   provider = aws.provisionassessment
 
-  route_table_id         = aws_default_route_table.operations.id
   destination_cidr_block = "0.0.0.0/0"
+  route_table_id         = aws_default_route_table.operations.id
   gateway_id             = aws_internet_gateway.assessment.id
 }

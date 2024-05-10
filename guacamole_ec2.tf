@@ -19,8 +19,8 @@ data "aws_ami" "guacamole" {
     values = ["ebs"]
   }
 
-  owners      = [local.images_account_id]
   most_recent = true
+  owners      = [local.images_account_id]
 }
 
 # The Guacamole EC2 instance
@@ -49,7 +49,6 @@ resource "aws_instance" "guacamole" {
   ami                  = data.aws_ami.guacamole.id
   iam_instance_profile = aws_iam_instance_profile.guacamole.name
   instance_type        = "t3.medium"
-  subnet_id            = aws_subnet.private[var.private_subnet_cidr_blocks[0]].id
   # AWS Instance Meta-Data Service (IMDS) options
   metadata_options {
     # Enable IMDS (this is the default value)
@@ -71,7 +70,17 @@ resource "aws_instance" "guacamole" {
     volume_size = 8
     volume_type = "gp3"
   }
+  subnet_id = aws_subnet.private[var.private_subnet_cidr_blocks[0]].id
+  tags = {
+    Name = "Guacamole"
+  }
   user_data_base64 = data.cloudinit_config.guacamole_cloud_init_tasks.rendered
+  # volume_tags does not yet inherit the default tags from the
+  # provider.  See hashicorp/terraform-provider-aws#19188 for more
+  # details.
+  volume_tags = merge(data.aws_default_tags.assessment.tags, {
+    Name = "Guacamole"
+  })
   vpc_security_group_ids = [
     aws_security_group.cloudwatch_agent_endpoint_client.id,
     aws_security_group.ec2_endpoint_client.id,
@@ -81,15 +90,6 @@ resource "aws_instance" "guacamole" {
     aws_security_group.ssm_endpoint_client.id,
     aws_security_group.sts_endpoint_client.id,
   ]
-  tags = {
-    Name = "Guacamole"
-  }
-  # volume_tags does not yet inherit the default tags from the
-  # provider.  See hashicorp/terraform-provider-aws#19188 for more
-  # details.
-  volume_tags = merge(data.aws_default_tags.assessment.tags, {
-    Name = "Guacamole"
-  })
 }
 
 # CloudWatch alarms for the Guacamole instances

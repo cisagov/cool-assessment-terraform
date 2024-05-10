@@ -12,32 +12,32 @@ resource "aws_iam_instance_profile" "nessus" {
 resource "aws_iam_role" "nessus_instance_role" {
   provider = aws.provisionassessment
 
-  name               = "nessus_instance_role_${terraform.workspace}"
   assume_role_policy = data.aws_iam_policy_document.ec2_service_assume_role_doc.json
+  name               = "nessus_instance_role_${terraform.workspace}"
 }
 
 resource "aws_iam_role_policy" "nessus_assume_delegated_role_policy" {
   provider = aws.provisionassessment
 
   name   = "nessus_assume_delegated_role_policy"
-  role   = aws_iam_role.nessus_instance_role.id
   policy = data.aws_iam_policy_document.nessus_assume_delegated_role_policy_doc.json
+  role   = aws_iam_role.nessus_instance_role.id
 }
 
 # Attach the CloudWatch Agent policy to this role as well
 resource "aws_iam_role_policy_attachment" "cloudwatch_agent_policy_attachment_nessus" {
   provider = aws.provisionassessment
 
-  role       = aws_iam_role.nessus_instance_role.id
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+  role       = aws_iam_role.nessus_instance_role.id
 }
 
 # Attach the SSM Agent policy to this role as well
 resource "aws_iam_role_policy_attachment" "ssm_agent_policy_attachment_nessus" {
   provider = aws.provisionassessment
 
-  role       = aws_iam_role.nessus_instance_role.id
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+  role       = aws_iam_role.nessus_instance_role.id
 }
 
 ################################
@@ -52,9 +52,9 @@ data "aws_iam_policy_document" "nessus_assume_delegated_role_policy_doc" {
       "sts:AssumeRole",
       "sts:TagSession",
     ]
+    effect = "Allow"
     resources = [
       aws_iam_role.nessus_parameterstorereadonly_role.arn
     ]
-    effect = "Allow"
   }
 }

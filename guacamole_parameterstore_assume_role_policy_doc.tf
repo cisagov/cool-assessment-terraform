@@ -11,10 +11,10 @@ data "aws_iam_policy_document" "guacamole_parameterstore_assume_role_doc" {
     ]
 
     principals {
-      type = "AWS"
       identifiers = [
         aws_iam_role.guacamole_instance_role.arn,
       ]
+      type = "AWS"
     }
   }
 }

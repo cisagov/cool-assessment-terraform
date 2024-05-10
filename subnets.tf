@@ -4,17 +4,15 @@
 
 # Operations subnet of the VPC
 resource "aws_subnet" "operations" {
-  provider = aws.provisionassessment
-
-  vpc_id            = aws_vpc.assessment.id
-  cidr_block        = var.operations_subnet_cidr_block
-  availability_zone = "${var.aws_region}${var.aws_availability_zone}"
-
+  provider   = aws.provisionassessment
   depends_on = [aws_internet_gateway.assessment]
 
+  availability_zone = "${var.aws_region}${var.aws_availability_zone}"
+  cidr_block        = var.operations_subnet_cidr_block
   tags = {
     Name = "Assessment Operations"
   }
+  vpc_id = aws_vpc.assessment.id
 }
 
 # Private subnets of the VPC
@@ -23,13 +21,12 @@ resource "aws_subnet" "private" {
 
   for_each = toset(var.private_subnet_cidr_blocks)
 
-  vpc_id            = aws_vpc.assessment.id
-  cidr_block        = each.key
   availability_zone = "${var.aws_region}${var.aws_availability_zone}"
-
+  cidr_block        = each.key
   tags = {
     Name = format("Assessment Private - %s", each.key)
   }
+  vpc_id = aws_vpc.assessment.id
 }
 
 # The internet gateway for the VPC

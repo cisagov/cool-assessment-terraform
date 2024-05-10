@@ -2,16 +2,15 @@
 resource "aws_route53_zone" "assessment_private" {
   provider = aws.provisionassessment
 
-  name = "${local.private_domain}."
+  comment = "Terraform Workspace: ${terraform.workspace}"
+  name    = "${local.private_domain}."
+  tags = {
+    Name = format("%s Private Zone", local.private_domain)
+  }
 
   vpc {
     vpc_id = aws_vpc.assessment.id
   }
-
-  tags = {
-    Name = format("%s Private Zone", local.private_domain)
-  }
-  comment = "Terraform Workspace: ${terraform.workspace}"
 }
 
 

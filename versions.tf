@@ -1,8 +1,4 @@
 terraform {
-  # This code uses the strcontains() function, which was introduced
-  # in Terraform 1.5.0, so we require at least that version.
-  required_version = "~> 1.5"
-
   # If you use any other providers you should also pin them to the
   # major version currently being used.  This practice will help us
   # avoid unwelcome surprises.
@@ -29,4 +25,10 @@ terraform {
       version = "~> 3.0"
     }
   }
+
+  # This code uses the strcontains() function, which was introduced
+  # in Terraform 1.5.0, so we require at least that version.
+  #
+  # We want to hold off on 1.6 or higher until we have tested it.
+  required_version = "~> 1.5"
 }
