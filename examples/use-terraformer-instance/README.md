@@ -6,6 +6,7 @@ environment already created by running `terraform apply` with the
 [cisagov/cool-assessment-terraform](https://github.com/cisagov/cool-assessment-terraform)
 root module.
 
+<!-- BEGIN_TF_DOCS -->
 ## Requirements ##
 
 | Name | Version |
@@ -60,3 +61,4 @@ No modules.
 | teamserver | The Teamserver instance. |
 | teamserver\_a\_record | The Teamserver A record. |
 | teamserver\_eip | The Teamserver EIP. |
+<!-- END_TF_DOCS -->
