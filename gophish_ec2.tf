@@ -19,8 +19,8 @@ data "aws_ami" "gophish" {
     values = ["ebs"]
   }
 
-  owners      = [local.images_account_id]
   most_recent = true
+  owners      = [local.images_account_id]
 }
 
 # The Gophish EC2 instances
@@ -40,7 +40,6 @@ resource "aws_instance" "gophish" {
   associate_public_ip_address = true
   iam_instance_profile        = aws_iam_instance_profile.gophish[count.index].name
   instance_type               = "t3.medium"
-  subnet_id                   = aws_subnet.operations.id
   # AWS Instance Meta-Data Service (IMDS) options
   metadata_options {
     # Enable IMDS (this is the default value)
@@ -56,7 +55,17 @@ resource "aws_instance" "gophish" {
     volume_size = 128
     volume_type = "gp3"
   }
+  subnet_id = aws_subnet.operations.id
+  tags = {
+    Name = format("Gophish%d", count.index)
+  }
   user_data_base64 = data.cloudinit_config.gophish_cloud_init_tasks[count.index].rendered
+  # volume_tags does not yet inherit the default tags from the
+  # provider.  See hashicorp/terraform-provider-aws#19188 for more
+  # details.
+  volume_tags = merge(data.aws_default_tags.assessment.tags, {
+    Name = format("Gophish%d", count.index)
+  })
   vpc_security_group_ids = [
     aws_security_group.cloudwatch_agent_endpoint_client.id,
     aws_security_group.efs_client.id,
@@ -67,15 +76,6 @@ resource "aws_instance" "gophish" {
     aws_security_group.ssm_agent_endpoint_client.id,
     aws_security_group.sts_endpoint_client.id,
   ]
-  tags = {
-    Name = format("Gophish%d", count.index)
-  }
-  # volume_tags does not yet inherit the default tags from the
-  # provider.  See hashicorp/terraform-provider-aws#19188 for more
-  # details.
-  volume_tags = merge(data.aws_default_tags.assessment.tags, {
-    Name = format("Gophish%d", count.index)
-  })
 }
 
 # The Elastic IP for each Gophish instance
@@ -83,11 +83,11 @@ resource "aws_eip" "gophish" {
   count    = lookup(var.operations_instance_counts, "gophish", 0)
   provider = aws.provisionassessment
 
-  vpc = true
   tags = {
     Name             = format("Gophish%d EIP", count.index)
     "Publish Egress" = "True"
   }
+  vpc = true
 }
 
 # The EIP association for each Gophish instance
@@ -95,8 +95,8 @@ resource "aws_eip_association" "gophish" {
   count    = lookup(var.operations_instance_counts, "gophish", 0)
   provider = aws.provisionassessment
 
-  instance_id   = aws_instance.gophish[count.index].id
   allocation_id = aws_eip.gophish[count.index].id
+  instance_id   = aws_instance.gophish[count.index].id
 }
 
 # The EBS volume for each Gophish instance; it is used to persist Docker volume
@@ -111,11 +111,10 @@ resource "aws_ebs_volume" "gophish_docker" {
   availability_zone = "${var.aws_region}${var.aws_availability_zone}"
   encrypted         = true
   size              = 16
-  type              = "gp3"
-
   tags = {
     Name = format("Gophish%d Docker", count.index)
   }
+  type = "gp3"
 }
 
 # Attach EBS volume to Gophish instance

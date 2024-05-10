@@ -3,8 +3,8 @@
 data "cloudinit_config" "nessus_cloud_init_tasks" {
   count = lookup(var.operations_instance_counts, "nessus", 0)
 
-  gzip          = true
   base64_encode = true
+  gzip          = true
 
   # Note: The filename parameters in each part below are only used to name the
   # mime-parts of the user-data.  It does not affect the final name for the
@@ -72,8 +72,7 @@ data "cloudinit_config" "nessus_cloud_init_tasks" {
   }
 
   part {
-    filename     = "nessus-setup.sh"
-    content_type = "text/x-shellscript"
+    filename = "nessus-setup.sh"
     content = templatefile(
       "${path.module}/cloud-init/nessus-setup.sh", {
         aws_region                    = var.aws_region
@@ -83,5 +82,6 @@ data "cloudinit_config" "nessus_cloud_init_tasks" {
         ssm_key_nessus_admin_username = var.ssm_key_nessus_admin_username
         ssm_nessus_read_role_arn      = aws_iam_role.nessus_parameterstorereadonly_role.arn
     })
+    content_type = "text/x-shellscript"
   }
 }

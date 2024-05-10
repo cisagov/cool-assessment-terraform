@@ -52,8 +52,8 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
   # with the "Team" tag.
   statement {
     actions = [
-      "ec2:RunInstances",
       "ec2:ModifyNetworkInterfaceAttribute",
+      "ec2:RunInstances",
     ]
     resources = [
       # Subnets.  The ModifyNetworkInterfaceAttribute doesn't care

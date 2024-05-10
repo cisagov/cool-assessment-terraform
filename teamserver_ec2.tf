@@ -19,8 +19,8 @@ data "aws_ami" "teamserver" {
     values = ["ebs"]
   }
 
-  owners      = [local.images_account_id]
   most_recent = true
+  owners      = [local.images_account_id]
 }
 
 # The teamserver EC2 instances
@@ -50,11 +50,6 @@ resource "aws_instance" "teamserver" {
   associate_public_ip_address = true
   iam_instance_profile        = aws_iam_instance_profile.teamserver[count.index].name
   instance_type               = "t3.large"
-  subnet_id                   = aws_subnet.operations.id
-  root_block_device {
-    volume_size = 128
-    volume_type = "gp3"
-  }
   # AWS Instance Meta-Data Service (IMDS) options
   metadata_options {
     # Enable IMDS (this is the default value)
@@ -66,7 +61,21 @@ resource "aws_instance" "teamserver" {
     # Require IMDS tokens AKA require the use of IMDSv2
     http_tokens = "required"
   }
+  root_block_device {
+    volume_size = 128
+    volume_type = "gp3"
+  }
+  subnet_id = aws_subnet.operations.id
+  tags = {
+    Name = format("Teamserver%d", count.index)
+  }
   user_data_base64 = data.cloudinit_config.teamserver_cloud_init_tasks[count.index].rendered
+  # volume_tags does not yet inherit the default tags from the
+  # provider.  See hashicorp/terraform-provider-aws#19188 for more
+  # details.
+  volume_tags = merge(data.aws_default_tags.assessment.tags, {
+    Name = format("Teamserver%d", count.index)
+  })
   vpc_security_group_ids = [
     aws_security_group.cloudwatch_agent_endpoint_client.id,
     aws_security_group.efs_client.id,
@@ -77,15 +86,6 @@ resource "aws_instance" "teamserver" {
     aws_security_group.sts_endpoint_client.id,
     aws_security_group.teamserver.id,
   ]
-  tags = {
-    Name = format("Teamserver%d", count.index)
-  }
-  # volume_tags does not yet inherit the default tags from the
-  # provider.  See hashicorp/terraform-provider-aws#19188 for more
-  # details.
-  volume_tags = merge(data.aws_default_tags.assessment.tags, {
-    Name = format("Teamserver%d", count.index)
-  })
 }
 
 # The Elastic IP for each teamserver
@@ -93,11 +93,11 @@ resource "aws_eip" "teamserver" {
   count    = lookup(var.operations_instance_counts, "teamserver", 0)
   provider = aws.provisionassessment
 
-  vpc = true
   tags = {
     Name             = format("Teamserver%d EIP", count.index)
     "Publish Egress" = "True"
   }
+  vpc = true
 }
 
 # The EIP association for each teamserver
@@ -105,8 +105,8 @@ resource "aws_eip_association" "teamserver" {
   count    = lookup(var.operations_instance_counts, "teamserver", 0)
   provider = aws.provisionassessment
 
-  instance_id   = aws_instance.teamserver[count.index].id
   allocation_id = aws_eip.teamserver[count.index].id
+  instance_id   = aws_instance.teamserver[count.index].id
 }
 
 # CloudWatch alarms for the teamserver instances

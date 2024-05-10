@@ -25,16 +25,16 @@ resource "aws_iam_instance_profile" "guacamole" {
 resource "aws_iam_role" "guacamole_instance_role" {
   provider = aws.provisionassessment
 
-  name               = "guacamole_instance_role_${terraform.workspace}"
   assume_role_policy = data.aws_iam_policy_document.ec2_service_assume_role_doc.json
+  name               = "guacamole_instance_role_${terraform.workspace}"
 }
 
 resource "aws_iam_role_policy" "guacamole_assume_delegated_role_policy" {
   provider = aws.provisionassessment
 
   name   = "assume_delegated_role_policy"
-  role   = aws_iam_role.guacamole_instance_role.id
   policy = data.aws_iam_policy_document.guacamole_assume_delegated_role_policy_doc.json
+  role   = aws_iam_role.guacamole_instance_role.id
 }
 
 # Attach the EC2 read-only policy to this role.  This policy is
@@ -44,24 +44,24 @@ resource "aws_iam_role_policy" "guacamole_assume_delegated_role_policy" {
 resource "aws_iam_role_policy_attachment" "ec2_read_only_policy_attachment_guacamole" {
   provider = aws.provisionassessment
 
-  role       = aws_iam_role.guacamole_instance_role.id
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess"
+  role       = aws_iam_role.guacamole_instance_role.id
 }
 
 # Attach the CloudWatch Agent policy to this role as well
 resource "aws_iam_role_policy_attachment" "cloudwatch_agent_policy_attachment_guacamole" {
   provider = aws.provisionassessment
 
-  role       = aws_iam_role.guacamole_instance_role.id
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+  role       = aws_iam_role.guacamole_instance_role.id
 }
 
 # Attach the SSM Agent policy to this role as well
 resource "aws_iam_role_policy_attachment" "ssm_agent_policy_attachment_guacamole" {
   provider = aws.provisionassessment
 
-  role       = aws_iam_role.guacamole_instance_role.id
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+  role       = aws_iam_role.guacamole_instance_role.id
 }
 
 ################################

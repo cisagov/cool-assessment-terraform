@@ -11,8 +11,8 @@ data "aws_iam_policy_document" "ec2_service_assume_role_doc" {
     ]
     effect = "Allow"
     principals {
-      type        = "Service"
       identifiers = ["ec2.amazonaws.com", ]
+      type        = "Service"
     }
   }
 }

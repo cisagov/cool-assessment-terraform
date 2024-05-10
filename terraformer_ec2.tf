@@ -19,8 +19,8 @@ data "aws_ami" "terraformer" {
     values = ["ebs"]
   }
 
-  owners      = [local.images_account_id]
   most_recent = true
+  owners      = [local.images_account_id]
 }
 
 # The Terraformer EC2 instances
@@ -38,15 +38,6 @@ resource "aws_instance" "terraformer" {
   ami                  = data.aws_ami.terraformer.id
   iam_instance_profile = aws_iam_instance_profile.terraformer.name
   instance_type        = "t3.xlarge"
-  # TODO: For some reason I can't ssh via SSM to the instance unless I
-  # put it in the first private subnet.  I believe this has something
-  # to do with the NACLs that are in place for that subnet
-  # specifically.  I will figure this out later.  I'd definitely
-  # prefer to put this instance in a different subnet than the
-  # Guacamole instance.
-  #
-  # See cisagov/cool-assessment-terraform#135 for more details.
-  subnet_id = aws_subnet.private[var.private_subnet_cidr_blocks[0]].id
   # AWS Instance Meta-Data Service (IMDS) options
   metadata_options {
     # Enable IMDS (this is the default value)
@@ -62,7 +53,25 @@ resource "aws_instance" "terraformer" {
     volume_size = 128
     volume_type = "gp3"
   }
+  # TODO: For some reason I can't ssh via SSM to the instance unless I
+  # put it in the first private subnet.  I believe this has something
+  # to do with the NACLs that are in place for that subnet
+  # specifically.  I will figure this out later.  I'd definitely
+  # prefer to put this instance in a different subnet than the
+  # Guacamole instance.
+  #
+  # See cisagov/cool-assessment-terraform#135 for more details.
+  subnet_id = aws_subnet.private[var.private_subnet_cidr_blocks[0]].id
+  tags = {
+    Name = format("Terraformer%d", count.index)
+  }
   user_data_base64 = data.cloudinit_config.terraformer_cloud_init_tasks[count.index].rendered
+  # volume_tags does not yet inherit the default tags from the
+  # provider.  See hashicorp/terraform-provider-aws#19188 for more
+  # details.
+  volume_tags = merge(data.aws_default_tags.assessment.tags, {
+    Name = format("Terraformer%d", count.index)
+  })
   vpc_security_group_ids = [
     aws_security_group.cloudwatch_agent_endpoint_client.id,
     aws_security_group.dynamodb_endpoint_client.id,
@@ -73,15 +82,6 @@ resource "aws_instance" "terraformer" {
     aws_security_group.sts_endpoint_client.id,
     aws_security_group.terraformer.id,
   ]
-  tags = {
-    Name = format("Terraformer%d", count.index)
-  }
-  # volume_tags does not yet inherit the default tags from the
-  # provider.  See hashicorp/terraform-provider-aws#19188 for more
-  # details.
-  volume_tags = merge(data.aws_default_tags.assessment.tags, {
-    Name = format("Terraformer%d", count.index)
-  })
 }
 
 # CloudWatch alarms for the Terraformer instances

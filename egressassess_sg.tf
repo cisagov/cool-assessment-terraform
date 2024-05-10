@@ -2,11 +2,10 @@
 resource "aws_security_group" "egressassess" {
   provider = aws.provisionassessment
 
-  vpc_id = aws_vpc.assessment.id
-
   tags = {
     "Name" = "Egress-Assess"
   }
+  vpc_id = aws_vpc.assessment.id
 }
 
 # Allow egress to anywhere via HTTP and HTTPS
@@ -16,12 +15,12 @@ resource "aws_security_group_rule" "egressassess_egress_to_anywhere_via_http_and
   for_each = toset(["80", "443"])
   provider = aws.provisionassessment
 
-  security_group_id = aws_security_group.egressassess.id
-  type              = "egress"
-  protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
   from_port         = each.key
+  protocol          = "tcp"
+  security_group_id = aws_security_group.egressassess.id
   to_port           = each.key
+  type              = "egress"
 }
 
 # Allow ingress from anywhere via all ICMP
@@ -30,12 +29,12 @@ resource "aws_security_group_rule" "egressassess_egress_to_anywhere_via_http_and
 resource "aws_security_group_rule" "ingress_from_anywhere_to_egressassess_via_all_icmp" {
   provider = aws.provisionassessment
 
-  security_group_id = aws_security_group.egressassess.id
-  type              = "ingress"
-  protocol          = "icmp"
   cidr_blocks       = ["0.0.0.0/0"]
   from_port         = -1
+  protocol          = "icmp"
+  security_group_id = aws_security_group.egressassess.id
   to_port           = -1
+  type              = "ingress"
 }
 
 # Allow ingress from anywhere via the allowed ports
@@ -46,10 +45,10 @@ resource "aws_security_group_rule" "ingress_from_anywhere_to_egressassess_via_al
   # acceptable form.
   for_each = { for d in var.inbound_ports_allowed["egressassess"] : format("%s_%d_%d", d.protocol, d.from_port, d.to_port) => d }
 
-  security_group_id = aws_security_group.egressassess.id
-  type              = "ingress"
-  protocol          = each.value["protocol"]
   cidr_blocks       = ["0.0.0.0/0"]
   from_port         = each.value["from_port"]
+  protocol          = each.value["protocol"]
+  security_group_id = aws_security_group.egressassess.id
   to_port           = each.value["to_port"]
+  type              = "ingress"
 }

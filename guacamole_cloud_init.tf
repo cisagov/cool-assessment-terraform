@@ -1,8 +1,8 @@
 # cloud-init commands for configuring Guacamole instance
 
 data "cloudinit_config" "guacamole_cloud_init_tasks" {
-  gzip          = true
   base64_encode = true
+  gzip          = true
 
   #-------------------------------------------------------------------------------
   # Cloud Config parts

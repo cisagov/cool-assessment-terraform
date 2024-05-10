@@ -5,19 +5,15 @@ tasks:
   # current public SSH key deployed to Linux-based instances. This should
   # be removed once Windows AMIs are being built with the correct public
   # SSH key(s) preloaded. Please see #218 for more information.
-  - task: writeFile
-    inputs:
-      - frequency: once
-        destination: C:\Users\rvauser\.ssh\authorized_keys
-        content: |
+  - inputs:
+      - content: |
           ${vnc_public_ssh_key}
+        destination: C:\Users\rvauser\.ssh\authorized_keys
+        frequency: once
+    task: writeFile
   # Extend the OS partition and set up the Samba share as a network drive
-  - task: executeScript
-    inputs:
-      - frequency: always
-        type: powershell
-        runAs: localSystem
-        content: |-
+  - inputs:
+      - content: |-
           # The Windows AMIs we currently use have a System Reserve partition
           # that contains boot information in addition to the primary OS
           # partition. The automatic AWS partition extension in EC2Launch v2
@@ -45,3 +41,7 @@ tasks:
               -PSProvider "FileSystem" `
               -Persist
           }
+        frequency: always
+        runAs: localSystem
+        type: powershell
+    task: executeScript

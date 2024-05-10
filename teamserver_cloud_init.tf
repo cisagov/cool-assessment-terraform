@@ -10,8 +10,8 @@ locals {
 data "cloudinit_config" "teamserver_cloud_init_tasks" {
   count = lookup(var.operations_instance_counts, "teamserver", 0)
 
-  gzip          = true
   base64_encode = true
+  gzip          = true
 
   # Note: The filename parameters in each part below are only used to
   # name the mime-parts of the user-data.  They do not affect the

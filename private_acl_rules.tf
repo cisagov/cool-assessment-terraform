@@ -28,13 +28,13 @@ resource "aws_network_acl_rule" "private_ingress_from_cool_vpn_services" {
     format("%s_%s", pair[0], pair[1]) => merge(local.assessment_env_service_ports[pair[0]], { "private_subnet_cidr_block" = pair[1], "index" = index })
   }
 
-  network_acl_id = aws_network_acl.private[each.value.private_subnet_cidr_block].id
-  egress         = false
-  protocol       = each.value.protocol
-  rule_number    = 100 + each.value.index
-  rule_action    = "allow"
   cidr_block     = local.vpn_server_cidr_block
   from_port      = each.value.port
+  egress         = false
+  network_acl_id = aws_network_acl.private[each.value.private_subnet_cidr_block].id
+  protocol       = each.value.protocol
+  rule_action    = "allow"
+  rule_number    = 100 + each.value.index
   to_port        = each.value.port
 }
 # Allow ingress from operations subnet via port 8065.
@@ -45,13 +45,13 @@ resource "aws_network_acl_rule" "private_ingress_from_operations_mattermost_web"
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
 
-  network_acl_id = aws_network_acl.private[each.value].id
-  egress         = false
-  protocol       = "tcp"
-  rule_number    = 120
-  rule_action    = "allow"
   cidr_block     = aws_subnet.operations.cidr_block
+  egress         = false
   from_port      = 8065
+  network_acl_id = aws_network_acl.private[each.value].id
+  protocol       = "tcp"
+  rule_action    = "allow"
+  rule_number    = 120
   to_port        = 8065
 }
 # Allow ingress to first private subnet (where Transit Gateway attachment
@@ -64,13 +64,13 @@ resource "aws_network_acl_rule" "private_ingress_to_tg_attachment_via_udp_epheme
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
 
-  network_acl_id = aws_network_acl.private[var.private_subnet_cidr_blocks[0]].id
-  egress         = false
-  protocol       = "udp"
-  rule_number    = 125 + index(var.private_subnet_cidr_blocks, each.value)
-  rule_action    = "allow"
   cidr_block     = each.value
+  egress         = false
   from_port      = 1024
+  network_acl_id = aws_network_acl.private[var.private_subnet_cidr_blocks[0]].id
+  protocol       = "udp"
+  rule_action    = "allow"
+  rule_number    = 125 + index(var.private_subnet_cidr_blocks, each.value)
   to_port        = 65535
 }
 # Disallow ingress from anywhere else via ports used by services
@@ -98,13 +98,13 @@ resource "aws_network_acl_rule" "private_ingress_from_anywhere_else_services" {
     format("%s_%s", pair[0], pair[1]) => merge(local.assessment_env_service_ports_gte_1024[pair[0]], { "private_subnet_cidr_block" = pair[1], "index" = index })
   }
 
-  network_acl_id = aws_network_acl.private[each.value.private_subnet_cidr_block].id
-  egress         = false
-  protocol       = each.value.protocol
-  rule_number    = 130 + each.value.index
-  rule_action    = "deny"
   cidr_block     = "0.0.0.0/0"
+  egress         = false
   from_port      = each.value.port
+  network_acl_id = aws_network_acl.private[each.value.private_subnet_cidr_block].id
+  protocol       = each.value.protocol
+  rule_action    = "deny"
+  rule_number    = 130 + each.value.index
   to_port        = each.value.port
 }
 
@@ -118,13 +118,13 @@ resource "aws_network_acl_rule" "private_ingress_from_operations_efs" {
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
 
-  network_acl_id = aws_network_acl.private[each.value].id
-  egress         = false
-  protocol       = "tcp"
-  rule_number    = 150
-  rule_action    = "allow"
   cidr_block     = aws_subnet.operations.cidr_block
   from_port      = 2049
+  egress         = false
+  network_acl_id = aws_network_acl.private[each.value].id
+  protocol       = "tcp"
+  rule_action    = "allow"
+  rule_number    = 150
   to_port        = 2049
 }
 # Allow ingress from operations subnet via port 445.
@@ -137,13 +137,13 @@ resource "aws_network_acl_rule" "private_ingress_from_operations_smb" {
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
 
-  network_acl_id = aws_network_acl.private[each.value].id
-  egress         = false
-  protocol       = "tcp"
-  rule_number    = 155
-  rule_action    = "allow"
   cidr_block     = aws_subnet.operations.cidr_block
+  egress         = false
   from_port      = 445
+  network_acl_id = aws_network_acl.private[each.value].id
+  protocol       = "tcp"
+  rule_action    = "allow"
+  rule_number    = 155
   to_port        = 445
 }
 # Disallow ingress from anywhere else via port 2049.
@@ -151,13 +151,13 @@ resource "aws_network_acl_rule" "private_ingress_from_anywhere_else_efs" {
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
 
-  network_acl_id = aws_network_acl.private[each.value].id
-  egress         = false
-  protocol       = "tcp"
-  rule_number    = 160
-  rule_action    = "deny"
   cidr_block     = "0.0.0.0/0"
+  egress         = false
   from_port      = 2049
+  network_acl_id = aws_network_acl.private[each.value].id
+  protocol       = "tcp"
+  rule_action    = "deny"
+  rule_number    = 160
   to_port        = 2049
 }
 
@@ -171,13 +171,13 @@ resource "aws_network_acl_rule" "private_ingress_from_anywhere_via_tcp_ephemeral
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
 
-  network_acl_id = aws_network_acl.private[each.value].id
-  egress         = false
-  protocol       = "tcp"
-  rule_number    = 170 + index(var.private_subnet_cidr_blocks, each.value)
-  rule_action    = "allow"
   cidr_block     = "0.0.0.0/0"
+  egress         = false
   from_port      = 1024
+  network_acl_id = aws_network_acl.private[each.value].id
+  protocol       = "tcp"
+  rule_action    = "allow"
+  rule_number    = 170 + index(var.private_subnet_cidr_blocks, each.value)
   to_port        = 65535
 }
 
@@ -206,13 +206,13 @@ resource "aws_network_acl_rule" "private_ingress_to_tg_attachment_via_ipa_ports"
     format("%s_%s", pair[0], pair[1]) => merge(local.ipa_ports[pair[0]], { "private_subnet_cidr_block" = pair[1], "index" = index })
   }
 
-  network_acl_id = aws_network_acl.private[var.private_subnet_cidr_blocks[0]].id
-  egress         = false
-  protocol       = each.value.protocol
-  rule_number    = 180 + each.value.index
-  rule_action    = "allow"
   cidr_block     = each.value.private_subnet_cidr_block
+  egress         = false
   from_port      = each.value.port
+  network_acl_id = aws_network_acl.private[var.private_subnet_cidr_blocks[0]].id
+  protocol       = each.value.protocol
+  rule_action    = "allow"
+  rule_number    = 180 + each.value.index
   to_port        = each.value.port
 }
 
@@ -223,13 +223,13 @@ resource "aws_network_acl_rule" "private_ingress_from_operations_via_https" {
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
 
-  network_acl_id = aws_network_acl.private[each.value].id
-  egress         = false
-  protocol       = "tcp"
-  rule_number    = 200 + index(var.private_subnet_cidr_blocks, each.value)
-  rule_action    = "allow"
   cidr_block     = aws_subnet.operations.cidr_block
+  egress         = false
   from_port      = 443
+  network_acl_id = aws_network_acl.private[each.value].id
+  protocol       = "tcp"
+  rule_action    = "allow"
+  rule_number    = 200 + index(var.private_subnet_cidr_blocks, each.value)
   to_port        = 443
 }
 
@@ -244,12 +244,12 @@ resource "aws_network_acl_rule" "private_ingress_from_local_vm_ips_via_all_ports
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
 
-  network_acl_id = aws_network_acl.private[each.value].id
-  egress         = false
-  protocol       = "all"
-  rule_number    = 210 + index(var.private_subnet_cidr_blocks, each.value)
-  rule_action    = "allow"
   cidr_block     = "172.16.0.0/12"
+  egress         = false
+  network_acl_id = aws_network_acl.private[each.value].id
+  protocol       = "all"
+  rule_action    = "allow"
+  rule_number    = 210 + index(var.private_subnet_cidr_blocks, each.value)
 }
 
 #####
@@ -264,13 +264,13 @@ resource "aws_network_acl_rule" "private_egress_to_anywhere_via_ssh" {
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
 
-  network_acl_id = aws_network_acl.private[each.value].id
-  egress         = true
-  protocol       = "tcp"
-  rule_number    = 300 + index(var.private_subnet_cidr_blocks, each.value)
-  rule_action    = "allow"
   cidr_block     = "0.0.0.0/0"
+  egress         = true
   from_port      = 22
+  network_acl_id = aws_network_acl.private[each.value].id
+  protocol       = "tcp"
+  rule_action    = "allow"
+  rule_number    = 300 + index(var.private_subnet_cidr_blocks, each.value)
   to_port        = 22
 }
 
@@ -283,13 +283,13 @@ resource "aws_network_acl_rule" "private_egress_to_operations_via_winrm" {
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
 
-  network_acl_id = aws_network_acl.private[each.value].id
-  egress         = true
-  protocol       = "tcp"
-  rule_number    = 310 + index(var.private_subnet_cidr_blocks, each.value)
-  rule_action    = "allow"
   cidr_block     = aws_subnet.operations.cidr_block
+  egress         = true
   from_port      = 5986
+  network_acl_id = aws_network_acl.private[each.value].id
+  protocol       = "tcp"
+  rule_action    = "allow"
+  rule_number    = 310 + index(var.private_subnet_cidr_blocks, each.value)
   to_port        = 5986
 }
 
@@ -300,13 +300,13 @@ resource "aws_network_acl_rule" "private_egress_to_anywhere_via_http" {
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
 
-  network_acl_id = aws_network_acl.private[each.value].id
-  egress         = true
-  protocol       = "tcp"
-  rule_number    = 320 + index(var.private_subnet_cidr_blocks, each.value)
-  rule_action    = "allow"
   cidr_block     = "0.0.0.0/0"
+  egress         = true
   from_port      = 80
+  network_acl_id = aws_network_acl.private[each.value].id
+  protocol       = "tcp"
+  rule_action    = "allow"
+  rule_number    = 320 + index(var.private_subnet_cidr_blocks, each.value)
   to_port        = 80
 }
 
@@ -323,13 +323,13 @@ resource "aws_network_acl_rule" "private_egress_to_anywhere_via_https" {
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
 
-  network_acl_id = aws_network_acl.private[each.value].id
-  egress         = true
-  protocol       = "tcp"
-  rule_number    = 330 + index(var.private_subnet_cidr_blocks, each.value)
-  rule_action    = "allow"
   cidr_block     = "0.0.0.0/0"
+  egress         = true
   from_port      = 443
+  network_acl_id = aws_network_acl.private[each.value].id
+  protocol       = "tcp"
+  rule_action    = "allow"
+  rule_number    = 330 + index(var.private_subnet_cidr_blocks, each.value)
   to_port        = 443
 }
 
@@ -340,13 +340,13 @@ resource "aws_network_acl_rule" "private_egress_to_cool_via_tcp_ephemeral_ports"
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
 
-  network_acl_id = aws_network_acl.private[each.value].id
-  egress         = true
-  protocol       = "tcp"
-  rule_number    = 340 + index(var.private_subnet_cidr_blocks, each.value)
-  rule_action    = "allow"
   cidr_block     = local.cool_shared_services_cidr_block
+  egress         = true
   from_port      = 1024
+  network_acl_id = aws_network_acl.private[each.value].id
+  protocol       = "tcp"
+  rule_action    = "allow"
+  rule_number    = 340 + index(var.private_subnet_cidr_blocks, each.value)
   to_port        = 65535
 }
 
@@ -357,13 +357,13 @@ resource "aws_network_acl_rule" "private_egress_to_cool_via_udp_ephemeral_ports"
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
 
-  network_acl_id = aws_network_acl.private[each.value].id
-  egress         = true
-  protocol       = "udp"
-  rule_number    = 350 + index(var.private_subnet_cidr_blocks, each.value)
-  rule_action    = "allow"
   cidr_block     = local.cool_shared_services_cidr_block
+  egress         = true
   from_port      = 1024
+  network_acl_id = aws_network_acl.private[each.value].id
+  protocol       = "udp"
+  rule_action    = "allow"
+  rule_number    = 350 + index(var.private_subnet_cidr_blocks, each.value)
   to_port        = 65535
 }
 
@@ -373,13 +373,13 @@ resource "aws_network_acl_rule" "private_egress_to_operations_via_ephemeral_port
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
 
-  network_acl_id = aws_network_acl.private[each.value].id
-  egress         = true
-  protocol       = "tcp"
-  rule_number    = 360 + index(var.private_subnet_cidr_blocks, each.value)
-  rule_action    = "allow"
   cidr_block     = aws_subnet.operations.cidr_block
+  egress         = true
   from_port      = 1024
+  network_acl_id = aws_network_acl.private[each.value].id
+  protocol       = "tcp"
+  rule_action    = "allow"
+  rule_number    = 360 + index(var.private_subnet_cidr_blocks, each.value)
   to_port        = 65535
 }
 
@@ -390,13 +390,13 @@ resource "aws_network_acl_rule" "private_egress_to_operations_via_ssh" {
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
 
-  network_acl_id = aws_network_acl.private[each.value].id
-  egress         = true
-  protocol       = "tcp"
-  rule_number    = 370 + index(var.private_subnet_cidr_blocks, each.value)
-  rule_action    = "allow"
   cidr_block     = aws_subnet.operations.cidr_block
+  egress         = true
   from_port      = 22
+  network_acl_id = aws_network_acl.private[each.value].id
+  protocol       = "tcp"
+  rule_action    = "allow"
+  rule_number    = 370 + index(var.private_subnet_cidr_blocks, each.value)
   to_port        = 22
 }
 
@@ -406,13 +406,13 @@ resource "aws_network_acl_rule" "private_egress_to_operations_via_vnc" {
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
 
-  network_acl_id = aws_network_acl.private[each.value].id
-  egress         = true
-  protocol       = "tcp"
-  rule_number    = 380 + index(var.private_subnet_cidr_blocks, each.value)
-  rule_action    = "allow"
   cidr_block     = aws_subnet.operations.cidr_block
+  egress         = true
   from_port      = 5901
+  network_acl_id = aws_network_acl.private[each.value].id
+  protocol       = "tcp"
+  rule_action    = "allow"
+  rule_number    = 380 + index(var.private_subnet_cidr_blocks, each.value)
   to_port        = 5901
 }
 
@@ -426,13 +426,13 @@ resource "aws_network_acl_rule" "private_egress_to_cool_via_ipa_ports" {
   provider = aws.provisionassessment
   for_each = local.ipa_ports
 
-  network_acl_id = aws_network_acl.private[var.private_subnet_cidr_blocks[0]].id
-  egress         = true
-  protocol       = each.value.protocol
-  rule_number    = 400 + each.value.index
-  rule_action    = "allow"
   cidr_block     = local.cool_shared_services_cidr_block
+  egress         = true
   from_port      = each.value.port
+  network_acl_id = aws_network_acl.private[var.private_subnet_cidr_blocks[0]].id
+  protocol       = each.value.protocol
+  rule_action    = "allow"
+  rule_number    = 400 + each.value.index
   to_port        = each.value.port
 }
 
@@ -447,10 +447,10 @@ resource "aws_network_acl_rule" "private_egress_to_local_vm_ips_via_all_ports" {
   provider = aws.provisionassessment
   for_each = toset(var.private_subnet_cidr_blocks)
 
-  network_acl_id = aws_network_acl.private[each.value].id
-  egress         = true
-  protocol       = "all"
-  rule_number    = 410 + index(var.private_subnet_cidr_blocks, each.value)
-  rule_action    = "allow"
   cidr_block     = "172.16.0.0/12"
+  egress         = true
+  network_acl_id = aws_network_acl.private[each.value].id
+  protocol       = "all"
+  rule_action    = "allow"
+  rule_number    = 410 + index(var.private_subnet_cidr_blocks, each.value)
 }

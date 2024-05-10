@@ -4,11 +4,10 @@
 resource "aws_security_group" "scanner" {
   provider = aws.provisionassessment
 
-  vpc_id = aws_vpc.assessment.id
-
   tags = {
     Name = "Scanner"
   }
+  vpc_id = aws_vpc.assessment.id
 }
 
 # Allow ingress from anywhere via ICMP
@@ -17,12 +16,12 @@ resource "aws_security_group" "scanner" {
 resource "aws_security_group_rule" "scanner_ingress_from_anywhere_via_icmp" {
   provider = aws.provisionassessment
 
-  security_group_id = aws_security_group.scanner.id
-  type              = "ingress"
-  protocol          = "icmp"
   cidr_blocks       = ["0.0.0.0/0"]
   from_port         = 8
+  protocol          = "icmp"
+  security_group_id = aws_security_group.scanner.id
   to_port           = 0
+  type              = "ingress"
 }
 
 # Allow egress to anywhere via any protocol and port
@@ -31,10 +30,10 @@ resource "aws_security_group_rule" "scanner_ingress_from_anywhere_via_icmp" {
 resource "aws_security_group_rule" "scanner_egress_to_anywhere_via_any_port" {
   provider = aws.provisionassessment
 
-  security_group_id = aws_security_group.scanner.id
-  type              = "egress"
-  protocol          = -1
   cidr_blocks       = ["0.0.0.0/0"]
   from_port         = -1
+  protocol          = -1
+  security_group_id = aws_security_group.scanner.id
   to_port           = -1
+  type              = "egress"
 }

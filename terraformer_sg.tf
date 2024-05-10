@@ -2,11 +2,10 @@
 resource "aws_security_group" "terraformer" {
   provider = aws.provisionassessment
 
-  vpc_id = aws_vpc.assessment.id
-
   tags = {
     Name = "Terraformer"
   }
+  vpc_id = aws_vpc.assessment.id
 }
 
 # Allow egress anywhere via ssh
@@ -16,12 +15,12 @@ resource "aws_security_group" "terraformer" {
 resource "aws_security_group_rule" "terraformer_egress_anywhere_via_ssh" {
   provider = aws.provisionassessment
 
-  security_group_id = aws_security_group.terraformer.id
-  type              = "egress"
-  protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
   from_port         = 22
+  protocol          = "tcp"
+  security_group_id = aws_security_group.terraformer.id
   to_port           = 22
+  type              = "egress"
 }
 
 # Allow egress anywhere via HTTP
@@ -30,12 +29,12 @@ resource "aws_security_group_rule" "terraformer_egress_anywhere_via_ssh" {
 resource "aws_security_group_rule" "terraformer_egress_anywhere_via_http" {
   provider = aws.provisionassessment
 
-  security_group_id = aws_security_group.terraformer.id
-  type              = "egress"
-  protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
   from_port         = 80
+  protocol          = "tcp"
+  security_group_id = aws_security_group.terraformer.id
   to_port           = 80
+  type              = "egress"
 }
 
 # Allow egress anywhere via HTTPS
@@ -44,12 +43,12 @@ resource "aws_security_group_rule" "terraformer_egress_anywhere_via_http" {
 resource "aws_security_group_rule" "terraformer_egress_anywhere_via_https" {
   provider = aws.provisionassessment
 
-  security_group_id = aws_security_group.terraformer.id
-  type              = "egress"
-  protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
   from_port         = 443
+  protocol          = "tcp"
+  security_group_id = aws_security_group.terraformer.id
   to_port           = 443
+  type              = "egress"
 }
 
 # Allow egress anywhere via port 5986 (Windows Remote Manager).
@@ -59,10 +58,10 @@ resource "aws_security_group_rule" "terraformer_egress_anywhere_via_https" {
 resource "aws_security_group_rule" "terraformer_egress_to_operations_via_winrm" {
   provider = aws.provisionassessment
 
-  security_group_id = aws_security_group.terraformer.id
-  type              = "egress"
-  protocol          = "tcp"
   cidr_blocks       = [aws_subnet.operations.cidr_block]
   from_port         = 5986
+  protocol          = "tcp"
+  security_group_id = aws_security_group.terraformer.id
   to_port           = 5986
+  type              = "egress"
 }
