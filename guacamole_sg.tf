@@ -42,8 +42,8 @@ resource "aws_security_group_rule" "guacamole_ingress_from_trusted_via_https" {
   provider = aws.provisionassessment
 
   cidr_blocks = [local.vpn_server_cidr_block]
+  from_port   = 443
   # ipv6_cidr_blocks  = TBD
-  from_port         = 443
   protocol          = "tcp"
   security_group_id = aws_security_group.guacamole.id
   to_port           = 443
