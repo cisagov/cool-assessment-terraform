@@ -84,7 +84,7 @@ resource "aws_eip" "kali" {
 
   tags = {
     Name             = format("Kali%d EIP", count.index)
-    "Publish Egress" = "True"
+    "Publish Egress" = var.publish_egress_ip_addresses
   }
   vpc = true
 }

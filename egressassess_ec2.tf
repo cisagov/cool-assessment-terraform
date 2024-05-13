@@ -74,7 +74,7 @@ resource "aws_eip" "egressassess" {
 
   tags = {
     Name             = format("EgressAssess%d EIP", count.index)
-    "Publish Egress" = "True"
+    "Publish Egress" = var.publish_egress_ip_addresses
   }
   vpc = true
 }
