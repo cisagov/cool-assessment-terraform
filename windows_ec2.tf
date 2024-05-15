@@ -57,7 +57,8 @@ resource "aws_instance" "windows" {
   }
   subnet_id = aws_subnet.operations.id
   tags = {
-    Name = format("Windows%d", count.index)
+    Name             = format("Windows%d", count.index)
+    "Publish Egress" = var.publish_egress_ip_addresses
   }
   user_data = templatefile(
     "${path.module}/ec2launch/windows-setup.tpl.yml",

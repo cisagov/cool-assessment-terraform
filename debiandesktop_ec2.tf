@@ -56,7 +56,8 @@ resource "aws_instance" "debiandesktop" {
   }
   subnet_id = aws_subnet.operations.id
   tags = {
-    Name = format("DebianDesktop%d", count.index)
+    Name             = format("DebianDesktop%d", count.index)
+    "Publish Egress" = var.publish_egress_ip_addresses
   }
   user_data_base64 = data.cloudinit_config.debiandesktop_cloud_init_tasks[count.index].rendered
   # volume_tags does not yet inherit the default tags from the

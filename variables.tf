@@ -270,6 +270,12 @@ variable "provisionssmsessionmanager_policy_name" {
   type        = string
 }
 
+variable "publish_egress_ip_addresses" {
+  default     = false
+  description = "A boolean value that specifies whether EC2 instances in the operations subnet should be tagged to indicate that their public IP addresses may be published.  This is useful for deconfliction purposes.  Publishing these addresses can be done via the code in cisagov/publish-egress-ip-lambda and cisagov/publish-egress-ip-terraform."
+  type        = bool
+}
+
 variable "read_terraform_state_role_name" {
   default     = "ReadCoolAssessmentTerraformTerraformState-%s"
   description = "The name to assign the IAM role (as well as the corresponding policy) that allows read-only access to the cool-assessment-terraform state in the S3 bucket where Terraform state is stored.  The %s in this name will be replaced by the value of the assessment_account_name variable."

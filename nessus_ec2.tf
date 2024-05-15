@@ -95,7 +95,7 @@ resource "aws_eip" "nessus" {
 
   tags = {
     Name             = format("Nessus%d EIP", count.index)
-    "Publish Egress" = "True"
+    "Publish Egress" = var.publish_egress_ip_addresses
   }
   vpc = true
 }
