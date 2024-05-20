@@ -1,5 +1,5 @@
 # This file contains a semi-hacky way of validating user-provided assessment
-# information.  As of Terraform v1.3.x, there is no built-in way to validate
+# information.  As of Terraform v1.5.x, there is no built-in way to validate
 # one variable against another, as we need to do here.  Terraform input variable
 # validation expressions can only refer to the variable being validated and no
 # others.  For more, see
@@ -8,6 +8,9 @@
 # To work around this limitation, we use a null_resource with a lifecycle block
 # that contains a precondition.  The precondition is evaluated at plan time, and
 # if it fails, the plan will fail with the error message provided.
+
+# NOTE: When adding new validation checks, be sure to include them to the
+# initial apply in the terraform_apply.sh script.
 
 resource "null_resource" "validate_assessment_account_name_matches_workspace" {
   lifecycle {
