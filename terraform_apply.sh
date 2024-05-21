@@ -34,6 +34,7 @@ export AWS_DEFAULT_REGION
 # cool-sharedservices-networking, which is probably the correct
 # long-term solution here.
 #
+# 0. Perform a targeted apply to validate user-provided assessment information.
 # 1. Perform a targeted apply to attach a policy that gives the
 # permissions necessary to create the other resources.
 # 2. Perform a targeted apply to create the networking-related
@@ -41,10 +42,15 @@ export AWS_DEFAULT_REGION
 # 3. Perform a targeted apply to create the EC2 instances.
 # 4. Perform an untargeted apply to create everything else.
 terraform apply "${@}" \
-  -target=aws_iam_policy.provisionassessment_policy \
-  -target=aws_iam_policy.provisionssmsessionmanager_policy \
-  -target=aws_iam_role_policy_attachment.provisionassessment_policy_attachment \
-  -target=aws_iam_role_policy_attachment.provisionssmsessionmanager_policy_attachment \
+  -target=null_resource.validate_assessment_account_name_matches_workspace \
+  -target=null_resource.validate_assessment_artifact_export_map \
+  -target=null_resource.validate_assessment_id \
+  -target=null_resource.validate_assessment_type \
+  && terraform apply "${@}" \
+    -target=aws_iam_policy.provisionassessment_policy \
+    -target=aws_iam_policy.provisionssmsessionmanager_policy \
+    -target=aws_iam_role_policy_attachment.provisionassessment_policy_attachment \
+    -target=aws_iam_role_policy_attachment.provisionssmsessionmanager_policy_attachment \
   && terraform apply "${@}" \
     -target=aws_default_route_table.operations \
     -target=aws_efs_access_point.access_point \
