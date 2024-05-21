@@ -16,7 +16,7 @@ resource "null_resource" "validate_assessment_account_name_matches_workspace" {
   lifecycle {
     precondition {
       condition     = replace(replace(lower(var.assessment_account_name), "/[()]/", ""), " ", "-") == terraform.workspace
-      error_message = "Assessment account name (${var.assessment_account_name}) does not align with the currently-selected workspace (${terraform.workspace}).  Are you sure that you are using the correct tfvars file?"
+      error_message = "Assessment account name (${var.assessment_account_name}) does not agree with the currently-selected workspace (${terraform.workspace}).  Are you sure that you are using the correct tfvars file?"
     }
   }
 }
