@@ -2,16 +2,19 @@
 data "aws_ami" "debiandesktop" {
   provider = aws.provisionassessment
 
+  most_recent = true
+  owners      = [local.images_account_id]
+
   filter {
-    name = "name"
-    values = [
-      "debian-hvm-*-x86_64-ebs"
-    ]
+    name   = "architecture"
+    values = ["arm64"]
   }
 
   filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
+    name = "name"
+    values = [
+      "debian-hvm-*-arm64-ebs"
+    ]
   }
 
   filter {
@@ -19,8 +22,10 @@ data "aws_ami" "debiandesktop" {
     values = ["ebs"]
   }
 
-  most_recent = true
-  owners      = [local.images_account_id]
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
 }
 
 # The "Debian desktop" EC2 instances
