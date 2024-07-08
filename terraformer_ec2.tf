@@ -42,7 +42,7 @@ resource "aws_instance" "terraformer" {
 
   ami                  = data.aws_ami.terraformer.id
   iam_instance_profile = aws_iam_instance_profile.terraformer.name
-  instance_type        = "t3.xlarge"
+  instance_type        = "t4g.xlarge"
   # AWS Instance Meta-Data Service (IMDS) options
   metadata_options {
     # Enable IMDS (this is the default value)

@@ -42,7 +42,7 @@ resource "aws_instance" "samba" {
 
   ami                  = data.aws_ami.samba.id
   iam_instance_profile = aws_iam_instance_profile.samba.name
-  instance_type        = "t3.small"
+  instance_type        = "t4g.small"
   # AWS Instance Meta-Data Service (IMDS) options
   metadata_options {
     # Enable IMDS (this is the default value)

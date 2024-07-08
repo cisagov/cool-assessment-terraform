@@ -43,7 +43,7 @@ resource "aws_instance" "debiandesktop" {
   ami                         = data.aws_ami.debiandesktop.id
   associate_public_ip_address = true
   iam_instance_profile        = aws_iam_instance_profile.debiandesktop.name
-  instance_type               = "t3.medium"
+  instance_type               = "t4g.medium"
   # AWS Instance Meta-Data Service (IMDS) options
   metadata_options {
     # Enable IMDS (this is the default value)
