@@ -2,6 +2,14 @@
 data "aws_ami" "assessorworkbench" {
   provider = aws.provisionassessment
 
+  most_recent = true
+  owners      = [local.images_account_id]
+
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
+
   filter {
     name = "name"
     values = [
@@ -10,17 +18,14 @@ data "aws_ami" "assessorworkbench" {
   }
 
   filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  filter {
     name   = "root-device-type"
     values = ["ebs"]
   }
 
-  most_recent = true
-  owners      = [local.images_account_id]
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
 }
 
 # The Assessor Workbench EC2 instances
