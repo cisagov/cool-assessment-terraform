@@ -9,6 +9,7 @@ data "aws_iam_policy_document" "provisionassessment_policy_doc" {
       "cloudwatch:DeleteAlarms",
       "cloudwatch:ListTagsForResource",
       "cloudwatch:PutMetricAlarm",
+      "cloudwatch:TagResource",
     ]
 
     resources = [
