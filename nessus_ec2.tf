@@ -7,6 +7,14 @@
 data "aws_ami" "nessus" {
   provider = aws.provisionassessment
 
+  most_recent = true
+  owners      = [local.images_account_id]
+
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
+
   filter {
     name = "name"
     values = [
@@ -15,17 +23,14 @@ data "aws_ami" "nessus" {
   }
 
   filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  filter {
     name   = "root-device-type"
     values = ["ebs"]
   }
 
-  most_recent = true
-  owners      = [local.images_account_id]
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
 }
 
 # The Nessus EC2 instance

@@ -2,16 +2,19 @@
 data "aws_ami" "terraformer" {
   provider = aws.provisionassessment
 
+  most_recent = true
+  owners      = [local.images_account_id]
+
   filter {
-    name = "name"
-    values = [
-      "terraformer-hvm-*-x86_64-ebs"
-    ]
+    name   = "architecture"
+    values = ["arm64"]
   }
 
   filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
+    name = "name"
+    values = [
+      "terraformer-hvm-*-arm64-ebs"
+    ]
   }
 
   filter {
@@ -19,8 +22,10 @@ data "aws_ami" "terraformer" {
     values = ["ebs"]
   }
 
-  most_recent = true
-  owners      = [local.images_account_id]
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
 }
 
 # The Terraformer EC2 instances
@@ -37,7 +42,7 @@ resource "aws_instance" "terraformer" {
 
   ami                  = data.aws_ami.terraformer.id
   iam_instance_profile = aws_iam_instance_profile.terraformer.name
-  instance_type        = "t3.xlarge"
+  instance_type        = "t4g.xlarge"
   # AWS Instance Meta-Data Service (IMDS) options
   metadata_options {
     # Enable IMDS (this is the default value)
