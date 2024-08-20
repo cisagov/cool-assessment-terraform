@@ -54,20 +54,20 @@ resource "aws_security_group_rule" "kali_egress_to_nessus_via_web_ui" {
   provider = aws.provisionassessment
 
   from_port                = 8834
+  protocol                 = "tcp"
   security_group_id        = aws_security_group.kali.id
   source_security_group_id = aws_security_group.nessus.id
-  protocol                 = "tcp"
   to_port                  = 8834
   type                     = "egress"
 }
 
 # Allow ingress from anywhere via the allowed ports
 resource "aws_security_group_rule" "ingress_from_anywhere_to_kali_via_allowed_ports" {
-  provider = aws.provisionassessment
   # for_each will only accept a map or a list of strings, so we have
   # to do a little finagling to get the list of port objects into an
   # acceptable form.
   for_each = { for d in var.inbound_ports_allowed["kali"] : format("%s_%d_%d", d.protocol, d.from_port, d.to_port) => d }
+  provider = aws.provisionassessment
 
   security_group_id = aws_security_group.kali.id
   type              = "ingress"
@@ -81,50 +81,50 @@ resource "aws_security_group_rule" "ingress_from_anywhere_to_kali_via_allowed_po
 # 5000-5999 (TCP and UDP).  This port range was requested for use by
 # assessment operators in cisagov/cool-system-internal#79.
 resource "aws_security_group_rule" "kali_egress_to_teamserver_instances_via_5000_to_5999" {
-  provider = aws.provisionassessment
   for_each = toset(["tcp", "udp"])
+  provider = aws.provisionassessment
 
-  security_group_id        = aws_security_group.kali.id
-  type                     = "egress"
-  protocol                 = each.key
-  source_security_group_id = aws_security_group.teamserver.id
   from_port                = 5000
+  protocol                 = each.key
+  security_group_id        = aws_security_group.kali.id
+  source_security_group_id = aws_security_group.teamserver.id
   to_port                  = 5999
+  type                     = "egress"
 }
 resource "aws_security_group_rule" "kali_ingress_from_teamserver_instances_via_5000_to_5999" {
-  provider = aws.provisionassessment
   for_each = toset(["tcp", "udp"])
+  provider = aws.provisionassessment
 
-  security_group_id        = aws_security_group.kali.id
-  type                     = "ingress"
-  protocol                 = each.key
-  source_security_group_id = aws_security_group.teamserver.id
   from_port                = 5000
+  protocol                 = each.key
+  security_group_id        = aws_security_group.kali.id
+  source_security_group_id = aws_security_group.teamserver.id
   to_port                  = 5999
+  type                     = "ingress"
 }
 
 # Allow unfettered access between Kali and Windows instances
 resource "aws_security_group_rule" "kali_egress_to_windows_instances" {
-  provider = aws.provisionassessment
   for_each = toset(["tcp", "udp"])
+  provider = aws.provisionassessment
 
-  security_group_id        = aws_security_group.kali.id
-  type                     = "egress"
-  protocol                 = each.key
-  source_security_group_id = aws_security_group.windows.id
   from_port                = 0
+  protocol                 = each.key
+  security_group_id        = aws_security_group.kali.id
+  source_security_group_id = aws_security_group.windows.id
   to_port                  = 65535
+  type                     = "egress"
 }
 resource "aws_security_group_rule" "kali_ingress_from_windows_instances" {
-  provider = aws.provisionassessment
   for_each = toset(["tcp", "udp"])
+  provider = aws.provisionassessment
 
-  security_group_id        = aws_security_group.kali.id
-  type                     = "ingress"
-  protocol                 = each.key
-  source_security_group_id = aws_security_group.windows.id
   from_port                = 0
+  protocol                 = each.key
+  security_group_id        = aws_security_group.kali.id
+  source_security_group_id = aws_security_group.windows.id
   to_port                  = 65535
+  type                     = "ingress"
 }
 
 # Allow egress to Gophish instances via port 22 (SSH)
