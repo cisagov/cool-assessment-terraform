@@ -34,10 +34,10 @@ resource "aws_security_group_rule" "kali_egress_to_pentestportal_via_web" {
   type                     = "egress"
 }
 
-# Allow egress to teamservers via ports 993 and 50050 (IMAP over
-# TLS/SSL and Cobalt Strike, respectively)
-resource "aws_security_group_rule" "kali_egress_to_teamserver_via_imaps_and_cs" {
-  for_each = toset(["993", "50050"])
+# Allow egress to teamservers via ports 22, 993, and 50050 (SSH, IMAP over
+# TLS/SSL, and Cobalt Strike, respectively)
+resource "aws_security_group_rule" "kali_egress_to_teamserver_via_ssh_imaps_and_cs" {
+  for_each = toset(["22", "993", "50050"])
   provider = aws.provisionassessment
 
   from_port                = each.key
