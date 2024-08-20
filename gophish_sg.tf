@@ -8,6 +8,18 @@ resource "aws_security_group" "gophish" {
   vpc_id = aws_vpc.assessment.id
 }
 
+# Allow ingress from Kali instances via port 22 (SSH) for Ansible configuration
+resource "aws_security_group_rule" "ingress_from_kali_via_ssh" {
+  provider = aws.provisionassessment
+
+  from_port                = 22
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.gophish.id
+  source_security_group_id = aws_security_group.kali.id
+  to_port                  = 22
+  type                     = "ingress"
+}
+
 # Allow ingress from Teamserver instances via port 587 (SMTP mail submission)
 # so mail can be sent via the mail server on Gophish instances
 resource "aws_security_group_rule" "ingress_from_teamserver_to_gophish_via_smtp" {

@@ -126,3 +126,15 @@ resource "aws_security_group_rule" "kali_ingress_from_windows_instances" {
   from_port                = 0
   to_port                  = 65535
 }
+
+# Allow egress to Gophish instances via port 22 (SSH)
+resource "aws_security_group_rule" "kali_egress_to_gophish_via_ssh" {
+  provider = aws.provisionassessment
+
+  from_port                = 22
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.kali.id
+  source_security_group_id = aws_security_group.gophish.id
+  to_port                  = 22
+  type                     = "egress"
+}
