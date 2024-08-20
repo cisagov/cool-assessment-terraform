@@ -8,6 +8,19 @@ resource "aws_security_group" "kali" {
   vpc_id = aws_vpc.assessment.id
 }
 
+# Allow egress to and ingress from other Kali instances via port 22
+resource "aws_security_group_rule" "kali_to_kali_via_ssh" {
+  for_each = toset(["egress", "ingress"])
+  provider = aws.provisionassessment
+
+  from_port                = "22"
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.kali.id
+  source_security_group_id = aws_security_group.kali.id
+  to_port                  = "22"
+  type                     = each.key
+}
+
 # Allow egress to PenTest Portal instances via ports 443 and 8080
 resource "aws_security_group_rule" "kali_egress_to_pentestportal_via_web" {
   for_each = toset(["443", "8080"])
