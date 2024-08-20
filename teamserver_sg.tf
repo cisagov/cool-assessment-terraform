@@ -8,16 +8,18 @@ resource "aws_security_group" "teamserver" {
   vpc_id = aws_vpc.assessment.id
 }
 
-# Allow egress via port 587 (SMTP mail submission) to Gophish instances
-# so that mail can be sent out via its mail server
-resource "aws_security_group_rule" "teamserver_egress_to_gophish_via_587" {
+# Allow egress to Gophish instances via port 22 (SSH) for Ansible configuration
+# and port 587 (SMTP mail submission) so that mail can be sent out via its mail
+# server
+resource "aws_security_group_rule" "teamserver_egress_to_gophish_via_ssh_and_smtp" {
+  for_each = toset(["22", "587"])
   provider = aws.provisionassessment
 
-  from_port                = 587
+  from_port                = each.key
   protocol                 = "tcp"
   security_group_id        = aws_security_group.teamserver.id
   source_security_group_id = aws_security_group.gophish.id
-  to_port                  = 587
+  to_port                  = each.key
   type                     = "egress"
 }
 
