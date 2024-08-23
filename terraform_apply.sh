@@ -104,7 +104,7 @@ terraform apply "${@}" \
     -target=aws_security_group_rule.ingress_from_ssm_agent_endpoint_client_to_ssm_agent_endpoint_via_https \
     -target=aws_security_group_rule.ingress_from_ssm_endpoint_client_to_ssm_endpoint_via_https \
     -target=aws_security_group_rule.ingress_from_sts_endpoint_client_to_sts_endpoint_via_https \
-    -target=aws_security_group_rule.ingress_from_teamserver_to_gophish_via_smtp \
+    -target=aws_security_group_rule.ingress_from_teamserver_to_gophish_via_ssh_and_smtp \
     -target=aws_security_group_rule.scanner_egress_to_anywhere_via_any_port \
     -target=aws_security_group_rule.smb_client_egress_to_smb_server \
     -target=aws_security_group_rule.smb_server_ingress_from_smb_client \
