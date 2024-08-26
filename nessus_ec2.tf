@@ -12,13 +12,13 @@ data "aws_ami" "nessus" {
 
   filter {
     name   = "architecture"
-    values = ["x86_64"]
+    values = ["arm64"]
   }
 
   filter {
     name = "name"
     values = [
-      "nessus-hvm-*-x86_64-ebs"
+      "nessus-hvm-*-arm64-ebs"
     ]
   }
 
@@ -55,7 +55,7 @@ resource "aws_instance" "nessus" {
   ami                         = data.aws_ami.nessus.id
   associate_public_ip_address = true
   iam_instance_profile        = aws_iam_instance_profile.nessus.name
-  instance_type               = "m5.large"
+  instance_type               = "m7g.large"
   # AWS Instance Meta-Data Service (IMDS) options
   metadata_options {
     # Enable IMDS (this is the default value)
