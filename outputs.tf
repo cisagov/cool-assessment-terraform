@@ -198,6 +198,11 @@ output "read_terraform_state_module" {
   value       = module.read_terraform_state
 }
 
+output "read_write_terraform_state_module" {
+  description = "The IAM policies and role that allow read-write access to the cool-assessment-terraform workspace-specific state in the Terraform state bucket."
+  value       = module.read_write_terraform_state
+}
+
 output "remote_desktop_url" {
   description = "The URL of the remote desktop gateway (Guacamole) for this assessment."
   value       = "https://${aws_route53_record.guacamole_A.name}"
