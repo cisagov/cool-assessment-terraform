@@ -28,7 +28,7 @@ the COOL environment.
 - A Terraform [variables](variables.tf) file customized for your
   assessment environment, for example:
 
-  ```console
+  ```hcl
   assessment_account_name = "env0"
   private_domain          = "env0"
 
