@@ -8,18 +8,30 @@ resource "aws_security_group" "terraformer" {
   vpc_id = aws_vpc.assessment.id
 }
 
-# Allow egress anywhere via ssh
+# Allow egress anywhere via ssh and WinRM
 #
 # For: Terraformer instances must be able to configure redirectors and
-# operations instances via Ansible.
-resource "aws_security_group_rule" "terraformer_egress_anywhere_via_ssh" {
+# operations instances via Ansible, some of which may be
+# Windows-based.
+resource "aws_security_group_rule" "terraformer_egress_anywhere_via_ssh_and_winrm" {
   provider = aws.provisionassessment
+  for_each = {
+    ssh = {
+      port = 22,
+    },
+    winrm_unencrypted = {
+      port = 5985,
+    },
+    winrm_encrypted = {
+      port = 5986,
+    },
+  }
 
   cidr_blocks       = ["0.0.0.0/0"]
-  from_port         = 22
+  from_port         = each.value.port
   protocol          = "tcp"
   security_group_id = aws_security_group.terraformer.id
-  to_port           = 22
+  to_port           = each.value.port
   type              = "egress"
 }
 
@@ -48,20 +60,5 @@ resource "aws_security_group_rule" "terraformer_egress_anywhere_via_https" {
   protocol          = "tcp"
   security_group_id = aws_security_group.terraformer.id
   to_port           = 443
-  type              = "egress"
-}
-
-# Allow egress anywhere via port 5986 (Windows Remote Manager).
-#
-# For: Terraformer instances must be able to configure Windows-based
-# operations instances via Ansible.
-resource "aws_security_group_rule" "terraformer_egress_to_operations_via_winrm" {
-  provider = aws.provisionassessment
-
-  cidr_blocks       = [aws_subnet.operations.cidr_block]
-  from_port         = 5986
-  protocol          = "tcp"
-  security_group_id = aws_security_group.terraformer.id
-  to_port           = 5986
   type              = "egress"
 }
