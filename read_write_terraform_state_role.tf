@@ -5,7 +5,7 @@
 # ------------------------------------------------------------------------------
 
 module "read_write_terraform_state" {
-  source = "github.com/cisagov/terraform-state-read-role-tf-module?ref=bugfix%2Fadd-permissions-to-write-dynamodb-lock-table"
+  source = "github.com/cisagov/terraform-state-read-role-tf-module"
 
   providers = {
     aws = aws.provisionterraform
