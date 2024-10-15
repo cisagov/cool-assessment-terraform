@@ -110,7 +110,7 @@ the COOL environment.
 | email\_sending\_domain\_certreadrole | github.com/cisagov/cert-read-role-tf-module | n/a |
 | guacamole\_certreadrole | github.com/cisagov/cert-read-role-tf-module | n/a |
 | read\_terraform\_state | github.com/cisagov/terraform-state-read-role-tf-module | n/a |
-| read\_write\_terraform\_state | github.com/cisagov/terraform-state-read-role-tf-module | n/a |
+| read\_write\_terraform\_state | github.com/cisagov/terraform-state-read-role-tf-module | improvement%2Fadd-extra-read-only-states |
 | session\_manager | github.com/cisagov/session-manager-tf-module | n/a |
 | vpc\_flow\_logs | trussworks/vpc-flow-logs/aws | ~>2.0 |
 
