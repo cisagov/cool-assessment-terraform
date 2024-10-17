@@ -110,6 +110,7 @@ the COOL environment.
 | email\_sending\_domain\_certreadrole | github.com/cisagov/cert-read-role-tf-module | n/a |
 | guacamole\_certreadrole | github.com/cisagov/cert-read-role-tf-module | n/a |
 | read\_terraform\_state | github.com/cisagov/terraform-state-read-role-tf-module | n/a |
+| read\_write\_terraform\_state | github.com/cisagov/terraform-state-read-role-tf-module | n/a |
 | session\_manager | github.com/cisagov/session-manager-tf-module | n/a |
 | vpc\_flow\_logs | trussworks/vpc-flow-logs/aws | ~>2.0 |
 
@@ -522,6 +523,7 @@ the COOL environment.
 | provisionssmsessionmanager\_policy\_name | The name to assign the IAM policy that allows sufficient permissions to provision the SSM Document resource and set up SSM session logging in this assessment account. | `string` | `"ProvisionSSMSessionManager"` | no |
 | publish\_egress\_ip\_addresses | A boolean value that specifies whether EC2 instances in the operations subnet should be tagged to indicate that their public IP addresses may be published.  This is useful for deconfliction purposes.  Publishing these addresses can be done via the code in cisagov/publish-egress-ip-lambda and cisagov/publish-egress-ip-terraform. | `bool` | `false` | no |
 | read\_terraform\_state\_role\_name | The name to assign the IAM role (as well as the corresponding policy) that allows read-only access to the cool-assessment-terraform state in the S3 bucket where Terraform state is stored.  The %s in this name will be replaced by the value of the assessment\_account\_name variable. | `string` | `"ReadCoolAssessmentTerraformTerraformState-%s"` | no |
+| read\_write\_terraform\_state\_role\_name | The name to assign the IAM role (as well as the corresponding policy) that allows read-write access to the cool-assessment-terraform state in the S3 bucket where Terraform state is stored.  The %s in this name will be replaced by the value of the assessment\_account\_name variable. | `string` | `"ReadWriteCoolAssessmentTerraformTerraformState-%s"` | no |
 | session\_cloudwatch\_log\_group\_name | The name of the log group into which session logs are to be uploaded. | `string` | `"/ssm/session-logs"` | no |
 | ssm\_key\_artifact\_export\_access\_key\_id | The AWS SSM Parameter Store parameter that contains the AWS access key of the IAM user that can write to the assessment artifact export bucket (e.g. "/assessment\_artifact\_export/access\_key\_id"). | `string` | `"/assessment_artifact_export/access_key_id"` | no |
 | ssm\_key\_artifact\_export\_bucket\_name | The AWS SSM Parameter Store parameter that contains the name of the assessment artifact export bucket (e.g. "/assessment\_artifact\_export/bucket"). | `string` | `"/assessment_artifact_export/bucket"` | no |
@@ -586,6 +588,7 @@ the COOL environment.
 | private\_subnet\_nat\_gateway | The NAT gateway for the private subnets. |
 | private\_subnets | The private subnets. |
 | read\_terraform\_state\_module | The IAM policies and role that allow read-only access to the cool-assessment-terraform workspace-specific state in the Terraform state bucket. |
+| read\_write\_terraform\_state\_module | The IAM policies and role that allow read-write access to the cool-assessment-terraform workspace-specific state in the Terraform state bucket. |
 | remote\_desktop\_url | The URL of the remote desktop gateway (Guacamole) for this assessment. |
 | s3\_endpoint\_client\_security\_group | A security group for any instances that wish to communicate with the S3 VPC endpoint. |
 | samba\_client\_security\_group | The security group that should be applied to all instance types that wish to mount the Samba file share being served by the Samba file share server instances. |

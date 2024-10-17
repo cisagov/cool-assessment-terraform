@@ -282,6 +282,12 @@ variable "read_terraform_state_role_name" {
   type        = string
 }
 
+variable "read_write_terraform_state_role_name" {
+  default     = "ReadWriteCoolAssessmentTerraformTerraformState-%s"
+  description = "The name to assign the IAM role (as well as the corresponding policy) that allows read-write access to the cool-assessment-terraform state in the S3 bucket where Terraform state is stored.  The %s in this name will be replaced by the value of the assessment_account_name variable."
+  type        = string
+}
+
 # This variable is copied over from cisagov/session-manager-tf-module
 # so that its value can be specified outside of that module.  This
 # allows us to impose a dependency of the module on the policy that
