@@ -26,6 +26,7 @@ module "read_write_terraform_state" {
     "cool-accounts/master.tfstate"                     = { workspace = "production" }
     "cool-accounts/shared_services.tfstate"            = { workspace = local.workspace_type }
     "cool-accounts/terraform.tfstate"                  = { workspace = "production" }
+    "cool-accounts/users.tfstate"                      = { workspace = "production" }
     "cool-dns-certboto/terraform.tfstate"              = { workspace = "production" }
     "cool-images-parameterstore/terraform.tfstate"     = { workspace = local.workspace_type }
     "cool-sharedservices-networking/terraform.tfstate" = { workspace = local.workspace_type }
@@ -43,4 +44,26 @@ module "read_write_terraform_state" {
   terraform_state_bucket_name = "cisa-cool-terraform-state"
   terraform_state_path        = "cool-assessment-terraform/terraform.tfstate"
   terraform_workspace         = local.assessment_workspace_name
+}
+
+# An IAM policy document that only allows users to assume the role
+# created by the module above.
+data "aws_iam_policy_document" "assume_read_write_role_doc" {
+  statement {
+    actions = [
+      "sts:AssumeRole",
+      "sts:TagSession",
+    ]
+    effect    = "Allow"
+    resources = [module.read_write_terraform_state.role.arn]
+  }
+}
+
+# Attach the above policy to the selected users.
+resource "aws_iam_user_policy" "attach_assume_read_write_role_doc" {
+  for_each = toset(var.iam_users_allowed_to_self_deploy)
+  provider = aws.provisionusers
+
+  policy = data.aws_iam_policy_document.assume_read_write_role_doc.json
+  user   = each.value
 }

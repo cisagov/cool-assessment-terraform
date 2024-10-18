@@ -157,6 +157,13 @@ variable "guac_connection_setup_path" {
   type        = string
 }
 
+variable "iam_users_allowed_to_self_deploy" {
+  default     = []
+  description = "A list of IAM usernames corresponding to the IAM users in the Users account who are allowed to self-deploy.  E.g., [\"first.last\"].  Note that these users must already be included in cisagov/cool-assessment-provisioner-iam, presumably with backend_access equal to false."
+  nullable    = false
+  type        = list(string)
+}
+
 variable "inbound_ports_allowed" {
   default = {
     "assessorworkbench" : [],

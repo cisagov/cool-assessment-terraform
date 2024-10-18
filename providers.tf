@@ -103,12 +103,31 @@ provider "aws" {
 }
 
 # This provider is required by the read_terraform_state module in
-# read_terraform_state_role.tf in order to create the read-only role
-# for this Terraform root module's Terraform state.
+# read_terraform_state_role.tf and the read_write_terraform_state
+# module in read_write_terraform_state_role.tf in order to create the
+# read-only and read-write roles for this Terraform root module's
+# Terraform state.
 provider "aws" {
   alias = "provisionterraform"
   assume_role {
     role_arn     = data.terraform_remote_state.terraform.outputs.provisionaccount_role.arn
+    session_name = local.caller_user_name
+  }
+  default_tags {
+    tags = var.tags
+  }
+  region = var.aws_region
+}
+
+# The provider used to create resources inside the Users account.
+# This provider is required by the in
+# read_write_terraform_state_role.tf in order to attach a policy to
+# individual users allowing them to read and write this Terraform root
+# module's Terraform state.
+provider "aws" {
+  alias = "provisionusers"
+  assume_role {
+    role_arn     = data.terraform_remote_state.users.outputs.provisionaccount_role.arn
     session_name = local.caller_user_name
   }
   default_tags {

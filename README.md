@@ -87,6 +87,7 @@ the COOL environment.
 | aws.provisionassessment | ~> 4.9 |
 | aws.provisionparameterstorereadrole | ~> 4.9 |
 | aws.provisionsharedservices | ~> 4.9 |
+| aws.provisionusers | ~> 4.9 |
 | cloudinit | ~> 2.0 |
 | null | ~> 3.0 |
 | terraform | n/a |
@@ -219,6 +220,7 @@ the COOL environment.
 | [aws_iam_role_policy_attachment.ssm_agent_policy_attachment_terraformer](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.ssm_agent_policy_attachment_windows](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.terraformer_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_iam_user_policy.attach_assume_read_write_role_doc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_user_policy) | resource |
 | [aws_instance.assessorworkbench](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance) | resource |
 | [aws_instance.debiandesktop](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance) | resource |
 | [aws_instance.egressassess](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance) | resource |
@@ -439,6 +441,7 @@ the COOL environment.
 | [aws_caller_identity.assessment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_default_tags.assessment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/default_tags) | data source |
+| [aws_iam_policy_document.assume_read_write_role_doc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.ec2_service_assume_role_doc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.efs_mount_policy_doc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.gophish_assume_delegated_role_policy_doc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
@@ -484,6 +487,7 @@ the COOL environment.
 | [terraform_remote_state.sharedservices](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/data-sources/remote_state) | data source |
 | [terraform_remote_state.sharedservices_networking](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/data-sources/remote_state) | data source |
 | [terraform_remote_state.terraform](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/data-sources/remote_state) | data source |
+| [terraform_remote_state.users](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/data-sources/remote_state) | data source |
 
 ## Inputs ##
 
@@ -509,6 +513,7 @@ the COOL environment.
 | email\_sending\_domains | The list of domains to send emails from within the assessment environment (e.g. [ "example.com" ]).  Teamserver and Gophish instances will be deployed with each sequential domain in the list, so teamserver0 and gophish0 will get the first domain, teamserver1 and gophish1 will get the second domain, and so on.  If there are more Teamserver or Gophish instances than email-sending domains, the domains in the list will be reused in a wrap-around fashion. For example, if there are three Teamservers and only two email-sending domains, teamserver0 will get the first domain, teamserver1 will get the second domain, and teamserver2 will wrap-around back to using the first domain.  Note that all letters in this variable must be lowercase or else an error will be displayed. | `list(string)` | ```[ "example.com" ]``` | no |
 | findings\_data\_bucket\_name | The name of the AWS S3 bucket where findings data is to be written.  The default value is not a valid string for a bucket name, so findings data cannot be written to any bucket unless a value is specified. | `string` | `""` | no |
 | guac\_connection\_setup\_path | The full path to the dbinit directory where initialization files must be stored in order to work properly. (e.g. "/var/guacamole/dbinit") | `string` | `"/var/guacamole/dbinit"` | no |
+| iam\_users\_allowed\_to\_self\_deploy | A list of IAM usernames corresponding to the IAM users in the Users account who are allowed to self-deploy.  E.g., ["first.last"].  Note that these users must already be included in cisagov/cool-assessment-provisioner-iam, presumably with backend\_access equal to false. | `list(string)` | `[]` | no |
 | inbound\_ports\_allowed | An object specifying the ports allowed inbound (from anywhere) to the various instance types (e.g. {"assessorworkbench" : [], "debiandesktop" : [], "egressassess" : [], "gophish" : [], "kali": [{"protocol": "tcp", "from\_port": 443, "to\_port": 443}, {"protocol": "tcp", "from\_port": 9000, "to\_port": 9009}], "nessus" : [], "pentestportal" : [], "samba" : [], "teamserver" : [], "terraformer" : [], "windows" : [], }). | ```object({ assessorworkbench = list(object({ protocol = string, from_port = number, to_port = number })), debiandesktop = list(object({ protocol = string, from_port = number, to_port = number })), egressassess = list(object({ protocol = string, from_port = number, to_port = number })), gophish = list(object({ protocol = string, from_port = number, to_port = number })), kali = list(object({ protocol = string, from_port = number, to_port = number })), nessus = list(object({ protocol = string, from_port = number, to_port = number })), pentestportal = list(object({ protocol = string, from_port = number, to_port = number })), samba = list(object({ protocol = string, from_port = number, to_port = number })), teamserver = list(object({ protocol = string, from_port = number, to_port = number })), terraformer = list(object({ protocol = string, from_port = number, to_port = number })), windows = list(object({ protocol = string, from_port = number, to_port = number })), })``` | ```{ "assessorworkbench": [], "debiandesktop": [], "egressassess": [], "gophish": [], "kali": [], "nessus": [], "pentestportal": [], "samba": [], "teamserver": [], "terraformer": [], "windows": [] }``` | no |
 | nessus\_activation\_codes | The list of Nessus activation codes (e.g. ["AAAA-BBBB-CCCC-DDDD"]). The number of codes in this list should match the number of Nessus instances defined in operations\_instance\_counts. | `list(string)` | `[]` | no |
 | nessus\_web\_server\_port | The port on which the Nessus web server should listen (e.g. 8834). | `number` | `8834` | no |
