@@ -118,3 +118,20 @@ provider "aws" {
   }
   region = var.aws_region
 }
+
+# The provider used to create resources inside the Users account.
+# This provider is required by the in
+# read_write_terraform_state_role.tf in order to attach a policy to
+# individual users allowing them to read and write this Terraform root
+# module's Terraform state.
+provider "aws" {
+  alias = "provisionusers"
+  assume_role {
+    role_arn     = data.terraform_remote_state.users.outputs.provisionaccount_role.arn
+    session_name = local.caller_user_name
+  }
+  default_tags {
+    tags = var.tags
+  }
+  region = var.aws_region
+}
