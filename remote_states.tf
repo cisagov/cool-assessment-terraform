@@ -127,3 +127,18 @@ data "terraform_remote_state" "terraform" {
 
   workspace = "production"
 }
+
+data "terraform_remote_state" "users" {
+  backend = "s3"
+
+  config = {
+    bucket         = "cisa-cool-terraform-state"
+    dynamodb_table = "terraform-state-lock"
+    encrypt        = true
+    key            = "cool-accounts/users.tfstate"
+    profile        = "cool-terraform-backend"
+    region         = "us-east-1"
+  }
+
+  workspace = "production"
+}
