@@ -17,10 +17,12 @@ export AWS_PROFILE
 export AWS_SHARED_CREDENTIALS_FILE
 export AWS_DEFAULT_REGION
 
+# I'm using short options here because MacOS's version of sed doesn't
+# support long options.  I'm also using the -E flag because MacOS's
+# version of sed does not use extended regexes by default.
 INSTANCES=$(terraform state list \
-  | sed --expression '/^aws_instance\.\(guacamole\|samba\)$/d' \
-    --expression '/^aws_instance\..*$/p' \
-    --quiet)
+  | sed -Ee '/^aws_instance\.(guacamole|samba\[[[:digit:]]+\])$/d' \
+    -Ee '/^aws_instance\..*$/p' -n)
 
 for instance in $INSTANCES; do
   terraform taint "$instance"
