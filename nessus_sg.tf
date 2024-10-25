@@ -50,6 +50,19 @@ resource "aws_security_group_rule" "nessus_ingress_from_windows_via_web_ui" {
   type                     = "ingress"
 }
 
+# Allow ingress from Kali instances via port 22 (SSH) for Ansible
+# configuration.  Requested in cool-system-internal#37.
+resource "aws_security_group_rule" "nessus_ingress_from_kali_via_ssh" {
+  provider = aws.provisionassessment
+
+  from_port                = 22
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.nessus.id
+  source_security_group_id = aws_security_group.kali.id
+  to_port                  = 22
+  type                     = "ingress"
+}
+
 # Allow ingress from anywhere via the allowed ports
 resource "aws_security_group_rule" "ingress_from_anywhere_to_nessus_via_allowed_ports" {
   provider = aws.provisionassessment
