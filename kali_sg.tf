@@ -138,3 +138,16 @@ resource "aws_security_group_rule" "kali_egress_to_gophish_via_ssh" {
   to_port                  = 22
   type                     = "egress"
 }
+
+# Allow egress to Nessus instances via port 22 (SSH) for Ansible
+# configuration.  Requested in cool-system-internal#37.
+resource "aws_security_group_rule" "kali_egress_to_nessus_via_ssh" {
+  provider = aws.provisionassessment
+
+  from_port                = 22
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.kali.id
+  source_security_group_id = aws_security_group.nessus.id
+  to_port                  = 22
+  type                     = "egress"
+}
