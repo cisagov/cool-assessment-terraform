@@ -121,10 +121,10 @@ data "cloudinit_config" "assessorworkbench_cloud_init_tasks" {
   # so we prepend numbers to the script names to force that to that happen.
   #
   # Here is where the user scripts are called by cloud-init:
-  # https://github.com/canonical/cloud-init/blob/master/cloudinit/config/cc_scripts_user.py#L45
+  # https://github.com/canonical/cloud-init/blob/70c28373fef35827570c1c7803eb5338d8a6fcfb/cloudinit/config/cc_scripts_user.py#L38
   #
   # And here is where you can see how cloud-init sorts the scripts:
-  # https://github.com/canonical/cloud-init/blob/master/cloudinit/subp.py#L373
+  # https://github.com/canonical/cloud-init/blob/70c28373fef35827570c1c7803eb5338d8a6fcfb/cloudinit/subp.py#L366
   part {
     content = templatefile(
       "${path.module}/cloud-init/ebs-disk-setup.tpl.sh", {
