@@ -105,7 +105,7 @@ locals {
 
   # Look up assessment account name from AWS organizations provider
   assessment_account_name = [
-    for account in data.aws_organizations_organization.cool.accounts :
+    for account in data.aws_organizations_organization.cool.non_master_accounts :
     account.name
     if account.id == local.assessment_account_id
   ][0]
@@ -126,7 +126,7 @@ locals {
 
   # Determine the ID of the corresponding Images account
   images_account_id = [
-    for account in data.aws_organizations_organization.cool.accounts :
+    for account in data.aws_organizations_organization.cool.non_master_accounts :
     account.id
     if account.name == "Images (${local.assessment_account_type})"
   ][0]
@@ -246,7 +246,7 @@ locals {
 
   # Find the Users account by name.
   users_account_id = [
-    for x in data.aws_organizations_organization.cool.accounts :
+    for x in data.aws_organizations_organization.cool.non_master_accounts :
     x.id if x.name == "Users"
   ][0]
 
