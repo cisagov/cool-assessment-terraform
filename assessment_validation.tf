@@ -30,6 +30,15 @@ resource "null_resource" "validate_assessment_artifact_export_map" {
   }
 }
 
+resource "null_resource" "validate_assessment_environment" {
+  lifecycle {
+    precondition {
+      condition     = contains(var.valid_assessment_env_names, var.assessment_environment_name)
+      error_message = "Invalid assessment environment provided: ${var.assessment_environment_name}.  Valid types are: ${join(", ", var.valid_assessment_env_names)}"
+    }
+  }
+}
+
 resource "null_resource" "validate_assessment_id" {
   lifecycle {
     precondition {
