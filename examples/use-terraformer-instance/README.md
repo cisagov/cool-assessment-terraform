@@ -53,6 +53,7 @@ No modules.
 | efs\_mount\_point\_owner | The name of the user that should own the EFS share mount point on the deployed instance. | `string` | `"vnc"` | no |
 | email\_sending\_domain | The domain to send emails from within the assessment environment (e.g. "example.com"). | `string` | `"example.com"` | no |
 | tags | Tags to apply to all AWS resources created. | `map(string)` | `{}` | no |
+| terraform\_state\_bucket | The name of the S3 bucket where Terraform state is stored. | `string` | n/a | yes |
 
 ## Outputs ##
 
