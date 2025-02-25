@@ -21,15 +21,15 @@ module "read_write_terraform_state" {
   # this Terraform workspace.
   account_ids = [local.users_account_id]
   additional_read_only_states = {
-    "cool-accounts/dynamic.tfstate"                    = { workspace = local.assessment_workspace_name }
-    "cool-accounts/images.tfstate"                     = { workspace = local.workspace_type }
-    "cool-accounts/master.tfstate"                     = { workspace = "production" }
-    "cool-accounts/shared_services.tfstate"            = { workspace = local.workspace_type }
-    "cool-accounts/terraform.tfstate"                  = { workspace = "production" }
-    "cool-accounts/users.tfstate"                      = { workspace = "production" }
-    "cool-dns-certboto/terraform.tfstate"              = { workspace = "production" }
-    "cool-images-parameterstore/terraform.tfstate"     = { workspace = local.workspace_type }
-    "cool-sharedservices-networking/terraform.tfstate" = { workspace = local.workspace_type }
+    "cool-accounts/dynamic.tfstate"                    = { workspace = terraform.workspace }
+    "cool-accounts/images.tfstate"                     = { workspace = var.assessment_environment_name }
+    "cool-accounts/master.tfstate"                     = { workspace = var.assessment_environment_name }
+    "cool-accounts/shared_services.tfstate"            = { workspace = var.assessment_environment_name }
+    "cool-accounts/terraform.tfstate"                  = { workspace = var.assessment_environment_name }
+    "cool-accounts/users.tfstate"                      = { workspace = var.assessment_environment_name }
+    "cool-dns-certboto/terraform.tfstate"              = { workspace = var.assessment_environment_name }
+    "cool-images-parameterstore/terraform.tfstate"     = { workspace = var.assessment_environment_name }
+    "cool-sharedservices-networking/terraform.tfstate" = { workspace = var.assessment_environment_name }
   }
   # Note that the replace() function replaces "env0 (Staging)", for
   # example, with env0-Staging when it occurs at the end of the string
@@ -43,7 +43,7 @@ module "read_write_terraform_state" {
   role_name                   = format(var.read_write_terraform_state_role_name, replace(var.assessment_account_name, "/ \\((?P<env_type>[[:alnum:]]*)\\)$/", "-$env_type"))
   terraform_state_bucket_name = "cisa-cool-terraform-state"
   terraform_state_path        = "cool-assessment-terraform/terraform.tfstate"
-  terraform_workspace         = local.assessment_workspace_name
+  terraform_workspace         = terraform.workspace
 }
 
 # An IAM policy document that only allows users to assume the role
