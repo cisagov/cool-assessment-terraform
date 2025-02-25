@@ -22,6 +22,12 @@ variable "private_subnet_cidr_blocks" {
   type        = list(string)
 }
 
+variable "terraform_state_bucket" {
+  description = "The name of the S3 bucket where Terraform state is stored."
+  nullable    = false
+  type        = string
+}
+
 variable "vpc_cidr_block" {
   description = "The CIDR block to use this assessment's VPC (e.g. \"10.224.0.0/21\")."
   nullable    = false
