@@ -189,7 +189,6 @@ variable "iam_users_allowed_to_self_deploy" {
 
 variable "inbound_ports_allowed" {
   default = {
-    "assessorworkbench" : [],
     "debiandesktop" : [],
     "egressassess" : [],
     "gophish" : [],
@@ -201,20 +200,19 @@ variable "inbound_ports_allowed" {
     "terraformer" : [],
     "windows" : [],
   }
-  description = "An object specifying the ports allowed inbound (from anywhere) to the various instance types (e.g. {\"assessorworkbench\" : [], \"debiandesktop\" : [], \"egressassess\" : [], \"gophish\" : [], \"kali\": [{\"protocol\": \"tcp\", \"from_port\": 443, \"to_port\": 443}, {\"protocol\": \"tcp\", \"from_port\": 9000, \"to_port\": 9009}], \"nessus\" : [], \"pentestportal\" : [], \"samba\" : [], \"teamserver\" : [], \"terraformer\" : [], \"windows\" : [], })."
+  description = "An object specifying the ports allowed inbound (from anywhere) to the various instance types (e.g. {\"debiandesktop\" : [], \"egressassess\" : [], \"gophish\" : [], \"kali\": [{\"protocol\": \"tcp\", \"from_port\": 443, \"to_port\": 443}, {\"protocol\": \"tcp\", \"from_port\": 9000, \"to_port\": 9009}], \"nessus\" : [], \"pentestportal\" : [], \"samba\" : [], \"teamserver\" : [], \"terraformer\" : [], \"windows\" : [], })."
   nullable    = false
   type = object({
-    assessorworkbench = list(object({ protocol = string, from_port = number, to_port = number })),
-    debiandesktop     = list(object({ protocol = string, from_port = number, to_port = number })),
-    egressassess      = list(object({ protocol = string, from_port = number, to_port = number })),
-    gophish           = list(object({ protocol = string, from_port = number, to_port = number })),
-    kali              = list(object({ protocol = string, from_port = number, to_port = number })),
-    nessus            = list(object({ protocol = string, from_port = number, to_port = number })),
-    pentestportal     = list(object({ protocol = string, from_port = number, to_port = number })),
-    samba             = list(object({ protocol = string, from_port = number, to_port = number })),
-    teamserver        = list(object({ protocol = string, from_port = number, to_port = number })),
-    terraformer       = list(object({ protocol = string, from_port = number, to_port = number })),
-    windows           = list(object({ protocol = string, from_port = number, to_port = number })),
+    debiandesktop = list(object({ protocol = string, from_port = number, to_port = number })),
+    egressassess  = list(object({ protocol = string, from_port = number, to_port = number })),
+    gophish       = list(object({ protocol = string, from_port = number, to_port = number })),
+    kali          = list(object({ protocol = string, from_port = number, to_port = number })),
+    nessus        = list(object({ protocol = string, from_port = number, to_port = number })),
+    pentestportal = list(object({ protocol = string, from_port = number, to_port = number })),
+    samba         = list(object({ protocol = string, from_port = number, to_port = number })),
+    teamserver    = list(object({ protocol = string, from_port = number, to_port = number })),
+    terraformer   = list(object({ protocol = string, from_port = number, to_port = number })),
+    windows       = list(object({ protocol = string, from_port = number, to_port = number })),
   })
 }
 
@@ -239,7 +237,6 @@ variable "nessus_web_server_port" {
 
 variable "operations_instance_counts" {
   default = {
-    "assessorworkbench" : 0,
     "debiandesktop" : 0,
     "egressassess" : 0,
     "gophish" : 0,
@@ -251,20 +248,19 @@ variable "operations_instance_counts" {
     "terraformer" : 0,
     "windows" : 1,
   }
-  description = "A map specifying how many instances of each type should be created in the operations subnet (e.g. { \"assessorworkbench\" : 0, \"debiandesktop\" : 0, \"egressassess\" : 0,\"gophish\" : 0, \"kali\": 1, \"nessus\" : 0, \"pentestportal\" : 0, \"samba\" : 0, \"teamserver\" : 0, \"terraformer\" : 0, \"windows\" : 1, })."
+  description = "A map specifying how many instances of each type should be created in the operations subnet (e.g. { \"debiandesktop\" : 0, \"egressassess\" : 0,\"gophish\" : 0, \"kali\": 1, \"nessus\" : 0, \"pentestportal\" : 0, \"samba\" : 0, \"teamserver\" : 0, \"terraformer\" : 0, \"windows\" : 1, })."
   nullable    = false
   type = object({
-    assessorworkbench = number,
-    debiandesktop     = number,
-    egressassess      = number,
-    gophish           = number,
-    kali              = number,
-    nessus            = number,
-    pentestportal     = number,
-    samba             = number,
-    teamserver        = number,
-    terraformer       = number,
-    windows           = number
+    debiandesktop = number,
+    egressassess  = number,
+    gophish       = number,
+    kali          = number,
+    nessus        = number,
+    pentestportal = number,
+    samba         = number,
+    teamserver    = number,
+    terraformer   = number,
+    windows       = number
   })
 }
 
