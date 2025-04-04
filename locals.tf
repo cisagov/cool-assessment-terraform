@@ -105,30 +105,42 @@ locals {
 
   # Look up assessment account name from AWS organizations provider
   assessment_account_name = [
-    for account in data.aws_organizations_organization.cool.accounts :
+    for account in data.aws_organizations_organization.cool.non_master_accounts :
     account.name
     if account.id == local.assessment_account_id
   ][0]
 
-  # Determine assessment account type based on account name.
+  # Determine if we are using the legacy or current account naming scheme.
   #
-  # The account name format is "ACCOUNT_NAME (ACCOUNT_TYPE)" - for
-  # example, "env0 (Production)".
-  assessment_account_type = length(regexall("\\(([^()]*)\\)", local.assessment_account_name)) == 1 ? regex("\\(([^()]*)\\)", local.assessment_account_name)[0] : "Unknown"
-  workspace_type          = lower(local.assessment_account_type)
+  # Legacy account names look like "ACCOUNT_NAME (ACCOUNT_TYPE)", e.g.:
+  # - "Images (Production)", "Images (Staging)"
+  # - "Shared Services (Production)", "Shared Services (Staging)"
+  # - "env0 (Production)", "env0 (Staging)", "env1 (Production)", "env1 (Staging)", etc.
+  #
+  # Current account names look like "ACCOUNT_NAME", e.g.:
+  # - "Images"
+  # - "Shared Services"
+  # - "env0", "env1", etc.
+  #
+  # Until all legacy environments have been migrated to this current naming
+  # scheme, we must check account names via the regex below to determine whether
+  # we are using the legacy naming scheme or not.
+  #
+  # Check the assessment (env*) account name to determine the naming scheme
+  account_naming_scheme = length(regexall("\\(([^()]*)\\)", local.assessment_account_name)) == 1 ? "legacy" : "current"
 
-  # The Terraform workspace name for this assessment
-  assessment_workspace_name = replace(replace(lower(var.assessment_account_name), "/[()]/", ""), " ", "-")
+  # Note that we are assuming that the legacy assessment account name does
+  # not contain a "(" character other than the one that separates the account
+  # name from the account type.
+  assessment_account_name_base = local.account_naming_scheme == "legacy" ? trimspace(split("(", local.assessment_account_name)[0]) : local.assessment_account_name
 
-  # Note that we are assuming that the assessment account name does
-  # not contain a "(" character.
-  assessment_account_name_base = trimspace(split("(", var.assessment_account_name)[0])
+  # Determine the ID of the Images account
+  images_account_name_regex = local.account_naming_scheme == "legacy" ? format("^Images \\(%s\\)$", trim(split("(", local.assessment_account_name)[1], ")")) : "^Images$"
 
-  # Determine the ID of the corresponding Images account
   images_account_id = [
-    for account in data.aws_organizations_organization.cool.accounts :
+    for account in data.aws_organizations_organization.cool.non_master_accounts :
     account.id
-    if account.name == "Images (${local.assessment_account_type})"
+    if length(regexall(local.images_account_name_regex, account.name)) > 0
   ][0]
 
   # The name and description of the role that allows read-only
@@ -136,7 +148,7 @@ locals {
   # Images account.
   nessus_parameterstorereadonly_role_description = format("Allows read-only access to Nessus-related SSM Parameter Store parameters required for the %s assessment.", var.assessment_account_name)
 
-  nessus_parameterstorereadonly_role_name = format("ParameterStoreReadOnly-%s-Nessus", local.assessment_workspace_name)
+  nessus_parameterstorereadonly_role_name = format("ParameterStoreReadOnly-%s-Nessus", terraform.workspace)
 
   # Return a map containing the union of all ports to be opened for
   # instance types that will actually be instantiated in the
@@ -246,7 +258,7 @@ locals {
 
   # Find the Users account by name.
   users_account_id = [
-    for x in data.aws_organizations_organization.cool.accounts :
+    for x in data.aws_organizations_organization.cool.non_master_accounts :
     x.id if x.name == "Users"
   ][0]
 
@@ -255,7 +267,7 @@ locals {
   # parameters in the Images account.
   guacamole_parameterstorereadonly_role_description = format("Allows read-only access to VNC-related and RDP-related SSM Parameter Store parameters required for the %s assessment.", var.assessment_account_name)
 
-  guacamole_parameterstorereadonly_role_name = format("ParameterStoreReadOnly-%s-VNC-RDP", local.assessment_workspace_name)
+  guacamole_parameterstorereadonly_role_name = format("ParameterStoreReadOnly-%s-VNC-RDP", terraform.workspace)
 
   # Calculate the VPN server CIDR block using the
   # sharedservices_networking remote state

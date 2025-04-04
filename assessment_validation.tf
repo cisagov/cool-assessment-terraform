@@ -15,8 +15,8 @@
 resource "null_resource" "validate_assessment_account_name_matches_workspace" {
   lifecycle {
     precondition {
-      condition     = replace(replace(lower(var.assessment_account_name), "/[()]/", ""), " ", "-") == terraform.workspace
-      error_message = "Assessment account name (${var.assessment_account_name}) does not agree with the currently-selected workspace (${terraform.workspace}).  Are you sure that you are using the correct tfvars file?"
+      condition     = local.account_naming_scheme == "legacy" ? replace(replace(lower(var.assessment_account_name), "/[()]/", ""), " ", "-") == terraform.workspace : format("%s-%s", lower(var.assessment_account_name), lower(var.assessment_environment_name)) == terraform.workspace
+      error_message = "Assessment account name (${var.assessment_account_name}) and environment (${var.assessment_environment_name}) do not agree with the currently-selected workspace (${terraform.workspace}).  Are you sure that you are using the correct tfvars file?"
     }
   }
 }
@@ -26,6 +26,15 @@ resource "null_resource" "validate_assessment_artifact_export_map" {
     precondition {
       condition     = length([for k in keys(var.assessment_artifact_export_map) : k if !contains(var.valid_assessment_types, k)]) == 0
       error_message = "Invalid assessment type(s) provided in assessment_artifact_export_map: ${join(", ", [for k in keys(var.assessment_artifact_export_map) : k if !contains(var.valid_assessment_types, k)])}.  Valid types are: ${join(", ", var.valid_assessment_types)}"
+    }
+  }
+}
+
+resource "null_resource" "validate_assessment_environment" {
+  lifecycle {
+    precondition {
+      condition     = contains(var.valid_assessment_env_names, var.assessment_environment_name)
+      error_message = "Invalid assessment environment provided: ${var.assessment_environment_name}.  Valid types are: ${join(", ", var.valid_assessment_env_names)}"
     }
   }
 }

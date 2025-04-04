@@ -25,7 +25,7 @@ module "read_terraform_state" {
   # Note that the replace() function replaces "env0 (Staging)", for
   # example, with env0-Staging when it occurs at the end of the string
   role_name                   = format(var.read_terraform_state_role_name, replace(var.assessment_account_name, "/ \\((?P<env_type>[[:alnum:]]*)\\)$/", "-$env_type"))
-  terraform_state_bucket_name = "cisa-cool-terraform-state"
+  terraform_state_bucket_name = var.terraform_state_bucket
   terraform_state_path        = "cool-assessment-terraform/terraform.tfstate"
-  terraform_workspace         = local.assessment_workspace_name
+  terraform_workspace         = terraform.workspace
 }

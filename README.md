@@ -413,6 +413,7 @@ the COOL environment.
 | [null_resource.break_association_with_default_route_table](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.validate_assessment_account_name_matches_workspace](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.validate_assessment_artifact_export_map](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [null_resource.validate_assessment_environment](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.validate_assessment_id](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.validate_assessment_type](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [aws_ami.debiandesktop](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
@@ -483,6 +484,7 @@ the COOL environment.
 | assessment\_account\_name | The name of the AWS account for this assessment (e.g. "env0"). | `string` | n/a | yes |
 | assessment\_artifact\_export\_enabled | Whether or not to enable the export of assessment artifacts to an S3 bucket.  If this is set to true, then the following variables should also be configured appropriately: assessment\_artifact\_export\_map, ssm\_key\_artifact\_export\_access\_key\_id, ssm\_key\_artifact\_export\_secret\_access\_key, ssm\_key\_artifact\_export\_bucket\_name, and ssm\_key\_artifact\_export\_region. | `bool` | `false` | no |
 | assessment\_artifact\_export\_map | A map whose keys are assessment types and whose values are the prefixes for what an assessment artifact will be named when it is exported to the S3 bucket contained in the SSM parameter specified by the ssm\_key\_artifact\_export\_bucket\_name variable (e.g. { "PenTest" : "pentest/PT", "Phishing" : "phishing/PH", "RedTeam" : "redteam/RT" }). Note that prefixes can include a path within the bucket.  For example, if the prefix is "pentest/PT" and the assessment ID is "ASMT1234", then the corresponding artifact will be exported to "bucket-name/pentest/PT-ASMT1234.tgz" when the archive-artifact-data-to-bucket.sh script is run. | `map(string)` | `{}` | no |
+| assessment\_environment\_name | The environment name for this assessement (e.g. "production"). | `string` | n/a | yes |
 | assessment\_id | The identifier for this assessment (e.g. "ASMT1234"). | `string` | `""` | no |
 | assessment\_type | The type of this assessment (e.g. "PenTest"). | `string` | `""` | no |
 | assessmentfindingsbucketwrite\_sharedservices\_policy\_description | The description to associate with the IAM policy that allows assumption of the role in the Shared Services account that is allowed to write to the assessment findings bucket. | `string` | `"Allows assumption of the role in the Shared Services account that is allowed to write to the assessment findings bucket."` | no |
@@ -527,10 +529,12 @@ the COOL environment.
 | ssm\_key\_vnc\_ssh\_public\_key | The AWS SSM Parameter Store parameter that contains the SSH public key that corresponds to the private SSH key of the VNC user (e.g. "/vnc/ssh/ed25519\_public\_key"). | `string` | `"/vnc/ssh/ed25519_public_key"` | no |
 | ssm\_key\_vnc\_username | The AWS SSM Parameter Store parameter that contains the username of the VNC user (e.g. "/vnc/username"). | `string` | `"/vnc/username"` | no |
 | tags | Tags to apply to all AWS resources created | `map(string)` | `{}` | no |
+| terraform\_state\_bucket | The name of the S3 bucket where Terraform state is stored. | `string` | n/a | yes |
 | terraformer\_permissions\_boundary\_policy\_description | The description to associate with the IAM permissions boundary policy attached to the Terraformer instance role in order to protect the foundational resources deployed in this account. | `string` | `"The IAM permissions boundary policy attached to the Terraformer instance role in order to protect the foundational resources deployed in this account."` | no |
 | terraformer\_permissions\_boundary\_policy\_name | The name to assign the IAM permissions boundary policy attached to the Terraformer instance role in order to protect the foundational resources deployed in this account. | `string` | `"TerraformerPermissionsBoundary"` | no |
 | terraformer\_role\_description | The description to associate with the IAM role (and policy) that allows Terraformer instances to create appropriate AWS resources in this account. | `string` | `"Allows Terraformer instances to create appropriate AWS resources in this account."` | no |
 | terraformer\_role\_name | The name to assign the IAM role (and policy) that allows Terraformer instances to create appropriate AWS resources in this account. | `string` | `"Terraformer"` | no |
+| valid\_assessment\_env\_names | A list of valid assessment environment names (e.g. ["development", "staging", "production"]). | `list(string)` | n/a | yes |
 | valid\_assessment\_id\_regex | A regular expression that specifies valid assessment identifiers (e.g. "^ASMT[[:digit:]]{4}$"). | `string` | `""` | no |
 | valid\_assessment\_types | A list of valid assessment types (e.g. ["PenTest", "Phishing", "RedTeam"]).  If this list is empty (i.e. []), then any value used for assessment\_type will trigger a validation error. | `list(string)` | ```[ "" ]``` | no |
 | vpc\_cidr\_block | The CIDR block to use this assessment's VPC (e.g. "10.224.0.0/21"). | `string` | n/a | yes |
