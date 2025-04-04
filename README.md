@@ -96,7 +96,6 @@ the COOL environment.
 
 | Name | Source | Version |
 |------|--------|---------|
-| cw\_alarms\_assessor\_workbench | github.com/cisagov/instance-cw-alarms-tf-module | n/a |
 | cw\_alarms\_debiandesktop | github.com/cisagov/instance-cw-alarms-tf-module | n/a |
 | cw\_alarms\_egressassess | github.com/cisagov/instance-cw-alarms-tf-module | n/a |
 | cw\_alarms\_gophish | github.com/cisagov/instance-cw-alarms-tf-module | n/a |
@@ -120,7 +119,6 @@ the COOL environment.
 | Name | Type |
 |------|------|
 | [aws_default_route_table.operations](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_route_table) | resource |
-| [aws_ebs_volume.assessorworkbench_docker](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ebs_volume) | resource |
 | [aws_ebs_volume.gophish_docker](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ebs_volume) | resource |
 | [aws_ec2_transit_gateway_route.assessment_route](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_transit_gateway_route) | resource |
 | [aws_ec2_transit_gateway_route_table_association.association](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_transit_gateway_route_table_association) | resource |
@@ -141,7 +139,6 @@ the COOL environment.
 | [aws_eip_association.nessus](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip_association) | resource |
 | [aws_eip_association.pentestportal](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip_association) | resource |
 | [aws_eip_association.teamserver](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip_association) | resource |
-| [aws_iam_instance_profile.assessorworkbench](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_instance_profile) | resource |
 | [aws_iam_instance_profile.debiandesktop](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_instance_profile) | resource |
 | [aws_iam_instance_profile.egressassess](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_instance_profile) | resource |
 | [aws_iam_instance_profile.gophish](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_instance_profile) | resource |
@@ -160,7 +157,6 @@ the COOL environment.
 | [aws_iam_policy.provisionssmsessionmanager_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.terraformer_permissions_boundary_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.terraformer_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
-| [aws_iam_role.assessorworkbench_instance_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role.debiandesktop_instance_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role.egressassess_instance_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role.gophish_instance_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
@@ -181,7 +177,6 @@ the COOL environment.
 | [aws_iam_role_policy.nessus_assume_delegated_role_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
 | [aws_iam_role_policy.teamserver_assume_delegated_role_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
 | [aws_iam_role_policy.terraformer_assume_delegated_role_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
-| [aws_iam_role_policy_attachment.cloudwatch_agent_policy_attachment_assessorworkbench](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.cloudwatch_agent_policy_attachment_debiandesktop](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.cloudwatch_agent_policy_attachment_egressassess](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.cloudwatch_agent_policy_attachment_gophish](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
@@ -194,7 +189,6 @@ the COOL environment.
 | [aws_iam_role_policy_attachment.cloudwatch_agent_policy_attachment_terraformer](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.cloudwatch_agent_policy_attachment_windows](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.ec2_read_only_policy_attachment_guacamole](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
-| [aws_iam_role_policy_attachment.efs_mount_policy_attachment_assessorworkbench](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.efs_mount_policy_attachment_debiandesktop](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.efs_mount_policy_attachment_gophish](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.efs_mount_policy_attachment_kali](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
@@ -207,7 +201,6 @@ the COOL environment.
 | [aws_iam_role_policy_attachment.provisionassessment_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.provisionssmsessionmanager_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.read_only_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
-| [aws_iam_role_policy_attachment.ssm_agent_policy_attachment_assessorworkbench](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.ssm_agent_policy_attachment_debiandesktop](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.ssm_agent_policy_attachment_egressassess](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.ssm_agent_policy_attachment_gophish](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
@@ -221,7 +214,6 @@ the COOL environment.
 | [aws_iam_role_policy_attachment.ssm_agent_policy_attachment_windows](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.terraformer_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_user_policy.attach_assume_read_write_role_doc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_user_policy) | resource |
-| [aws_instance.assessorworkbench](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance) | resource |
 | [aws_instance.debiandesktop](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance) | resource |
 | [aws_instance.egressassess](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance) | resource |
 | [aws_instance.gophish](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance) | resource |
@@ -276,7 +268,6 @@ the COOL environment.
 | [aws_route.cool_private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.external_operations](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.external_private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
-| [aws_route53_record.assessorworkbench_A](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_route53_record.debiandesktop_A](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_route53_record.egressassess_A](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_route53_record.gophish_A](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
@@ -295,7 +286,6 @@ the COOL environment.
 | [aws_route53_zone_association.assessment_private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_zone_association) | resource |
 | [aws_route_table.private_route_table](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table) | resource |
 | [aws_route_table_association.private_route_table_associations](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table_association) | resource |
-| [aws_security_group.assessorworkbench](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group.cloudwatch_agent_endpoint](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group.cloudwatch_agent_endpoint_client](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group.debiandesktop](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
@@ -326,7 +316,6 @@ the COOL environment.
 | [aws_security_group.windows](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group_rule.allow_nfs_inbound](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.allow_nfs_outbound](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
-| [aws_security_group_rule.assessorworkbench_egress_to_anywhere_via_http_and_https](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.debiandesktop_egress_to_anywhere_via_http_and_https](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.debiandesktop_egress_to_nessus_via_web_ui](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.egress_from_cloudwatch_agent_endpoint_client_to_cloudwatch_agent_endpoint_via_https](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
@@ -341,7 +330,6 @@ the COOL environment.
 | [aws_security_group_rule.guacamole_egress_to_hosts_via_ssh](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.guacamole_egress_to_hosts_via_vnc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.guacamole_ingress_from_trusted_via_https](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
-| [aws_security_group_rule.ingress_from_anywhere_to_assessorworkbench_via_allowed_ports](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.ingress_from_anywhere_to_debiandesktop_via_allowed_ports](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.ingress_from_anywhere_to_egressassess_via_all_icmp](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.ingress_from_anywhere_to_egressassess_via_allowed_ports](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
@@ -398,7 +386,6 @@ the COOL environment.
 | [aws_security_group_rule.windows_ingress_from_teamserver_instances_via_5000_to_5999_tcp](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_subnet.operations](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
 | [aws_subnet.private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
-| [aws_volume_attachment.assessorworkbench_docker](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/volume_attachment) | resource |
 | [aws_volume_attachment.gophish_docker](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/volume_attachment) | resource |
 | [aws_vpc.assessment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc) | resource |
 | [aws_vpc_dhcp_options.assessment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_dhcp_options) | resource |
@@ -429,7 +416,6 @@ the COOL environment.
 | [null_resource.validate_assessment_environment](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.validate_assessment_id](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.validate_assessment_type](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [aws_ami.assessorworkbench](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
 | [aws_ami.debiandesktop](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
 | [aws_ami.docker](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
 | [aws_ami.egressassess](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
@@ -471,7 +457,6 @@ the COOL environment.
 | [aws_ssm_parameter.samba_username](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
 | [aws_ssm_parameter.vnc_public_ssh_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
 | [aws_ssm_parameter.vnc_username](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
-| [cloudinit_config.assessorworkbench_cloud_init_tasks](https://registry.terraform.io/providers/hashicorp/cloudinit/latest/docs/data-sources/config) | data source |
 | [cloudinit_config.debiandesktop_cloud_init_tasks](https://registry.terraform.io/providers/hashicorp/cloudinit/latest/docs/data-sources/config) | data source |
 | [cloudinit_config.egressassess_cloud_init_tasks](https://registry.terraform.io/providers/hashicorp/cloudinit/latest/docs/data-sources/config) | data source |
 | [cloudinit_config.gophish_cloud_init_tasks](https://registry.terraform.io/providers/hashicorp/cloudinit/latest/docs/data-sources/config) | data source |
@@ -518,10 +503,10 @@ the COOL environment.
 | findings\_data\_bucket\_name | The name of the AWS S3 bucket where findings data is to be written.  The default value is not a valid string for a bucket name, so findings data cannot be written to any bucket unless a value is specified. | `string` | `""` | no |
 | guac\_connection\_setup\_path | The full path to the dbinit directory where initialization files must be stored in order to work properly. (e.g. "/var/guacamole/dbinit") | `string` | `"/var/guacamole/dbinit"` | no |
 | iam\_users\_allowed\_to\_self\_deploy | A list of IAM usernames corresponding to the IAM users in the Users account who are allowed to self-deploy.  E.g., ["first.last"].  Note that these users must already be included in cisagov/cool-assessment-provisioner-iam, presumably with backend\_access equal to false. | `list(string)` | `[]` | no |
-| inbound\_ports\_allowed | An object specifying the ports allowed inbound (from anywhere) to the various instance types (e.g. {"assessorworkbench" : [], "debiandesktop" : [], "egressassess" : [], "gophish" : [], "kali": [{"protocol": "tcp", "from\_port": 443, "to\_port": 443}, {"protocol": "tcp", "from\_port": 9000, "to\_port": 9009}], "nessus" : [], "pentestportal" : [], "samba" : [], "teamserver" : [], "terraformer" : [], "windows" : [], }). | ```object({ assessorworkbench = list(object({ protocol = string, from_port = number, to_port = number })), debiandesktop = list(object({ protocol = string, from_port = number, to_port = number })), egressassess = list(object({ protocol = string, from_port = number, to_port = number })), gophish = list(object({ protocol = string, from_port = number, to_port = number })), kali = list(object({ protocol = string, from_port = number, to_port = number })), nessus = list(object({ protocol = string, from_port = number, to_port = number })), pentestportal = list(object({ protocol = string, from_port = number, to_port = number })), samba = list(object({ protocol = string, from_port = number, to_port = number })), teamserver = list(object({ protocol = string, from_port = number, to_port = number })), terraformer = list(object({ protocol = string, from_port = number, to_port = number })), windows = list(object({ protocol = string, from_port = number, to_port = number })), })``` | ```{ "assessorworkbench": [], "debiandesktop": [], "egressassess": [], "gophish": [], "kali": [], "nessus": [], "pentestportal": [], "samba": [], "teamserver": [], "terraformer": [], "windows": [] }``` | no |
+| inbound\_ports\_allowed | An object specifying the ports allowed inbound (from anywhere) to the various instance types (e.g. {"debiandesktop" : [], "egressassess" : [], "gophish" : [], "kali": [{"protocol": "tcp", "from\_port": 443, "to\_port": 443}, {"protocol": "tcp", "from\_port": 9000, "to\_port": 9009}], "nessus" : [], "pentestportal" : [], "samba" : [], "teamserver" : [], "terraformer" : [], "windows" : [], }). | ```object({ debiandesktop = list(object({ protocol = string, from_port = number, to_port = number })), egressassess = list(object({ protocol = string, from_port = number, to_port = number })), gophish = list(object({ protocol = string, from_port = number, to_port = number })), kali = list(object({ protocol = string, from_port = number, to_port = number })), nessus = list(object({ protocol = string, from_port = number, to_port = number })), pentestportal = list(object({ protocol = string, from_port = number, to_port = number })), samba = list(object({ protocol = string, from_port = number, to_port = number })), teamserver = list(object({ protocol = string, from_port = number, to_port = number })), terraformer = list(object({ protocol = string, from_port = number, to_port = number })), windows = list(object({ protocol = string, from_port = number, to_port = number })), })``` | ```{ "debiandesktop": [], "egressassess": [], "gophish": [], "kali": [], "nessus": [], "pentestportal": [], "samba": [], "teamserver": [], "terraformer": [], "windows": [] }``` | no |
 | nessus\_activation\_codes | The list of Nessus activation codes (e.g. ["AAAA-BBBB-CCCC-DDDD"]). The number of codes in this list should match the number of Nessus instances defined in operations\_instance\_counts. | `list(string)` | `[]` | no |
 | nessus\_web\_server\_port | The port on which the Nessus web server should listen (e.g. 8834). | `number` | `8834` | no |
-| operations\_instance\_counts | A map specifying how many instances of each type should be created in the operations subnet (e.g. { "assessorworkbench" : 0, "debiandesktop" : 0, "egressassess" : 0,"gophish" : 0, "kali": 1, "nessus" : 0, "pentestportal" : 0, "samba" : 0, "teamserver" : 0, "terraformer" : 0, "windows" : 1, }). | ```object({ assessorworkbench = number, debiandesktop = number, egressassess = number, gophish = number, kali = number, nessus = number, pentestportal = number, samba = number, teamserver = number, terraformer = number, windows = number })``` | ```{ "assessorworkbench": 0, "debiandesktop": 0, "egressassess": 0, "gophish": 0, "kali": 1, "nessus": 0, "pentestportal": 0, "samba": 0, "teamserver": 0, "terraformer": 0, "windows": 1 }``` | no |
+| operations\_instance\_counts | A map specifying how many instances of each type should be created in the operations subnet (e.g. { "debiandesktop" : 0, "egressassess" : 0,"gophish" : 0, "kali": 1, "nessus" : 0, "pentestportal" : 0, "samba" : 0, "teamserver" : 0, "terraformer" : 0, "windows" : 1, }). | ```object({ debiandesktop = number, egressassess = number, gophish = number, kali = number, nessus = number, pentestportal = number, samba = number, teamserver = number, terraformer = number, windows = number })``` | ```{ "debiandesktop": 0, "egressassess": 0, "gophish": 0, "kali": 1, "nessus": 0, "pentestportal": 0, "samba": 0, "teamserver": 0, "terraformer": 0, "windows": 1 }``` | no |
 | operations\_subnet\_cidr\_block | The operations subnet CIDR block for this assessment (e.g. "10.10.0.0/24"). | `string` | n/a | yes |
 | private\_domain | The local domain to use for this assessment (e.g. "env0"). If not provided, `local.private_domain` will be set to the base of the assessment account name.  For example, if the account name is "env0 (Staging)", `local.private_domain` will default to "env0".  Note that `local.private_domain` should be used in place of `var.private_domain` throughout this project. | `string` | `""` | no |
 | private\_subnet\_cidr\_blocks | The list of private subnet CIDR blocks for this assessment (e.g. ["10.10.1.0/24", "10.10.2.0/24"]). | `list(string)` | n/a | yes |
@@ -560,9 +545,6 @@ the COOL environment.
 | Name | Description |
 |------|-------------|
 | assessment\_private\_zone | The private DNS zone for this assessment. |
-| assessor\_workbench\_instance\_profile | The instance profile for the Assessor Workbench instances. |
-| assessor\_workbench\_instances | The Assessor Workbench instances. |
-| assessor\_workbench\_security\_group | The security group for the Assessor Workbench instances. |
 | aws\_region | The AWS region where this assessment environment lives. |
 | certificate\_bucket\_name | The name of the S3 bucket where certificate information is stored for this assessment. |
 | cloudwatch\_agent\_endpoint\_client\_security\_group | A security group for any instances that run the AWS CloudWatch agent.  This security groups allows such instances to communicate with the VPC endpoints that are required by the AWS CloudWatch agent. |

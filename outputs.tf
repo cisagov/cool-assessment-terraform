@@ -3,21 +3,6 @@ output "assessment_private_zone" {
   value       = aws_route53_zone.assessment_private
 }
 
-output "assessor_workbench_instance_profile" {
-  description = "The instance profile for the Assessor Workbench instances."
-  value       = aws_iam_instance_profile.assessorworkbench
-}
-
-output "assessor_workbench_instances" {
-  description = "The Assessor Workbench instances."
-  value       = aws_instance.assessorworkbench
-}
-
-output "assessor_workbench_security_group" {
-  description = "The security group for the Assessor Workbench instances."
-  value       = aws_security_group.assessorworkbench
-}
-
 output "aws_region" {
   description = "The AWS region where this assessment environment lives."
   value       = var.aws_region
