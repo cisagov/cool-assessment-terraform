@@ -8,7 +8,7 @@ data "terraform_remote_state" "dns_certboto" {
   backend = "s3"
 
   config = {
-    bucket         = "cisa-cool-terraform-state"
+    bucket         = var.terraform_state_bucket
     dynamodb_table = "terraform-state-lock"
     encrypt        = true
     key            = "cool-dns-certboto/terraform.tfstate"
@@ -16,14 +16,14 @@ data "terraform_remote_state" "dns_certboto" {
     region         = "us-east-1"
   }
 
-  workspace = "production"
+  workspace = var.assessment_environment_name
 }
 
 data "terraform_remote_state" "dynamic_assessment" {
   backend = "s3"
 
   config = {
-    bucket         = "cisa-cool-terraform-state"
+    bucket         = var.terraform_state_bucket
     dynamodb_table = "terraform-state-lock"
     encrypt        = true
     key            = "cool-accounts/dynamic.tfstate"
@@ -35,14 +35,14 @@ data "terraform_remote_state" "dynamic_assessment" {
   # the others we want production, staging, etc.  Here, though, we
   # want (for example) env0-production (for production), env0-staging,
   # etc.
-  workspace = local.assessment_workspace_name
+  workspace = terraform.workspace
 }
 
 data "terraform_remote_state" "images" {
   backend = "s3"
 
   config = {
-    bucket         = "cisa-cool-terraform-state"
+    bucket         = var.terraform_state_bucket
     dynamodb_table = "terraform-state-lock"
     encrypt        = true
     key            = "cool-accounts/images.tfstate"
@@ -50,14 +50,14 @@ data "terraform_remote_state" "images" {
     region         = "us-east-1"
   }
 
-  workspace = local.workspace_type
+  workspace = var.assessment_environment_name
 }
 
 data "terraform_remote_state" "images_parameterstore" {
   backend = "s3"
 
   config = {
-    bucket         = "cisa-cool-terraform-state"
+    bucket         = var.terraform_state_bucket
     dynamodb_table = "terraform-state-lock"
     encrypt        = true
     key            = "cool-images-parameterstore/terraform.tfstate"
@@ -65,14 +65,14 @@ data "terraform_remote_state" "images_parameterstore" {
     region         = "us-east-1"
   }
 
-  workspace = local.workspace_type
+  workspace = var.assessment_environment_name
 }
 
 data "terraform_remote_state" "master" {
   backend = "s3"
 
   config = {
-    bucket         = "cisa-cool-terraform-state"
+    bucket         = var.terraform_state_bucket
     dynamodb_table = "terraform-state-lock"
     encrypt        = true
     key            = "cool-accounts/master.tfstate"
@@ -80,14 +80,14 @@ data "terraform_remote_state" "master" {
     region         = "us-east-1"
   }
 
-  workspace = "production"
+  workspace = var.assessment_environment_name
 }
 
 data "terraform_remote_state" "sharedservices" {
   backend = "s3"
 
   config = {
-    bucket         = "cisa-cool-terraform-state"
+    bucket         = var.terraform_state_bucket
     dynamodb_table = "terraform-state-lock"
     encrypt        = true
     key            = "cool-accounts/shared_services.tfstate"
@@ -95,14 +95,14 @@ data "terraform_remote_state" "sharedservices" {
     region         = "us-east-1"
   }
 
-  workspace = local.workspace_type
+  workspace = var.assessment_environment_name
 }
 
 data "terraform_remote_state" "sharedservices_networking" {
   backend = "s3"
 
   config = {
-    bucket         = "cisa-cool-terraform-state"
+    bucket         = var.terraform_state_bucket
     dynamodb_table = "terraform-state-lock"
     encrypt        = true
     key            = "cool-sharedservices-networking/terraform.tfstate"
@@ -110,14 +110,14 @@ data "terraform_remote_state" "sharedservices_networking" {
     region         = "us-east-1"
   }
 
-  workspace = local.workspace_type
+  workspace = var.assessment_environment_name
 }
 
 data "terraform_remote_state" "terraform" {
   backend = "s3"
 
   config = {
-    bucket         = "cisa-cool-terraform-state"
+    bucket         = var.terraform_state_bucket
     dynamodb_table = "terraform-state-lock"
     encrypt        = true
     key            = "cool-accounts/terraform.tfstate"
@@ -125,14 +125,14 @@ data "terraform_remote_state" "terraform" {
     region         = "us-east-1"
   }
 
-  workspace = "production"
+  workspace = var.assessment_environment_name
 }
 
 data "terraform_remote_state" "users" {
   backend = "s3"
 
   config = {
-    bucket         = "cisa-cool-terraform-state"
+    bucket         = var.terraform_state_bucket
     dynamodb_table = "terraform-state-lock"
     encrypt        = true
     key            = "cool-accounts/users.tfstate"
@@ -140,5 +140,5 @@ data "terraform_remote_state" "users" {
     region         = "us-east-1"
   }
 
-  workspace = "production"
+  workspace = var.assessment_environment_name
 }

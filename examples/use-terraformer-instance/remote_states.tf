@@ -7,11 +7,11 @@
 data "terraform_remote_state" "cool_assessment_terraform" {
   backend = "s3"
   config = {
-    bucket  = "cisa-cool-terraform-state"
+    bucket  = var.terraform_state_bucket
     encrypt = true
     key     = "cool-assessment-terraform/terraform.tfstate"
     profile = "read_cool_assessment_terraform_state"
     region  = "us-east-1"
   }
-  workspace = local.assessment_workspace_name
+  workspace = terraform.workspace
 }

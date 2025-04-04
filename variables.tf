@@ -10,6 +10,12 @@ variable "assessment_account_name" {
   type        = string
 }
 
+variable "assessment_environment_name" {
+  description = "The environment name for this assessement (e.g. \"production\")."
+  nullable    = false
+  type        = string
+}
+
 variable "operations_subnet_cidr_block" {
   description = "The operations subnet CIDR block for this assessment (e.g. \"10.10.0.0/24\")."
   nullable    = false
@@ -18,6 +24,18 @@ variable "operations_subnet_cidr_block" {
 
 variable "private_subnet_cidr_blocks" {
   description = "The list of private subnet CIDR blocks for this assessment (e.g. [\"10.10.1.0/24\", \"10.10.2.0/24\"])."
+  nullable    = false
+  type        = list(string)
+}
+
+variable "terraform_state_bucket" {
+  description = "The name of the S3 bucket where Terraform state is stored."
+  nullable    = false
+  type        = string
+}
+
+variable "valid_assessment_env_names" {
+  description = "A list of valid assessment environment names (e.g. [\"development\", \"staging\", \"production\"])."
   nullable    = false
   type        = list(string)
 }
