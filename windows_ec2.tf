@@ -3,7 +3,10 @@ data "aws_ami" "windows" {
   provider = aws.provisionassessment
 
   most_recent = true
-  owners      = [local.images_account_id]
+  # This is a special case because the legacy Windows AMI only exists in the
+  # production account. This is a temporary workaround until the new Windows AMI
+  # is built in each environment.
+  owners = var.assessment_environment_name == "production" ? [local.images_account_id] : [var.ami_owner_id_production]
 
   filter {
     name   = "architecture"
