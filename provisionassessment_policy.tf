@@ -129,7 +129,14 @@ data "aws_iam_policy_document" "provisionassessment_policy_doc" {
     ]
 
     resources = [
-      data.terraform_remote_state.images.outputs.ami_kms_key.arn
+      data.terraform_remote_state.images.outputs.ami_kms_key.arn,
+      # If the environment is not production and a Windows instance is required,
+      # allow access to the production AMI KMS key.  Otherwise, just repeat the
+      # AMI KMS key for this environment, since a null value is not allowed
+      # here.  This is a special case because the legacy Windows AMI only exists
+      # in the production account. This is a temporary workaround until the new
+      # Windows AMI is built in each environment.
+      var.assessment_environment_name != "production" && lookup(var.operations_instance_counts, "windows", 0) > 0 ? var.ami_kms_key_arn_production : data.terraform_remote_state.images.outputs.ami_kms_key.arn,
     ]
   }
 
