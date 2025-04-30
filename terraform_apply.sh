@@ -44,6 +44,7 @@ export AWS_DEFAULT_REGION
 terraform apply "${@}" \
   -target=null_resource.validate_assessment_account_name_matches_workspace \
   -target=null_resource.validate_assessment_artifact_export_map \
+  -target=null_resource.validate_assessment_environment \
   -target=null_resource.validate_assessment_id \
   -target=null_resource.validate_assessment_type \
   && terraform apply "${@}" \

@@ -52,6 +52,20 @@ variable "vpc_cidr_block" {
 # These parameters have reasonable defaults.
 # ------------------------------------------------------------------------------
 
+variable "ami_kms_key_arn_production" {
+  default     = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
+  description = "The ARN of the KMS key that can decrypt Production AMIs.  This variable is meant to be used to deploy instances in non-Production environments based on AMIs that only exist in Production and nowhere else (e.g. the legacy Windows AMI).  Note that the default value is not a valid ARN and must be replaced with one that is valid for your environment."
+  nullable    = false
+  type        = string
+}
+
+variable "ami_owner_id_production" {
+  default     = "123456789012"
+  description = "The AWS account ID that owns Production AMIs.  This variable is meant to be used to deploy instances in non-Production environments based on AMIs that only exist in Production and nowhere else (e.g. the legacy Windows AMI).  Note that the default value is not a valid account ID and must be replaced with one that is valid for your environment."
+  nullable    = false
+  type        = string
+}
+
 variable "assessor_account_role_arn" {
   default     = "arn:aws:iam::123456789012:role/Allow_It"
   description = "The ARN of an IAM role that can be assumed to create, delete, and modify AWS resources in a separate assessor-owned AWS account."

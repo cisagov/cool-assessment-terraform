@@ -36,7 +36,14 @@ data "aws_iam_policy_document" "terraformer_policy_doc" {
       "kms:ReEncryptFrom",
     ]
     resources = [
-      data.terraform_remote_state.images.outputs.ami_kms_key.arn
+      data.terraform_remote_state.images.outputs.ami_kms_key.arn,
+      # If the environment is not production, allow access to the production AMI
+      # KMS key.  Otherwise, just repeat the AMI KMS key for this environment,
+      # since a null value is not allowed here.  This is a special case because
+      # the legacy Windows AMI only exists in the production account and may be
+      # spun up via a Terraformer. This is a temporary workaround until the new
+      # Windows AMI is built in each environment.
+      var.assessment_environment_name != "production" ? var.ami_kms_key_arn_production : data.terraform_remote_state.images.outputs.ami_kms_key.arn,
     ]
   }
 
