@@ -44,6 +44,18 @@ resource "aws_instance" "example" {
   instance_type     = "t3.micro"
   subnet_id         = var.subnet_id
 
+  # AWS Instance Metadata Service (IMDS) options
+  metadata_options {
+    # Enable IMDS (this is the default value)
+    http_endpoint = "enabled"
+    # Restrict put responses from IMDS to a single hop (this is the
+    # default value).  This effectively disallows the retrieval of an
+    # IMDSv2 token via this machine from anywhere else.
+    http_put_response_hop_limit = 1
+    # Require IMDS tokens AKA require the use of IMDSv2
+    http_tokens = "required"
+  }
+
   # The tag or tags specified here will be merged with the provider's
   # default tags.
   tags = {
