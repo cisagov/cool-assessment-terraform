@@ -4,16 +4,16 @@
 runcmd:
   - - mkdir
     - -p
-    - "${mount_point}"
+    - ${mount_point}
   - - chown
-    - "${owner}:${group}"
-    - "${mount_point}"
+    - ${owner}:${group}
+    - ${mount_point}
 
 # Add an fstab entry for the EFS mount
 mounts:
-  - - "${efs_id}:/"
-    - "${mount_point}"
+  - - ${efs_id}:/
+    - ${mount_point}
     - efs
-    - "_netdev,iam,nofail,tls,accesspoint=${efs_ap_id}"
+    - _netdev,iam,nofail,tls,accesspoint=${efs_ap_id}
     - "0"
     - "0"

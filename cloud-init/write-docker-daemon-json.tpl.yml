@@ -2,7 +2,7 @@
 # Create the file (/etc/docker/daemon.json) used to configure Docker daemon.
 # For details, see https://docs.docker.com/config/daemon/systemd/
 write_files:
-  - path: "/etc/docker/daemon.json"
+  - path: /etc/docker/daemon.json
     permissions: "0644"
     owner: root:root
     content: |
