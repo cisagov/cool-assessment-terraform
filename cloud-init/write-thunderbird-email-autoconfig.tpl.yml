@@ -3,7 +3,7 @@
 # from the email-sending domain for this assessment.  For details, see:
 # https://developer.mozilla.org/en-US/docs/Mozilla/Thunderbird/Autoconfiguration
 write_files:
-  - path: "/usr/lib/thunderbird/isp/${email_sending_domain}.xml"
+  - path: /usr/lib/thunderbird/isp/${email_sending_domain}.xml
     permissions: "0644"
     owner: root:root
     content: |

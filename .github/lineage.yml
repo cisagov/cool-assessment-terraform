@@ -2,4 +2,4 @@
 lineage:
   skeleton:
     remote-url: https://github.com/cisagov/skeleton-tf-module.git
-version: '1'
+version: "1"

@@ -7,4 +7,5 @@
 # TODO: Remove this code when and if that becomes possible.  See #234
 # for more details.
 runcmd:
-  - [netplan, apply]
+  - - netplan
+    - apply
