@@ -116,13 +116,15 @@ resource "aws_eip_association" "teamserver" {
 
 # CloudWatch alarms for the teamserver instances
 module "cw_alarms_teamserver" {
+  for_each = toset([for instance in aws_instance.teamserver : instance.id])
+
   providers = {
     aws = aws.provisionassessment
   }
   source = "github.com/cisagov/instance-cw-alarms-tf-module"
 
   alarm_actions             = [data.terraform_remote_state.dynamic_assessment.outputs.cw_alarm_sns_topic.arn]
-  instance_ids              = [for instance in aws_instance.teamserver : instance.id]
+  instance_id               = each.value
   insufficient_data_actions = [data.terraform_remote_state.dynamic_assessment.outputs.cw_alarm_sns_topic.arn]
   ok_actions                = [data.terraform_remote_state.dynamic_assessment.outputs.cw_alarm_sns_topic.arn]
 }

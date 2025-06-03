@@ -105,7 +105,7 @@ module "cw_alarms_guacamole" {
   source = "github.com/cisagov/instance-cw-alarms-tf-module"
 
   alarm_actions             = [data.terraform_remote_state.dynamic_assessment.outputs.cw_alarm_sns_topic.arn]
-  instance_ids              = [aws_instance.guacamole.id]
+  instance_id               = aws_instance.guacamole.id
   insufficient_data_actions = [data.terraform_remote_state.dynamic_assessment.outputs.cw_alarm_sns_topic.arn]
   ok_actions                = [data.terraform_remote_state.dynamic_assessment.outputs.cw_alarm_sns_topic.arn]
 }
