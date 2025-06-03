@@ -102,7 +102,7 @@ module "cw_alarms_windows" {
   providers = {
     aws = aws.provisionassessment
   }
-  source = "github.com/cisagov/instance-cw-alarms-tf-module?ref=improvement%2Fonly-handle-a-single-instance"
+  source = "github.com/cisagov/instance-cw-alarms-tf-module"
 
   alarm_actions = [data.terraform_remote_state.dynamic_assessment.outputs.cw_alarm_sns_topic.arn]
   # The metrics written by the CloudWatch Agent have completely
