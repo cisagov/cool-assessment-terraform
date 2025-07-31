@@ -62,6 +62,17 @@ resource "aws_iam_role_policy_attachment" "efs_mount_policy_attachment_gophish" 
   role       = aws_iam_role.gophish_instance_role[count.index].id
 }
 
+# Attach the policy that allows rebooting of Operations instances to these
+# instance roles
+resource "aws_iam_role_policy_attachment" "reboot_operations_instances_policy_attachment_gophish" {
+  count = lookup(var.operations_instance_counts, "gophish", 0)
+
+  provider = aws.provisionassessment
+
+  policy_arn = aws_iam_policy.reboot_operations_instances_policy.arn
+  role       = aws_iam_role.gophish_instance_role[count.index].id
+}
+
 ################################
 # Define the role policies below
 ################################

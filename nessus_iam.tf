@@ -40,6 +40,15 @@ resource "aws_iam_role_policy_attachment" "ssm_agent_policy_attachment_nessus" {
   role       = aws_iam_role.nessus_instance_role.id
 }
 
+# Attach the policy that allows rebooting of Operations instances to this
+# instance role
+resource "aws_iam_role_policy_attachment" "reboot_operations_instances_policy_attachment_nessus" {
+  provider = aws.provisionassessment
+
+  policy_arn = aws_iam_policy.reboot_operations_instances_policy.arn
+  role       = aws_iam_role.nessus_instance_role.id
+}
+
 ################################
 # Define the role policies below
 ################################

@@ -359,6 +359,20 @@ variable "read_write_terraform_state_role_name" {
   type        = string
 }
 
+variable "reboot_operations_instances_policy_description" {
+  default     = "Allows rebooting of EC2 instances in the operations subnet."
+  description = "The description to associate with the IAM policy that allows rebooting of EC2 instances in the operations subnet."
+  nullable    = false
+  type        = string
+}
+
+variable "reboot_operations_instances_policy_name" {
+  default     = "RebootOperationsInstances"
+  description = "The name to assign the IAM policy that allows rebooting of EC2 instances in the operations subnet."
+  nullable    = false
+  type        = string
+}
+
 # This variable is copied over from cisagov/session-manager-tf-module
 # so that its value can be specified outside of that module.  This
 # allows us to impose a dependency of the module on the policy that

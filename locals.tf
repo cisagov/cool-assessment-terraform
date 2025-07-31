@@ -150,6 +150,19 @@ locals {
 
   nessus_parameterstorereadonly_role_name = format("ParameterStoreReadOnly-%s-Nessus", terraform.workspace)
 
+  # Create a list of all operations instance ARNs.  Don't forget to update this
+  # list when adding new instance types.
+  operations_instances_arns = concat(
+    aws_instance.debiandesktop.*.arn,
+    aws_instance.egressassess.*.arn,
+    aws_instance.gophish.*.arn,
+    aws_instance.kali.*.arn,
+    aws_instance.nessus.*.arn,
+    aws_instance.pentestportal.*.arn,
+    aws_instance.teamserver.*.arn,
+    aws_instance.windows.*.arn,
+  )
+
   # Return a map containing the union of all ports to be opened for
   # instance types that will actually be instantiated in the
   # operations subnet.  We merge the index into the map so that we can

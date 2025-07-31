@@ -1,0 +1,22 @@
+# ------------------------------------------------------------------------------
+# Create the IAM policy that allows all of the permissions necessary
+# to reboot any of the Operations instances.
+# ------------------------------------------------------------------------------
+
+data "aws_iam_policy_document" "reboot_operations_instances_policy_doc" {
+  statement {
+    actions = [
+      "ec2:RebootInstances",
+    ]
+
+    resources = local.operations_instances_arns
+  }
+}
+
+resource "aws_iam_policy" "reboot_operations_instances_policy" {
+  provider = aws.provisionassessment
+
+  description = var.reboot_operations_instances_policy_description
+  name        = var.reboot_operations_instances_policy_name
+  policy      = data.aws_iam_policy_document.reboot_operations_instances_policy_doc.json
+}
