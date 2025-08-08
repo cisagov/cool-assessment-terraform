@@ -72,7 +72,7 @@ the COOL environment.
 | Name | Version |
 |------|---------|
 | terraform | ~> 1.5 |
-| aws | ~> 4.9 |
+| aws | ~> 6.7 |
 | cloudinit | ~> 2.0 |
 | null | ~> 3.0 |
 
@@ -80,14 +80,14 @@ the COOL environment.
 
 | Name | Version |
 |------|---------|
-| aws | ~> 4.9 |
-| aws.dns\_sharedservices | ~> 4.9 |
-| aws.organizationsreadonly | ~> 4.9 |
-| aws.parameterstorereadonly | ~> 4.9 |
-| aws.provisionassessment | ~> 4.9 |
-| aws.provisionparameterstorereadrole | ~> 4.9 |
-| aws.provisionsharedservices | ~> 4.9 |
-| aws.provisionusers | ~> 4.9 |
+| aws | ~> 6.7 |
+| aws.dns\_sharedservices | ~> 6.7 |
+| aws.organizationsreadonly | ~> 6.7 |
+| aws.parameterstorereadonly | ~> 6.7 |
+| aws.provisionassessment | ~> 6.7 |
+| aws.provisionparameterstorereadrole | ~> 6.7 |
+| aws.provisionsharedservices | ~> 6.7 |
+| aws.provisionusers | ~> 6.7 |
 | cloudinit | ~> 2.0 |
 | null | ~> 3.0 |
 | terraform | n/a |
