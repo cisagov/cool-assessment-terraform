@@ -42,7 +42,7 @@ resource "aws_internet_gateway" "assessment" {
 resource "aws_eip" "nat_gw" {
   provider = aws.provisionassessment
 
-  vpc = true
+  domain = "vpc"
 }
 
 resource "aws_nat_gateway" "nat_gw" {

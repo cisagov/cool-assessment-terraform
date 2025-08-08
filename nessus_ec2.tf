@@ -98,11 +98,12 @@ resource "aws_eip" "nessus" {
   count    = lookup(var.operations_instance_counts, "nessus", 0)
   provider = aws.provisionassessment
 
+  domain = "vpc"
+
   tags = {
     Name             = format("Nessus%d EIP", count.index)
     "Publish Egress" = var.publish_egress_ip_addresses
   }
-  vpc = true
 }
 
 # The EIP association for each Nessus instance
