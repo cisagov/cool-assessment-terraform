@@ -64,11 +64,12 @@ resource "aws_instance" "teamserver" {
 
 # The Elastic IP for the Teamserver
 resource "aws_eip" "teamserver" {
+  domain = "vpc"
+
   tags = {
     Name             = "Teamserver EIP"
     "Publish Egress" = "True"
   }
-  vpc = true
 }
 
 # The EIP association for the Teamserver
