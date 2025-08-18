@@ -65,11 +65,11 @@ resource "aws_iam_role_policy_attachment" "efs_mount_policy_attachment_teamserve
 # Attach the policy that allows rebooting of Operations instances to these
 # instance roles
 resource "aws_iam_role_policy_attachment" "reboot_operations_instances_policy_attachment_teamserver" {
-  count = lookup(var.operations_instance_counts, "teamserver", 0)
+  count = length(local.operations_instances_arns) > 0 && lookup(var.operations_instance_counts, "teamserver", 0) > 0 ? lookup(var.operations_instance_counts, "teamserver", 0) : 0
 
   provider = aws.provisionassessment
 
-  policy_arn = aws_iam_policy.reboot_operations_instances_policy.arn
+  policy_arn = aws_iam_policy.reboot_operations_instances_policy[0].arn
   role       = aws_iam_role.teamserver_instance_role[count.index].id
 }
 

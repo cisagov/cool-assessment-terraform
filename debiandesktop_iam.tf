@@ -44,8 +44,10 @@ resource "aws_iam_role_policy_attachment" "efs_mount_policy_attachment_debiandes
 # Attach the policy that allows rebooting of Operations instances to this
 # instance role
 resource "aws_iam_role_policy_attachment" "reboot_operations_instances_policy_attachment_debiandesktop" {
+  count = length(local.operations_instances_arns) > 0 ? 1 : 0
+
   provider = aws.provisionassessment
 
-  policy_arn = aws_iam_policy.reboot_operations_instances_policy.arn
+  policy_arn = aws_iam_policy.reboot_operations_instances_policy[0].arn
   role       = aws_iam_role.debiandesktop_instance_role.id
 }
