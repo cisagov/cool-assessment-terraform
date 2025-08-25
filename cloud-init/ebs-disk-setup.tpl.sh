@@ -30,7 +30,7 @@ while [ "$(lsblk | grep --count ' disk')" -lt "${num_disks}" ]; do
   sleep 5
 done
 
-# Create a file system on the EBS volume if one was not already there.
+# Create a file system on the EBS volume if one was not already there
 blkid --cache-file /dev/null "${device_name}" || mkfs --type "${fs_type}" -L "${label}" "${device_name}"
 
 # Grab the UUID of this volume
@@ -43,6 +43,6 @@ mkdir --parents "${mount_point}"
 mount UUID="$uuid" --options "${mount_options}" "${mount_point}"
 
 # Save the mount point in fstab, so the file system is remounted if
-# the instance is rebooted
+# the instance is rebooted.
 echo "# ${label}" >> /etc/fstab
 echo "UUID=$uuid ${mount_point} ${fs_type} ${mount_options} 0 2" >> /etc/fstab
