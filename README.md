@@ -18,7 +18,7 @@ details on Terraform modules and the standard module structure.
 
 ```hcl
 module "example" {
-  source = "github.com/cisagov/skeleton-tf-module?ref=v1.0.0"
+  source = "github.com/cisagov/skeleton-tf-module?ref=v1.1.0"
 
   aws_region            = "us-west-1"
   aws_availability_zone = "b"
