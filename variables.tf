@@ -360,15 +360,15 @@ variable "read_write_terraform_state_role_name" {
 }
 
 variable "reboot_operations_instances_policy_description" {
-  default     = "Allows rebooting of EC2 instances in the operations subnet."
-  description = "The description to associate with the IAM policy that allows rebooting of EC2 instances in the operations subnet."
+  default     = "Allows stopping, starting, and rebooting of EC2 instances in the operations subnet."
+  description = "The description to associate with the IAM policy that allows stopping, starting, and rebooting of EC2 instances in the operations subnet."
   nullable    = false
   type        = string
 }
 
 variable "reboot_operations_instances_policy_name" {
   default     = "RebootOperationsInstances"
-  description = "The name to assign the IAM policy that allows rebooting of EC2 instances in the operations subnet."
+  description = "The name to assign the IAM policy that allows stopping, starting, and rebooting of EC2 instances in the operations subnet."
   nullable    = false
   type        = string
 }
