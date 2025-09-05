@@ -40,8 +40,8 @@ resource "aws_iam_role_policy_attachment" "ssm_agent_policy_attachment_nessus" {
   role       = aws_iam_role.nessus_instance_role.id
 }
 
-# Attach the policy that allows rebooting of Operations instances to this
-# instance role
+# Attach the policy that allows stopping, starting, and rebooting of Operations
+# instances to this instance role
 resource "aws_iam_role_policy_attachment" "reboot_operations_instances_policy_attachment_nessus" {
   count = length(local.operations_instances_arns) > 0 ? 1 : 0
 
