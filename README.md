@@ -11,7 +11,7 @@ hooks](https://pre-commit.com) and
 [GitHub Actions](https://github.com/features/actions) configurations
 appropriate for the major languages that we use.
 
-See [The Terraform
+See the [Terraform
 documentation](https://www.terraform.io/docs/modules/index.html) for
 more details on Terraform modules and the standard module structure.
 
