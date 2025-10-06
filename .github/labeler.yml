@@ -21,6 +21,13 @@ dependencies:
           - "**/.terraform.lock.hcl"
           - "**/versions.tf"
           - requirements*.txt
+# Enable if Docker is used in the repository.
+# docker:
+#   - changed-files:
+#       - any-glob-to-any-file:
+#           - "**/compose*.yml"
+#           - "**/docker-compose*.yml"
+#           - "**/Dockerfile*"
 documentation:
   - changed-files:
       - any-glob-to-any-file:
