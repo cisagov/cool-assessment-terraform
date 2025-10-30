@@ -41,14 +41,9 @@ escaped_hostname="$${hostname//\./\\.}"
 # case where our grep command fails to find anything.
 set +o errexit
 
-# beautysh (pre-commit hook) doesn't handle the following grep correctly, so
-# we have to temporarily turn off the formatting.
-# Issue logged at: https://github.com/lovesegfault/beautysh/issues/86
-# @formatter:off
 # The hosts_file variable is passed in via Terraform templatefile().
 # shellcheck disable=SC2154
 grep --quiet --ignore-case "^127\.0\.0\.1\s$${escaped_hostname}\s*$" "${hosts_file}"
-# @formatter:on
 grep_rc="$?"
 set -o errexit
 
