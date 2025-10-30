@@ -54,6 +54,7 @@ data "aws_iam_policy_document" "provisionassessment_policy_doc" {
       "ec2:DeleteRouteTable",
       "ec2:DeleteSecurityGroup",
       "ec2:DeleteSubnet",
+      "ec2:DeleteTags",
       "ec2:DeleteTransitGatewayRoute",
       "ec2:DeleteTransitGatewayVpcAttachment",
       "ec2:DeleteVolume",
