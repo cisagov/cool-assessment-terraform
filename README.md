@@ -1,6 +1,8 @@
 # cool-assessment-terraform #
 
 [![GitHub Build Status](https://github.com/cisagov/cool-assessment-terraform/workflows/build/badge.svg)](https://github.com/cisagov/cool-assessment-terraform/actions)
+[![License](https://img.shields.io/github/license/cisagov/cool-assessment-terraform)](https://spdx.org/licenses/)
+[![CodeQL](https://github.com/cisagov/cool-assessment-terraform/workflows/CodeQL/badge.svg)](https://github.com/cisagov/cool-assessment-terraform/actions/workflows/codeql-analysis.yml)
 
 This project is used to create an operational assessment environment in
 the COOL environment.
