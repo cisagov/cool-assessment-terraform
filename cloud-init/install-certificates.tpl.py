@@ -83,9 +83,7 @@ if CREATE_DEST_DIRS:
 # Copy each file from the bucket to the local file system
 for src, dst in INSTALLATION_MAP.items():
     try:
-        obj = s3.get_object(
-            Bucket=CERT_BUCKET_NAME, Key="live/{}/{}".format(SERVER_FQDN, src)
-        )
+        obj = s3.get_object(Bucket=CERT_BUCKET_NAME, Key=f"live/{SERVER_FQDN}/{src}")
     except botocore.exceptions.ClientError as e:
         print(
             "Error fetching '{}/live/{}/{}' from S3: {}".format(
