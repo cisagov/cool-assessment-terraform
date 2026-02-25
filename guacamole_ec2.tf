@@ -94,6 +94,7 @@ resource "aws_instance" "guacamole" {
     aws_security_group.ssm_agent_endpoint_client.id,
     aws_security_group.ssm_endpoint_client.id,
     aws_security_group.sts_endpoint_client.id,
+    aws_security_group.wazuh_client.id,
   ]
 }
 

@@ -80,6 +80,7 @@ resource "aws_instance" "gophish" {
     aws_security_group.scanner.id,
     aws_security_group.ssm_agent_endpoint_client.id,
     aws_security_group.sts_endpoint_client.id,
+    aws_security_group.wazuh_client.id,
   ]
 }
 

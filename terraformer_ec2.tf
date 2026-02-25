@@ -86,6 +86,7 @@ resource "aws_instance" "terraformer" {
     aws_security_group.ssm_agent_endpoint_client.id,
     aws_security_group.sts_endpoint_client.id,
     aws_security_group.terraformer.id,
+    aws_security_group.wazuh_client.id,
   ]
 }
 

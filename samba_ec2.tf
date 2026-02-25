@@ -82,6 +82,7 @@ resource "aws_instance" "samba" {
     aws_security_group.efs_client.id,
     aws_security_group.smb_server.id,
     aws_security_group.ssm_agent_endpoint_client.id,
+    aws_security_group.wazuh_client.id,
   ]
 }
 

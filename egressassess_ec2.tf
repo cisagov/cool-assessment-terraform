@@ -69,6 +69,7 @@ resource "aws_instance" "egressassess" {
     aws_security_group.egressassess.id,
     aws_security_group.guacamole_accessible.id,
     aws_security_group.ssm_agent_endpoint_client.id,
+    aws_security_group.wazuh_client.id,
   ]
 }
 

@@ -77,6 +77,7 @@ resource "aws_instance" "debiandesktop" {
     aws_security_group.efs_client.id,
     aws_security_group.guacamole_accessible.id,
     aws_security_group.ssm_agent_endpoint_client.id,
+    aws_security_group.wazuh_client.id,
   ]
 }
 

@@ -90,6 +90,7 @@ resource "aws_instance" "teamserver" {
     aws_security_group.ssm_agent_endpoint_client.id,
     aws_security_group.sts_endpoint_client.id,
     aws_security_group.teamserver.id,
+    aws_security_group.wazuh_client.id,
   ]
 }
 
