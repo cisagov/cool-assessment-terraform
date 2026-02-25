@@ -310,6 +310,23 @@ resource "aws_network_acl_rule" "private_egress_to_anywhere_via_http" {
   to_port        = 80
 }
 
+# Allow egress to anywhere via TCP on ports 1514 and 1515
+#
+# For: Wazuh agent communication with Wazuh manager.
+resource "aws_network_acl_rule" "private_egress_to_anywhere_via_wazuh" {
+  provider = aws.provisionassessment
+  for_each = toset(var.private_subnet_cidr_blocks)
+
+  cidr_block     = "0.0.0.0/0"
+  egress         = true
+  from_port      = 1514
+  network_acl_id = aws_network_acl.private[each.value].id
+  protocol       = "tcp"
+  rule_action    = "allow"
+  rule_number    = 325 + index(var.private_subnet_cidr_blocks, each.value)
+  to_port        = 1515
+}
+
 # Allow egress to anywhere via HTTPS
 #
 # For: Guacamole assumes a role via STS.  This role allows Guacamole
