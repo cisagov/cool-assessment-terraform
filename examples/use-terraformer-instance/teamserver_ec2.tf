@@ -59,6 +59,7 @@ resource "aws_instance" "teamserver" {
     data.terraform_remote_state.cool_assessment_terraform.outputs.guacamole_accessible_security_group.id,
     data.terraform_remote_state.cool_assessment_terraform.outputs.scanner_security_group.id,
     data.terraform_remote_state.cool_assessment_terraform.outputs.teamserver_security_group.id,
+    data.terraform_remote_state.cool_assessment_terraform.outputs.wazuh_client_security_group.id,
   ]
 }
 
