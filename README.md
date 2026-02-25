@@ -72,7 +72,7 @@ the COOL environment.
 ## Requirements ##
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | terraform | ~> 1.5 |
 | aws | ~> 6.7 |
 | cloudinit | ~> 2.0 |
@@ -81,7 +81,7 @@ the COOL environment.
 ## Providers ##
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | aws | ~> 6.7 |
 | aws.dns\_sharedservices | ~> 6.7 |
 | aws.organizationsreadonly | ~> 6.7 |
@@ -97,7 +97,7 @@ the COOL environment.
 ## Modules ##
 
 | Name | Source | Version |
-|------|--------|---------|
+| ---- | ------ | ------- |
 | cw\_alarms\_debiandesktop | github.com/cisagov/instance-cw-alarms-tf-module | n/a |
 | cw\_alarms\_egressassess | github.com/cisagov/instance-cw-alarms-tf-module | n/a |
 | cw\_alarms\_gophish | github.com/cisagov/instance-cw-alarms-tf-module | n/a |
@@ -119,7 +119,7 @@ the COOL environment.
 ## Resources ##
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [aws_default_route_table.operations](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_route_table) | resource |
 | [aws_ebs_volume.gophish_docker](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ebs_volume) | resource |
 | [aws_ec2_transit_gateway_route.assessment_route](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_transit_gateway_route) | resource |
@@ -495,7 +495,7 @@ the COOL environment.
 ## Inputs ##
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | ami\_kms\_key\_arn\_production | The ARN of the KMS key that can decrypt Production AMIs.  This variable is meant to be used to deploy instances in non-Production environments based on AMIs that only exist in Production and nowhere else (e.g. the legacy Windows AMI).  Note that the default value is not a valid ARN and must be replaced with one that is valid for your environment. | `string` | `"arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"` | no |
 | ami\_owner\_id\_production | The AWS account ID that owns Production AMIs.  This variable is meant to be used to deploy instances in non-Production environments based on AMIs that only exist in Production and nowhere else (e.g. the legacy Windows AMI).  Note that the default value is not a valid account ID and must be replaced with one that is valid for your environment. | `string` | `"123456789012"` | no |
 | assessment\_account\_name | The name of the AWS account for this assessment (e.g. "env0"). | `string` | n/a | yes |
@@ -562,7 +562,7 @@ the COOL environment.
 ## Outputs ##
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | assessment\_private\_zone | The private DNS zone for this assessment. |
 | aws\_region | The AWS region where this assessment environment lives. |
 | certificate\_bucket\_name | The name of the S3 bucket where certificate information is stored for this assessment. |
