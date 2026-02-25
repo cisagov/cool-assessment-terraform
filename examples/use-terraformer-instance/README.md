@@ -10,7 +10,7 @@ root module.
 ## Requirements ##
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | terraform | ~> 1.1 |
 | aws | ~> 6.7 |
 | cloudinit | ~> 2.0 |
@@ -18,7 +18,7 @@ root module.
 ## Providers ##
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | aws | ~> 6.7 |
 | aws.read\_organization\_information | ~> 6.7 |
 | cloudinit | ~> 2.0 |
@@ -31,7 +31,7 @@ No modules.
 ## Resources ##
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [aws_eip.teamserver](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip) | resource |
 | [aws_eip_association.teamserver](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip_association) | resource |
 | [aws_instance.teamserver](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance) | resource |
@@ -46,7 +46,9 @@ No modules.
 ## Inputs ##
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
+| assessment\_account\_name | The name of the AWS account for this assessment (e.g. "env0"). | `string` | n/a | yes |
+| assessment\_environment\_name | The environment name for this assessement (e.g. "production"). | `string` | n/a | yes |
 | aws\_region | The AWS region where the non-global resources for this assessment are to be provisioned (e.g. "us-east-1"). | `string` | `"us-east-1"` | no |
 | dns\_ttl | The TTL value to use for Route53 DNS records (e.g. 86400).  A smaller value may be useful when the DNS records are changing often, for example when testing. | `number` | `60` | no |
 | efs\_mount\_point\_group | The name of the group that should own the EFS share mount point on the deployed instance. | `string` | `"efs_users"` | no |
@@ -58,7 +60,7 @@ No modules.
 ## Outputs ##
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | teamserver | The Teamserver instance. |
 | teamserver\_a\_record | The Teamserver A record. |
 | teamserver\_eip | The Teamserver EIP. |

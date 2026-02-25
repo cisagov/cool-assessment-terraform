@@ -4,6 +4,18 @@
 # You must provide a value for each of these parameters.
 # ------------------------------------------------------------------------------
 
+variable "assessment_account_name" {
+  description = "The name of the AWS account for this assessment (e.g. \"env0\")."
+  nullable    = false
+  type        = string
+}
+
+variable "assessment_environment_name" {
+  description = "The environment name for this assessement (e.g. \"production\")."
+  nullable    = false
+  type        = string
+}
+
 variable "terraform_state_bucket" {
   description = "The name of the S3 bucket where Terraform state is stored."
   nullable    = false
