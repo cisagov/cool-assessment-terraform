@@ -45,3 +45,6 @@ xmlstarlet edit --omit-decl --inplace \
 # Now remove the fake root tag by deleting the first and last lines of
 # the file.
 sed '1d; $d' "$TEMP_FILE" > "$CONFIG_FILE"
+
+# Clean up
+rm "$TEMP_FILE"
