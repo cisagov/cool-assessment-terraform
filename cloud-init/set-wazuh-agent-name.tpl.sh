@@ -31,12 +31,12 @@ TEMP_FILE=$(mktemp)
 } > "$TEMP_FILE"
 
 # Add the enrollment node
-xmlstarlet ed --omit-decl --inplace \
+xmlstarlet edit --omit-decl --inplace \
   --subnode "/root/ossec_config/client" \
   --type elem -n enrollment \
   "$TEMP_FILE"
 # Now add the agent_name node
-xmlstarlet ed --omit-decl --inplace \
+xmlstarlet edit --omit-decl --inplace \
   --subnode "/root/ossec_config/client/enrollment" \
   --type elem -n agent_name \
   --value "${deployment_name}.${account_name}.${hostname}" \
