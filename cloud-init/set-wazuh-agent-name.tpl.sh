@@ -26,7 +26,7 @@ TEMP_FILE=$(mktemp)
 # with xmlstarlet.
 {
   echo "<root>"
-  cat $CONFIG_FILE
+  cat "$CONFIG_FILE"
   echo "</root>"
 } > "$TEMP_FILE"
 
@@ -44,4 +44,4 @@ xmlstarlet edit --omit-decl --inplace \
 
 # Now remove the fake root tag by deleting the first and last lines of
 # the file.
-sed '1d; $d' "$TEMP_FILE" > $CONFIG_FILE
+sed '1d; $d' "$TEMP_FILE" > "$CONFIG_FILE"
