@@ -11,7 +11,7 @@ variable "assessment_account_name" {
 }
 
 variable "assessment_environment_name" {
-  description = "The environment name for this assessement (e.g. \"production\")."
+  description = "The environment name for this assessment (e.g. \"production\")."
   nullable    = false
   type        = string
 }

@@ -48,7 +48,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 | ---- | ----------- | ---- | ------- | :------: |
 | assessment\_account\_name | The name of the AWS account for this assessment (e.g. "env0"). | `string` | n/a | yes |
-| assessment\_environment\_name | The environment name for this assessement (e.g. "production"). | `string` | n/a | yes |
+| assessment\_environment\_name | The environment name for this assessment (e.g. "production"). | `string` | n/a | yes |
 | aws\_region | The AWS region where the non-global resources for this assessment are to be provisioned (e.g. "us-east-1"). | `string` | `"us-east-1"` | no |
 | dns\_ttl | The TTL value to use for Route53 DNS records (e.g. 86400).  A smaller value may be useful when the DNS records are changing often, for example when testing. | `number` | `60` | no |
 | efs\_mount\_point\_group | The name of the group that should own the EFS share mount point on the deployed instance. | `string` | `"efs_users"` | no |
