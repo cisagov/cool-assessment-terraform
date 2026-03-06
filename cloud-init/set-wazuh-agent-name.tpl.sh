@@ -70,3 +70,7 @@ sed '1d; $d' "$TEMP_FILE" > "$CONFIG_FILE"
 
 # Clean up
 rm "$TEMP_FILE"
+
+# Now that we have a correct configuration we can start and enable the
+# Wazuh agent service.
+systemctl enable --now wazuh-agent.service
