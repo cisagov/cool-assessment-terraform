@@ -79,7 +79,14 @@ terraform apply "${@}" \
     -target=aws_network_acl_rule.operations_ingress_from_anywhere_via_ports_50051_thru_65535 \
     -target=aws_network_acl_rule.private_egress_to_anywhere_via_http \
     -target=aws_network_acl_rule.private_egress_to_anywhere_via_https \
+    -target=aws_network_acl_rule.private_egress_to_anywhere_via_wazuh \
+    -target=aws_network_acl_rule.private_egress_to_cool_via_tcp_ephemeral_ports \
+    -target=aws_network_acl_rule.private_egress_to_cool_via_udp_ephemeral_ports \
     -target=aws_network_acl_rule.private_egress_to_operations_via_ephemeral_ports \
+    -target=aws_network_acl_rule.private_egress_to_operations_via_ssh \
+    -target=aws_network_acl_rule.private_egress_to_operations_via_vnc \
+    -target=aws_network_acl_rule.private_egress_to_cool_via_ipa_ports \
+    -target=aws_network_acl_rule.private_egress_to_local_vm_ips_via_all_ports \
     -target=aws_network_acl_rule.private_ingress_from_anywhere_else_efs \
     -target=aws_network_acl_rule.private_ingress_from_operations_efs \
     -target=aws_network_acl_rule.private_ingress_from_operations_smb \

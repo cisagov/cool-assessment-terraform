@@ -283,6 +283,11 @@ output "vpn_server_cidr_block" {
   value       = local.vpn_server_cidr_block
 }
 
+output "wazuh_client_security_group" {
+  description = "The security group for Wazuh clients."
+  value       = aws_security_group.wazuh_client
+}
+
 output "windows_instance_profile" {
   description = "The instance profile for the Windows instances."
   value       = aws_iam_instance_profile.windows

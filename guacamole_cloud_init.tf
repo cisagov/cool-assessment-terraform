@@ -98,6 +98,25 @@ data "cloudinit_config" "guacamole_cloud_init_tasks" {
   # the mime-parts of the user-data as well as the filename in the
   # scripts directory.
 
+  # Set the Wazuh agent name.
+  #
+  # Wazuh cannot handle multiple agents with the same name, so we have
+  # to override the default value.  (The default value is just the
+  # hostname.)
+  part {
+    content = templatefile(
+      "${path.module}/cloud-init/set-wazuh-agent-name.tpl.sh", {
+        account_name    = "${var.assessment_account_name}"
+        deployment_name = "${var.assessment_environment_name}"
+        # Note that the hostname here is identical to what is set in
+        # the corresponding DNS A record.
+        hostname = "guac"
+    })
+    content_type = "text/x-shellscript"
+    filename     = "set-wazuh-agent-name.sh"
+    merge_type   = "list(append)+dict(recurse_array)+str()"
+  }
+
   part {
     filename     = "install-certificates.py"
     content_type = "text/x-shellscript"

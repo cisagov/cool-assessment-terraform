@@ -333,6 +333,23 @@ resource "aws_network_acl_rule" "private_egress_to_anywhere_via_https" {
   to_port        = 443
 }
 
+# Allow egress to anywhere via TCP on ports 1514 and 1515
+#
+# For: Wazuh agent communication with Wazuh manager.
+resource "aws_network_acl_rule" "private_egress_to_anywhere_via_wazuh" {
+  provider = aws.provisionassessment
+  for_each = toset(var.private_subnet_cidr_blocks)
+
+  cidr_block     = "0.0.0.0/0"
+  egress         = true
+  from_port      = 1514
+  network_acl_id = aws_network_acl.private[each.value].id
+  protocol       = "tcp"
+  rule_action    = "allow"
+  rule_number    = 340 + index(var.private_subnet_cidr_blocks, each.value)
+  to_port        = 1515
+}
+
 # Allow egress to COOL Shared Services via TCP ephemeral ports
 #
 # For: Assessment team access to guacamole web client
@@ -346,7 +363,7 @@ resource "aws_network_acl_rule" "private_egress_to_cool_via_tcp_ephemeral_ports"
   network_acl_id = aws_network_acl.private[each.value].id
   protocol       = "tcp"
   rule_action    = "allow"
-  rule_number    = 340 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 350 + index(var.private_subnet_cidr_blocks, each.value)
   to_port        = 65535
 }
 
@@ -363,7 +380,7 @@ resource "aws_network_acl_rule" "private_egress_to_cool_via_udp_ephemeral_ports"
   network_acl_id = aws_network_acl.private[each.value].id
   protocol       = "udp"
   rule_action    = "allow"
-  rule_number    = 350 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 360 + index(var.private_subnet_cidr_blocks, each.value)
   to_port        = 65535
 }
 
@@ -379,7 +396,7 @@ resource "aws_network_acl_rule" "private_egress_to_operations_via_ephemeral_port
   network_acl_id = aws_network_acl.private[each.value].id
   protocol       = "tcp"
   rule_action    = "allow"
-  rule_number    = 360 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 370 + index(var.private_subnet_cidr_blocks, each.value)
   to_port        = 65535
 }
 
@@ -396,7 +413,7 @@ resource "aws_network_acl_rule" "private_egress_to_operations_via_ssh" {
   network_acl_id = aws_network_acl.private[each.value].id
   protocol       = "tcp"
   rule_action    = "allow"
-  rule_number    = 370 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 380 + index(var.private_subnet_cidr_blocks, each.value)
   to_port        = 22
 }
 
@@ -412,7 +429,7 @@ resource "aws_network_acl_rule" "private_egress_to_operations_via_vnc" {
   network_acl_id = aws_network_acl.private[each.value].id
   protocol       = "tcp"
   rule_action    = "allow"
-  rule_number    = 380 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 390 + index(var.private_subnet_cidr_blocks, each.value)
   to_port        = 5901
 }
 
@@ -432,7 +449,7 @@ resource "aws_network_acl_rule" "private_egress_to_cool_via_ipa_ports" {
   network_acl_id = aws_network_acl.private[var.private_subnet_cidr_blocks[0]].id
   protocol       = each.value.protocol
   rule_action    = "allow"
-  rule_number    = 400 + each.value.index
+  rule_number    = 410 + each.value.index
   to_port        = each.value.port
 }
 
@@ -452,5 +469,5 @@ resource "aws_network_acl_rule" "private_egress_to_local_vm_ips_via_all_ports" {
   network_acl_id = aws_network_acl.private[each.value].id
   protocol       = "all"
   rule_action    = "allow"
-  rule_number    = 410 + index(var.private_subnet_cidr_blocks, each.value)
+  rule_number    = 420 + index(var.private_subnet_cidr_blocks, each.value)
 }

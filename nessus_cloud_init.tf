@@ -71,6 +71,25 @@ data "cloudinit_config" "nessus_cloud_init_tasks" {
     merge_type   = "list(append)+dict(recurse_array)+str()"
   }
 
+  # Set the Wazuh agent name.
+  #
+  # Wazuh cannot handle multiple agents with the same name, so we have
+  # to override the default value.  (The default value is just the
+  # hostname.)
+  part {
+    content = templatefile(
+      "${path.module}/cloud-init/set-wazuh-agent-name.tpl.sh", {
+        account_name    = "${var.assessment_account_name}"
+        deployment_name = "${var.assessment_environment_name}"
+        # Note that the hostname here is identical to what is set in
+        # the corresponding DNS A record.
+        hostname = "nessus${count.index}"
+    })
+    content_type = "text/x-shellscript"
+    filename     = "set-wazuh-agent-name.sh"
+    merge_type   = "list(append)+dict(recurse_array)+str()"
+  }
+
   part {
     filename = "nessus-setup.sh"
     content = templatefile(
