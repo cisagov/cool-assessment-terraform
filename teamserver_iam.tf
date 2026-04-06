@@ -77,8 +77,9 @@ resource "aws_iam_role_policy_attachment" "reboot_operations_instances_policy_at
 # Define the role policies below
 ################################
 
-# Allow each Teamserver instance to assume the necessary role to read
-# its email-sending domain certificate from an S3 bucket.
+# Allow each Teamserver instance to assume the necessary roles to:
+# - Read from the assessment images bucket in the Images account
+# - Read its email-sending domain certificate from an S3 bucket
 data "aws_iam_policy_document" "teamserver_assume_delegated_role_policy_doc" {
   count = lookup(var.operations_instance_counts, "teamserver", 0)
 
@@ -89,6 +90,7 @@ data "aws_iam_policy_document" "teamserver_assume_delegated_role_policy_doc" {
     ]
     effect = "Allow"
     resources = [
+      data.terraform_remote_state.images_assessment_images.outputs.assessmentimagesbucketreadonly_role.arn,
       module.email_sending_domain_certreadrole[element(var.email_sending_domains, count.index)].role.arn,
     ]
   }
