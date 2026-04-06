@@ -187,14 +187,14 @@ data "cloudinit_config" "teamserver_cloud_init_tasks" {
   # * vnc_username - the username associated with the VNC user
   part {
     content = templatefile(
-      "${path.module}/cloud-init/write-teamserver-aws-config.tpl.sh", {
+      "${path.module}/cloud-init/write-images-bucket-default-aws-config.tpl.sh", {
         aws_region                  = var.aws_region
         permissions                 = "0400"
         read_images_bucket_role_arn = data.terraform_remote_state.images_assessment_images.outputs.assessmentimagesbucketreadonly_role.arn
         vnc_username                = data.aws_ssm_parameter.vnc_username.value
     })
     content_type = "text/x-shellscript"
-    filename     = "write-teamserver-aws-config.sh"
+    filename     = "write-images-bucket-default-aws-config.sh"
     merge_type   = "list(append)+dict(recurse_array)+str()"
   }
 }
