@@ -63,7 +63,6 @@ test:
       - any-glob-to-any-file:
           # Add any test-related files or paths.
           - .ansible-lint
-          - .bandit.yml
           - .flake8
           - .isort.cfg
           - .mdl_config.yaml
