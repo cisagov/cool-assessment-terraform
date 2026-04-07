@@ -64,8 +64,9 @@ resource "aws_iam_role_policy_attachment" "reboot_operations_instances_policy_at
 # Define the role policies below
 ################################
 
-# Allow the Kali instance to assume the necessary roles to perform its
-# function.
+# Allow each Kali instance to assume the necessary roles to:
+# - Read from the assessment images bucket in the Images account
+# - Write assessment findings to the findings bucket
 data "aws_iam_policy_document" "kali_assume_delegated_role_policy_doc" {
   statement {
     actions = [
@@ -74,6 +75,7 @@ data "aws_iam_policy_document" "kali_assume_delegated_role_policy_doc" {
     ]
     effect = "Allow"
     resources = [
+      data.terraform_remote_state.images_assessment_images.outputs.assessmentimagesbucketreadonly_role.arn,
       data.terraform_remote_state.sharedservices.outputs.assessment_findings_write_role.arn,
     ]
   }

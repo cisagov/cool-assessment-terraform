@@ -83,6 +83,30 @@ data "cloudinit_config" "kali_cloud_init_tasks" {
   }
 
   # Create a credentials file for the VNC user that can be used to
+  # configure the AWS CLI to assume the assessment images bucket read-only role
+  # by default.  For details, see
+  # https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html#using-a-configuration-file
+  #
+  # Input variables are:
+  # * aws_region - the AWS region where the roles are to be assumed
+  # * permissions - the octal permissions to assign the AWS configuration
+  # * read_images_bucket_role_arn - the ARN of the IAM role that can be assumed
+  #   to read images from the assessment images bucket
+  # * vnc_username - the username associated with the VNC user
+  part {
+    content = templatefile(
+      "${path.module}/cloud-init/write-images-bucket-default-aws-config.tpl.sh", {
+        aws_region                  = var.aws_region
+        permissions                 = "0400"
+        read_images_bucket_role_arn = data.terraform_remote_state.images_assessment_images.outputs.assessmentimagesbucketreadonly_role.arn
+        vnc_username                = data.aws_ssm_parameter.vnc_username.value
+    })
+    content_type = "text/x-shellscript"
+    filename     = "write-images-bucket-default-aws-config.sh"
+    merge_type   = "list(append)+dict(recurse_array)+str()"
+  }
+
+  # Create a credentials file for the VNC user that can be used to
   # configure the AWS CLI to assume the findings data bucket write
   # role.  For details, see
   # https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html#using-a-configuration-file
