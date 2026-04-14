@@ -89,14 +89,14 @@ variable "assessmentfindingsbucketwrite_sharedservices_policy_name" {
 
 variable "assessment_artifact_export_enabled" {
   default     = false
-  description = "Whether or not to enable the export of assessment artifacts to an S3 bucket.  If this is set to true, then the following variables should also be configured appropriately: assessment_artifact_export_map, ssm_key_artifact_export_access_key_id, ssm_key_artifact_export_secret_access_key, ssm_key_artifact_export_bucket_name, and ssm_key_artifact_export_region."
+  description = "Whether or not to enable the export of assessment artifacts to an S3 bucket.  If this is set to true, then the following variables should also be configured appropriately: assessment_artifact_export_map, ssm_key_artifact_export_access_key_id_1, ssm_key_artifact_export_access_key_id_2, ssm_key_artifact_export_secret_access_key_1, ssm_key_artifact_export_secret_access_key_2, ssm_key_artifact_export_bucket_name_1, ssm_key_artifact_export_bucket_name_2, and ssm_key_artifact_export_region_1, ssm_key_artifact_export_region_2."
   nullable    = false
   type        = bool
 }
 
 variable "assessment_artifact_export_map" {
   default     = {}
-  description = "A map whose keys are assessment types and whose values are the prefixes for what an assessment artifact will be named when it is exported to the S3 bucket contained in the SSM parameter specified by the ssm_key_artifact_export_bucket_name variable (e.g. { \"PenTest\" : \"pentest/PT\", \"Phishing\" : \"phishing/PH\", \"RedTeam\" : \"redteam/RT\" }). Note that prefixes can include a path within the bucket.  For example, if the prefix is \"pentest/PT\" and the assessment ID is \"ASMT1234\", then the corresponding artifact will be exported to \"bucket-name/pentest/PT-ASMT1234.tgz\" when the archive-artifact-data-to-bucket.sh script is run."
+  description = "A map whose keys are assessment types and whose values are the prefixes for what an assessment artifact will be named when it is exported to the S3 buckets contained in the SSM parameters specified by the ssm_key_artifact_export_bucket_name_1 and ssm_key_artifact_export_bucket_name_2 variables (e.g. { \"PenTest\" : \"pentest/PT\", \"Phishing\" : \"phishing/PH\", \"RedTeam\" : \"redteam/RT\" }). Note that prefixes can include a path within the bucket.  For example, if the prefix is \"pentest/PT\" and the assessment ID is \"ASMT1234\", then the corresponding artifact will be exported to \"bucket-name/pentest/PT-ASMT1234.tgz\" when the archive-artifact-data-to-bucket.sh script is run."
   nullable    = false
   type        = map(string)
 }
