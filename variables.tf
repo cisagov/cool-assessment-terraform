@@ -387,7 +387,7 @@ variable "session_cloudwatch_log_group_name" {
 
 variable "ssm_key_artifact_export_access_key_id_1" {
   default     = "/assessment_artifact_export/access_key_id"
-  description = "The AWS SSM Parameter Store parameter that contains the AWS access key of the IAM user that can write to the first assessment artifact export bucket (e.g. \"/assessment_artifact_export/access_key_id_1\")."
+  description = "The AWS SSM Parameter Store parameter that contains the AWS access key of the IAM user that can write to the first assessment artifact export bucket (e.g. \"/assessment_artifact_export/access_key_id\")."
   nullable    = false
   type        = string
 }
