@@ -35,32 +35,60 @@ data "aws_default_tags" "assessment" {
 # Note: These values are stored in plaintext in the state, but it should be fine
 # because we are using a remote state that we have configured to be encrypted.
 # ------------------------------------------------------------------------------
-data "aws_ssm_parameter" "artifact_export_access_key_id" {
+data "aws_ssm_parameter" "artifact_export_access_key_id_1" {
   count    = var.assessment_artifact_export_enabled ? 1 : 0
   provider = aws.parameterstorereadonly
 
-  name = var.ssm_key_artifact_export_access_key_id
+  name = var.ssm_key_artifact_export_access_key_id_1
 }
 
-data "aws_ssm_parameter" "artifact_export_bucket_name" {
+data "aws_ssm_parameter" "artifact_export_access_key_id_2" {
   count    = var.assessment_artifact_export_enabled ? 1 : 0
   provider = aws.parameterstorereadonly
 
-  name = var.ssm_key_artifact_export_bucket_name
+  name = var.ssm_key_artifact_export_access_key_id_2
 }
 
-data "aws_ssm_parameter" "artifact_export_region" {
+data "aws_ssm_parameter" "artifact_export_bucket_name_1" {
   count    = var.assessment_artifact_export_enabled ? 1 : 0
   provider = aws.parameterstorereadonly
 
-  name = var.ssm_key_artifact_export_region
+  name = var.ssm_key_artifact_export_bucket_name_1
 }
 
-data "aws_ssm_parameter" "artifact_export_secret_access_key" {
+data "aws_ssm_parameter" "artifact_export_bucket_name_2" {
   count    = var.assessment_artifact_export_enabled ? 1 : 0
   provider = aws.parameterstorereadonly
 
-  name = var.ssm_key_artifact_export_secret_access_key
+  name = var.ssm_key_artifact_export_bucket_name_2
+}
+
+data "aws_ssm_parameter" "artifact_export_region_1" {
+  count    = var.assessment_artifact_export_enabled ? 1 : 0
+  provider = aws.parameterstorereadonly
+
+  name = var.ssm_key_artifact_export_region_1
+}
+
+data "aws_ssm_parameter" "artifact_export_region_2" {
+  count    = var.assessment_artifact_export_enabled ? 1 : 0
+  provider = aws.parameterstorereadonly
+
+  name = var.ssm_key_artifact_export_region_2
+}
+
+data "aws_ssm_parameter" "artifact_export_secret_access_key_1" {
+  count    = var.assessment_artifact_export_enabled ? 1 : 0
+  provider = aws.parameterstorereadonly
+
+  name = var.ssm_key_artifact_export_secret_access_key_1
+}
+
+data "aws_ssm_parameter" "artifact_export_secret_access_key_2" {
+  count    = var.assessment_artifact_export_enabled ? 1 : 0
+  provider = aws.parameterstorereadonly
+
+  name = var.ssm_key_artifact_export_secret_access_key_2
 }
 
 data "aws_ssm_parameter" "samba_username" {
