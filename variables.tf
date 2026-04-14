@@ -385,30 +385,58 @@ variable "session_cloudwatch_log_group_name" {
   type        = string
 }
 
-variable "ssm_key_artifact_export_access_key_id" {
+variable "ssm_key_artifact_export_access_key_id_1" {
   default     = "/assessment_artifact_export/access_key_id"
-  description = "The AWS SSM Parameter Store parameter that contains the AWS access key of the IAM user that can write to the assessment artifact export bucket (e.g. \"/assessment_artifact_export/access_key_id\")."
+  description = "The AWS SSM Parameter Store parameter that contains the AWS access key of the IAM user that can write to the first assessment artifact export bucket (e.g. \"/assessment_artifact_export/access_key_id_1\")."
   nullable    = false
   type        = string
 }
 
-variable "ssm_key_artifact_export_bucket_name" {
+variable "ssm_key_artifact_export_access_key_id_2" {
+  default     = "/assessment_artifact_export_commercial/access_key_id"
+  description = "The AWS SSM Parameter Store parameter that contains the AWS access key of the IAM user that can write to the second assessment artifact export bucket (e.g. \"/assessment_artifact_export_commercial/access_key_id\")."
+  nullable    = false
+  type        = string
+}
+
+variable "ssm_key_artifact_export_bucket_name_1" {
   default     = "/assessment_artifact_export/bucket"
-  description = "The AWS SSM Parameter Store parameter that contains the name of the assessment artifact export bucket (e.g. \"/assessment_artifact_export/bucket\")."
+  description = "The AWS SSM Parameter Store parameter that contains the name of the first assessment artifact export bucket (e.g. \"/assessment_artifact_export/bucket\")."
   nullable    = false
   type        = string
 }
 
-variable "ssm_key_artifact_export_region" {
+variable "ssm_key_artifact_export_bucket_name_2" {
+  default     = "/assessment_artifact_export_commercial/bucket"
+  description = "The AWS SSM Parameter Store parameter that contains the name of the second assessment artifact export bucket (e.g. \"/assessment_artifact_export_commercial/bucket\")."
+  nullable    = false
+  type        = string
+}
+
+variable "ssm_key_artifact_export_region_1" {
   default     = "/assessment_artifact_export/region"
-  description = "The AWS SSM Parameter Store parameter that contains the region of the IAM user (specified via ssm_key_artifact_export_access_key_id) that can write to the assessment artifact export bucket (e.g. \"/assessment_artifact_export/region\")."
+  description = "The AWS SSM Parameter Store parameter that contains the region of the IAM user (specified via ssm_key_artifact_export_access_key_id_1) that can write to the first assessment artifact export bucket (e.g. \"/assessment_artifact_export/region\")."
   nullable    = false
   type        = string
 }
 
-variable "ssm_key_artifact_export_secret_access_key" {
+variable "ssm_key_artifact_export_region_2" {
+  default     = "/assessment_artifact_export_commercial/region"
+  description = "The AWS SSM Parameter Store parameter that contains the region of the IAM user (specified via ssm_key_artifact_export_access_key_id_2) that can write to the second assessment artifact export bucket (e.g. \"/assessment_artifact_export_commercial/region\")."
+  nullable    = false
+  type        = string
+}
+
+variable "ssm_key_artifact_export_secret_access_key_1" {
   default     = "/assessment_artifact_export/secret_access_key"
-  description = "The AWS SSM Parameter Store parameter that contains the AWS secret access key of the IAM user that can write to the assessment artifact export bucket (e.g. \"/assessment_artifact_export/secret_access_key\")."
+  description = "The AWS SSM Parameter Store parameter that contains the AWS secret access key of the IAM user that can write to the first assessment artifact export bucket (e.g. \"/assessment_artifact_export/secret_access_key\")."
+  nullable    = false
+  type        = string
+}
+
+variable "ssm_key_artifact_export_secret_access_key_2" {
+  default     = "/assessment_artifact_export_commercial/secret_access_key"
+  description = "The AWS SSM Parameter Store parameter that contains the AWS secret access key of the IAM user that can write to the second assessment artifact export bucket (e.g. \"/assessment_artifact_export_commercial/secret_access_key\")."
   nullable    = false
   type        = string
 }
