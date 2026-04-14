@@ -5,11 +5,13 @@
 # shellcheck disable=SC2154
 
 # This script is used write out a bash script that can be used to create an
-# assessment artifact archive and copy it to the appropriate S3 bucket.
+# assessment artifact archive and copy it to the appropriate S3 buckets.
 
 # Input variables are:
-# * artifact_export_bucket_name - the name of the assessment artifact export S3
-#   bucket
+# * artifact_export_bucket_name_1 - the name of the first assessment artifact
+#   export S3 bucket
+# * artifact_export_bucket_name_2 - the name of the second assessment artifact
+#   export S3 bucket
 # * artifact_export_path - the path to copy the artifact to in the S3 bucket
 # * assessment_id - the identifier for the assessment
 # * permissions - the permissions to assign the script, specified in either the
@@ -29,7 +31,7 @@ cat > "$path" << "EOF"
 
 # This script creates a gzipped tar archive of the directory containing
 # assessment artifacts and then copies that archive to the appropriate S3
-# bucket.
+# buckets.
 #
 # Usage: archive-artifact-data-to-bucket.sh /path/to/artifacts_directory
 
@@ -42,10 +44,11 @@ if [ $# -ne 1 ]; then
   exit 1
 fi
 
-full_bucket_path="s3://${artifact_export_bucket_name}/${artifact_export_path}-${assessment_id}.tgz"
+full_bucket_path_1="s3://${artifact_export_bucket_name_1}/${artifact_export_path}-${assessment_id}.tgz"
+full_bucket_path_2="s3://${artifact_export_bucket_name_2}/${artifact_export_path}-${assessment_id}.tgz"
 
 # Prompt for confirmation
-read -p "Confirm: Archive the contents of $1 and upload to $full_bucket_path? [y/N] " -n 1 -r
+read -p "Confirm: Archive the contents of $1 and upload to $full_bucket_path_1 and $full_bucket_path_2? [y/N] " -n 1 -r
 echo  # Move to a new line
 
 if [[ ! $REPLY =~ ^[Yy]$ ]]; then
@@ -67,14 +70,31 @@ echo "Creating archive..."
 # the archive in /tmp.
 tar --create --file ${assessment_id}.tgz --gzip --verbose "$(basename "$1")"
 
-# Copy the archive to the S3 bucket
-echo "Copying archive to S3..."
-AWS_SHARED_CREDENTIALS_FILE=/home/${vnc_username}/.aws/artifact_export_credentials aws s3 cp ${assessment_id}.tgz "$full_bucket_path"
+# Save the hash of the archive
+echo "Calculating archive hash..."
+archive_hash=$(sha256sum ${assessment_id}.tgz | cut --delimiter ' ' --fields 1)
+
+# Copy the archive to the first S3 bucket
+echo "Copying archive to the first S3 bucket (${artifact_export_bucket_name_1})..."
+AWS_SHARED_CREDENTIALS_FILE=/home/${vnc_username}/.aws/artifact_export_credentials AWS_PROFILE=bucket-1 aws s3 cp ${assessment_id}.tgz "$full_bucket_path_1"
+
+# Copy the archive to the second S3 bucket
+echo "Copying archive to the second S3 bucket (${artifact_export_bucket_name_2})..."
+AWS_SHARED_CREDENTIALS_FILE=/home/${vnc_username}/.aws/artifact_export_credentials AWS_PROFILE=bucket-2 aws s3 cp ${assessment_id}.tgz "$full_bucket_path_2"
 
 # Delete the archive
 echo "Deleting archive..."
 rm ${assessment_id}.tgz
-echo "Done."
+
+# Print a summary
+echo
+echo "Summary:"
+echo "  Archive file: ${assessment_id}.tgz"
+echo "  Archive hash: $archive_hash"
+echo "  S3 bucket 1 path: $full_bucket_path_1"
+echo "  S3 bucket 2 path: $full_bucket_path_2"
+echo
+echo "Success!"
 EOF
 
 # Set the ownership and permissions of the script appropriately.
