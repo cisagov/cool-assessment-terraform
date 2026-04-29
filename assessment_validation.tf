@@ -15,7 +15,7 @@
 resource "null_resource" "validate_assessment_account_name_matches_workspace" {
   lifecycle {
     precondition {
-      condition     = local.account_naming_scheme == "legacy" ? replace(replace(lower(var.assessment_account_name), "/[()]/", ""), " ", "-") == terraform.workspace : format("%s-%s", lower(var.assessment_account_name), lower(var.assessment_environment_name)) == terraform.workspace
+      condition     = format("%s-%s", lower(var.assessment_account_name), lower(var.assessment_environment_name)) == terraform.workspace
       error_message = "Assessment account name (${var.assessment_account_name}) and environment (${var.assessment_environment_name}) do not agree with the currently-selected workspace (${terraform.workspace}).  Are you sure that you are using the correct tfvars file?"
     }
   }

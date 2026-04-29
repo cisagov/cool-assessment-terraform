@@ -1,7 +1,7 @@
 resource "aws_route53_record" "guacamole_A" {
   provider = aws.dns_sharedservices
 
-  name    = "guac.${local.assessment_account_name_base}.${var.cool_domain}"
+  name    = "guac.${local.assessment_account_name}.${var.cool_domain}"
   records = [aws_instance.guacamole.private_ip]
   ttl     = var.dns_ttl
   type    = "A"
@@ -26,7 +26,7 @@ resource "aws_route53_record" "guacamole_PTR" {
     element(split(".", aws_instance.guacamole.private_ip), 3)
   )
   records = [
-    "guac.${local.assessment_account_name_base}.${var.cool_domain}"
+    "guac.${local.assessment_account_name}.${var.cool_domain}"
   ]
   ttl     = var.dns_ttl
   type    = "PTR"

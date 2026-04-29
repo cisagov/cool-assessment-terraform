@@ -85,7 +85,7 @@ data "cloudinit_config" "guacamole_cloud_init_tasks" {
     content = templatefile(
       "${path.module}/cloud-init/freeipa-vars.tpl.yml", {
         domain   = var.cool_domain
-        hostname = "guac.${local.assessment_account_name_base}.${var.cool_domain}"
+        hostname = "guac.${local.assessment_account_name}.${var.cool_domain}"
     })
     merge_type = "list(append)+dict(recurse_array)+str()"
   }
