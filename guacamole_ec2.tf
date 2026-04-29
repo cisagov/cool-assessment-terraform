@@ -7,13 +7,13 @@ data "aws_ami" "guacamole" {
 
   filter {
     name   = "architecture"
-    values = ["x86_64"]
+    values = ["arm64"]
   }
 
   filter {
     name = "name"
     values = [
-      "guacamole-hvm-*-x86_64-ebs"
+      "guacamole-hvm-*-arm64-ebs"
     ]
   }
 
@@ -53,7 +53,7 @@ resource "aws_instance" "guacamole" {
 
   ami                  = data.aws_ami.guacamole.id
   iam_instance_profile = aws_iam_instance_profile.guacamole.name
-  instance_type        = "t3.medium"
+  instance_type        = "t4g.medium"
   # AWS Instance Meta-Data Service (IMDS) options
   metadata_options {
     # Enable IMDS (this is the default value)
