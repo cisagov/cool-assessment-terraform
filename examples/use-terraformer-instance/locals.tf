@@ -36,31 +36,9 @@ locals {
     if account.id == local.assessment_account_id
   ][0]
 
-  # Determine if we are using the legacy or current account naming scheme.
-  #
-  # Legacy account names look like "ACCOUNT_NAME (ACCOUNT_TYPE)", e.g.:
-  # - "Images (Production)", "Images (Staging)"
-  # - "Shared Services (Production)", "Shared Services (Staging)"
-  # - "env0 (Production)", "env0 (Staging)", "env1 (Production)", "env1 (Staging)", etc.
-  #
-  # Current account names look like "ACCOUNT_NAME", e.g.:
-  # - "Images"
-  # - "Shared Services"
-  # - "env0", "env1", etc.
-  #
-  # Until all legacy environments have been migrated to this current naming
-  # scheme, we must check account names via the regex below to determine whether
-  # we are using the legacy naming scheme or not.
-  #
-  # Check the assessment (env*) account name to determine the naming scheme
-  account_naming_scheme = length(regexall("\\(([^()]*)\\)", local.assessment_account_name)) == 1 ? "legacy" : "current"
-
-  # Determine the ID of the Images account
-  images_account_name_regex = local.account_naming_scheme == "legacy" ? format("^Images \\(%s\\)$", trim(split("(", local.assessment_account_name)[1], ")")) : "^Images$"
-
+  # Find the "Images" account ID by name.
   images_account_id = [
     for account in data.aws_organizations_organization.cool.non_master_accounts :
-    account.id
-    if length(regexall(local.images_account_name_regex, account.name)) > 0
+    account.id if account.name == "Images"
   ][0]
 }
