@@ -10,5 +10,5 @@ module "vpc_flow_logs" {
 
   logs_retention = "365"
   vpc_id         = aws_vpc.assessment.id
-  vpc_name       = local.assessment_account_name_base
+  vpc_name       = local.assessment_account_name
 }

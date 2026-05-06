@@ -101,7 +101,7 @@ locals {
   docker_ebs_device_name    = "/dev/xvdb"
   docker_volume_mount_point = "/docker_data"
 
-  guacamole_fqdn = format("guac.%s.%s", local.assessment_account_name_base, var.cool_domain)
+  guacamole_fqdn = format("guac.%s.%s", local.assessment_account_name, var.cool_domain)
 
   # Look up assessment account name from AWS organizations provider
   assessment_account_name = [
@@ -110,37 +110,10 @@ locals {
     if account.id == local.assessment_account_id
   ][0]
 
-  # Determine if we are using the legacy or current account naming scheme.
-  #
-  # Legacy account names look like "ACCOUNT_NAME (ACCOUNT_TYPE)", e.g.:
-  # - "Images (Production)", "Images (Staging)"
-  # - "Shared Services (Production)", "Shared Services (Staging)"
-  # - "env0 (Production)", "env0 (Staging)", "env1 (Production)", "env1 (Staging)", etc.
-  #
-  # Current account names look like "ACCOUNT_NAME", e.g.:
-  # - "Images"
-  # - "Shared Services"
-  # - "env0", "env1", etc.
-  #
-  # Until all legacy environments have been migrated to this current naming
-  # scheme, we must check account names via the regex below to determine whether
-  # we are using the legacy naming scheme or not.
-  #
-  # Check the assessment (env*) account name to determine the naming scheme
-  account_naming_scheme = length(regexall("\\(([^()]*)\\)", local.assessment_account_name)) == 1 ? "legacy" : "current"
-
-  # Note that we are assuming that the legacy assessment account name does
-  # not contain a "(" character other than the one that separates the account
-  # name from the account type.
-  assessment_account_name_base = local.account_naming_scheme == "legacy" ? trimspace(split("(", local.assessment_account_name)[0]) : local.assessment_account_name
-
-  # Determine the ID of the Images account
-  images_account_name_regex = local.account_naming_scheme == "legacy" ? format("^Images \\(%s\\)$", trim(split("(", local.assessment_account_name)[1], ")")) : "^Images$"
-
+  # Find the "Images" account ID by name.
   images_account_id = [
     for account in data.aws_organizations_organization.cool.non_master_accounts :
-    account.id
-    if length(regexall(local.images_account_name_regex, account.name)) > 0
+    account.id if account.name == "Images"
   ][0]
 
   # The name and description of the role that allows read-only
@@ -170,8 +143,8 @@ locals {
   union_of_inbound_ports_allowed = { for index, d in distinct(flatten([for k, v in var.inbound_ports_allowed : v if var.operations_instance_counts[k] > 0])) : format("%s_%d_%d", d.protocol, d.from_port, d.to_port) => merge(d, { "index" = index }) }
 
   # If var.private_domain is provided, use it.  Otherwise, default to
-  # local.assessment_account_name_base
-  private_domain = var.private_domain != "" ? var.private_domain : local.assessment_account_name_base
+  # local.assessment_account_name
+  private_domain = var.private_domain != "" ? var.private_domain : local.assessment_account_name
 
   # Helpful lists for defining ACL and security group rules
 
