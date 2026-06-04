@@ -130,5 +130,16 @@ data "cloudinit_config" "guacamole_cloud_init_tasks" {
         priv_key_pem_dest   = "/var/guacamole/httpd/ssl/self-ssl.key"
         server_fqdn         = local.guacamole_fqdn
     })
+    merge_type = "list(append)+dict(recurse_array)+str()"
+  }
+
+  # Enable and start httpd.service now that the certificates have been
+  # installed.  See cisagov/ansible-role-guacamole#93 for more
+  # information as to why we do it this way.
+  part {
+    content      = file("${path.module}/cloud-init/enable-and-start-httpd.yml")
+    content_type = "text/cloud-config"
+    filename     = "enable-and-start-httpd.yml"
+    merge_type   = "list(append)+dict(recurse_array)+str()"
   }
 }
