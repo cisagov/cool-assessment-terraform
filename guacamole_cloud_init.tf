@@ -133,7 +133,7 @@ data "cloudinit_config" "guacamole_cloud_init_tasks" {
     merge_type = "list(append)+dict(recurse_array)+str()"
   }
 
-  # Enable and start httpd.service now that the certificates have been
+  # Enable and start the httpd service now that the certificates have been
   # installed.  See cisagov/ansible-role-guacamole#93 for more
   # information as to why we do it this way.
   part {
