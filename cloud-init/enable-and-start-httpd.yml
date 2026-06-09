@@ -1,0 +1,7 @@
+---
+
+runcmd:
+  - - systemctl
+    - enable
+    - --now
+    - apache2.service
