@@ -185,6 +185,7 @@ data "aws_iam_policy_document" "provisionassessment_policy_doc" {
   statement {
     actions = [
       "logs:DeleteLogGroup",
+      "logs:ListTagsForResource",
       "logs:ListTagsLogGroup",
       "logs:PutRetentionPolicy",
       "logs:TagLogGroup",
