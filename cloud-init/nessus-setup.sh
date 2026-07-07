@@ -77,17 +77,20 @@ else
 fi
 
 # Set web server port
+seconds_to_sleep=60
 while true; do
   # shellcheck disable=SC2154
   echo "Attempting to set Nessus web server port to ${nessus_web_server_port}..."
   $nessus_sbin_path/nessuscli fix --set xmlrpc_listen_port="${nessus_web_server_port}"
   xmlrpc_listen_port_rc="$?"
 
-  # No need to echo anything if successful since nessuscli will do it for us
   if [ "$xmlrpc_listen_port_rc" -ne 0 ]; then
-    echo "ERROR: Setting Nessus web server port was unsuccessful"
-    sleep 60
+    echo -n "ERROR: Setting Nessus web server port was unsuccessful.  "
+    echo Will retry in $seconds_to_sleep seconds.
+    sleep $seconds_to_sleep
   else
+    # No need to echo anything if successful since nessuscli will do
+    # it for us
     break
   fi
 done
