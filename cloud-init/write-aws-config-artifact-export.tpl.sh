@@ -6,12 +6,15 @@
 
 # This script is used to write out an AWS configuration to the home
 # directory of a specified user.  The AWS configuration gives the user
-# credentials that allow writing to the assessment artifact export S3 bucket.
+# credentials that allow writing to the assessment artifact export S3 buckets.
 
 # Input variables are:
-# * aws_access_key_id - the AWS access key ID
-# * aws_region - the AWS region of the access key
-# * aws_secret_access_key - the AWS secret access key
+# * aws_access_key_id_1 - the AWS access key ID for the first bucket
+# * aws_access_key_id_2 - the AWS access key ID for the second bucket
+# * aws_region_1 - the AWS region of the first bucket
+# * aws_region_2 - the AWS region of the second bucket
+# * aws_secret_access_key_1 - the AWS secret access key for the first bucket
+# * aws_secret_access_key_2 - the AWS secret access key for the second bucket
 # * permissions - the permissions to assign the AWS configuration, specified
 #   in either the octal or symbolic formats understood by chmod
 # * vnc_username - the username associated with the VNC user
@@ -35,10 +38,15 @@ chown --recursive "${vnc_username}:${vnc_username}" "$d"
 
 # Write the AWS config file
 cat > "$path" << EOF
-[default]
-aws_access_key_id = ${aws_access_key_id}
-aws_secret_access_key = ${aws_secret_access_key}
-region = ${aws_region}
+[bucket-1]
+aws_access_key_id = ${aws_access_key_id_1}
+aws_secret_access_key = ${aws_secret_access_key_1}
+region = ${aws_region_1}
+
+[bucket-2]
+aws_access_key_id = ${aws_access_key_id_2}
+aws_secret_access_key = ${aws_secret_access_key_2}
+region = ${aws_region_2}
 EOF
 
 # Set the ownership and permissions of the AWS config file
