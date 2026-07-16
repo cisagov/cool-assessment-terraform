@@ -47,7 +47,7 @@ fi
 full_bucket_path_1="s3://${artifact_export_bucket_name_1}/${artifact_export_path}-${assessment_id}.tgz"
 # The owners of the second bucket have requested to add the date in YYYYMMDD format to the object path in that bucket
 current_date=$(date +%Y%m%d)
-full_bucket_path_2="s3://${artifact_export_bucket_name_2}/${artifact_export_path}-${assessment_id}-${current_date}.tgz"
+full_bucket_path_2="s3://${artifact_export_bucket_name_2}/${artifact_export_path}-${assessment_id}-$${current_date}.tgz"
 
 # Prompt for confirmation
 read -p "Confirm: Archive the contents of $1 and upload to $full_bucket_path_1 and $full_bucket_path_2? [y/N] " -n 1 -r
