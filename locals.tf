@@ -155,7 +155,6 @@ locals {
   # list when adding new instance types.
   operations_instances_arns = concat(
     aws_instance.debiandesktop.*.arn,
-    aws_instance.egressassess.*.arn,
     aws_instance.gophish.*.arn,
     aws_instance.kali.*.arn,
     aws_instance.nessus.*.arn,
