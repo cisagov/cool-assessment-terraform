@@ -115,6 +115,23 @@ resource "aws_network_acl_rule" "operations_ingress_from_private_via_https" {
   to_port        = 443
 }
 
+# Explicitly deny public access to sensitive ports (RDP, Cobalt Strike
+# teamserver) so the broadened "allowed ports" range below cannot
+# inadvertently expose them at the NACL layer.
+resource "aws_network_acl_rule" "operations_deny_sensitive_public_ports" {
+  provider = aws.provisionassessment
+  for_each = local.operations_denied_public_ports
+
+  cidr_block     = "0.0.0.0/0"
+  egress         = false
+  from_port      = each.value.port
+  network_acl_id = aws_network_acl.operations.id
+  protocol       = "tcp"
+  rule_action    = "deny"
+  rule_number    = each.value.rule_number
+  to_port        = each.value.port
+}
+
 # Allow ingress from anywhere via the ports specified in
 # var.inbound_ports_allowed
 #

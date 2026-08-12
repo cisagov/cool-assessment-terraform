@@ -164,6 +164,15 @@ locals {
     aws_instance.windows.*.arn,
   )
 
+  # These ports must never be publicly reachable at the operations subnet
+  # ACL, regardless of the ranges produced by inbound_ports_allowed.
+  # These deny rules are numbered below the "allowed ports" rule
+  # (150/151) so they take precedence (first-match wins in a NACL).
+  operations_denied_public_ports = {
+    rdp        = { port = 3389, rule_number = 145 }
+    teamserver = { port = 50050, rule_number = 146 }
+  }
+
   # Return a map containing the union of all ports to be opened for
   # instance types that will actually be instantiated in the
   # operations subnet.
