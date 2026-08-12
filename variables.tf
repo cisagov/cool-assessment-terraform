@@ -232,7 +232,7 @@ variable "inbound_ports_allowed" {
     "terraformer" : [],
     "windows" : [],
   }
-  description = "An object specifying the ports allowed inbound (from anywhere) to the various instance types (e.g. {\"debiandesktop\" : [], \"egressassess\" : [], \"gophish\" : [], \"kali\": [{\"protocol\": \"tcp\", \"from_port\": 443, \"to_port\": 443}, {\"protocol\": \"tcp\", \"from_port\": 9000, \"to_port\": 9009}], \"nessus\" : [], \"pentestportal\" : [], \"samba\" : [], \"teamserver\" : [], \"terraformer\" : [], \"windows\" : [], })."
+  description = "An object specifying the ports allowed inbound (from anywhere) to the various instance types (e.g. {\"debiandesktop\" : [], \"egressassess\" : [], \"gophish\" : [], \"kali\": [{\"protocol\": \"tcp\", \"from_port\": 443, \"to_port\": 443}, {\"protocol\": \"tcp\", \"from_port\": 9000, \"to_port\": 9009}], \"nessus\" : [], \"pentestportal\" : [], \"samba\" : [], \"teamserver\" : [], \"terraformer\" : [], \"windows\" : [], }).  This variable is intended only for use with IP protocols that have a notion of ports, such as TCP and UDP."
   nullable    = false
   type = object({
     debiandesktop = list(object({ protocol = string, from_port = number, to_port = number })),
