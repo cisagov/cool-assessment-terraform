@@ -173,7 +173,7 @@ locals {
   }
 
   # List of protocols that appear in union_of_inbound_ports_allowed
-  union_of_inbound_ports_allowed_protocols = distinct([for k, v in local.union_of_inbound_ports_allowed : v.protocol])
+  union_of_inbound_ports_allowed_protocols = sort(distinct([for k, v in local.union_of_inbound_ports_allowed : v.protocol]))
 
   # Map of inbound ports allowed by protocol
   union_of_inbound_ports_allowed_by_protocol = {
