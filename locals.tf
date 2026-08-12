@@ -166,9 +166,50 @@ locals {
 
   # Return a map containing the union of all ports to be opened for
   # instance types that will actually be instantiated in the
-  # operations subnet.  We merge the index into the map so that we can
-  # number the corresponding ACL rules consecutively.
-  union_of_inbound_ports_allowed = { for index, d in distinct(flatten([for k, v in var.inbound_ports_allowed : v if var.operations_instance_counts[k] > 0])) : format("%s_%d_%d", d.protocol, d.from_port, d.to_port) => merge(d, { "index" = index }) }
+  # operations subnet.
+  union_of_inbound_ports_allowed = {
+    for d in distinct(flatten([for k, v in var.inbound_ports_allowed : v if var.operations_instance_counts[k] > 0])) :
+    format("%s_%d_%d", d.protocol, d.from_port, d.to_port) => d
+  }
+
+  # List of protocols that appear in union_of_inbound_ports_allowed
+  union_of_inbound_ports_allowed_protocols = distinct([for k, v in local.union_of_inbound_ports_allowed : v.protocol])
+
+  # Map of inbound ports allowed by protocol
+  union_of_inbound_ports_allowed_by_protocol = {
+    for p in local.union_of_inbound_ports_allowed_protocols :
+    p => {
+      for k, v in local.union_of_inbound_ports_allowed :
+      k => v if v.protocol == p
+    }
+  }
+
+  # Map of minimum inbound ports allowed by protocol
+  min_inbound_ports_allowed_by_protocol = {
+    for p in local.union_of_inbound_ports_allowed_protocols :
+    p => min([
+      for k, v in local.union_of_inbound_ports_allowed_by_protocol[p] : v.from_port
+    ]...)
+  }
+
+  # Map of maximum inbound ports allowed by protocol
+  max_inbound_ports_allowed_by_protocol = {
+    for p in local.union_of_inbound_ports_allowed_protocols :
+    p => max([
+      for k, v in local.union_of_inbound_ports_allowed_by_protocol[p] : v.to_port
+    ]...)
+  }
+
+  # Map of allowed port ranges that can be used to create ACL rules.
+  inbound_ports_allowed_for_acl = {
+    for index, p in local.union_of_inbound_ports_allowed_protocols :
+    format("%s_%d_%d", p, local.min_inbound_ports_allowed_by_protocol[p], local.max_inbound_ports_allowed_by_protocol[p]) => {
+      index     = index,
+      from_port = local.min_inbound_ports_allowed_by_protocol[p],
+      protocol  = p,
+      to_port   = local.max_inbound_ports_allowed_by_protocol[p],
+    }
+  }
 
   # If var.private_domain is provided, use it.  Otherwise, default to
   # local.assessment_account_name
