@@ -121,7 +121,7 @@ resource "aws_network_acl_rule" "operations_ingress_from_private_via_https" {
 # For: Assessment team operational use
 resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_allowed_ports" {
   provider = aws.provisionassessment
-  for_each = local.union_of_inbound_ports_allowed
+  for_each = local.inbound_ports_allowed_for_acl
 
   cidr_block     = "0.0.0.0/0"
   egress         = false
