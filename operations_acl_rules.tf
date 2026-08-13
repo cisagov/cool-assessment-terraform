@@ -153,9 +153,16 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_allowed_po
 # Allow ingress from anywhere via ephemeral TCP/UDP ports below 3389
 # (1024-3388)
 #
-# For: Assessment team operational use, but we don't want to allow
-# public access to RDP on port 3389.
-resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_1024_thru_3388" {
+# For: Assessment team operational use.
+#
+# We don't want to allow public access to RDP on port 3389 or Cobalt
+# Strike Teamservers on port 50050, but
+# aws_network_acl_rule.operations_deny_sensitive_public_ports already
+# blocks that.  The VNC and WinRM ports are already blocked by
+# aws_network_acl_rule.operations_ingress_from_anywhere_else_vnc and
+# aws_network_acl_rule.operations_ingress_from_anywhere_else_winrm,
+# respectively.
+resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_1024_thru_65535" {
   provider = aws.provisionassessment
   for_each = toset(local.tcp_and_udp)
 
@@ -166,44 +173,6 @@ resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_1024
   protocol       = each.value
   rule_action    = "allow"
   rule_number    = 170 + index(local.tcp_and_udp, each.value)
-  to_port        = 3388
-}
-
-# Allow ingress from anywhere via ephemeral TCP/UDP ports 3390-50049.
-#
-# For: Assessment team operational use, but we don't want to allow
-# public access to RDP on port 3389 or Cobalt Strike Teamservers on port 50050.
-#
-# We can skip the VNC and WinRM ports as they are blocked by rules above.
-resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_3390_thru_50049" {
-  provider = aws.provisionassessment
-  for_each = toset(local.tcp_and_udp)
-
-  cidr_block     = "0.0.0.0/0"
-  egress         = false
-  from_port      = 3390
-  network_acl_id = aws_network_acl.operations.id
-  protocol       = each.value
-  rule_action    = "allow"
-  rule_number    = 180 + index(local.tcp_and_udp, each.value)
-  to_port        = 50049
-}
-
-# Allow ingress from anywhere via ephemeral TCP/UDP ports 50051-65535.
-#
-# For: Assessment team operational use, but we don't want to allow
-# public access to Cobalt Strike Teamservers on port 50050.
-resource "aws_network_acl_rule" "operations_ingress_from_anywhere_via_ports_50051_thru_65535" {
-  provider = aws.provisionassessment
-  for_each = toset(local.tcp_and_udp)
-
-  cidr_block     = "0.0.0.0/0"
-  egress         = false
-  from_port      = 50051
-  network_acl_id = aws_network_acl.operations.id
-  protocol       = each.value
-  rule_action    = "allow"
-  rule_number    = 200 + index(local.tcp_and_udp, each.value)
   to_port        = 65535
 }
 
