@@ -61,6 +61,20 @@ fi
 # Change to the parent directory of the artifacts directory
 cd "$(dirname "$1")"
 
+archive_file="${assessment_id}.tgz"
+
+cleanup() {
+  local exit_code="$?"
+  if [ -f "$archive_file" ]; then
+    echo "Deleting archive..."
+    rm -f "$archive_file"
+  fi
+  return "$exit_code"
+}
+
+# Always remove the local archive, including when archiving or upload fails.
+trap cleanup EXIT
+
 # Create the archive
 echo "Creating archive..."
 # Since we are in the parent directory of the artifacts directory, we don't
@@ -70,23 +84,19 @@ echo "Creating archive..."
 # The important thing is to avoid filling up the root disk, so in the event
 # that an EFS volume _is not_ being used it probably makes sense to create
 # the archive in /tmp.
-tar --create --file ${assessment_id}.tgz --gzip --verbose "$(basename "$1")"
+tar --create --file "$archive_file" --gzip --verbose "$(basename "$1")"
 
 # Save the hash of the archive
 echo "Calculating archive hash..."
-archive_hash=$(sha256sum ${assessment_id}.tgz | cut --delimiter ' ' --fields 1)
+archive_hash=$(sha256sum "$archive_file" | cut --delimiter ' ' --fields 1)
 
 # Copy the archive to the first S3 bucket
 echo "Copying archive to the first S3 bucket (${artifact_export_bucket_name_1})..."
-AWS_SHARED_CREDENTIALS_FILE=/home/${vnc_username}/.aws/artifact_export_credentials AWS_PROFILE=bucket-1 aws s3 cp ${assessment_id}.tgz "$full_bucket_path_1"
+AWS_SHARED_CREDENTIALS_FILE=/home/${vnc_username}/.aws/artifact_export_credentials AWS_PROFILE=bucket-1 aws s3 cp "$archive_file" "$full_bucket_path_1"
 
 # Copy the archive to the second S3 bucket
 echo "Copying archive to the second S3 bucket (${artifact_export_bucket_name_2})..."
-AWS_SHARED_CREDENTIALS_FILE=/home/${vnc_username}/.aws/artifact_export_credentials AWS_PROFILE=bucket-2 aws s3 cp ${assessment_id}.tgz "$full_bucket_path_2"
-
-# Delete the archive
-echo "Deleting archive..."
-rm ${assessment_id}.tgz
+AWS_SHARED_CREDENTIALS_FILE=/home/${vnc_username}/.aws/artifact_export_credentials AWS_PROFILE=bucket-2 aws s3 cp "$archive_file" "$full_bucket_path_2"
 
 # Print a summary
 echo
