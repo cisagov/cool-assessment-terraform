@@ -72,7 +72,7 @@ resource "aws_instance" "guacamole" {
     http_tokens = "required"
   }
   root_block_device {
-    volume_size = 8
+    volume_size = 24
     volume_type = "gp3"
   }
   subnet_id = aws_subnet.private[var.private_subnet_cidr_blocks[0]].id
