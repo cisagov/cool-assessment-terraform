@@ -10,7 +10,6 @@
 # * Deny applying any other permission boundary policies to users or roles.
 # * Deny modification of the policies and trust relationships of users and
 #   roles that do not have this permissions boundary.
-# * Deny creation of access keys and login profiles for users.
 
 data "aws_iam_policy_document" "terraformer_permissions_boundary_policy_doc" {
   provider = aws.provisionassessment
@@ -354,23 +353,6 @@ data "aws_iam_policy_document" "terraformer_permissions_boundary_policy_doc" {
       "*",
     ]
     sid = "DenyModifyingUsersAndRolesWithoutBoundary"
-  }
-
-  # Deny creation of access keys and login profiles for users.  These actions
-  # do not support the iam:PermissionsBoundary condition key, so they cannot
-  # be limited to the users protected by the statement above
-  # (GHSA-8x7g-pgw8-wj3q).
-  statement {
-    actions = [
-      "iam:CreateAccessKey",
-      "iam:CreateLoginProfile",
-      "iam:UpdateLoginProfile",
-    ]
-    effect = "Deny"
-    resources = [
-      "*",
-    ]
-    sid = "DenyCreatingUserCredentials"
   }
 }
 
