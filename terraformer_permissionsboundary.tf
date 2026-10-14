@@ -8,6 +8,8 @@
 # * Deny removal of this permissions boundary policy from users and roles.
 # * Deny creation of users or roles that do not have this permissions boundary.
 # * Deny applying any other permission boundary policies to users or roles.
+# * Deny modification of the policies and trust relationships of users and
+#   roles that do not have this permissions boundary.
 
 data "aws_iam_policy_document" "terraformer_permissions_boundary_policy_doc" {
   provider = aws.provisionassessment
@@ -320,6 +322,37 @@ data "aws_iam_policy_document" "terraformer_permissions_boundary_policy_doc" {
       "*",
     ]
     sid = "DenyApplyingOtherBoundaryPolicies"
+  }
+
+  # Deny modification of the policies and trust relationships of users and
+  # roles that do not have this permissions boundary.  Such principals can
+  # exist in the account without being tagged by the team that deploys this
+  # root module, so the team tag statement above does not protect them
+  # (GHSA-8x7g-pgw8-wj3q).
+  statement {
+    actions = [
+      "iam:AttachRolePolicy",
+      "iam:AttachUserPolicy",
+      "iam:DeleteRolePolicy",
+      "iam:DeleteUserPolicy",
+      "iam:DetachRolePolicy",
+      "iam:DetachUserPolicy",
+      "iam:PutRolePolicy",
+      "iam:PutUserPolicy",
+      "iam:UpdateAssumeRolePolicy",
+    ]
+    condition {
+      test = "StringNotEquals"
+      values = [
+        "arn:aws:iam::${local.assessment_account_id}:policy/${var.terraformer_permissions_boundary_policy_name}",
+      ]
+      variable = "iam:PermissionsBoundary"
+    }
+    effect = "Deny"
+    resources = [
+      "*",
+    ]
+    sid = "DenyModifyingUsersAndRolesWithoutBoundary"
   }
 }
 
