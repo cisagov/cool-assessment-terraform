@@ -61,13 +61,18 @@ fi
 # Change to the parent directory of the artifacts directory
 cd "$(dirname "$1")"
 
-archive_file="${assessment_id}.tgz"
+archive_file="$PWD/${assessment_id}.tgz"
 
 cleanup() {
   local exit_code="$?"
   if [ -f "$archive_file" ]; then
-    echo "Deleting archive..."
-    rm -f "$archive_file"
+    if [ "$exit_code" -ne 0 ]; then
+      echo "Script failed (exit $exit_code); removing local archive..."
+    else
+      echo "Removing local archive..."
+    fi
+    # Do not let a cleanup failure mask the original exit status.
+    rm -f "$archive_file" || true
   fi
   return "$exit_code"
 }
@@ -101,7 +106,7 @@ AWS_SHARED_CREDENTIALS_FILE=/home/${vnc_username}/.aws/artifact_export_credentia
 # Print a summary
 echo
 echo "Summary:"
-echo "  Archive file: ${assessment_id}.tgz"
+echo "  Archive file: $archive_file"
 echo "  Archive hash: $archive_hash"
 echo "  S3 bucket 1 path: $full_bucket_path_1"
 echo "  S3 bucket 2 path: $full_bucket_path_2"
